@@ -25,6 +25,8 @@ import Tabs from './components/Tabs';
 import Text from './components/Text';
 import TextInput from './components/TextInput';
 import Toast from './components/Toast';
+import { Image, View } from './primitives';
+
 
 export {
 	Avatar,
@@ -39,6 +41,7 @@ export {
 	Header,
 	Icon,
 	Inline,
+	Image,
 	Touch,
 	Label,
 	Link,
@@ -53,5 +56,6 @@ export {
 	Tabs,
 	Text,
 	TextInput,
-	Toast
+	Toast,
+	View
 };

@@ -1,13 +1,5 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
-
-import {
-  Platform,
-  Image,
-  View,
-  StyleSheet
-} from './cinderblock/primitives';
-
 
 import {
 	Bounds,
@@ -19,6 +11,7 @@ import {
 	FlexItem,
 	Icon,
 	Inline,
+	Image,
 	Label,
 	List,
 	Link,
@@ -36,7 +29,6 @@ import {
 import styles from './cinderblock/styles/styles';
 
 import Page from './components/Page';
-
 
 
 const OtherFormInner = props => {

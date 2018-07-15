@@ -1,7 +1,8 @@
 import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
 
-import { Image } from './cinderblock/primitives';
+import styles from './cinderblock/styles/styles';
+import swatches from './cinderblock/styles/swatches';
 import {
 	Bounds,
 	Button,
@@ -12,6 +13,7 @@ import {
 	FlexItem,
 	Icon,
 	Inline,
+	Image,
 	Link,
 	List,
 	Tabs,
@@ -27,47 +29,40 @@ import {
 	Text,
 	TextInput
 } from './cinderblock';
-import styles from './cinderblock/styles/styles';
-import swatches from './cinderblock/styles/swatches';
+
 import Page from './components/Page';
+
+import cookies from 'next-cookies';
+import { connect } from 'react-redux';
+import { fetchShows } from '../actions';
 
 import loremIpsum from 'lorem-ipsum';
 
 
-import { connect } from 'react-redux';
-import {
-	fetchShows,
-} from '../actions';
-
-//require('isomorphic-fetch');
-//const apiHost = 'http://localhost:3030/';
-
-// for ssr auth
-import cookies from 'next-cookies';
 
 
 const LoginFormInner = props => {
-		return(
-			<Chunk>
-				<form name="loginForm">
-					<TextInput
-						keyboardType="email-address"
-						placeholder="email"
-						name="email"
-						onChangeText={text => props.setFieldValue('email', text)}
-						/>
-					<TextInput
-						secureTextEntry={true}
-						placeholder="password"
-						name="password"
-						onChangeText={text => props.setFieldValue('password', text)}
-						/>
-					<Touch onPress={props.handleSubmit}>
-						<Button label="Log in" width="full" type="submit" />
-					</Touch>
-				</form>
-			</Chunk>
-		);
+	return(
+		<Chunk>
+			<form name="loginForm">
+				<TextInput
+					keyboardType="email-address"
+					placeholder="email"
+					name="email"
+					onChangeText={text => props.setFieldValue('email', text)}
+					/>
+				<TextInput
+					secureTextEntry={true}
+					placeholder="password"
+					name="password"
+					onChangeText={text => props.setFieldValue('password', text)}
+					/>
+				<Touch onPress={props.handleSubmit}>
+					<Button label="Log in" width="full" type="submit" />
+				</Touch>
+			</form>
+		</Chunk>
+	);
 }
 
 
