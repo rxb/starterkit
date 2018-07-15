@@ -34,7 +34,10 @@ import Page from './components/Page';
 
 import cookies from 'next-cookies';
 import { connect } from 'react-redux';
-import { fetchShows } from '../actions';
+import {
+	logIn,
+	fetchShows
+} from '../actions';
 
 import loremIpsum from 'lorem-ipsum';
 
@@ -74,7 +77,7 @@ class Hello extends React.Component {
 		this.state = {
 			//shows: this.props.shows,
 			users: this.props.users,
-			jwt: this.props.jwt,
+			// jwt: this.props.jwt,
 			modalVisible: false,
 			promptVisible: false
 		}
@@ -165,6 +168,8 @@ class Hello extends React.Component {
 
 	_renderForm(){
 		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
+			this.props.logIn(values);
+			/*
 			const jsonString = JSON.stringify({
 				strategy: 'local',
 				...values
@@ -182,6 +187,7 @@ class Hello extends React.Component {
 					this.setState({jwt: json.accessToken});
 					document.cookie = `jwt=${json.accessToken}`
 				});
+			*/
 		};
 
 		const LoginForm = withFormik({
@@ -192,12 +198,13 @@ class Hello extends React.Component {
 
 	render() {
 		const {
+			authentication,
 			shows
 		} = this.props
 
 		return (
 		<Fragment>
-			<Page>
+			<Page authentication={authentication}>
 
 				<Flex direction="column" switchDirection="large" noGutters>
 
@@ -303,10 +310,10 @@ class Hello extends React.Component {
 										</Chunk>
 									</Section>
 
-									{ this.state.jwt &&
+									{ authentication.token &&
 										<Section>
 											<Text type="sectionHead">Hello I am user</Text>
-											<Text>{this.state.jwt}</Text>
+											<Text>{authentication.token}</Text>
 											<Text>{JSON.stringify(this.state.users)}</Text>
 										</Section>
 									}
@@ -390,12 +397,14 @@ class Hello extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
-		shows: state.shows
+		shows: state.shows,
+		authentication: state.authentication
 	});
 }
 
 const actionCreators = {
-	fetchShows
+	fetchShows,
+	logIn
 }
 
 export default connect(

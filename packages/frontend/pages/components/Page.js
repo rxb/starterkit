@@ -53,6 +53,7 @@ import swatches from '../cinderblock/styles/swatches';
 const Page = (props) => {
 
 		const {
+			authentication = {},
 			children
 		} = props;
 
@@ -66,12 +67,21 @@ const Page = (props) => {
 			    </Head>
 
 				<Header>
-					<Link href="/">
-						<Inline>
-							<Icon shape="FileText" />
-							<Text>CINDERBLOCK</Text>
-						</Inline>
-					</Link>
+					<Flex direction="row">
+						<FlexItem>
+							<Link href="/">
+								<Inline>
+									<Icon shape="FileText" />
+									<Text>CINDERBLOCK</Text>
+								</Inline>
+							</Link>
+						</FlexItem>
+						<FlexItem>
+							{authentication.token &&
+								<Text>Logged in!</Text>
+							}
+						</FlexItem>
+					</Flex>
 				</Header>
 
 				<View style={{flex: 1}}>

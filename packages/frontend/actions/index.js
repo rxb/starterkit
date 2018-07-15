@@ -12,6 +12,19 @@ export const fetchShows = () => ({
 });
 
 
+// LOG IN
+export const logIn = (data) => ({
+	[CALL_API]: {
+		endpoint: `${apiHost}authentication/`,
+		method: 'POST',
+		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+		body: JSON.stringify({ ...data, strategy: 'local' }),
+		types: ["LOG_IN", "LOG_IN_SUCCESS", "LOG_IN_FAILURE"]
+ 	}
+});
+
+
+
 
 /*
 // just for reference

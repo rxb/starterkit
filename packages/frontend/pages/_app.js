@@ -7,6 +7,19 @@ import { apiMiddleware, isRSAA, CALL_API } from 'redux-api-middleware';
 
 import reducer from '../reducers';
 
+
+/*
+const authMiddleware = ({getState, dispatch}) => next => action => {
+  if (action[CALL_API]) {
+    action[CALL_API].headers = {
+      Authorization: 'Bearer ' + getState().token,
+      ...action[CALL_API].headers
+    }
+  }
+  return next(action)
+}
+*/
+
 const store = createStore(
   reducer,
   applyMiddleware(
@@ -17,6 +30,7 @@ const store = createStore(
     apiMiddleware,
   )
 );
+
 
 
 class ThisApp extends App {
