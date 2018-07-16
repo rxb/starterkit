@@ -95,6 +95,12 @@ class Hello extends React.Component {
 		this.props.fetchUsers();
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.authentication !== this.props.authentication) {
+			this.props.fetchUsers();
+		}
+	}
+
 
 	toggleModal() {
 		this.setState({modalVisible: !this.state.modalVisible})
@@ -293,7 +299,7 @@ class Hello extends React.Component {
 										</Chunk>
 									</Section>
 
-									{ authentication.token &&
+									{ authentication && authentication.token &&
 										<Section>
 											<Text type="sectionHead">Hello I am user</Text>
 											<Text>{authentication.token}</Text>

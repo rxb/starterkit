@@ -22,9 +22,12 @@ const authMiddleware = ({getState, dispatch}) => next => action => {
 }
 
 
+// will need to use next cookies somehow?
+const startState = (process.browser) ? { authentication: localStorage.getItem('AUTHENTICATION') } : {}
 
 const store = createStore(
   reducer,
+  startState,
   applyMiddleware(
     // middleware happens in this order
     thunk,
@@ -34,7 +37,11 @@ const store = createStore(
   )
 );
 
-
+if (process.browser) {
+  store.subscribe(() => {
+    localStorage.setItem('AUTHENTICATION', store.getState().authentication);
+  });
+}
 
 class ThisApp extends App {
   render () {

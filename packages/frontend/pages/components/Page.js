@@ -77,7 +77,7 @@ const Page = (props) => {
 							</Link>
 						</FlexItem>
 						<FlexItem>
-							{authentication.token &&
+							{authentication && authentication.token &&
 								<Text>Logged in!</Text>
 							}
 						</FlexItem>
