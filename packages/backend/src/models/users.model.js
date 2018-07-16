@@ -9,7 +9,7 @@ module.exports = function (app) {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      autoIncrement: true
     },
     email: {
       type: DataTypes.STRING,
