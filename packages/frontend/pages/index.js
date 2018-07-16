@@ -36,12 +36,11 @@ import cookies from 'next-cookies';
 import { connect } from 'react-redux';
 import {
 	logIn,
-	fetchShows
+	fetchShows,
+	fetchUsers
 } from '../actions';
 
 import loremIpsum from 'lorem-ipsum';
-
-
 
 
 const LoginFormInner = props => {
@@ -75,8 +74,8 @@ class Hello extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			//shows: this.props.shows,
-			users: this.props.users,
+			// shows: this.props.shows,
+			// users: this.props.users,
 			// jwt: this.props.jwt,
 			modalVisible: false,
 			promptVisible: false
@@ -88,29 +87,12 @@ class Hello extends React.Component {
 	}
 
 	static async getInitialProps(ctx){
-		/*
-		const { jwt } = cookies(ctx);
-		const shows = await fetch(`${apiHost}shows/`)
-			.then(res => res.json())
-			.then(json => json.data);
-		const users = await fetch(`${apiHost}users/`, {
-				headers: {
-					'Authorization': `${jwt}`
-				}
-			})
-			.then(res => res.json())
-			.then(json => json.data);
-		return {
-			shows: [...shows, ...shows, ...shows, ...shows],
-			users: users,
-			jwt: jwt
-		}
-		*/
 		return {}
 	}
 
 	componentDidMount(){
 		this.props.fetchShows();
+		this.props.fetchUsers();
 	}
 
 
@@ -199,7 +181,8 @@ class Hello extends React.Component {
 	render() {
 		const {
 			authentication,
-			shows
+			shows,
+			users
 		} = this.props
 
 		return (
@@ -314,7 +297,7 @@ class Hello extends React.Component {
 										<Section>
 											<Text type="sectionHead">Hello I am user</Text>
 											<Text>{authentication.token}</Text>
-											<Text>{JSON.stringify(this.state.users)}</Text>
+											<Text>{JSON.stringify(users)}</Text>
 										</Section>
 									}
 								</Sections>
@@ -398,12 +381,14 @@ class Hello extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 	return ({
 		shows: state.shows,
+		users: state.users,
 		authentication: state.authentication
 	});
 }
 
 const actionCreators = {
 	fetchShows,
+	fetchUsers,
 	logIn
 }
 

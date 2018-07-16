@@ -12,6 +12,16 @@ export const fetchShows = () => ({
 });
 
 
+// FETCH USERS
+export const fetchUsers = () => ({
+	[CALL_API]: {
+		types: ["FETCH_USERS", "FETCH_USERS_SUCCESS", "FETCH_USERS_FAILURE"],
+		endpoint: `${apiHost}users`,
+		method: 'GET',
+ 	}
+});
+
+
 // LOG IN
 export const logIn = (data) => ({
 	[CALL_API]: {

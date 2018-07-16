@@ -8,24 +8,27 @@ import { apiMiddleware, isRSAA, CALL_API } from 'redux-api-middleware';
 import reducer from '../reducers';
 
 
-/*
+
+
 const authMiddleware = ({getState, dispatch}) => next => action => {
+  const token = (getState().authentication && getState().authentication.token) ? getState().authentication.token : '';
   if (action[CALL_API]) {
     action[CALL_API].headers = {
-      Authorization: 'Bearer ' + getState().token,
+      Authorization: 'Bearer ' + token,
       ...action[CALL_API].headers
     }
   }
   return next(action)
 }
-*/
+
+
 
 const store = createStore(
   reducer,
   applyMiddleware(
     // middleware happens in this order
     thunk,
-    // authMiddleware,
+    authMiddleware,
     // refreshMiddleware,
     apiMiddleware,
   )
