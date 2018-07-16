@@ -193,7 +193,7 @@ class Hello extends React.Component {
 
 		return (
 		<Fragment>
-			<Page authentication={authentication}>
+			<Page authentication={authentication} users={users}>
 
 				<Flex direction="column" switchDirection="large" noGutters>
 

@@ -54,7 +54,8 @@ const Page = (props) => {
 
 		const {
 			authentication = {},
-			children
+			children,
+			users
 		} = props;
 
 		return (
@@ -79,6 +80,9 @@ const Page = (props) => {
 						<FlexItem>
 							{authentication && authentication.token &&
 								<Text>Logged in!</Text>
+							}
+							{users && users[0] &&
+								<Text>{users[0].name}</Text>
 							}
 						</FlexItem>
 					</Flex>
