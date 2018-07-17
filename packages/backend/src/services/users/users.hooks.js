@@ -9,15 +9,17 @@ const {
 
 module.exports = {
   before: {
-    all: (context) => {
-        if(context.id == 'self'){
-          console.log('selfie!')
-          context.id = 2
-        }
-        return context;
-      },
+    all: [],
     find: [],
-    get: [],
+    get: [
+        (context) => {
+          if(context.id == 'self'){
+            const query = queryWithCurrentUser({idField: 'id'});
+            console.log(query);
+          }
+          return context;
+        }
+    ],
     create: [ hashPassword() ],
     update: [ hashPassword(),  authenticate('jwt') ],
     patch: [ hashPassword(),  authenticate('jwt') ],
