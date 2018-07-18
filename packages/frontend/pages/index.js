@@ -37,7 +37,7 @@ import { connect } from 'react-redux';
 import {
 	logIn,
 	fetchShows,
-	fetchUsers
+	fetchUser
 } from '../actions';
 
 import loremIpsum from 'lorem-ipsum';
@@ -92,12 +92,13 @@ class Hello extends React.Component {
 
 	componentDidMount(){
 		this.props.fetchShows();
-		this.props.fetchUsers();
+		this.props.fetchUser('self');
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.authentication !== this.props.authentication) {
-			this.props.fetchUsers();
+			console.log('fetch?');
+			this.props.fetchUser('self');
 		}
 	}
 
@@ -188,12 +189,12 @@ class Hello extends React.Component {
 		const {
 			authentication,
 			shows,
-			users
+			user
 		} = this.props
 
 		return (
 		<Fragment>
-			<Page authentication={authentication} users={users}>
+			<Page authentication={authentication} user={user}>
 
 				<Flex direction="column" switchDirection="large" noGutters>
 
@@ -303,7 +304,6 @@ class Hello extends React.Component {
 										<Section>
 											<Text type="sectionHead">Hello I am user</Text>
 											<Text>{authentication.token}</Text>
-											<Text>{JSON.stringify(users)}</Text>
 										</Section>
 									}
 								</Sections>
@@ -387,14 +387,14 @@ class Hello extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 	return ({
 		shows: state.shows,
-		users: state.users,
+		user: state.user,
 		authentication: state.authentication
 	});
 }
 
 const actionCreators = {
 	fetchShows,
-	fetchUsers,
+	fetchUser,
 	logIn
 }
 

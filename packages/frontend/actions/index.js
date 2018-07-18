@@ -21,6 +21,15 @@ export const fetchUsers = () => ({
  	}
 });
 
+// FETCH USER
+export const fetchUser = (id) => ({
+	[CALL_API]: {
+		types: ["FETCH_USER", "FETCH_USER_SUCCESS", "FETCH_USER_FAILURE"],
+		endpoint: `${apiHost}users/${id}`,
+		method: 'GET',
+ 	}
+});
+
 
 // LOG IN
 export const logIn = (data) => ({

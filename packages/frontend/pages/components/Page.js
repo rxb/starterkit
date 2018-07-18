@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import Head from 'next/head'
 import NProgress from 'nprogress'
 import Router from 'next/router'
@@ -15,7 +15,6 @@ Router.onRouteChangeError = () => NProgress.done()
 
 import {
   Platform,
-  Image,
   View,
   Text as ReactText,
   StyleSheet
@@ -32,6 +31,7 @@ import {
 	Header,
 	Icon,
 	Inline,
+	Image,
 	Link,
 	List,
 	Touch,
@@ -55,7 +55,7 @@ const Page = (props) => {
 		const {
 			authentication = {},
 			children,
-			users
+			user
 		} = props;
 
 		return (
@@ -81,8 +81,14 @@ const Page = (props) => {
 							{authentication && authentication.token &&
 								<Text>Logged in!</Text>
 							}
-							{users && users[0] &&
-								<Text>{users[0].name}</Text>
+							{user &&
+								<Fragment>
+									<Text>{user.name}</Text>
+									<Image
+										source={{uri: user.photo}}
+										style={{resizeMode: 'cover', height: 48, width: 48}}
+										/>
+								</Fragment>
 							}
 						</FlexItem>
 					</Flex>

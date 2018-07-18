@@ -26,7 +26,9 @@ module.exports = function (app) {
     name: {
       type: DataTypes.STRING,
     },
-
+    photo: {
+      type: DataTypes.STRING,
+    },
   }, {
     hooks: {
       beforeCount(options) {

@@ -12,24 +12,20 @@ module.exports = {
     all: [],
     find: [],
     get: [
+      // this is probably inefficient to always auth
       authenticate('jwt', {allowUnauthenticated: true}),
       (context) => {
-        if (context.params.user) {
-          if(context.id == 'self'){
-            context.id = context.params.user.id;
-            console.log('selfied!');
-          }
-        }
-        else {
-          console.log('no user');
-          console.log(context.params);
+        // this probably should fail in a redirect way
+        // if you try to "self" a non-logged in request
+        if (context.id == 'self' && context.params.user) {
+          context.id = context.params.user.id;
         }
         return Promise.resolve(context)
       },
     ],
     create: [ hashPassword() ],
-    update: [ hashPassword(),  authenticate('jwt') ],
-    patch: [ hashPassword(),  authenticate('jwt') ],
+    update: [ hashPassword(), authenticate('jwt') ],
+    patch: [ hashPassword(), authenticate('jwt') ],
     remove: [ authenticate('jwt') ]
   },
 
