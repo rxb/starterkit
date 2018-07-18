@@ -42,8 +42,10 @@ export const logIn = (data) => ({
  	}
 });
 
-
-
+// LOG OUT
+export const logOut = () => ({
+	type: 'LOG_OUT'
+});
 
 /*
 // just for reference

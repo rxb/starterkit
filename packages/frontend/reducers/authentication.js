@@ -3,6 +3,8 @@ const authentication = (state = {}, action) => {
     case 'LOG_IN_SUCCESS':
     	const token = action.payload.accessToken;
     	return { token };
+    case 'LOG_OUT':
+    	return {};
     default:
       return state
   }

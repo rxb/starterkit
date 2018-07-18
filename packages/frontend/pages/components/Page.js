@@ -13,6 +13,13 @@ Router.onRouteChangeStart = (url) => {
 Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
+
+import { connect } from 'react-redux';
+import {
+	logOut
+} from '../../actions';
+
+
 import {
   Platform,
   View,
@@ -56,6 +63,7 @@ const Page = (props) => {
 		const {
 			authentication = {},
 			children,
+			logOut,
 			user = {}
 		} = props;
 
@@ -80,13 +88,15 @@ const Page = (props) => {
 						</FlexItem>
 						<FlexItem style={{flexAlign: 'flex-end'}}>
 							{user.id &&
-								<Inline>
-									<Text>Welcome back, {user.name}</Text>
-									<Avatar
-										source={{uri: user.photo}}
-										size="medium"
-										/>
-								</Inline>
+								<Touch onPress={logOut}>
+									<Inline>
+										<Text>Welcome back, {user.name}</Text>
+										<Avatar
+											source={{uri: user.photo}}
+											size="medium"
+											/>
+									</Inline>
+								</Touch>
 							}
 						</FlexItem>
 					</Flex>
@@ -109,10 +119,22 @@ const Page = (props) => {
 						</Section>
 					</Sections>
 				</Stripe>
-
 			</View>
 
 		);
 }
 
-export default Page;
+const mapStateToProps = (state, ownProps) => {
+	return ({
+		user: state.user,
+	});
+}
+
+const actionCreators = {
+	logOut
+}
+
+export default connect(
+	mapStateToProps,
+	actionCreators
+)(Page);

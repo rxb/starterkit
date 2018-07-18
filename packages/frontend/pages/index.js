@@ -158,25 +158,6 @@ class Hello extends React.Component {
 	_renderForm(){
 		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
 			this.props.logIn(values);
-			/*
-			const jsonString = JSON.stringify({
-				strategy: 'local',
-				...values
-			});
-			fetch(`${apiHost}authentication/`, {
-					method: 'POST',
-					headers: {
-				      'Accept': 'application/json',
-				      'Content-Type': 'application/json'
-				    },
-					body: jsonString
-				})
-				.then((response)=>response.json())
-				.then((json)=>{
-					this.setState({jwt: json.accessToken});
-					document.cookie = `jwt=${json.accessToken}`
-				});
-			*/
 		};
 
 		const LoginForm = withFormik({
@@ -194,7 +175,7 @@ class Hello extends React.Component {
 
 		return (
 		<Fragment>
-			<Page authentication={authentication} user={user}>
+			<Page>
 
 				<Flex direction="column" switchDirection="large" noGutters>
 
@@ -269,7 +250,7 @@ class Hello extends React.Component {
 										</Chunk>
 
 
-										{this._renderForm()}
+										{!user.id && this._renderForm()}
 
 
 										<Chunk>
@@ -300,12 +281,6 @@ class Hello extends React.Component {
 										</Chunk>
 									</Section>
 
-									{ authentication && authentication.token &&
-										<Section>
-											<Text type="sectionHead">Hello I am user</Text>
-											<Text>{authentication.token}</Text>
-										</Section>
-									}
 								</Sections>
 							</Bounds>
 						</Stripe>

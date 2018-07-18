@@ -193,7 +193,7 @@ class Other extends React.Component {
 		} = this.props;
 
 		return (
-			<Page user={user}>
+			<Page>
 				<Stripe>
 					<Bounds>
 						<OtherForm data={{firstName: 'Joe', lastName: 'Schmo', whatisthis: 'three'}} />
