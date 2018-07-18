@@ -56,7 +56,7 @@ const Page = (props) => {
 		const {
 			authentication = {},
 			children,
-			user
+			user = {}
 		} = props;
 
 		return (
@@ -79,7 +79,7 @@ const Page = (props) => {
 							</Link>
 						</FlexItem>
 						<FlexItem style={{flexAlign: 'flex-end'}}>
-							{user &&
+							{user.id &&
 								<Inline>
 									<Text>Welcome back, {user.name}</Text>
 									<Avatar

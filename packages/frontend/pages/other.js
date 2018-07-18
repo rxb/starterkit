@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
+import { connect } from 'react-redux';
 
 import {
 	Bounds,
@@ -186,8 +187,13 @@ class Other extends React.Component {
 	}
 
 	render() {
+
+		const {
+			user
+		} = this.props;
+
 		return (
-			<Page>
+			<Page user={user}>
 				<Stripe>
 					<Bounds>
 						<OtherForm data={{firstName: 'Joe', lastName: 'Schmo', whatisthis: 'three'}} />
@@ -200,4 +206,16 @@ class Other extends React.Component {
 	}
 }
 
-export default Other;
+
+const mapStateToProps = (state, ownProps) => {
+	return ({
+		user: state.user,
+	});
+}
+
+const actionCreators = {};
+
+export default connect(
+	mapStateToProps,
+	actionCreators
+)(Other);
