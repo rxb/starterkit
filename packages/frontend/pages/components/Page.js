@@ -21,6 +21,7 @@ import {
 } from '../cinderblock/primitives';
 
 import {
+	Avatar,
 	Bounds,
 	Button,
 	Card,
@@ -77,18 +78,15 @@ const Page = (props) => {
 								</Inline>
 							</Link>
 						</FlexItem>
-						<FlexItem>
-							{authentication && authentication.token &&
-								<Text>Logged in!</Text>
-							}
+						<FlexItem style={{flexAlign: 'flex-end'}}>
 							{user &&
-								<Fragment>
-									<Text>{user.name}</Text>
-									<Image
+								<Inline>
+									<Text>Welcome back, {user.name}</Text>
+									<Avatar
 										source={{uri: user.photo}}
-										style={{resizeMode: 'cover', height: 48, width: 48}}
+										size="medium"
 										/>
-								</Fragment>
+								</Inline>
 							}
 						</FlexItem>
 					</Flex>

@@ -7,7 +7,7 @@ const Avatar = (props) => {
 	const {
 		size,
 		source
-	} = this.props;
+	} = props;
 
 	const style = styles[`avatar--${size}`];
 
