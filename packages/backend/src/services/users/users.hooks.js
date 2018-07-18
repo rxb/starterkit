@@ -12,13 +12,20 @@ module.exports = {
     all: [],
     find: [],
     get: [
-        (context) => {
+      authenticate('jwt', {allowUnauthenticated: true}),
+      (context) => {
+        if (context.params.user) {
           if(context.id == 'self'){
-            const query = queryWithCurrentUser({idField: 'id'});
-            console.log(query);
+            context.id = context.params.user.id;
+            console.log('selfied!');
           }
-          return context;
         }
+        else {
+          console.log('no user');
+          console.log(context.params);
+        }
+        return Promise.resolve(context)
+      },
     ],
     create: [ hashPassword() ],
     update: [ hashPassword(),  authenticate('jwt') ],
