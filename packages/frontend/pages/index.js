@@ -46,7 +46,7 @@ import loremIpsum from 'lorem-ipsum';
 const LoginFormInner = props => {
 	return(
 		<Chunk>
-			<form name="loginForm">
+			<form name="loginForm" onSubmit={()=>{alert('attempting to submit');}}>
 				<TextInput
 					keyboardType="email-address"
 					placeholder="email"
