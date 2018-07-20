@@ -47,6 +47,17 @@ export const logOut = () => ({
 	type: 'LOG_OUT'
 });
 
+// CREATE SHOW COMMENT
+export const createShowComment = (data) => ({
+	[CALL_API]: {
+		endpoint: `${apiHost}show-comments/`,
+		method: 'POST',
+		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+		types: ["CREATE_SHOW_COMMENT", "CREATE_SHOW_COMMENT_SUCCESS", "CREATE_SHOW_COMMENT_FAILURE"]
+ 	}
+});
+
 /*
 // just for reference
 // here's the long-form api actions

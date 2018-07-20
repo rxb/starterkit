@@ -3,6 +3,10 @@ import { withFormik } from 'formik';
 import { connect } from 'react-redux';
 
 import {
+	createShowComment
+} from '../actions';
+
+import {
 	Bounds,
 	Button,
 	Card,
@@ -31,6 +35,33 @@ import styles from './cinderblock/styles/styles';
 
 import Page from './components/Page';
 
+const CommentFormInner = props => {
+	return(
+		<form>
+			<Chunk>
+				<TextInput
+					id="comment"
+					placeholder="Post a comment about this show"
+					autoComplete={false}
+					defaultValue={props.values.body}
+					onChangeText={text => props.setFieldValue('body', text)}
+					multiline={true}
+					showCounter={true}
+					numberOfLines={4}
+					maxLength={1000}
+					/>
+			</Chunk>
+			<Chunk>
+				<Touch onPress={props.handleSubmit}>
+					<Button label="Post Comment" />
+				</Touch>
+			</Chunk>
+		</form>
+	);
+}
+
+
+
 
 class Show extends React.Component {
 
@@ -43,6 +74,17 @@ class Show extends React.Component {
 			show: query.show
 		};
 	}
+
+	_renderForm(){
+		const CommentForm = withFormik({
+			mapPropsToValues: props => ({}),
+			handleSubmit: (values, { props, setSubmitting, setErrors }) => {
+				this.props.createShowComment({ ...values, showId: this.props.show.id });
+			},
+		})(CommentFormInner);
+		return <CommentForm />;
+	}
+
 
 	render() {
 
@@ -71,6 +113,9 @@ class Show extends React.Component {
 										<Text>{comment.body}</Text>
 									</Chunk>
 								))}
+
+								{this._renderForm()}
+
 							</Section>
 						</Sections>
 					</Bounds>
@@ -87,7 +132,9 @@ const mapStateToProps = (state, ownProps) => {
 	});
 }
 
-const actionCreators = {};
+const actionCreators = {
+	createShowComment
+};
 
 export default connect(
 	mapStateToProps,

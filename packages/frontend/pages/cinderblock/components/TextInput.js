@@ -89,7 +89,7 @@ class TextInput extends React.Component{
 			onChange,
 			onChangeText,
 			autoExpand = true,
-			showCounter = true,
+			showCounter,
 			style,
 			...other
 		} = this.props;
