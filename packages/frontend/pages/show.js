@@ -52,6 +52,8 @@ class Show extends React.Component {
 
 		return (
 			<Page>
+				<Stripe image={show.photo} style={{height: 300}}>
+				</Stripe>
 				<Stripe>
 					<Bounds>
 						<Sections>
@@ -59,11 +61,10 @@ class Show extends React.Component {
 								<Chunk>
 									<Text type="pageHead">{show.title}</Text>
 								</Chunk>
+							</Section>
+							<Section>
 								<Chunk>
-									<Image
-										source={{uri: show.photo}}
-										style={{height: 400, resizeMode: 'cover'}}
-										/>
+									<Text type="sectionHead">Comments</Text>
 								</Chunk>
 								{show.ShowComments && show.ShowComments.map((comment, i)=>(
 									<Chunk key={i}>
