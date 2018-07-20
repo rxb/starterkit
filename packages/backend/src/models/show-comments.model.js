@@ -5,22 +5,16 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const shows = sequelizeClient.define('shows', {
+  const showComments = sequelizeClient.define('ShowComments', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    photo: {
-      type: DataTypes.STRING,
-      allowNull: true
-    }
-  },
-  {
+    body: DataTypes.TEXT,
+    authorId: DataTypes.INTEGER,
+    showId: DataTypes.INTEGER
+  }, {
     hooks: {
       /*
       beforeCount(options) {
@@ -31,11 +25,11 @@ module.exports = function (app) {
   });
 
   // eslint-disable-next-line no-unused-vars
-  shows.associate = function (models) {
+  showComments.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
-    shows.hasMany(models.ShowComments);
+    showComments.belongsTo(models.shows, {foreignKey: 'showId'})
   };
 
-  return shows;
+  return showComments;
 };

@@ -4,19 +4,16 @@ module.exports = {
   before: {
     all: [],
     find: [
-
-    ],
-    get: [
       (context) => {
         const sequelize = context.app.get('sequelizeClient');
-        const { ShowComments } = sequelize.models;
+        const { shows } = sequelize.models;
         context.params.sequelize = {
-          raw: false, // don't know why, but it needs this to not flatten the children
-          include: [ ShowComments ]
+          include: [ shows ]
         }
         return context;
       }
     ],
+    get: [],
     create: [],
     update: [],
     patch: [],
