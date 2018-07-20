@@ -97,7 +97,8 @@ class Show extends React.Component {
 
 		const {
 			show = {},
-			showComments
+			showComments,
+			user
 		} = this.props;
 
 		return (
@@ -118,27 +119,30 @@ class Show extends React.Component {
 								</Chunk>
 
 
-								{showComments && showComments.map((comment, i)=>(
-									<Chunk key={i}>
-										<Flex>
-											<FlexItem shrink>
-												<Avatar
-													source={{uri: comment.user.photo}}
-													size="medium"
-													/>
-											</FlexItem>
-											<FlexItem>
-												<Text>{comment.body}</Text>
-												<Text>
-													<Text type="small" color="secondary">{comment.user.name} </Text>
-													<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()}</Text>
-												</Text>
-											</FlexItem>
-										</Flex>
-									</Chunk>
-								))}
+								{showComments && showComments.map((comment, i)=>{
+									comment.user = comment.user || user;
+									return (
+										<Chunk key={i}>
+											<Flex>
+												<FlexItem shrink>
+													<Avatar
+														source={{uri: comment.user.photo}}
+														size="medium"
+														/>
+												</FlexItem>
+												<FlexItem>
+													<Text>{comment.body}</Text>
+													<Text>
+														<Text type="small" color="secondary">{comment.user.name} </Text>
+														<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()}</Text>
+													</Text>
+												</FlexItem>
+											</Flex>
+										</Chunk>
+									);
+								})}
 
-								{this._renderForm()}
+								{user.id && this._renderForm()}
 
 							</Section>
 						</Sections>
@@ -153,7 +157,8 @@ class Show extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 	return ({
 		show: state.shows[ownProps.show],
-		showComments: state.showComments
+		showComments: state.showComments,
+		user: state.user
 	});
 }
 

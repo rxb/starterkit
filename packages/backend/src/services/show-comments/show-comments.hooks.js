@@ -3,8 +3,7 @@ const { associateCurrentUser } = require('feathers-authentication-hooks');
 
 module.exports = {
   before: {
-    all: [],
-    find: [
+    all: [
       (context) => {
         const sequelize = context.app.get('sequelizeClient');
         const { users } = sequelize.models;
@@ -15,12 +14,16 @@ module.exports = {
         return context;
       }
     ],
+    find: [],
     get: [],
     create: [
       authenticate('jwt'),
       associateCurrentUser({ idField: 'id', as: 'authorId' })
     ],
-    update: [],
+    update: [
+      authenticate('jwt'),
+      associateCurrentUser({ idField: 'id', as: 'authorId' })
+    ],
     patch: [],
     remove: []
   },
