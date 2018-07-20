@@ -1,4 +1,5 @@
-
+const { authenticate } = require('@feathersjs/authentication').hooks;
+const { associateCurrentUser } = require('feathers-authentication-hooks');
 
 module.exports = {
   before: {
@@ -6,15 +7,19 @@ module.exports = {
     find: [
       (context) => {
         const sequelize = context.app.get('sequelizeClient');
-        const { shows } = sequelize.models;
+        const { users } = sequelize.models;
         context.params.sequelize = {
-          include: [ shows ]
+          raw: false,
+          include: [ users ]
         }
         return context;
       }
     ],
     get: [],
-    create: [],
+    create: [
+      authenticate('jwt'),
+      associateCurrentUser({ idField: 'id', as: 'authorId' })
+    ],
     update: [],
     patch: [],
     remove: []

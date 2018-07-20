@@ -6,10 +6,13 @@ module.exports = {
     find: [
       (context) => {
         const sequelize = context.app.get('sequelizeClient');
-        const { ShowComments } = sequelize.models;
+        const { ShowComments, users } = sequelize.models;
         context.params.sequelize = {
           raw: false, // don't know why, but it needs this to not flatten the children
-          include: [ ShowComments ]
+          include: [ {
+            model: ShowComments,
+            include: [ users ]
+          } ]
         }
         return context;
       }
@@ -17,10 +20,13 @@ module.exports = {
     get: [
       (context) => {
         const sequelize = context.app.get('sequelizeClient');
-        const { ShowComments } = sequelize.models;
+        const { ShowComments, users } = sequelize.models;
         context.params.sequelize = {
           raw: false, // don't know why, but it needs this to not flatten the children
-          include: [ ShowComments ]
+          include: [ {
+            model: ShowComments,
+            include: [ users ]
+          } ]
         }
         return context;
       }

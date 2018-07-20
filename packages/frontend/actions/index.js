@@ -1,6 +1,7 @@
 import { CALL_API } from 'redux-api-middleware';
-const apiHost = 'http://localhost:3030/';
+import querystring from 'querystring';
 
+const apiHost = 'http://localhost:3030/';
 
 // FETCH SHOWS
 export const fetchShows = () => ({
@@ -45,6 +46,16 @@ export const logIn = (data) => ({
 // LOG OUT
 export const logOut = () => ({
 	type: 'LOG_OUT'
+});
+
+
+// FETCH SHOW COMMENTS
+export const fetchShowComments = (data) => ({
+	[CALL_API]: {
+		types: ["FETCH_SHOW_COMMENTS", "FETCH_SHOW_COMMENTS_SUCCESS", "FETCH_SHOW_COMMENTS_FAILURE"],
+		endpoint: `${apiHost}show-comments/?${querystring.stringify(data)}`,
+		method: 'GET',
+ 	}
 });
 
 // CREATE SHOW COMMENT

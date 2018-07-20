@@ -6,15 +6,23 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const showComments = sequelizeClient.define('ShowComments', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false
-    },
-    body: DataTypes.TEXT,
-    authorId: DataTypes.INTEGER,
-    showId: DataTypes.INTEGER
-  }, {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      body: {
+        type: DataTypes.TEXT,
+      },
+      authorId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      showId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      }
+    }, {
     hooks: {
       /*
       beforeCount(options) {
@@ -28,7 +36,7 @@ module.exports = function (app) {
   showComments.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
-    showComments.belongsTo(models.shows, {foreignKey: 'showId'})
+    showComments.belongsTo(models.users, {foreignKey: 'authorId'})
   };
 
   return showComments;

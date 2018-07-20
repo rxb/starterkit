@@ -1,12 +1,15 @@
 import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
 import { connect } from 'react-redux';
+import moment from 'moment'
 
 import {
-	createShowComment
+	createShowComment,
+	fetchShowComments
 } from '../actions';
 
 import {
+	Avatar,
 	Bounds,
 	Button,
 	Card,
@@ -75,6 +78,10 @@ class Show extends React.Component {
 		};
 	}
 
+	componentDidMount(){
+		this.props.fetchShowComments({showId: this.props.show.id});
+	}
+
 	_renderForm(){
 		const CommentForm = withFormik({
 			mapPropsToValues: props => ({}),
@@ -89,7 +96,8 @@ class Show extends React.Component {
 	render() {
 
 		const {
-			show = {}
+			show = {},
+			showComments
 		} = this.props;
 
 		return (
@@ -108,9 +116,25 @@ class Show extends React.Component {
 								<Chunk>
 									<Text type="sectionHead">Comments</Text>
 								</Chunk>
-								{show.ShowComments && show.ShowComments.map((comment, i)=>(
+
+
+								{showComments && showComments.map((comment, i)=>(
 									<Chunk key={i}>
-										<Text>{comment.body}</Text>
+										<Flex>
+											<FlexItem shrink>
+												<Avatar
+													source={{uri: comment.user.photo}}
+													size="medium"
+													/>
+											</FlexItem>
+											<FlexItem>
+												<Text>{comment.body}</Text>
+												<Text>
+													<Text type="small" color="secondary">{comment.user.name} </Text>
+													<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()}</Text>
+												</Text>
+											</FlexItem>
+										</Flex>
 									</Chunk>
 								))}
 
@@ -129,11 +153,13 @@ class Show extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 	return ({
 		show: state.shows[ownProps.show],
+		showComments: state.showComments
 	});
 }
 
 const actionCreators = {
-	createShowComment
+	createShowComment,
+	fetchShowComments
 };
 
 export default connect(
