@@ -53,7 +53,7 @@ export const logOut = () => ({
 export const fetchShowComments = (data) => ({
 	[CALL_API]: {
 		types: ["FETCH_SHOW_COMMENTS", "FETCH_SHOW_COMMENTS_SUCCESS", "FETCH_SHOW_COMMENTS_FAILURE"],
-		endpoint: `${apiHost}show-comments/?${querystring.stringify(data)}`,
+		endpoint: `${apiHost}show-comments/?${querystring.stringify({...data, '$limit': 100})}`,
 		method: 'GET',
  	}
 });

@@ -12,6 +12,17 @@ module.exports = {
           include: [ users ]
         }
         return context;
+      },
+      (context) => {
+        console.log('sort sort sort sort sort');
+        const { query = {} } = context.params;
+        if(!query.$sort) {
+          query.$sort = {
+            'createdAt': 1
+          }
+        }
+        context.params.query = query;
+        return context;
       }
     ],
     find: [],
