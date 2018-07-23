@@ -74,9 +74,6 @@ class Hello extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			// shows: this.props.shows,
-			// users: this.props.users,
-			// jwt: this.props.jwt,
 			modalVisible: false,
 			promptVisible: false
 		}
@@ -97,7 +94,6 @@ class Hello extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.authentication !== this.props.authentication) {
-			console.log('fetch?');
 			this.props.fetchUser('self');
 		}
 	}
@@ -119,7 +115,7 @@ class Hello extends React.Component {
 	_renderItemCard(show, i) {
 		return(
 			<Chunk>
-				<Link style={styles.textTint} href={{pathname:'/show', query: {show: show.id}}}>
+				<Link style={styles.textTint} href={{pathname:'/show', query: {showId: show.id}}}>
 					<Card key={i}>
 						<Image source={{uri: show.photo}} style={{
 							height: 200,

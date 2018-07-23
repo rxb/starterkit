@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import { withFormik } from 'formik';
 import Head from 'next/head'
 import NProgress from 'nprogress'
 import Router from 'next/router'
@@ -16,7 +17,9 @@ Router.onRouteChangeError = () => NProgress.done()
 
 import { connect } from 'react-redux';
 import {
-	logOut
+	logIn,
+	logOut,
+	fetchUser
 } from '../../actions';
 
 
@@ -58,14 +61,77 @@ import styles from '../cinderblock/styles/styles';
 import swatches from '../cinderblock/styles/swatches';
 
 
-const Page = (props) => {
+
+const LoginFormInner = props => {
+	return(
+		<Chunk>
+			<form name="loginForm" onSubmit={()=>{alert('attempting to submit');}}>
+				<TextInput
+					keyboardType="email-address"
+					placeholder="email"
+					name="email"
+					onChangeText={text => props.setFieldValue('email', text)}
+					/>
+				<TextInput
+					secureTextEntry={true}
+					placeholder="password"
+					name="password"
+					onChangeText={text => props.setFieldValue('password', text)}
+					/>
+				<Touch onPress={props.handleSubmit}>
+					<Button label="Log in" width="full" type="submit" />
+				</Touch>
+			</form>
+		</Chunk>
+	);
+}
+
+
+
+class Page extends React.Component {
+
+	constructor(props){
+		super(props);
+		this.state = {
+			modalVisible: false,
+		}
+		this.toggleModal = this.toggleModal.bind(this);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		// authenticated
+		if (nextProps.authentication !== this.props.authentication) {
+			this.props.fetchUser('self');
+			if(this.state.modalVisible){
+				this.toggleModal();
+			}
+		}
+	}
+
+
+	toggleModal() {
+		this.setState({modalVisible: !this.state.modalVisible})
+	}
+
+	_renderForm(){
+		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
+			this.props.logIn(values);
+		};
+
+		const LoginForm = withFormik({
+			handleSubmit: handleSubmit,
+		})(LoginFormInner);
+		return <LoginForm />;
+	}
+
+	render(){
 
 		const {
 			authentication = {},
 			children,
 			logOut,
 			user = {}
-		} = props;
+		} = this.props;
 
 		return (
 
@@ -88,15 +154,22 @@ const Page = (props) => {
 						</FlexItem>
 						<FlexItem style={{flexAlign: 'flex-end'}}>
 							{user.id &&
-								<Touch onPress={logOut}>
+								<Fragment>
 									<Inline>
-										<Text>Welcome back, {user.name}</Text>
+
 										<Avatar
 											source={{uri: user.photo}}
-											size="medium"
+											size="small"
 											/>
+										<Text>{user.name}</Text>
+										<Touch onPress={logOut}><Text color="tint">Log out</Text></Touch>
 									</Inline>
-								</Touch>
+
+								</Fragment>
+							}
+
+							{!user.id &&
+								<Touch onPress={this.toggleModal}><Text color="tint">Log in</Text></Touch>
 							}
 						</FlexItem>
 					</Flex>
@@ -119,19 +192,39 @@ const Page = (props) => {
 						</Section>
 					</Sections>
 				</Stripe>
+
+				<Modal
+					visible={this.state.modalVisible}
+					onRequestClose={this.toggleModal}
+					>
+					<Stripe>
+						<Section isFirstChild>
+							<Chunk>
+								<Text type="pageHead">Log in</Text>
+							</Chunk>
+							{this._renderForm()}
+						</Section>
+					</Stripe>
+				</Modal>
 			</View>
 
 		);
+	}
+
 }
+
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
 		user: state.user,
+		authentication: state.authentication
 	});
 }
 
 const actionCreators = {
-	logOut
+	logIn,
+	logOut,
+	fetchUser
 }
 
 export default connect(

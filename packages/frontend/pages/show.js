@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment'
 
 import {
+	fetchShow,
 	createShowComment,
 	fetchShowComments
 } from '../actions';
@@ -74,12 +75,13 @@ class Show extends React.Component {
 		const { query } = props;
 		const { params } = query;
 		return {
-			show: query.show
+			showId: query.showId
 		};
 	}
 
 	componentDidMount(){
-		this.props.fetchShowComments({showId: this.props.show.id});
+		this.props.fetchShow(this.props.showId);
+		this.props.fetchShowComments({showId: this.props.showId});
 	}
 
 	_renderForm(){
@@ -156,7 +158,7 @@ class Show extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
-		show: state.shows[ownProps.show],
+		show: state.show,
 		showComments: state.showComments,
 		user: state.user
 	});
@@ -164,7 +166,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionCreators = {
 	createShowComment,
-	fetchShowComments
+	fetchShowComments,
+	fetchShow
 };
 
 export default connect(

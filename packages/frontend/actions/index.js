@@ -12,6 +12,14 @@ export const fetchShows = () => ({
  	}
 });
 
+export const fetchShow = (id) => ({
+	[CALL_API]: {
+		types: ["FETCH_SHOW", "FETCH_SHOW_SUCCESS", "FETCH_SHOW_FAILURE"],
+		endpoint: `${apiHost}shows/${id}`,
+		method: 'GET',
+ 	}
+});
+
 
 // FETCH USERS
 export const fetchUsers = () => ({
