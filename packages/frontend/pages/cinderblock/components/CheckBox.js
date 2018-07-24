@@ -55,7 +55,7 @@ class CheckBox extends React.Component {
 						height: 24
 					}}
 					fakeControlStyle={{
-						borderColor: (this.state.hasFocus) ? swatches.tint : swatches.border,
+						borderColor: (this.state.hasFocus) ? swatches.textPrimary : swatches.border,
 						borderWidth: 1
 					}}
 					onFocus={()=>{

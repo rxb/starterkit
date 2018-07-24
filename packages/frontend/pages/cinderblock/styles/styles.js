@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: space*.66,
 	},
 	bounds: {
-		maxWidth: 1200,
+		maxWidth: 1000,
 		minWidth: 1,
 		marginHorizontal: 'auto',
 		width: '100%',
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
 
 	// INPUT
 	input: {
-		backgroundColor: 'transparent',
+		backgroundColor: swatches.notwhite,
 		borderColor: swatches.border,
 		borderWidth: 1,
 		paddingHorizontal: 16,
@@ -253,8 +253,10 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(0,0,0,.75)',
 		zIndex: 3
 	},
+
 	modal: {
 		marginHorizontal: '5%',
+		minWidth: 380,
 		maxWidth: 600,
 		maxHeight: `95%`,
 		top: '5%',
@@ -271,7 +273,9 @@ const styles = StyleSheet.create({
 		right: 0,
 		bottom: 0,
 		backgroundColor: 'white',
-		zIndex: 3
+		zIndex: 3,
+		minWidth: 'auto',
+		maxWidth: 'auto'
 	},
 	prompt: {
 		marginHorizontal: '5%',

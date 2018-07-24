@@ -29,7 +29,7 @@ export default class MyDocument extends Document {
           /* form focus */
           input:focus, textarea:focus, select:focus{
             outline: none;
-            border-color: ${swatches.tint};
+            border-color: ${swatches.textPrimary};
           }
 
         `}}

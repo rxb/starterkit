@@ -12,13 +12,14 @@ const Button = (props) => {
 			shape,
 			color = 'primary',
 			media,
-			width = 'snap'
+			width = 'snap',
+			...other
 		} = props;
 
 		const variantStyle = (width == 'full' || media && !media.medium && width == 'snap') ? styles['button--fullWidth'] : undefined;
 
 		return(
-			<View style={[styles.button, styles[`button--${color}`], variantStyle]}>
+			<View style={[styles.button, styles[`button--${color}`], variantStyle]} {...other}>
 				{ shape &&
 					<Icon shape={shape} color="white" />
 				}

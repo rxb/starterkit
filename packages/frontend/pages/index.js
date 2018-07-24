@@ -59,8 +59,8 @@ const LoginFormInner = props => {
 					name="password"
 					onChangeText={text => props.setFieldValue('password', text)}
 					/>
-				<Touch onPress={props.handleSubmit}>
-					<Button label="Log in" width="full" type="submit" />
+				<Touch onPress={props.handleSubmit} accessibilityRole="submit">
+					<Button label="Log in" width="full" />
 				</Touch>
 			</form>
 		</Chunk>
@@ -92,11 +92,13 @@ class Hello extends React.Component {
 		this.props.fetchUser('self');
 	}
 
+	/*
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.authentication !== this.props.authentication) {
 			this.props.fetchUser('self');
 		}
 	}
+	*/
 
 
 	toggleModal() {

@@ -59,18 +59,18 @@ const OtherFormInner = props => {
 					<Label for="favoriteshow">Favorite show</Label>
 					<TextInput
 						id="favoriteshow"
-						autoComplete={false}
 						defaultValue={props.values.favoriteshow}
 						onChangeText={text => props.setFieldValue('favoriteshow', text)}
+						autoComplete="off"
 						/>
 				</Chunk>
 				<Chunk>
 					<Label for="worstmemory">Worst memory</Label>
 					<TextInput
 						id="worstmemory"
-						autoComplete={false}
 						defaultValue={props.values.worstmemory}
 						onChangeText={text => props.setFieldValue('worstmemory', text)}
+						autoComplete="off"
 						/>
 					<Text type="small" color="hint">Sucks, doesn't it?</Text>
 				</Chunk>

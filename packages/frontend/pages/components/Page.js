@@ -99,11 +99,12 @@ class Page extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// authenticated
+		// this stuff and the form could be
+		// separated into its own component i think
 		if (nextProps.authentication !== this.props.authentication) {
 			this.props.fetchUser('self');
 			if(this.state.modalVisible){
-				this.toggleModal();
+				setTimeout(this.toggleModal, 1);
 			}
 		}
 	}

@@ -105,7 +105,7 @@ class Show extends React.Component {
 
 		return (
 			<Page>
-				<Stripe image={show.photo} style={{height: 300}}>
+				<Stripe image={show.photo} style={{height: 300, backgroundColor: '#eee'}}>
 				</Stripe>
 				<Stripe>
 					<Bounds>
