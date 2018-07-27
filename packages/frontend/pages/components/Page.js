@@ -101,11 +101,16 @@ class Page extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		// this stuff and the form could be
 		// separated into its own component i think
+
+		// got auth, so get new user info
 		if (nextProps.authentication !== this.props.authentication) {
 			this.props.fetchUser('self');
-			if(this.state.modalVisible){
-				setTimeout(this.toggleModal, 1);
-			}
+		}
+
+		// got user, so dismiss modal
+		// could do this on auth change, but the user fetch makes the UI jump
+		if(nextProps.user !== this.props.user && this.state.modalVisible){
+			this.toggleModal();
 		}
 	}
 
