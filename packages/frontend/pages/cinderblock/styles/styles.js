@@ -65,6 +65,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap'
 	},
+	inlineItem: {
+		marginLeft: space/2
+	},
+	'inlineItem--firstChild': {
+		marginLeft: 0
+	},
 
 	// LISTS
 

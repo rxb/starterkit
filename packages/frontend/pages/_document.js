@@ -30,6 +30,7 @@ export default class MyDocument extends Document {
           input:focus, textarea:focus, select:focus{
             outline: none;
             border-color: ${swatches.textPrimary};
+            background-color: transparent;
           }
 
         `}}
