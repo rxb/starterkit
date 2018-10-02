@@ -67,15 +67,42 @@ export const fetchShowComments = (data) => ({
 });
 
 // CREATE SHOW COMMENT
-export const createShowComment = (data) => ({
-	[CALL_API]: {
-		endpoint: `${apiHost}show-comments/`,
-		method: 'POST',
-		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-		body: JSON.stringify(data),
-		types: ["CREATE_SHOW_COMMENT", "CREATE_SHOW_COMMENT_SUCCESS", "CREATE_SHOW_COMMENT_FAILURE"]
- 	}
-});
+
+/*
+an example of optimistic posting
+while reusing existing client data for associations (user/author)
+if you really need the associations, you'd need to fetch a new full version of the comment
+or figure out some magical sequelize hook stuff that I haven't been able to crack after 2 days of research
+*/
+
+let optimisticId = 0;
+export const createShowComment = (data, extra) => {
+	optimisticId++;
+	return ({
+		[CALL_API]: {
+			endpoint: `${apiHost}show-comments/`,
+			method: 'POST',
+			headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+			types: [
+				{
+		    		type: 'CREATE_SHOW_COMMENT',
+					payload: { ...data, user: extra.user, optimisticId: optimisticId, optimistic: true}
+			    },
+			    {
+					type: "CREATE_SHOW_COMMENT_SUCCESS",
+					payload: (action, state, res) => {
+			        	return res.json().then( json => ({...json, user: extra.user, optimisticId: optimisticId}) );
+			        }
+			    },
+			    {
+			    	type: "CREATE_SHOW_COMMENT_FAILURE",
+			    	payload: { optimisticId: optimisticId }
+			    }
+		    ]
+	 	}
+	});
+}
 
 /*
 // just for reference

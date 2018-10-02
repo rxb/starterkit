@@ -88,7 +88,7 @@ class Show extends React.Component {
 		const CommentForm = withFormik({
 			mapPropsToValues: props => ({}),
 			handleSubmit: (values, { props, setSubmitting, setErrors }) => {
-				this.props.createShowComment({ ...values, showId: this.props.show.id });
+				this.props.createShowComment({ ...values, showId: this.props.show.id }, { user: this.props.user } );
 			},
 		})(CommentFormInner);
 		return <CommentForm />;
@@ -122,9 +122,9 @@ class Show extends React.Component {
 
 
 								{showComments && showComments.map((comment, i)=>{
-									comment.user = comment.user || user;
+									comment.user = comment.user || {};
 									return (
-										<Chunk key={i}>
+										<Chunk key={i} style={{...(comment.optimistic ? {opacity:.5} : {}) }}>
 											<Flex>
 												<FlexItem shrink>
 													<Avatar

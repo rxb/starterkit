@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap'
 	},
 	inlineItem: {
-		marginLeft: space/2
+		marginLeft: space/3
 	},
 	'inlineItem--firstChild': {
 		marginLeft: 0

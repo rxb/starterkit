@@ -1,5 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { associateCurrentUser } = require('feathers-authentication-hooks');
+const hydrate = require('feathers-sequelize/hooks/hydrate');
+
 
 module.exports = {
   before: {
@@ -14,7 +16,6 @@ module.exports = {
         return context;
       },
       (context) => {
-        console.log('sort sort sort sort sort');
         const { query = {} } = context.params;
         if(!query.$sort) {
           query.$sort = {
@@ -29,7 +30,7 @@ module.exports = {
     get: [],
     create: [
       authenticate('jwt'),
-      associateCurrentUser({ idField: 'id', as: 'authorId' })
+      associateCurrentUser({ idField: 'id', as: 'authorId' }),
     ],
     update: [
       authenticate('jwt'),
