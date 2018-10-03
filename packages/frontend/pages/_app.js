@@ -1,10 +1,11 @@
+import 'isomorphic-unfetch';
+
 import App, {Container} from 'next/app'
 import React from 'react'
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
-import { apiMiddleware, isRSAA, CALL_API } from 'redux-api-middleware';
-
+import { apiMiddleware, isRSAA, RSAA } from 'redux-api-middleware';
 import reducer from '../reducers';
 
 
@@ -12,10 +13,10 @@ import reducer from '../reducers';
 
 const authMiddleware = ({getState, dispatch}) => next => action => {
   const token = (getState().authentication && getState().authentication.token) ? getState().authentication.token : '';
-  if (action[CALL_API]) {
-    action[CALL_API].headers = {
+  if (action[RSAA]) {
+    action[RSAA].headers = {
       Authorization: 'Bearer ' + token,
-      ...action[CALL_API].headers
+      ...action[RSAA].headers
     }
   }
   return next(action)

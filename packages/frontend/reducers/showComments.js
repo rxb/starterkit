@@ -9,7 +9,7 @@ https://stackoverflow.com/questions/45130429/must-normalizing-state-shape-for-ar
 const showComments = (state = [], action) => {
   let newComment, newState, index;
   const findByOptimisticId = (optimisticId) => (
-    state.findIndex( comment => comment.optimisticId === newComment.optimisticId )
+    state.findIndex( comment => comment.optimisticId === optimisticId )
   );
   switch (action.type) {
     case 'FETCH_SHOW_COMMENTS':
@@ -23,11 +23,11 @@ const showComments = (state = [], action) => {
     case 'CREATE_SHOW_COMMENT_SUCCESS':
     	newComment = action.payload;
     	newState = [...state];
-      newState[findByOptimisticId(newComment.optimisticId)] = newComment;
+      newState[findByOptimisticId(action.meta.optimisticId)] = newComment;
       return newState;
     case 'CREATE_SHOW_COMMENT_FAILURE':
       newState = [...state];
-      delete newState[findByOptimisticId(newComment.optimisticId)];
+      delete newState[findByOptimisticId(action.meta.optimisticId)];
       return newState;
     default:
       return state

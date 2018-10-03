@@ -133,7 +133,7 @@ class Show extends React.Component {
 														/>
 												</FlexItem>
 												<FlexItem>
-													<Text>{comment.body}</Text>
+													<Text>{comment.optimisticId} {comment.body}</Text>
 													<Text>
 														<Text type="small" color="secondary">{comment.user.name} </Text>
 														<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()}</Text>
