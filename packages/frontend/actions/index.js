@@ -99,17 +99,25 @@ const buildOptimisticActions = (baseType, data, extraPayload, extraMeta) => {
 }
 
 
-export const createShowComment = (data, extra) => {
-	return ({
-		[RSAA]: {
-			endpoint: `${apiHost}show-comments/`,
-			method: 'POST',
-			headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-			body: JSON.stringify(data),
-			types: buildOptimisticActions('CREATE_SHOW_COMMENT', data, {user: extra.user})
-	 	}
-	});
-}
+export const createShowComment = (data, extra) => ({
+	[RSAA]: {
+		endpoint: `${apiHost}show-comments/`,
+		method: 'POST',
+		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+		types: buildOptimisticActions('CREATE_SHOW_COMMENT', data, {user: extra.user})
+ 	}
+});
+
+
+export const deleteShowComment = (data) => ({
+	[RSAA]: {
+		types: ["DELETE_SHOW_COMMENT", "DELETE_SHOW_COMMENT_SUCCESS", "DELETE_SHOW_COMMENT_FAILURE"],
+		endpoint: `${apiHost}show-comments/`,
+		method: 'DELETE',
+ 	}
+});
+
 
 /*
 // just for reference

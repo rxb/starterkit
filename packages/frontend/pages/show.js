@@ -136,7 +136,14 @@ class Show extends React.Component {
 													<Text>{comment.body}</Text>
 													<Text>
 														<Text type="small" color="secondary">{comment.user.name} </Text>
-														<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()}</Text>
+														<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()} </Text>
+														{ comment.user.id == user.id &&
+															<Link onPress={()=>{
+																alert('delete!');
+															}}>
+																<Text type="small" color="tint">&middot; Delete</Text>
+															</Link>
+														}
 													</Text>
 												</FlexItem>
 											</Flex>
