@@ -10,9 +10,10 @@ import reducer from '../reducers';
 
 
 
-
 const authMiddleware = ({getState, dispatch}) => next => action => {
   const token = (getState().authentication && getState().authentication.token) ? getState().authentication.token : '';
+  console.log("TOKEN TOKEN TOKEN:");
+  console.log(`>>>> ${token} <<<<`);
   if (action[RSAA]) {
     action[RSAA].headers = {
       Authorization: 'Bearer ' + token,
