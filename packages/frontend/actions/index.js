@@ -110,13 +110,16 @@ export const createShowComment = (data, extra) => ({
 });
 
 
-export const deleteShowComment = (data) => ({
-	[RSAA]: {
-		types: ["DELETE_SHOW_COMMENT", "DELETE_SHOW_COMMENT_SUCCESS", "DELETE_SHOW_COMMENT_FAILURE"],
-		endpoint: `${apiHost}show-comments/`,
-		method: 'DELETE',
- 	}
-});
+export const deleteShowComment = (commentId) => {
+	console.log('delete action');
+	return ({
+		[RSAA]: {
+			types: ["DELETE_SHOW_COMMENT", "DELETE_SHOW_COMMENT_SUCCESS", "DELETE_SHOW_COMMENT_FAILURE"],
+			endpoint: `${apiHost}show-comments/${commentId}`,
+			method: 'DELETE',
+	 	}
+	});
+};
 
 
 /*

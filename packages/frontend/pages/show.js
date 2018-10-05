@@ -6,6 +6,7 @@ import moment from 'moment'
 import {
 	fetchShow,
 	createShowComment,
+	deleteShowComment,
 	fetchShowComments
 } from '../actions';
 
@@ -137,9 +138,9 @@ class Show extends React.Component {
 													<Text>
 														<Text type="small" color="secondary">{comment.user.name} </Text>
 														<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()} </Text>
-														{ comment.user.id == user.id &&
+														{ (true || comment.user.id == user.id) &&
 															<Link onPress={()=>{
-																alert('delete!');
+																this.props.deleteShowComment(comment.id);
 															}}>
 																<Text type="small" color="tint">&middot; Delete</Text>
 															</Link>
@@ -173,6 +174,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionCreators = {
 	createShowComment,
+	deleteShowComment,
 	fetchShowComments,
 	fetchShow
 };

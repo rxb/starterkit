@@ -1,5 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { associateCurrentUser } = require('feathers-authentication-hooks');
+const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
 const hydrate = require('feathers-sequelize/hooks/hydrate');
 
 
@@ -14,7 +14,11 @@ module.exports = {
           include: [ users ]
         }
         return context;
-      },
+      }
+    ],
+    find: [
+      // this is only find-relevant
+      // if you put it in other hooks, they get weird
       (context) => {
         const { query = {} } = context.params;
         if(!query.$sort) {
@@ -26,7 +30,6 @@ module.exports = {
         return context;
       }
     ],
-    find: [],
     get: [],
     create: [
       authenticate('jwt'),
@@ -34,10 +37,13 @@ module.exports = {
     ],
     update: [
       authenticate('jwt'),
-      associateCurrentUser({ idField: 'id', as: 'authorId' })
+      restrictToOwner({ idField: 'id', as: 'authorId' })
     ],
     patch: [],
-    remove: []
+    remove: [
+      authenticate('jwt'),
+      restrictToOwner({ idField: 'id', as: 'authorId' })
+    ]
   },
 
   after: {
