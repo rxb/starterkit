@@ -37,12 +37,17 @@ module.exports = {
     ],
     update: [
       authenticate('jwt'),
-      restrictToOwner({ idField: 'id', as: 'authorId' })
+      restrictToOwner({ idField: 'id', ownerField: 'authorId' })
     ],
     patch: [],
     remove: [
       authenticate('jwt'),
-      restrictToOwner({ idField: 'id', as: 'authorId' })
+      (context) => {
+        console.log('user obj');
+        console.log(context.params.user);
+        return context;
+      },
+      restrictToOwner({ idField: 'id', ownerField: 'authorId' })
     ]
   },
 
