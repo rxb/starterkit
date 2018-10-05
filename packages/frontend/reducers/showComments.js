@@ -34,7 +34,7 @@ const showComments = (state = [], action) => {
       newState.splice(newState.findIndex(comment => comment.id == action.payload.id), 1);
       return newState;
     case 'DELETE_SHOW_COMMENT_FAILURE':
-      alert("sorry couldn't delete");
+      alert(`${action.payload.message}`);
     default:
       return state
   }
