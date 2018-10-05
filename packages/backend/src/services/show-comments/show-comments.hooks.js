@@ -42,11 +42,6 @@ module.exports = {
     patch: [],
     remove: [
       authenticate('jwt'),
-      (context) => {
-        console.log('user obj');
-        console.log(context.params.user);
-        return context;
-      },
       restrictToOwner({ idField: 'id', ownerField: 'authorId' })
     ]
   },
