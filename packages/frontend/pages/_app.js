@@ -12,8 +12,6 @@ import reducer from '../reducers';
 
 const authMiddleware = ({getState, dispatch}) => next => action => {
   const token = (getState().authentication && getState().authentication.token) ? getState().authentication.token : '';
-  console.log("TOKEN TOKEN TOKEN:");
-  console.log(`>>>> ${token} <<<<`);
   if (action[RSAA]) {
     action[RSAA].headers = {
       Authorization: 'Bearer ' + token,
@@ -25,7 +23,7 @@ const authMiddleware = ({getState, dispatch}) => next => action => {
 
 
 // will need to use next cookies somehow?
-const startState = (process.browser) ? { authentication: localStorage.getItem('AUTHENTICATION') } : {}
+const startState = (process.browser) ? { authentication: JSON.parse(localStorage.getItem('AUTHENTICATION')) } : {};
 
 const store = createStore(
   reducer,
@@ -41,7 +39,7 @@ const store = createStore(
 
 if (process.browser) {
   store.subscribe(() => {
-    localStorage.setItem('AUTHENTICATION', store.getState().authentication);
+    localStorage.setItem('AUTHENTICATION', JSON.stringify(store.getState().authentication));
   });
 }
 
