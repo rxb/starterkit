@@ -138,7 +138,7 @@ class Show extends React.Component {
 													<Text>
 														<Text type="small" color="secondary">{comment.user.name} </Text>
 														<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()} </Text>
-														{ (true || comment.user.id == user.id) &&
+														{ comment.user.id == user.id &&
 															<Link onPress={()=>{
 																this.props.deleteShowComment(comment.id);
 															}}>
