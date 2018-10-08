@@ -46,7 +46,7 @@ const Icon = (props) => {
 		const pixelSize = SIZES[size];
 		const ThisIcon = Icons[shape];
 
-		return <ThisIcon color={color} size={pixelSize} other />;
+		return <ThisIcon color={color} size={pixelSize} {...other} />;
 
 }
 
@@ -57,7 +57,7 @@ Icon.defaultProps = {
 
 Icon.propTypes = {
 	size: PropTypes.oneOf(['small', 'medium', 'large']),
-	shape: PropTypes.object,
+	shape: PropTypes.string,
 	color: PropTypes.string
 }
 

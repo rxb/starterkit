@@ -32,7 +32,7 @@ import {
 
 import Page from './components/Page';
 
-import cookies from 'next-cookies';
+
 import { connect } from 'react-redux';
 import {
 	logIn,

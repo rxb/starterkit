@@ -1,4 +1,4 @@
-import 'isomorphic-unfetch';
+import 'isomorphic-unfetch'
 
 import App, {Container} from 'next/app'
 import React from 'react'
@@ -8,6 +8,10 @@ import thunk from 'redux-thunk';
 import { apiMiddleware, isRSAA, RSAA } from 'redux-api-middleware';
 import reducer from '../reducers';
 
+import cookies from 'next-cookies';
+import {
+  reauthenticate
+} from '../actions';
 
 
 const authMiddleware = ({getState, dispatch}) => next => action => {
@@ -44,6 +48,22 @@ if (process.browser) {
 }
 
 class ThisApp extends App {
+
+
+  /*
+  // if you override getInitialProps here
+  // you'll need this code to keep getInitialProps working on child pages
+  static async getInitialProps({ Component, router, ctx }) {
+    let pageProps = {}
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx)
+    }
+
+    return { pageProps }
+  }
+  */
+
   render () {
     const {Component, pageProps, reduxStore} = this.props
     return (

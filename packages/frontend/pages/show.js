@@ -71,16 +71,17 @@ const CommentFormInner = props => {
 class Show extends React.Component {
 
 	static getInitialProps (props) {
-
 		// next router query bits only initially available to getInitialProps
+		console.log('props props props props props props');
+		console.log(props);
 		const { query } = props;
-		const { params } = query;
 		return {
 			showId: query.showId
 		};
 	}
 
 	componentDidMount(){
+		console.log(this.props.showId);
 		this.props.fetchShow(this.props.showId);
 		this.props.fetchShowComments({showId: this.props.showId});
 	}

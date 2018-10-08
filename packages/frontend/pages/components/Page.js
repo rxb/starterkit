@@ -158,7 +158,7 @@ class Page extends React.Component {
 								</Inline>
 							</Link>
 						</FlexItem>
-						<FlexItem style={{flexAlign: 'flex-end'}}>
+						<FlexItem style={{alignItems: 'flex-end'}}>
 							{user.id &&
 								<Fragment>
 									<Inline>

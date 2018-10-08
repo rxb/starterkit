@@ -1,14 +1,16 @@
 import Document, { Head, Main, NextScript } from 'next/document'
 import React from 'react'
 import { AppRegistry } from 'react-native-web'
+
+
 import { BREAKPOINT_SIZES } from './cinderblock/designConstants';
 import swatches from './cinderblock/styles/swatches';
 
 let index = 0
-
 export default class MyDocument extends Document {
-  static async getInitialProps ({ renderPage }) {
+  static async getInitialProps (ctx) {
     AppRegistry.registerComponent('Main', () => Main)
+    const { renderPage } = ctx;
     const { getStyleElement } = AppRegistry.getApplication('Main')
     const page = renderPage()
     const styles = [
@@ -44,7 +46,6 @@ export default class MyDocument extends Document {
     return (
       <html style={{ height: '100%', width: '100%' }}>
         <Head>
-          <title>Starter Kit</title>
           <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no" />
         </Head>
         <body>

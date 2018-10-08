@@ -51,10 +51,18 @@ export const logIn = (data) => ({
  	}
 });
 
+// REAUTHENTICATE
+export const reauthenticate = (token) => ({
+	type: 'REAUTHENTICATE',
+	payload: {token: token}
+});
+
 // LOG OUT
 export const logOut = () => ({
 	type: 'LOG_OUT'
 });
+
+
 
 
 // FETCH SHOW COMMENTS
