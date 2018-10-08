@@ -89,17 +89,7 @@ class Hello extends React.Component {
 
 	componentDidMount(){
 		this.props.fetchShows();
-		this.props.fetchUser('self');
 	}
-
-	/*
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.authentication !== this.props.authentication) {
-			this.props.fetchUser('self');
-		}
-	}
-	*/
-
 
 	toggleModal() {
 		this.setState({modalVisible: !this.state.modalVisible})
@@ -194,7 +184,7 @@ class Hello extends React.Component {
 											<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <Link style={styles.textTint} href={{pathname:'/other', query:{what: 'yeah'}}}>LINK LINK LINK</Link> nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
 										</Chunk>
 										<Chunk>
-											<Text type="small" color="secondary">{loremIpsum({count: 3})}</Text>
+											<Text type="small" color="secondary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Text>
 										</Chunk>
 
 										<List
@@ -230,7 +220,7 @@ class Hello extends React.Component {
 											</Tabs>
 										</Chunk>
 										<Chunk>
-											<Text>{loremIpsum({count: 3})}</Text>
+											<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</Text>
 										</Chunk>
 									</Section>
 								</Sections>
@@ -259,7 +249,7 @@ class Hello extends React.Component {
 												<Button color="secondary" label="Show modal" width="full" />
 											</Touch>
 											<Touch onPress={()=>{
-												this.addToast(loremIpsum({count: 1}))
+												this.addToast("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud")
 											}}>
 												<Button color="secondary" label="Toast me" width="full" />
 											</Touch>
@@ -300,7 +290,7 @@ class Hello extends React.Component {
 								<Text type="pageHead">Modal Time</Text>
 							</Chunk>
 							<Chunk>
-								<Text>{loremIpsum({count: 4})}</Text>
+								<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Text>
 							</Chunk>
 							<form onSubmit={this.onSubmitHandler}>
 								<Chunk>

@@ -8,11 +8,9 @@ import thunk from 'redux-thunk';
 import { apiMiddleware, isRSAA, RSAA } from 'redux-api-middleware';
 import reducer from '../reducers';
 
-import cookies from 'next-cookies';
 import {
-  reauthenticate
+  fetchUser
 } from '../actions';
-
 
 const authMiddleware = ({getState, dispatch}) => next => action => {
   const token = (getState().authentication && getState().authentication.token) ? getState().authentication.token : '';
@@ -49,20 +47,24 @@ if (process.browser) {
 
 class ThisApp extends App {
 
-
-  /*
-  // if you override getInitialProps here
-  // you'll need this code to keep getInitialProps working on child pages
   static async getInitialProps({ Component, router, ctx }) {
-    let pageProps = {}
 
+    // if you override getInitialProps here
+    // you'll need this code to keep getInitialProps working on child pages
+    let pageProps = {}
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
     }
+    // end
 
     return { pageProps }
   }
-  */
+
+
+  componentDidMount() {
+    console.log('app.js');
+    fetchUser('self');
+  }
 
   render () {
     const {Component, pageProps, reduxStore} = this.props

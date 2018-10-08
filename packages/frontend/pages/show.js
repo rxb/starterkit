@@ -72,8 +72,6 @@ class Show extends React.Component {
 
 	static getInitialProps (props) {
 		// next router query bits only initially available to getInitialProps
-		console.log('props props props props props props');
-		console.log(props);
 		const { query } = props;
 		return {
 			showId: query.showId

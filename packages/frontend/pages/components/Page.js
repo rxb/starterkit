@@ -61,7 +61,6 @@ import styles from '../cinderblock/styles/styles';
 import swatches from '../cinderblock/styles/swatches';
 
 
-
 const LoginFormInner = props => {
 	return(
 		<Chunk>
@@ -87,9 +86,7 @@ const LoginFormInner = props => {
 }
 
 
-
 class Page extends React.Component {
-
 	constructor(props){
 		super(props);
 		this.state = {
@@ -104,6 +101,7 @@ class Page extends React.Component {
 
 		// got auth, so get new user info
 		if (nextProps.authentication !== this.props.authentication) {
+			console.log('pagejs');
 			this.props.fetchUser('self');
 		}
 

@@ -80,8 +80,5 @@ const List = (props) => {
 	);
 }
 
-List.propTypes = {
-	variant: PropTypes.oneOf(['linear', 'grid', 'scroll']),
-}
 
 export default WithMatchMedia(List);

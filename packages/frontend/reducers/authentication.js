@@ -3,7 +3,6 @@ const authentication = (state = {}, action) => {
     case 'LOG_IN_SUCCESS':
     	return { token: action.payload.accessToken };
     case 'REAUTHENTICATE':
-      console.log('reauth');
       return { token: action.payload.token };
     case 'LOG_OUT':
     	return {};

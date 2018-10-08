@@ -52,10 +52,13 @@ export const logIn = (data) => ({
 });
 
 // REAUTHENTICATE
-export const reauthenticate = (token) => ({
-	type: 'REAUTHENTICATE',
-	payload: {token: token}
-});
+export const reauthenticate = (token) => {
+	console.log(`reauthenticate action creator: ${token}`);
+	return ({
+		type: 'REAUTHENTICATE',
+		payload: {token: token}
+	})
+};
 
 // LOG OUT
 export const logOut = () => ({

@@ -17,10 +17,12 @@ module.exports = {
       (context) => {
         // this probably should fail in a redirect way
         // if you try to "self" a non-logged in request
-        if (context.id == 'self' && context.params.user) {
-          context.id = context.params.user.id;
+        if (context.id == 'self') {
+          if(context.params.user){
+            context.id = context.params.user.id;
+          }
         }
-        return Promise.resolve(context)
+        return context;
       },
     ],
     create: [ hashPassword() ],

@@ -28,6 +28,13 @@
       "entity": "user",
       "usernameField": "email",
       "passwordField": "password"
+    },
+    "cookie": {
+      "enabled": true,
+      "domain": "localhost",
+      "name": "feathers-jwt",
+      "httpOnly": true,
+      "secure": false // TODO make sure this is true in prod
     }
   },
   "postgres": "postgres://starterkit:starterkit@localhost:5432/starterkit"
