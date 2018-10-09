@@ -9,7 +9,8 @@ import { apiMiddleware, isRSAA, RSAA } from 'redux-api-middleware';
 import reducer from '../reducers';
 
 import {
-  fetchUser
+  fetchUser,
+  reauthenticate
 } from '../actions';
 
 const authMiddleware = ({getState, dispatch}) => next => action => {
@@ -47,6 +48,7 @@ if (process.browser) {
 
 class ThisApp extends App {
 
+  /*
   static async getInitialProps({ Component, router, ctx }) {
 
     // if you override getInitialProps here
@@ -59,11 +61,12 @@ class ThisApp extends App {
 
     return { pageProps }
   }
+  */
 
-
-  componentDidMount() {
-    console.log('app.js');
-    fetchUser('self');
+  componentDidMount(){
+    // if you don't pass through connect
+    // you have to put the action creator into store.dispatch
+    store.dispatch(fetchUser('self'));
   }
 
   render () {
@@ -76,6 +79,6 @@ class ThisApp extends App {
       </Container>
     )
   }
-}``
+}
 
 export default ThisApp;
