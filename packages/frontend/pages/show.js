@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
 import { connect } from 'react-redux';
+import Head from 'next/head'
 import moment from 'moment'
 
 import {
@@ -105,6 +106,10 @@ class Show extends React.Component {
 
 		return (
 			<Page>
+				<Head>
+					<meta property='og:title' content={`here we go show # ${this.props.showId}`} />
+					<meta property='og:image' content='https://i.imgur.com/HtHq0F4.jpg' />
+				</Head>
 				<Stripe image={show.photo} style={{height: 300, backgroundColor: '#eee'}}>
 				</Stripe>
 				<Stripe>
