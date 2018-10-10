@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import { apiMiddleware, isRSAA, RSAA } from 'redux-api-middleware';
 import withRedux from "next-redux-wrapper";
 import reducer from '../reducers';
-import cookies from 'next-cookies';
+
 
 import {
   fetchUser,
@@ -33,7 +33,6 @@ if (process.browser) {
   startState['authentication'] = JSON.parse(localStorage.getItem('AUTHENTICATION'));
 }
 
-
 const makeStore = (initialState, options) => {
     return createStore(
       reducer,
@@ -47,22 +46,32 @@ const makeStore = (initialState, options) => {
     );
 };
 
-/*
-if (process.browser) {
-  store.subscribe(() => {
-    localStorage.setItem('AUTHENTICATION', JSON.stringify(store.getState().authentication));
-  });
-  ;
-}
-*/
 
+/*
+
+    */
 
 class ThisApp extends App {
+
+ static async getInitialProps ({ Component, router, ctx }) {
+
+    const {store} = ctx;
+    if (process.browser) {
+      store.subscribe(() => {
+        localStorage.setItem('AUTHENTICATION', JSON.stringify(store.getState().authentication));
+      });
+      ;
+    }
+
+    let pageProps = (Component.getInitialProps) ? await Component.getInitialProps(ctx) : {};
+    return {pageProps}
+  }
+
 
   componentDidMount(){
     // if you don't pass through connect
     // you have to put the action creator into store.dispatch
-    //store.dispatch(fetchUser('self'));
+    this.props.store.dispatch(fetchUser('self'));
   }
 
   render () {
@@ -77,4 +86,6 @@ class ThisApp extends App {
   }
 }
 
+// withRedux is glue to make redux work on nextjs ssr
+// as well as client side
 export default withRedux(makeStore)(ThisApp);
