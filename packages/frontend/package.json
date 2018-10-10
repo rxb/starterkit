@@ -16,6 +16,7 @@
     "lorem-ipsum": "^1.0.5",
     "next": "^7.0.1",
     "next-cookies": "^1.0.2",
+    "next-redux-wrapper": "^2.0.0",
     "nprogress": "^0.2.0",
     "react": "^16.5.1",
     "react-apple-easing": "0.0.2",

@@ -71,17 +71,19 @@ const CommentFormInner = props => {
 
 class Show extends React.Component {
 
-	static getInitialProps (props) {
+	static async getInitialProps (context) {
 		// next router query bits only initially available to getInitialProps
-		const { query } = props;
+		const {store, isServer, pathname, query} = context;
+		const showId = query.showId;
+		const show = await store.dispatch(fetchShow(showId));
 		return {
-			showId: query.showId
+			showId: showId,
+			show: show.payload
 		};
 	}
 
 	componentDidMount(){
-		console.log(this.props.showId);
-		this.props.fetchShow(this.props.showId);
+		// this.props.fetchShow(this.props.showId);
 		this.props.fetchShowComments({showId: this.props.showId});
 	}
 
@@ -107,8 +109,8 @@ class Show extends React.Component {
 		return (
 			<Page>
 				<Head>
-					<meta property='og:title' content={`here we go show # ${this.props.showId}`} />
-					<meta property='og:image' content='https://i.imgur.com/HtHq0F4.jpg' />
+					<meta property='og:title' content={`Show: ${this.props.show.title}`} />
+					<meta property='og:image' content={this.props.show.photo} />
 				</Head>
 				<Stripe image={show.photo} style={{height: 300, backgroundColor: '#eee'}}>
 				</Stripe>
@@ -170,7 +172,7 @@ class Show extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
-		show: state.show,
+		//show: state.show,
 		showComments: state.showComments,
 		user: state.user
 	});

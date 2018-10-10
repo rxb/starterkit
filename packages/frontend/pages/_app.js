@@ -6,6 +6,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
 import { apiMiddleware, isRSAA, RSAA } from 'redux-api-middleware';
+import withRedux from "next-redux-wrapper";
 import reducer from '../reducers';
 import cookies from 'next-cookies';
 
@@ -30,58 +31,47 @@ const authMiddleware = ({getState, dispatch}) => next => action => {
 const startState = {};
 if (process.browser) {
   startState['authentication'] = JSON.parse(localStorage.getItem('AUTHENTICATION'));
-  startState['environment'] = {client: true}
 }
 
 
+const makeStore = (initialState, options) => {
+    return createStore(
+      reducer,
+      startState,
+      applyMiddleware(
+        thunk,
+        authMiddleware,
+        // refreshMiddleware,
+        apiMiddleware,
+      )
+    );
+};
 
-const store = createStore(
-  reducer,
-  startState,
-  applyMiddleware(
-    // middleware happens in this order
-    thunk,
-    authMiddleware,
-    // refreshMiddleware,
-    apiMiddleware,
-  )
-);
-
-
+/*
 if (process.browser) {
   store.subscribe(() => {
     localStorage.setItem('AUTHENTICATION', JSON.stringify(store.getState().authentication));
   });
   ;
 }
+*/
 
 
 class ThisApp extends App {
 
-  /*
   static async getInitialProps({ Component, router, ctx }) {
-
-    // if you override getInitialProps here
-    // you'll need this code to keep getInitialProps working on child pages
-    let pageProps = {}
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx)
-    }
-    // end
-
+    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     return { pageProps }
   }
-  */
-
 
   componentDidMount(){
     // if you don't pass through connect
     // you have to put the action creator into store.dispatch
-    store.dispatch(fetchUser('self'));
+    //store.dispatch(fetchUser('self'));
   }
 
   render () {
-    const {Component, pageProps, reduxStore} = this.props
+    const {Component, pageProps, store} = this.props;
     return (
       <Container>
         <Provider store={store}>
@@ -92,4 +82,4 @@ class ThisApp extends App {
   }
 }
 
-export default ThisApp;
+export default withRedux(makeStore)(ThisApp);
