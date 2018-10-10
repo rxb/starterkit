@@ -156,26 +156,27 @@ class Page extends React.Component {
 								</Inline>
 							</Link>
 						</FlexItem>
-						<FlexItem style={{alignItems: 'flex-end'}}>
-							{user.id &&
-								<Fragment>
-									<Inline>
+							<FlexItem style={{alignItems: 'flex-end'}}>
+									<Fragment>
+										{user.id &&
+											<Fragment>
+												<Inline>
+													<Avatar
+														source={{uri: user.photo}}
+														size="small"
+														/>
+													<Text>{user.name}</Text>
+													<Touch onPress={logOut}><Text color="tint">Log out</Text></Touch>
+												</Inline>
 
-										<Avatar
-											source={{uri: user.photo}}
-											size="small"
-											/>
-										<Text>{user.name}</Text>
-										<Touch onPress={logOut}><Text color="tint">Log out</Text></Touch>
-									</Inline>
+											</Fragment>
+										}
 
-								</Fragment>
-							}
-
-							{!user.id &&
-								<Touch onPress={this.toggleModal}><Text color="tint">Log in</Text></Touch>
-							}
-						</FlexItem>
+										{!user.id &&
+											<Touch onPress={this.toggleModal}><Text color="tint">Log in</Text></Touch>
+										}
+									</Fragment>
+							</FlexItem>
 					</Flex>
 				</Header>
 
@@ -221,7 +222,7 @@ class Page extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 	return ({
 		user: state.user,
-		authentication: state.authentication
+		authentication: state.authentication,
 	});
 }
 

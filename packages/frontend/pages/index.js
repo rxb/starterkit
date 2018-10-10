@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
+import Head from 'next/head'
 
 import styles from './cinderblock/styles/styles';
 import swatches from './cinderblock/styles/swatches';
@@ -166,9 +167,11 @@ class Hello extends React.Component {
 		return (
 		<Fragment>
 			<Page>
-
+				<Head>
+					<meta property='og:title' content='This is an OG title' />
+					<meta property='og:image' content='https://i.imgur.com/HtHq0F4.jpg' />
+				</Head>
 				<Flex direction="column" switchDirection="large" noGutters>
-
 					<FlexItem growFactor={5}>
 						<Stripe>
 							<Bounds>
