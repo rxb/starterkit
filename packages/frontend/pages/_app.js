@@ -59,11 +59,6 @@ if (process.browser) {
 
 class ThisApp extends App {
 
-  static async getInitialProps({ Component, router, ctx }) {
-    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-    return { pageProps }
-  }
-
   componentDidMount(){
     // if you don't pass through connect
     // you have to put the action creator into store.dispatch
