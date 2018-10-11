@@ -190,25 +190,34 @@ class Hello extends React.Component {
 											<Text type="small" color="secondary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Text>
 										</Chunk>
 
-										<List
-											variant={{
-												small: "scroll",
-												//small: "linear",
-												medium: "grid"
-											}}
-											itemsInRow={{
-												small: 1,
-												medium: 2,
-												large: 3
-											}}
-											renderItem={{
-												//small: this._renderItemLinear,
-												small: this._renderItemCard,
-												medium: this._renderItemCard
-											}}
-											scrollItemWidth={300}
-											items={shows}
-											/>
+
+										{shows.loading &&
+											<Chunk>
+												<Text>Loading...</Text>
+											</Chunk>
+										}
+
+										{!shows.loading &&
+											<List
+												variant={{
+													small: "scroll",
+													//small: "linear",
+													medium: "grid"
+												}}
+												itemsInRow={{
+													small: 1,
+													medium: 2,
+													large: 3
+												}}
+												renderItem={{
+													//small: this._renderItemLinear,
+													small: this._renderItemCard,
+													medium: this._renderItemCard
+												}}
+												scrollItemWidth={300}
+												items={shows.items}
+												/>
+										}
 
 									</Section>
 									<Section>

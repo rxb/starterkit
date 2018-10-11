@@ -145,11 +145,19 @@ class Show extends React.Component {
 														<Text type="small" color="secondary">{comment.user.name} </Text>
 														<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()} </Text>
 														{ comment.user.id == user.id &&
-															<Link onPress={()=>{
-																this.props.deleteShowComment(comment.id);
-															}}>
-																<Text type="small" color="tint">&middot; Delete</Text>
-															</Link>
+															<Fragment>
+																<Link onPress={()=>{
+																	this.props.deleteShowComment(comment.id);
+																}}>
+																	<Text type="small" color="tint">&middot; Delete</Text>
+																</Link>
+
+																<Link onPress={()=>{
+																	alert('edit comment?')
+																}}>
+																	<Text type="small" color="tint">&middot; Edit</Text>
+																</Link>
+															</Fragment>
 														}
 													</Text>
 												</FlexItem>
