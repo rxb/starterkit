@@ -48,7 +48,7 @@ const CommentFormInner = props => {
 				<TextInput
 					id="comment"
 					placeholder="Post a comment about this show"
-					autoComplete={false}
+					autoComplete="off"
 					defaultValue={props.values.body}
 					onChangeText={text => props.setFieldValue('body', text)}
 					multiline={true}

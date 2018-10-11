@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
 		borderRadius: borderRadius,
 		color: swatches.textPrimary,
 		boxSizing: 'border-box',
-		appearance: 'none',
 		fontFamily: METRICS.fontFamily,
 		marginVertical: METRICS.pseudoLineHeight,
 	},

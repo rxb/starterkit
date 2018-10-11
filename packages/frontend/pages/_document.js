@@ -28,6 +28,13 @@ export default class MyDocument extends Document {
             flex: 1;
           }
 
+          /* form nonstandard styles */
+          .input{
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+          }
+
           /* form focus */
           input:focus, textarea:focus, select:focus{
             outline: none;
@@ -47,6 +54,8 @@ export default class MyDocument extends Document {
       <html style={{ height: '100%', width: '100%' }}>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no" />
+          <link rel='stylesheet' type='text/css' href='/static/nprogress.css' />
+          <link rel='stylesheet' type='text/css' href='/static/simplemde.min.css' />
         </Head>
         <body>
 

@@ -24,16 +24,16 @@ class Picker extends PickerWeb{
 	}
 
 	render() {
-      const elementsTree = super.render()
-      return (
-      	<View style={{position: 'relative'}}>
-      		{elementsTree}
-      		<View style={{position: 'absolute', right: 13, top: 0, height: '100%', justifyContent: 'center' }}>
-      			<Icon shape="ChevronDown" color={swatches.textHint} />
-      		</View>
-      	</View>
-      );
-    }
+            const elementsTree = super.render()
+            return (
+            	<View style={{position: 'relative'}}>
+            		{elementsTree}
+            		<View style={{position: 'absolute', right: 13, top: 0, height: '100%', justifyContent: 'center', pointerEvents: 'none' }}>
+            			<Icon shape="ChevronDown" color={swatches.textHint} />
+            		</View>
+            	</View>
+            );
+      }
 }
 
 export default Picker;

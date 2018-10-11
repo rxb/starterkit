@@ -141,10 +141,6 @@ class Page extends React.Component {
 
 			<View style={{minHeight: '100%'}}>
 
-				<Head>
-			      {/* Import CSS for nprogress */}
-			      <link rel='stylesheet' type='text/css' href='/static/nprogress.css' />
-			    </Head>
 
 				<Header>
 					<Flex direction="row">

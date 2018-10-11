@@ -2,6 +2,8 @@ import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
 import { connect } from 'react-redux';
 
+import SimpleMDE from 'react-simplemde-editor';
+
 import {
 	Bounds,
 	Button,
@@ -45,8 +47,27 @@ const OtherFormInner = props => {
 				<Chunk>
 					<Text type="sectionHead">Basic info</Text>
 				</Chunk>
+
+				{/*
 				<Chunk>
-					<Label for="theseoptions">Pick one of these</Label>
+					<Label htmlFor="test-mde">Let's write some stuff</Label>
+					<SimpleMDE
+					  id="test-mde"
+					  label=""
+
+					  onChange={text => {
+					  	props.setFieldValue('testmde', text)
+					  }}
+					  options={{
+					    autofocus: true,
+					    spellChecker: false,
+					  }}
+					/>
+				</Chunk>
+				*/}
+
+				<Chunk>
+					<Label htmlFor="theseoptions">Pick one of these</Label>
 					<Picker
 						>
 						<Picker.Item label="One" value="java" />
@@ -56,7 +77,7 @@ const OtherFormInner = props => {
 					</Picker>
 				</Chunk>
 				<Chunk>
-					<Label for="favoriteshow">Favorite show</Label>
+					<Label htmlFor="favoriteshow">Favorite show</Label>
 					<TextInput
 						id="favoriteshow"
 						defaultValue={props.values.favoriteshow}
@@ -65,7 +86,7 @@ const OtherFormInner = props => {
 						/>
 				</Chunk>
 				<Chunk>
-					<Label for="worstmemory">Worst memory</Label>
+					<Label htmlFor="worstmemory">Worst memory</Label>
 					<TextInput
 						id="worstmemory"
 						defaultValue={props.values.worstmemory}
@@ -75,7 +96,7 @@ const OtherFormInner = props => {
 					<Text type="small" color="hint">Sucks, doesn't it?</Text>
 				</Chunk>
 				<Chunk>
-					<Label for="clean">Tell me about yourself</Label>
+					<Label htmlFor="clean">Tell me about yourself</Label>
 					<TextInput
 						id="clean"
 						multiline
@@ -87,7 +108,7 @@ const OtherFormInner = props => {
 						/>
 				</Chunk>
 				<Chunk>
-					<Label for="tellMe">Tell me about yourself</Label>
+					<Label htmlFor="tellMe">Tell me about yourself</Label>
 					<TextInput
 						id="tellMe"
 						multiline
@@ -99,7 +120,7 @@ const OtherFormInner = props => {
 						/>
 				</Chunk>
 				<Chunk>
-					<Label for="description">This input updates</Label>
+					<Label htmlFor="description">This input updates</Label>
 					<TextInput
 						id="description"
 						multiline
@@ -116,7 +137,7 @@ const OtherFormInner = props => {
 					<Text type="sectionHead">More stuff</Text>
 				</Chunk>
 				<Chunk>
-					<Label for="whatisthis">What is this?</Label>
+					<Label htmlFor="whatisthis">What is this?</Label>
 					<Picker
 						id="whatisthis"
 						selectedValue={props.values.whatisthis}
@@ -131,7 +152,7 @@ const OtherFormInner = props => {
 					</Picker>
 				</Chunk>
 				<Chunk>
-					<Label for="firstname">First name</Label>
+					<Label htmlFor="firstname">First name</Label>
 					<TextInput
 						id="firstname"
 						onChangeText={text => props.setFieldValue('firstName', text)}
@@ -140,7 +161,7 @@ const OtherFormInner = props => {
 						/>
 				</Chunk>
 				<Chunk>
-					<Label for="lastname">Last name</Label>
+					<Label htmlFor="lastname">Last name</Label>
 					<TextInput
 						id="lastname"
 						onChangeText={text => props.setFieldValue('lastName', text)}
