@@ -61,6 +61,25 @@ import styles from '../cinderblock/styles/styles';
 import swatches from '../cinderblock/styles/swatches';
 
 
+const Menu = props => {
+	const {
+		children,
+		visible,
+	} = props;
+	return (
+		<View>
+		{ props.visible &&
+			<View style={styles.menu}>
+				{children}
+			</View>
+		}
+		</View>
+	);
+};
+
+
+
+
 const LoginFormInner = props => {
 	return(
 		<Chunk>
@@ -153,6 +172,7 @@ class Page extends React.Component {
 							</Link>
 						</FlexItem>
 							<FlexItem style={{alignItems: 'flex-end'}}>
+									{/*
 									<Fragment>
 										{user.id &&
 											<Fragment>
@@ -164,6 +184,42 @@ class Page extends React.Component {
 													<Text>{user.name}</Text>
 													<Touch onPress={logOut}><Text color="tint">Log out</Text></Touch>
 												</Inline>
+
+											</Fragment>
+										}
+
+										{!user.id &&
+											<Touch onPress={this.toggleModal}><Text color="tint">Log in</Text></Touch>
+										}
+									</Fragment>
+									*/}
+
+									<Fragment>
+										{user.id &&
+											<Fragment>
+												<Touch onPress={()=> this.setState({menuVisible: !this.state.menuVisible})}>
+													<Inline>
+														<Avatar
+															source={{uri: user.photo}}
+															size="small"
+															/>
+														<Text>{user.name}</Text>
+													</Inline>
+												</Touch>
+
+												<Menu visible={this.state.menuVisible}>
+													<Section>
+														<Chunk>
+															<Touch onPress={logOut}><Text color="tint">Profile</Text></Touch>
+														</Chunk>
+														<Chunk>
+															<Touch onPress={logOut}><Text color="tint">Settings</Text></Touch>
+														</Chunk>
+														<Chunk>
+															<Touch onPress={logOut}><Text color="tint">Log out</Text></Touch>
+														</Chunk>
+													</Section>
+												</Menu>
 
 											</Fragment>
 										}

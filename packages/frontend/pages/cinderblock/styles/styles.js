@@ -292,6 +292,15 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		zIndex: 3
 	},
+	menu: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		backgroundColor: 'white',
+		borderRadius: METRICS.borderRadius,
+		shadowRadius: 12,
+		shadowColor: 'rgba(0,0,0,.25)',
+	},
 
 
 	// TOAST
