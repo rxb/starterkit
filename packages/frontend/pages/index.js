@@ -168,8 +168,10 @@ class Hello extends React.Component {
 		<Fragment>
 			<Page>
 				<Head>
-					<meta property='og:title' content='This is an OG title' />
-					<meta property='og:image' content='https://i.imgur.com/HtHq0F4.jpg' />
+					<meta property='og:title' content='Cinderblock' />
+					<meta property='og:description' content='This is the basics of any NextJS / Feathers app' />
+					<meta property='og:image' content='http://2.bp.blogspot.com/-kZ7rq0axMJc/UVFXsdNyJcI/AAAAAAAAEMc/EZ4CM8Y-Llo/s640/modern_construction.jpg' />
+					<title>Cinderblock</title>
 				</Head>
 				<Flex direction="column" switchDirection="large" noGutters>
 					<FlexItem growFactor={5}>
@@ -248,7 +250,7 @@ class Hello extends React.Component {
 											<Text type="sectionHead">Side panel</Text>
 										</Chunk>
 										<Chunk>
-											<Text>Consectetur Lorem amet qui do. Veniam officia pariatur dolore exercitation. Enim elit do deserunt qui commodo aliquip adipisicing aliqua ea occaecat.</Text>
+											<Text>Consectetur Lorem amet qui do. Veniam officia pariatur dolore exercitation. Enim elit do deserunt qui commodo aliquip adipisicing aliqua ea occaecat!</Text>
 										</Chunk>
 
 
@@ -256,7 +258,6 @@ class Hello extends React.Component {
 
 
 										<Chunk>
-
 											<Touch onPress={this.toggleModal}>
 												<Button color="secondary" label="Show modal" width="full" />
 											</Touch>

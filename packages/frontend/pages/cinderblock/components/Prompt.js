@@ -90,10 +90,6 @@ class Prompt extends React.Component{
 			...other
 		} = this.props;
 
-		/*
-		const isFull = !media['medium'];
-		const modalStyle = (isFull) ? styles['modal--full'] : styles['modal'];
-		*/
 		const promptStyle = styles['prompt'];
 
 

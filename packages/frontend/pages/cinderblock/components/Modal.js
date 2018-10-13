@@ -9,6 +9,7 @@ import Touch from './Touch';
 import Icon from './Icon';
 import Header from './Header';
 import Section from './Section';
+import Stripe from './Stripe';
 import { WithMatchMedia } from './WithMatchMedia';
 import { METRICS, EASE } from '../designConstants';
 
@@ -114,36 +115,20 @@ class Modal extends React.Component{
 					    }]
 					}
 				]}>
-					{/*
-					<View style={{
-						paddingHorizontal: METRICS.spaceSection,
-						paddingTop: METRICS.spaceSection,
-						paddingBottom: METRICS.space
-					}}>
-						<Touch
-							onPress={onRequestClose}
-							style={{position: 'relative', left: -7}}
-							>
-							<Icon
-								shape='X'
-								color="gray"
-								size="large"
-								/>
-						</Touch>
-					</View>
-					*/}
-					<Header>
-						<Touch
-							onPress={onRequestClose}
-							style={{position: 'relative', left: -2}}
-							>
-							<Icon
-								shape='X'
-								color="gray"
-								size="medium"
-								/>
-						</Touch>
-					</Header>
+					<Stripe>
+						<Section>
+							<Touch
+								onPress={onRequestClose}
+								style={{position: 'relative', left: -5}}
+								>
+								<Icon
+									shape='X'
+									color="gray"
+									size="large"
+									/>
+							</Touch>
+						</Section>
+					</Stripe>
 					<ScrollView>
 						{children}
 					</ScrollView>

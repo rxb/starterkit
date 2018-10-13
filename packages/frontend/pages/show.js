@@ -111,6 +111,7 @@ class Show extends React.Component {
 				<Head>
 					<meta property='og:title' content={`Show: ${this.props.show.title}`} />
 					<meta property='og:image' content={this.props.show.photo} />
+					<title>{this.props.show.title}</title>
 				</Head>
 				<Stripe image={show.photo} style={{height: 300, backgroundColor: '#eee'}}>
 				</Stripe>
@@ -121,8 +122,7 @@ class Show extends React.Component {
 								<Chunk>
 									<Text type="pageHead">{show.title}</Text>
 								</Chunk>
-							</Section>
-							<Section>
+
 								<Chunk>
 									<Text type="sectionHead">Comments</Text>
 								</Chunk>

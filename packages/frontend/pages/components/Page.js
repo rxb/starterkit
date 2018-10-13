@@ -61,20 +61,34 @@ import styles from '../cinderblock/styles/styles';
 import swatches from '../cinderblock/styles/swatches';
 
 
-const Menu = props => {
-	const {
-		children,
-		visible,
-	} = props;
-	return (
-		<View>
-		{ props.visible &&
-			<View style={styles.menu}>
-				{children}
-			</View>
+class Menu extends React.Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			visible: false,
 		}
-		</View>
-	);
+		this.toggle = this.toggle.bind(this);
+	}
+
+	toggle(){
+		this.setState({visible: !this.state.visible});
+	}
+
+	render(){
+		const {
+			children,
+			visible,
+		} = this.props;
+		return (
+			<View style={styles['menu-container']}>
+			{ this.state.visible &&
+				<View style={styles.menu}>
+						{children}
+				</View>
+			}
+			</View>
+		);
+	}
 };
 
 
@@ -197,7 +211,7 @@ class Page extends React.Component {
 									<Fragment>
 										{user.id &&
 											<Fragment>
-												<Touch onPress={()=> this.setState({menuVisible: !this.state.menuVisible})}>
+												<Touch onPress={()=> this.userMenu.toggle()}>
 													<Inline>
 														<Avatar
 															source={{uri: user.photo}}
@@ -207,18 +221,17 @@ class Page extends React.Component {
 													</Inline>
 												</Touch>
 
-												<Menu visible={this.state.menuVisible}>
-													<Section>
+												<Menu ref={ref => this.userMenu = ref}>
+													<Sectionless>
 														<Chunk>
-															<Touch onPress={logOut}><Text color="tint">Profile</Text></Touch>
+															{ ['Profile', 'Settings', 'Log out'].map(item=>(
+																<Touch onPress={logOut}>
+																	<Text color="tint" >{item}</Text>
+																</Touch>
+															))}
+
 														</Chunk>
-														<Chunk>
-															<Touch onPress={logOut}><Text color="tint">Settings</Text></Touch>
-														</Chunk>
-														<Chunk>
-															<Touch onPress={logOut}><Text color="tint">Log out</Text></Touch>
-														</Chunk>
-													</Section>
+													</Sectionless>
 												</Menu>
 
 											</Fragment>

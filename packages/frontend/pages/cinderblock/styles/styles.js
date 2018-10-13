@@ -16,11 +16,11 @@ const styles = StyleSheet.create({
 
 	// LAYOUT
 	stripe: {
-		paddingVertical: space*.66,
+		paddingVertical: space*.75,
 		flex: 1,
 	},
 	'stripe--atMedium': {
-		paddingHorizontal: space*.66,
+		paddingHorizontal: space*.75,
 	},
 	bounds: {
 		maxWidth: 1000,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 	section: {
 		paddingTop: spaceSection,
 		marginHorizontal: spaceSection,
-		//paddingBottom: spaceSection,
+		paddingBottom: spaceSection - space,
 		//borderTopWidth: 1,
 		//borderTopColor: swatches.border
 	},
@@ -177,6 +177,9 @@ const styles = StyleSheet.create({
 	'buttonText--secondary': {
 		color: swatches.tint,
 	},
+
+
+
 	// CHIP
 	chip: {
 		backgroundColor: '#eee',
@@ -292,9 +295,14 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		zIndex: 3
 	},
+	'menu-container': {
+		width: '100%',
+		height: 0,
+		backgroundColor: 'red' // shouldn't be able to see this
+	},
 	menu: {
 		position: 'absolute',
-		top: 0,
+		top: METRICS.pseudoLineHeight,
 		right: 0,
 		backgroundColor: 'white',
 		borderRadius: METRICS.borderRadius,

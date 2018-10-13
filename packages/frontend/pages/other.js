@@ -42,8 +42,7 @@ const OtherFormInner = props => {
 				<Chunk>
 					<Text type="pageHead">Settings</Text>
 				</Chunk>
-			</Section>
-			<Section>
+
 				<Chunk>
 					<Text type="sectionHead">Basic info</Text>
 				</Chunk>
