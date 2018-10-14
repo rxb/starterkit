@@ -179,7 +179,6 @@ const styles = StyleSheet.create({
 	},
 
 
-
 	// CHIP
 	chip: {
 		backgroundColor: '#eee',

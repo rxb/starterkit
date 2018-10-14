@@ -17,6 +17,7 @@ import {
 	Image,
 	Link,
 	List,
+	LoadingBlock,
 	Tabs,
 	Toast,
 	Touch,
@@ -254,7 +255,11 @@ class Hello extends React.Component {
 										</Chunk>
 
 
-										{!user.id && this._renderForm()}
+										{!user.id &&
+											<LoadingBlock isLoading={authentication.loading}>
+												{this._renderForm()}
+											</LoadingBlock>
+										}
 
 
 										<Chunk>

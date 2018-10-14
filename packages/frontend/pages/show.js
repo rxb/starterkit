@@ -41,27 +41,30 @@ import styles from './cinderblock/styles/styles';
 
 import Page from './components/Page';
 
+
 const CommentFormInner = props => {
 	return(
 		<form>
-			<Chunk>
-				<TextInput
-					id="comment"
-					placeholder="Post a comment about this show"
-					autoComplete="off"
-					defaultValue={props.values.body}
-					onChangeText={text => props.setFieldValue('body', text)}
-					multiline={true}
-					showCounter={true}
-					numberOfLines={4}
-					maxLength={1000}
-					/>
-			</Chunk>
-			<Chunk>
-				<Touch onPress={props.handleSubmit}>
-					<Button label="Post Comment" />
-				</Touch>
-			</Chunk>
+
+				<Chunk>
+					<TextInput
+						id="comment"
+						placeholder="Post a comment about this show"
+						autoComplete="off"
+						defaultValue={props.values.body}
+						onChangeText={text => props.setFieldValue('body', text)}
+						multiline={true}
+						showCounter={true}
+						numberOfLines={4}
+						maxLength={1000}
+						/>
+				</Chunk>
+				<Chunk>
+					<Touch onPress={props.handleSubmit}>
+						<Button label="Post Comment" />
+					</Touch>
+				</Chunk>
+
 		</form>
 	);
 }

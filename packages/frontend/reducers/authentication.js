@@ -1,11 +1,13 @@
 const authentication = (state = {}, action) => {
   switch (action.type) {
+    case 'LOG_IN':
+      return { loading: true };
     case 'LOG_IN_SUCCESS':
-    	return { token: action.payload.accessToken };
+    	return { token: action.payload.accessToken, loading: false };
     case 'REAUTHENTICATE':
-      return { token: action.payload.token };
+      return { token: action.payload.token, loading: false };
     case 'LOG_OUT':
-    	return {};
+    	return { loading: false };
     default:
       return state
   }

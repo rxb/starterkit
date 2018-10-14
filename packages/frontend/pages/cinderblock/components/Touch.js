@@ -22,6 +22,7 @@ class Touch extends React.Component {
 
 		return(
 				<Touchable
+					className="touch"
 					{...other}
 					onPressIn={()=>{
 						if(!noFeedback){

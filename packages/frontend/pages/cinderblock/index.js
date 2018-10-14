@@ -14,6 +14,7 @@ import Touch from './components/Touch';
 import Label from './components/Label';
 import Link from './components/Link';
 import List from './components/List';
+import LoadingBlock from './components/LoadingBlock';
 import Modal from './components/Modal';
 import Picker from './components/Picker';
 import Prompt from './components/Prompt';
@@ -46,6 +47,7 @@ export {
 	Label,
 	Link,
 	List,
+	LoadingBlock,
 	Modal,
 	Picker,
 	Prompt,
