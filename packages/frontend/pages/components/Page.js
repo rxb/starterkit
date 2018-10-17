@@ -97,17 +97,19 @@ class Menu extends React.Component {
 const LoginFormInner = props => {
 	return(
 		<Chunk>
-			<form name="loginForm" onSubmit={()=>{alert('attempting to submit');}}>
+			<form name="loginForm">
 				<TextInput
 					keyboardType="email-address"
 					placeholder="email"
 					name="email"
+					defaultValue={props.values.email}
 					onChangeText={text => props.setFieldValue('email', text)}
 					/>
 				<TextInput
 					secureTextEntry={true}
 					placeholder="password"
 					name="password"
+					defaultValue={props.values.password}
 					onChangeText={text => props.setFieldValue('password', text)}
 					/>
 				<Touch onPress={props.handleSubmit}>
@@ -151,6 +153,8 @@ class Page extends React.Component {
 	}
 
 	_renderForm(){
+		let formState = {};
+
 		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
 			this.props.logIn(values);
 		};
@@ -272,7 +276,13 @@ class Page extends React.Component {
 							<Chunk>
 								<Text type="pageHead">Log in</Text>
 							</Chunk>
-							{this._renderForm()}
+
+							{!authentication.token && this._renderForm()}
+
+							{authentication.token &&
+								<Text>Welcome back!</Text>
+							}
+
 						</Section>
 					</Stripe>
 				</Modal>

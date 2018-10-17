@@ -57,6 +57,7 @@ class Prompt extends React.Component{
 	componentWillReceiveProps(nextProps){
 		const duration = 250;
 		if(nextProps.visible){
+			// open
 			this.setState({display: 'flex'})
 			Animated.timing(
 				this.state.visibilityValue,{
@@ -67,6 +68,7 @@ class Prompt extends React.Component{
 			).start();
 		}
 		else{
+			// close
 			Animated.timing(
 				this.state.visibilityValue,{
 					toValue: 0,
@@ -84,6 +86,7 @@ class Prompt extends React.Component{
 		const {
 			children,
 			onRequestClose,
+			onClose,
 			media,
 			dismissable,
 			visible,

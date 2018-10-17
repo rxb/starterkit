@@ -3,6 +3,25 @@ import querystring from 'querystring';
 
 const apiHost = 'http://localhost:3030/';
 
+/*
+// GLOBAL MINOR UI
+export const showModal = (id, content) => ({
+    type: 'SHOW_MODAL',
+    payload: {content: content}
+});
+
+export const teardownModal = (id) => ({
+    type: 'TEARDOWN_MODAL',
+    payload: {content: content}
+});
+
+export const removeModal = (id) => ({
+    type: 'REMOVE_MODAL',
+    payload: {content: content}
+});
+*/
+
+
 // FETCH SHOWS
 export const fetchShows = () => ({
 	[RSAA]: {

@@ -11,6 +11,7 @@ import {
 	fetchShowComments
 } from '../actions';
 
+
 import {
 	Avatar,
 	Bounds,
@@ -37,9 +38,66 @@ import {
 	Touch
 } from './cinderblock';
 
+
 import styles from './cinderblock/styles/styles';
 
 import Page from './components/Page';
+
+
+import {
+  Transition,
+  TransitionGroup,
+} from 'react-transition-group';
+
+
+
+const MyTransition = ({ children: child, ...props }) => (
+  // NOTICE THE SPREAD! THIS IS REQUIRED!
+  <Transition {...props}>
+    {transitionState => React.cloneElement(child, {
+      style: getStyleForTransitionState(transitionState)
+    })}
+  </Transition>
+);
+
+
+
+class ListItem extends React.Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			visibilityValue: new Animated.Value(0)
+		}
+	}
+	componentWillEnter (callback) {
+		Animated.timing(
+			this.state.visibilityValue,{
+				toValue: 1,
+				duration: 250
+			}
+		).start(()=>{
+			callback();
+		});
+
+	}
+	componentWillLeave (callback) {
+		callback();
+	}
+	render(){
+		const {
+			thing,
+			i
+		} = this.props;
+		return(
+			<Animated.View style={{opacity: this.state.visibilityValue, backgroundColor: 'red', marginBottom: 2}}>
+				<Text>{i}. {thing}</Text>
+			</Animated.View>
+		)
+	}
+}
+
+import { Animated, Easing, Touchable, View } from './cinderblock/primitives';
+
 
 
 const CommentFormInner = props => {
@@ -72,6 +130,9 @@ const CommentFormInner = props => {
 
 
 
+
+
+
 class Show extends React.Component {
 
 	static async getInitialProps (context) {
@@ -83,6 +144,13 @@ class Show extends React.Component {
 			showId: showId,
 			show: show.payload
 		};
+	}
+
+	constructor(props){
+		super(props);
+		this.state = {
+			things: []
+		}
 	}
 
 	componentDidMount(){
@@ -125,6 +193,10 @@ class Show extends React.Component {
 								<Chunk>
 									<Text type="pageHead">{show.title}</Text>
 								</Chunk>
+
+
+
+
 
 								<Chunk>
 									<Text type="sectionHead">Comments</Text>

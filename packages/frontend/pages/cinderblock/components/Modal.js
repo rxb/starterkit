@@ -22,6 +22,33 @@ fixed positioning gets weird
 
 
 
+/*
+
+/////////////////////////
+potential redux version
+
+// state shape
+modals: [
+	{id: id, content: content, status: showing / hiding }
+]
+
+const id = id;
+dispatch(showModal(id, content));
+// mounts modal hidden then triggers animation to reveal
+
+dispatch(hideModal(id));
+// animates hiding, then triggers
+
+dispatch(removeModal(id));
+
+
+/////////////////////////
+alternate way is to have a skeleton modal just hanging out and waiting to be popped
+
+*/
+
+
+
 class Modal extends React.Component{
 
 	constructor(props) {

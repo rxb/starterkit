@@ -61,7 +61,7 @@ const LoginFormInner = props => {
 					name="password"
 					onChangeText={text => props.setFieldValue('password', text)}
 					/>
-				<Touch onPress={props.handleSubmit} accessibilityRole="submit">
+				<Touch onPress={props.handleSubmit} accessibilityRole="submit" isLoading={props.isSubmitting}>
 					<Button label="Log in" width="full" />
 				</Touch>
 			</form>
@@ -102,6 +102,7 @@ class Hello extends React.Component {
 	}
 
 	// this should probably come from Redux, ultimately
+	// update: wow, previous you, this is smart.
 	addToast(message) {
 		this.toastRef.current.addToast(message);
 	}
@@ -255,11 +256,7 @@ class Hello extends React.Component {
 										</Chunk>
 
 
-										{!user.id &&
-											<LoadingBlock isLoading={authentication.loading}>
-												{this._renderForm()}
-											</LoadingBlock>
-										}
+										{!user.id && this._renderForm()}
 
 
 										<Chunk>

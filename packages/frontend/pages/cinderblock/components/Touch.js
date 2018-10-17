@@ -3,11 +3,17 @@ import { Touchable, View } from '../primitives';
 import Text from './Text';
 import styles from '../styles/styles';
 
+
+const stateStyles = {
+	active: {opacity: .5},
+	default: {opacity: 1}
+};
+
 class Touch extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			opacity: 1
+			isPressed: false
 		}
 	}
 
@@ -16,9 +22,13 @@ class Touch extends React.Component {
 			children,
 			style,
 			noFeedback,
+			isLoading,
 			...other
 		} = this.props;
 
+		const {
+			isPressed
+		} = this.state
 
 		return(
 				<Touchable
@@ -26,22 +36,19 @@ class Touch extends React.Component {
 					{...other}
 					onPressIn={()=>{
 						if(!noFeedback){
-							this.setState({
-								opacity: .5
-							})
+							this.setState({isPressed: true});
 						}
 					}}
 					onPressOut={()=>{
 						if(!noFeedback){
-							this.setState({
-								opacity: 1
-							})
+							this.setState({isPressed: false});
 						}
 					}}
 					>
-					<View style={ [{
-							opacity: this.state.opacity
-						}, style]}>
+					<View style={ [
+						(isPressed || isLoading) ? stateStyles.active : stateStyles.default,
+						style
+					]}>
 						<React.Fragment>{children}</React.Fragment>
 					</View>
 				</Touchable>
