@@ -3,8 +3,8 @@ import React from 'react'
 import { AppRegistry } from 'react-native-web'
 
 
-import { BREAKPOINT_SIZES } from './cinderblock/designConstants';
-import swatches from './cinderblock/styles/swatches';
+import { BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
+import swatches from '../components/cinderblock/styles/swatches';
 
 let index = 0
 export default class MyDocument extends Document {

@@ -37,14 +37,14 @@ import {
 	Text,
 	TextInput,
 	Touch
-} from './cinderblock';
+} from '../components/cinderblock';
 
 
-import styles from './cinderblock/styles/styles';
-import Page from './components/Page';
+import styles from '../components/cinderblock/styles/styles';
+import Page from '../components/Page';
 
 
-import { View } from './cinderblock/primitives';
+import { View } from '../components/cinderblock/primitives';
 import { Transition, animated } from 'react-spring';
 const AnimatedView = animated(View)
 

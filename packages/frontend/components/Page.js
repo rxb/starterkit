@@ -20,7 +20,7 @@ import {
 	logIn,
 	logOut,
 	fetchUser
-} from '../../actions';
+} from '../actions';
 
 
 import {
@@ -28,7 +28,7 @@ import {
   View,
   Text as ReactText,
   StyleSheet
-} from '../cinderblock/primitives';
+} from './cinderblock/primitives';
 
 import {
 	Avatar,
@@ -55,10 +55,10 @@ import {
 	Stripe,
 	Text,
 	TextInput
-} from '../cinderblock';
+} from './cinderblock';
 
-import styles from '../cinderblock/styles/styles';
-import swatches from '../cinderblock/styles/swatches';
+import styles from './cinderblock/styles/styles';
+import swatches from './cinderblock/styles/swatches';
 
 
 class Menu extends React.Component {

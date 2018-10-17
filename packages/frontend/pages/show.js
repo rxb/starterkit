@@ -36,29 +36,16 @@ import {
 	Text,
 	TextInput,
 	Touch
-} from './cinderblock';
+} from '../components/cinderblock';
 
 
-import styles from './cinderblock/styles/styles';
+import styles from '../components/cinderblock/styles/styles';
 
-import Page from './components/Page';
-
-
-import {
-  Transition,
-  TransitionGroup,
-} from 'react-transition-group';
+import Page from '../components/Page';
 
 
 
-const MyTransition = ({ children: child, ...props }) => (
-  // NOTICE THE SPREAD! THIS IS REQUIRED!
-  <Transition {...props}>
-    {transitionState => React.cloneElement(child, {
-      style: getStyleForTransitionState(transitionState)
-    })}
-  </Transition>
-);
+
 
 
 
@@ -96,7 +83,7 @@ class ListItem extends React.Component {
 	}
 }
 
-import { Animated, Easing, Touchable, View } from './cinderblock/primitives';
+import { Animated, Easing, Touchable, View } from '../components/cinderblock/primitives';
 
 
 
@@ -193,9 +180,6 @@ class Show extends React.Component {
 								<Chunk>
 									<Text type="pageHead">{show.title}</Text>
 								</Chunk>
-
-
-
 
 
 								<Chunk>

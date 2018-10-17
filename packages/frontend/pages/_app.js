@@ -29,9 +29,10 @@ const authMiddleware = ({getState, dispatch}) => next => action => {
 
 
 // will need to use next cookies somehow?
-const startState = {};
+const startState = {authentication: {}};
 if (process.browser) {
-  startState['authentication'] = JSON.parse(localStorage.getItem('AUTHENTICATION'));
+  // all values from localstorage are strings until parsed, even null
+  startState['authentication'] = JSON.parse(localStorage.getItem('AUTHENTICATION')) || {};
 }
 
 const makeStore = (initialState, options) => {

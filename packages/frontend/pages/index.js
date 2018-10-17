@@ -2,8 +2,8 @@ import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
 import Head from 'next/head'
 
-import styles from './cinderblock/styles/styles';
-import swatches from './cinderblock/styles/swatches';
+import styles from '../components/cinderblock/styles/styles';
+import swatches from '../components/cinderblock/styles/swatches';
 import {
 	Bounds,
 	Button,
@@ -30,9 +30,9 @@ import {
 	Stripe,
 	Text,
 	TextInput
-} from './cinderblock';
+} from '../components/cinderblock';
 
-import Page from './components/Page';
+import Page from '../components/Page';
 
 
 import { connect } from 'react-redux';

@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
 import { connect } from 'react-redux';
 
-import SimpleMDE from 'react-simplemde-editor';
+//import SimpleMDE from 'react-simplemde-editor';
 
 import {
 	Bounds,
@@ -27,11 +27,11 @@ import {
 	Text,
 	TextInput,
 	Touch
-} from './cinderblock';
+} from '../components/cinderblock';
 
-import styles from './cinderblock/styles/styles';
+import styles from '../components/cinderblock/styles/styles';
 
-import Page from './components/Page';
+import Page from '../components/Page';
 
 
 const OtherFormInner = props => {
