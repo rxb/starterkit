@@ -42,8 +42,6 @@ import {
 	fetchUser
 } from '../actions';
 
-import loremIpsum from 'lorem-ipsum';
-
 
 const LoginFormInner = props => {
 	return(

@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
 import { connect } from 'react-redux';
 import Head from 'next/head'
-import moment from 'moment'
 import uuid from 'uuid/v1';
 
 import {

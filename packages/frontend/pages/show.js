@@ -1,8 +1,11 @@
 import React, {Fragment} from 'react';
 import { withFormik } from 'formik';
 import { connect } from 'react-redux';
-import Head from 'next/head'
-import moment from 'moment'
+import Head from 'next/head';
+
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 
 import {
 	fetchShow,
@@ -42,9 +45,6 @@ import {
 import styles from '../components/cinderblock/styles/styles';
 
 import Page from '../components/Page';
-
-
-
 
 
 
@@ -202,7 +202,7 @@ class Show extends React.Component {
 													<Text>{comment.body}</Text>
 													<Text>
 														<Text type="small" color="secondary">{comment.user.name} </Text>
-														<Text type="small" color="hint">&middot; {moment(comment.createdAt).fromNow()} </Text>
+														<Text type="small" color="hint">&middot; {dayjs(comment.createdAt).fromNow()} </Text>
 														{ comment.user.id == user.id &&
 															<Fragment>
 																<Link onPress={()=>{

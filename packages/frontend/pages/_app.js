@@ -10,7 +10,6 @@ import { apiMiddleware, isRSAA, RSAA } from 'redux-api-middleware';
 import withRedux from "next-redux-wrapper";
 import reducer from '../reducers';
 
-
 import {
   fetchUser,
   reauthenticate
