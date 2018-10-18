@@ -1,5 +1,5 @@
 //import 'isomorphic-unfetch'
-import 'cross-fetch/polyfill';
+import "cross-fetch/polyfill";
 
 import App, {Container} from 'next/app'
 import React from 'react'

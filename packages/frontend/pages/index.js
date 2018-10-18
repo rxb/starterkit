@@ -43,6 +43,7 @@ import {
 } from '../actions';
 
 
+
 const LoginFormInner = props => {
 	return(
 		<Chunk>
@@ -59,9 +60,13 @@ const LoginFormInner = props => {
 					name="password"
 					onChangeText={text => props.setFieldValue('password', text)}
 					/>
-				<Touch onPress={props.handleSubmit} accessibilityRole="submit" isLoading={props.isSubmitting}>
-					<Button label="Log in" width="full" />
-				</Touch>
+				<Button
+					onPress={props.handleSubmit}
+					accessibilityRole="submit"
+					isLoading={props.isSubmitting}
+					label="Log in"
+					width="full"
+					/>
 			</form>
 		</Chunk>
 	);
@@ -258,18 +263,26 @@ class Hello extends React.Component {
 
 
 										<Chunk>
-											<Touch onPress={this.toggleModal}>
-												<Button color="secondary" label="Show modal" width="full" />
-											</Touch>
-											<Touch onPress={()=>{
-												this.addToast("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud")
-											}}>
-												<Button color="secondary" label="Toast me" width="full" />
-											</Touch>
-
-											<Touch onPress={this.togglePrompt}>
-												<Button color="secondary" label="Do a prompt" width="full" />
-											</Touch>
+											<Button
+												onPress={this.toggleModal}
+												color="secondary"
+												label="Show modal"
+												width="full"
+												/>
+											<Button
+												color="secondary"
+												label="Toast me"
+												width="full"
+												onPress={()=>{
+													this.addToast("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud")
+												}}
+												/>
+											<Button
+												onPress={this.togglePrompt}
+												color="secondary"
+												label="Do a prompt"
+												width="full"
+												/>
 										</Chunk>
 
 
@@ -321,9 +334,7 @@ class Hello extends React.Component {
 								</Chunk>
 								<Chunk>
 									<input type="hidden" name="strategy" value="local" />
-									<Touch>
-										<Button label="Submit" />
-									</Touch>
+									<Button label="Submit" />
 								</Chunk>
 							</form>
 						</Section>
@@ -343,12 +354,17 @@ class Hello extends React.Component {
 							<Text>Here I asking a question and seeing what to do about it.</Text>
 						</Chunk>
 						<Chunk>
-							<Touch onPress={this.togglePrompt}>
-								<Button label="Let's do it" width="full" />
-							</Touch>
-							<Touch onPress={this.togglePrompt}>
-								<Button color="secondary" label="No thanks" width="full" />
-							</Touch>
+							<Button
+								onPress={this.togglePrompt}
+								label="Let's do it"
+								width="full"
+								/>
+							<Button
+								onPress={this.togglePrompt}
+								color="secondary"
+								label="No thanks"
+								width="full"
+								/>
 						</Chunk>
 					</Section>
 				</Prompt>

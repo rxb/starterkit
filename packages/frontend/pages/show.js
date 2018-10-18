@@ -48,7 +48,6 @@ import Page from '../components/Page';
 
 
 
-
 class ListItem extends React.Component {
 	constructor(props){
 		super(props);
@@ -105,9 +104,10 @@ const CommentFormInner = props => {
 						/>
 				</Chunk>
 				<Chunk>
-					<Touch onPress={props.handleSubmit}>
-						<Button label="Post Comment" />
-					</Touch>
+					<Button
+						onPress={props.handleSubmit}
+						label="Post Comment"
+						/>
 				</Chunk>
 
 		</form>

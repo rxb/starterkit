@@ -42,16 +42,12 @@ export default class MyDocument extends Document {
             background-color: transparent;
           }
 
-          /* prevent tapping from outlining, leaves for accessibility */
-          .touch{
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+          /* other element focus https://nelo.is/writing/styling-better-focus-states/ */
+          /*
+          :focus:not(.focus-visible) {
+            outline: none;
           }
-
+          */
         `}}
       />,
       getStyleElement()

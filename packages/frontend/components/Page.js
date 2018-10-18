@@ -112,9 +112,12 @@ const LoginFormInner = props => {
 					defaultValue={props.values.password}
 					onChangeText={text => props.setFieldValue('password', text)}
 					/>
-				<Touch onPress={props.handleSubmit}>
-					<Button label="Log in" width="full" type="submit" />
-				</Touch>
+				<Button
+					label="Log in"
+					width="full"
+					type="submit"
+					onPress={props.handleSubmit}
+					/>
 			</form>
 		</Chunk>
 	);

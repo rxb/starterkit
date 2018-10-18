@@ -179,9 +179,10 @@ const OtherFormInner = props => {
 			</Section>
 			<Section>
 				<Chunk>
-					<Touch onPress={props.handleSubmit}>
-						<Button label="Submit" />
-					</Touch>
+					<Button
+						onPress={props.handleSubmit}
+						label="Submit"
+						/>
 				</Chunk>
 			</Section>
 		</Sections>
