@@ -54,7 +54,10 @@ class Prompt extends React.Component{
 
 	static defaultProps = {
     	onPressEnter: ()=>{},
-    	dismissable: true
+    	onRequestClose: ()=>{ console.log('onRequestClose not implemented') },
+    	onCompleteClose: ()=>{ },
+    	dismissable: true,
+    	visible: false
   	}
 
 	constructor(props) {
@@ -68,6 +71,11 @@ class Prompt extends React.Component{
 
 	componentDidMount(){
 		document.addEventListener("keydown", this.onKeyPress, false);
+		if(this.props.visible){
+			setTimeout(()=>{
+				this.open();
+			}, 1);
+		}
 	}
 	componentWillUnmount(){
 		document.removeEventListener("keydown", this.onKeyPress, false);
@@ -85,30 +93,38 @@ class Prompt extends React.Component{
 	}
 
 	componentWillReceiveProps(nextProps){
-		const duration = 250;
 		if(nextProps.visible){
-			// open
-			this.setState({display: 'flex'})
-			Animated.timing(
-				this.state.visibilityValue,{
-					toValue: 1,
-					easing: EASE,
-					duration
-				}
-			).start();
+			this.open();
 		}
 		else{
-			// close
-			Animated.timing(
-				this.state.visibilityValue,{
-					toValue: 0,
-					easing: EASE,
-					duration
-				}
-			).start(()=>{
-				this.setState({display: 'none'});
-			});
+			this.close();
 		}
+	}
+
+	open(){
+		const duration = 250;
+		this.setState({display: 'flex'})
+		Animated.timing(
+			this.state.visibilityValue,{
+				toValue: 1,
+				easing: EASE,
+				duration
+			}
+		).start();
+	}
+
+	close(){
+		const duration = 250;
+		Animated.timing(
+			this.state.visibilityValue,{
+				toValue: 0,
+				easing: EASE,
+				duration
+			}
+		).start(()=>{
+			this.setState({display: 'none'});
+			this.props.onCompleteClose();
+		});
 	}
 
 
@@ -116,7 +132,7 @@ class Prompt extends React.Component{
 		const {
 			children,
 			onRequestClose,
-			onClose,
+			onCompleteClose,
 			media,
 			dismissable,
 			visible,
@@ -162,6 +178,82 @@ class Prompt extends React.Component{
 }
 
 
+/*
+
+prompt notes
+
+api for showing / dismissing prompts
+
+const promptId = showPrompt(content);
+hidePrompt(promptId);
+
+
+*/
+
+
+
+
+class PromptManager extends React.Component{
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			prompts: []
+		}
+	}
+
+	showPrompt(content){
+		console.log('show');
+		const id = uuid();
+		const prompts = [...this.state.prompts];
+		prompts.push({
+			id: id,
+			content: content,
+			showable: true
+		});
+		this.setState({ prompts: prompts })
+		return id;
+	}
+
+	hidePrompt(id){
+		const prompts = [...this.state.prompts];
+		const index = prompts.findIndex(prompt => prompt.id == id);
+		prompts[index].showable = false;
+		this.setState({ prompts: prompts })
+	}
+
+	deletePrompt(id){
+		const prompts = [...this.state.prompts];
+		const index = prompts.findIndex(prompt => prompt.id == id);
+		prompts.splice(index, 1);
+		this.setState({ prompts: prompts })
+	}
+
+	render(){
+		const {
+			children
+		} = this.props;
+		const thisPrompt = this.state.prompts[0];
+		return(
+			<View>
+				<Text>ok</Text>
+				{ thisPrompt &&
+					<Prompt
+						visible={thisPrompt.showable}
+						onRequestClose={()=>{
+							this.hidePrompt(thisPrompt.id)
+						}}
+						onCompleteClose={()=>{
+							this.deletePrompt(thisPrompt.id)
+						}}
+						>
+						{thisPrompt.content}
+					</Prompt>
+				}
+			</View>
+		)
+	}
+}
 
 class Scratch extends React.Component {
 
@@ -210,14 +302,9 @@ class Scratch extends React.Component {
 								  		<Chunk>
 									  		<Text>{thing.message} {thing.id}</Text>
 									  		<Link  onPress={()=>{
-									  			/*
-									  			var r = confirm("Are you sure?");
-												if (r == true) {
-												   	const things = this.state.things.filter( item => item.id != thing.id);
-													this.setState({things: things});
-												}
-												*/
-												this.setState({showPrompt: true})
+												const id = this.promptManager.showPrompt(
+													<Text>YEAH CONTENT</Text>
+												);
 									  		}}>
 									  			<Text color="tint">Delete</Text>
 									  		</Link>
@@ -240,12 +327,9 @@ class Scratch extends React.Component {
 					</Bounds>
 				</Stripe>
 
-					<Prompt visible={this.state.showPrompt} onRequestClose={()=>{
-						this.setState({showPrompt: false});
-					}}>
-						<Text>Hello I am prompt</Text>
-					</Prompt>
-
+				<PromptManager
+					ref={ref => {this.promptManager = ref}}
+					/>
 			</Page>
 		);
 	}
