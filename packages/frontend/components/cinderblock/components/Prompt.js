@@ -24,7 +24,10 @@ class Prompt extends React.Component{
 
 	static defaultProps = {
     	onPressEnter: ()=>{},
-    	dismissable: true
+    	onRequestClose: ()=>{ console.log('onRequestClose not implemented') },
+    	onCompleteClose: ()=>{ },
+    	dismissable: true,
+    	visible: false
   	}
 
 	constructor(props) {
@@ -38,6 +41,11 @@ class Prompt extends React.Component{
 
 	componentDidMount(){
 		document.addEventListener("keydown", this.onKeyPress, false);
+		if(this.props.visible){
+			setTimeout(()=>{
+				this.open();
+			}, 1);
+		}
 	}
 	componentWillUnmount(){
 		document.removeEventListener("keydown", this.onKeyPress, false);
@@ -55,30 +63,38 @@ class Prompt extends React.Component{
 	}
 
 	componentWillReceiveProps(nextProps){
-		const duration = 250;
 		if(nextProps.visible){
-			// open
-			this.setState({display: 'flex'})
-			Animated.timing(
-				this.state.visibilityValue,{
-					toValue: 1,
-					easing: EASE,
-					duration
-				}
-			).start();
+			this.open();
 		}
 		else{
-			// close
-			Animated.timing(
-				this.state.visibilityValue,{
-					toValue: 0,
-					easing: EASE,
-					duration
-				}
-			).start(()=>{
-				this.setState({display: 'none'});
-			});
+			this.close();
 		}
+	}
+
+	open(){
+		const duration = 250;
+		this.setState({display: 'flex'})
+		Animated.timing(
+			this.state.visibilityValue,{
+				toValue: 1,
+				easing: EASE,
+				duration
+			}
+		).start();
+	}
+
+	close(){
+		const duration = 250;
+		Animated.timing(
+			this.state.visibilityValue,{
+				toValue: 0,
+				easing: EASE,
+				duration
+			}
+		).start(()=>{
+			this.setState({display: 'none'});
+			this.props.onCompleteClose();
+		});
 	}
 
 
@@ -86,7 +102,7 @@ class Prompt extends React.Component{
 		const {
 			children,
 			onRequestClose,
-			onClose,
+			onCompleteClose,
 			media,
 			dismissable,
 			visible,
@@ -128,7 +144,6 @@ class Prompt extends React.Component{
 				</Animated.View>
 			</Animated.View>
 		);
-
 	}
 }
 

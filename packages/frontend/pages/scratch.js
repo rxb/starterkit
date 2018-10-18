@@ -29,6 +29,7 @@ import {
 	Link,
 	Modal,
 	Picker,
+	Prompt,
 	Section,
 	Sections,
 	Sectionless,
@@ -43,152 +44,15 @@ import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
 
-//import { View } from '../components/cinderblock/primitives';
+/*
 import { Transition, animated } from 'react-spring';
 const AnimatedView = animated(View)
-
+*/
 
 import { Animated, Easing, Touchable, View } from '../components/cinderblock/primitives';
 import { METRICS, EASE } from '../components/cinderblock/designConstants';
-class Prompt extends React.Component{
-
-	static defaultProps = {
-    	onPressEnter: ()=>{},
-    	onRequestClose: ()=>{ console.log('onRequestClose not implemented') },
-    	onCompleteClose: ()=>{ },
-    	dismissable: true,
-    	visible: false
-  	}
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			display: 'none',
-			visibilityValue: new Animated.Value(0)
-		}
-		this.onKeyPress = this.onKeyPress.bind(this);
-	}
-
-	componentDidMount(){
-		document.addEventListener("keydown", this.onKeyPress, false);
-		if(this.props.visible){
-			setTimeout(()=>{
-				this.open();
-			}, 1);
-		}
-	}
-	componentWillUnmount(){
-		document.removeEventListener("keydown", this.onKeyPress, false);
-	}
-
-	onKeyPress(event){
-		if(this.props.visible){
-			if(event.keyCode === 27 && this.props.dismissable) {
-				this.props.onRequestClose();
-			}
-			else if(event.keyCode === 13){
-				this.props.onPressEnter();
-			}
-		}
-	}
-
-	componentWillReceiveProps(nextProps){
-		if(nextProps.visible){
-			this.open();
-		}
-		else{
-			this.close();
-		}
-	}
-
-	open(){
-		const duration = 250;
-		this.setState({display: 'flex'})
-		Animated.timing(
-			this.state.visibilityValue,{
-				toValue: 1,
-				easing: EASE,
-				duration
-			}
-		).start();
-	}
-
-	close(){
-		const duration = 250;
-		Animated.timing(
-			this.state.visibilityValue,{
-				toValue: 0,
-				easing: EASE,
-				duration
-			}
-		).start(()=>{
-			this.setState({display: 'none'});
-			this.props.onCompleteClose();
-		});
-	}
 
 
-	render() {
-		const {
-			children,
-			onRequestClose,
-			onCompleteClose,
-			media,
-			dismissable,
-			visible,
-			...other
-		} = this.props;
-
-		const promptStyle = styles['prompt'];
-
-
-		return(
-			<Animated.View style={[
-				styles['modal-container'],
-				{
-					display: this.state.display,
-					opacity: this.state.visibilityValue
-				}
-			]}>
-
-				<Touch
-					onPress={(dismissable) ? onRequestClose : ()=>{} }
-					noFeedback
-					>
-						<View style={[ styles['modal-backdrop'] ]} />
-				</Touch>
-				<Animated.View style={[
-					promptStyle,
-					{
-						transform: [{
-					      translateY: this.state.visibilityValue.interpolate({
-					        inputRange: [0, 1],
-					        outputRange: [150, 0]
-					      }),
-					    }]
-					}
-				]}>
-					<Stripe>
-						{children}
-					</Stripe>
-				</Animated.View>
-			</Animated.View>
-		);
-	}
-}
-
-
-/*
-
-prompt notes
-
-api for showing / dismissing prompts
-
-const promptId = showPrompt(content);
-hidePrompt(promptId);
-
-
-*/
 
 
 
@@ -235,8 +99,7 @@ class PromptManager extends React.Component{
 		} = this.props;
 		const thisPrompt = this.state.prompts[0];
 		return(
-			<View>
-				<Text>ok</Text>
+			<Fragment>
 				{ thisPrompt &&
 					<Prompt
 						visible={thisPrompt.showable}
@@ -250,7 +113,7 @@ class PromptManager extends React.Component{
 						{thisPrompt.content}
 					</Prompt>
 				}
-			</View>
+			</Fragment>
 		)
 	}
 }
@@ -267,6 +130,25 @@ class Scratch extends React.Component {
 			things: [],
 			showPrompt: false
 		}
+	}
+
+	_renderDeletePrompt(thing){
+		return(
+			<Chunk>
+			<Text>some garbage</Text>
+			<Button
+				onPress={()=>{
+					const things = [...this.state.things];
+					const index = things.findIndex(item => item.id == thing.id);
+					if(index >= 0){
+						things.splice(index, 1);
+						this.setState({things: things});
+					}
+				}}
+				label="Yes I'm sure"
+				/>
+			</Chunk>
+		);
 	}
 
 	render() {
@@ -292,26 +174,19 @@ class Scratch extends React.Component {
 									<Text type="pageHead">Scratch</Text>
 								</Chunk>
 
-								<Transition native
-								  keys={things.map((thing) => thing.id)}
-								  from={{ opacity: 0, height: 0 }}
-								  enter={{ opacity: 1, height: 'auto' }}
-								  leave={{ opacity: 0, height: 0 }}>
-								  {things.map(thing => styles => (
-								  	<AnimatedView style={{...styles}}>
+
+								  {things.map(thing => (
 								  		<Chunk>
 									  		<Text>{thing.message} {thing.id}</Text>
 									  		<Link  onPress={()=>{
-												const id = this.promptManager.showPrompt(
-													<Text>YEAH CONTENT</Text>
-												);
+												this.promptManager.showPrompt( this._renderDeletePrompt(thing) );
 									  		}}>
 									  			<Text color="tint">Delete</Text>
 									  		</Link>
 									  	</Chunk>
-								  	</AnimatedView>
+
+
 								  ))}
-								</Transition>
 
 								<Button
 									label="add thing"
@@ -349,3 +224,26 @@ export default connect(
 	mapStateToProps,
 	actionCreators
 )(Scratch);
+
+
+
+/*
+<Transition native
+  keys={things.map((thing) => thing.id)}
+  from={{ opacity: 0, height: 0 }}
+  enter={{ opacity: 1, height: 'auto' }}
+  leave={{ opacity: 0, height: 0 }}>
+  {things.map(thing => styles => (
+  	<AnimatedView style={{...styles}}>
+  		<Chunk>
+	  		<Text>{thing.message} {thing.id}</Text>
+	  		<Link  onPress={()=>{
+				this.promptManager.showPrompt( this._renderDeletePrompt(thing) );
+	  		}}>
+	  			<Text color="tint">Delete</Text>
+	  		</Link>
+	  	</Chunk>
+  	</AnimatedView>
+  ))}
+</Transition>
+*/

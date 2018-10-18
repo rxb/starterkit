@@ -51,6 +51,13 @@ alternate way is to have a skeleton modal just hanging out and waiting to be pop
 
 class Modal extends React.Component{
 
+	static defaultProps = {
+    	onPressEnter: ()=>{},
+    	onRequestClose: ()=>{ console.log('onRequestClose not implemented') },
+    	onCompleteClose: ()=>{ },
+    	visible: false
+  	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -63,6 +70,11 @@ class Modal extends React.Component{
 
 	componentDidMount(){
 		document.addEventListener("keydown", this.onKeyPress, false);
+		if(this.props.visible){
+			setTimeout(()=>{
+				this.open();
+			}, 1);
+		}
 	}
 	componentWillUnmount(){
 		document.removeEventListener("keydown", this.onKeyPress, false);
@@ -78,29 +90,40 @@ class Modal extends React.Component{
 	}
 
 	componentWillReceiveProps(nextProps){
-		const duration = 250;
 		if(nextProps.visible){
-			this.setState({display: 'flex'})
-			Animated.timing(
-				this.state.visibilityValue,{
-					toValue: 1,
-					easing: EASE,
-					duration
-				}
-			).start();
+			this.open();
 		}
 		else{
-			Animated.timing(
-				this.state.visibilityValue,{
-					toValue: 0,
-					easing: EASE,
-					duration
-				}
-			).start(()=>{
-				this.setState({display: 'none'});
-			});
+			this.close();
 		}
 	}
+
+	open(){
+		const duration = 250;
+		this.setState({display: 'flex'})
+		Animated.timing(
+			this.state.visibilityValue,{
+				toValue: 1,
+				easing: EASE,
+				duration
+			}
+		).start();
+	}
+
+	close(){
+		const duration = 250;
+		Animated.timing(
+			this.state.visibilityValue,{
+				toValue: 0,
+				easing: EASE,
+				duration
+			}
+		).start(()=>{
+			this.setState({display: 'none'});
+			this.props.onCompleteClose();
+		});
+	}
+
 
 	render() {
 
