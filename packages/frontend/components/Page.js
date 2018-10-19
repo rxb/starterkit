@@ -46,6 +46,7 @@ import {
 	Link,
 	List,
 	Touch,
+	Menu,
 	Modal,
 	Picker,
 	Prompt,
@@ -61,35 +62,7 @@ import styles from './cinderblock/styles/styles';
 import swatches from './cinderblock/styles/swatches';
 
 
-class Menu extends React.Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			visible: false,
-		}
-		this.toggle = this.toggle.bind(this);
-	}
 
-	toggle(){
-		this.setState({visible: !this.state.visible});
-	}
-
-	render(){
-		const {
-			children,
-			visible,
-		} = this.props;
-		return (
-			<View style={styles['menu-container']}>
-			{ this.state.visible &&
-				<View style={styles.menu}>
-						{children}
-				</View>
-			}
-			</View>
-		);
-	}
-};
 
 
 

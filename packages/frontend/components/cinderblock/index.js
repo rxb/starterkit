@@ -15,6 +15,7 @@ import Label from './components/Label';
 import Link from './components/Link';
 import List from './components/List';
 import LoadingBlock from './components/LoadingBlock';
+import Menu from './components/Menu';
 import Modal from './components/Modal';
 import Picker from './components/Picker';
 import Prompt from './components/Prompt';
@@ -48,6 +49,7 @@ export {
 	Link,
 	List,
 	LoadingBlock,
+	Menu,
 	Modal,
 	Picker,
 	Prompt,

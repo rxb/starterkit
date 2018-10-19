@@ -202,10 +202,6 @@ const OtherForm = withFormik({
 
 
 class Other extends React.Component {
-	constructor(props){
-		super(props);
-		this.counter = React.createRef();
-	}
 
 	render() {
 

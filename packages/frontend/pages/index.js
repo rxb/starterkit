@@ -47,17 +47,17 @@ import {
 const LoginFormInner = props => {
 	return(
 		<Chunk>
-			<form name="loginForm" onSubmit={()=>{alert('attempting to submit');}}>
+			<form name="loginForm">
 				<TextInput
+					id="email"
 					keyboardType="email-address"
 					placeholder="email"
-					name="email"
 					onChangeText={text => props.setFieldValue('email', text)}
 					/>
 				<TextInput
+					id="password"
 					secureTextEntry={true}
-					placeholder="password"
-					name="password"
+					placeholder="password!!!"
 					onChangeText={text => props.setFieldValue('password', text)}
 					/>
 				<Button
@@ -153,7 +153,8 @@ class Hello extends React.Component {
 
 	_renderForm(){
 		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
-			this.props.logIn(values);
+			//this.props.logIn(values);
+			alert(`in theory we are submitting... ${JSON.stringify(values)}`);
 		};
 
 		const LoginForm = withFormik({
