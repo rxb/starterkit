@@ -253,9 +253,9 @@ class Page extends React.Component {
 								<Text type="pageHead">Log in</Text>
 							</Chunk>
 
-							{!authentication.token && this._renderForm()}
+							{!user.id && this._renderForm()}
 
-							{authentication.token &&
+							{user.id &&
 								<Text>Welcome back!</Text>
 							}
 

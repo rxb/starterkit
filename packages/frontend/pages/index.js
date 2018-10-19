@@ -153,8 +153,8 @@ class Hello extends React.Component {
 
 	_renderForm(){
 		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
-			//this.props.logIn(values);
-			alert(`in theory we are submitting... ${JSON.stringify(values)}`);
+			this.props.logIn(values);
+			//alert(`in theory we are submitting... ${JSON.stringify(values)}`);
 		};
 
 		const LoginForm = withFormik({

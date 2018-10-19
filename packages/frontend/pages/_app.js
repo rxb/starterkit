@@ -57,21 +57,17 @@ class ThisApp extends App {
  static async getInitialProps ({ Component, router, ctx }) {
 
     const {store} = ctx;
-    if (process.browser) {
-      store.subscribe(() => {
-        localStorage.setItem('AUTHENTICATION', JSON.stringify(store.getState().authentication));
-      });
-      ;
-    }
 
     let pageProps = (Component.getInitialProps) ? await Component.getInitialProps(ctx) : {};
     return {pageProps}
   }
 
-
   componentDidMount(){
     // if you don't pass through connect
-    // you have to put the action creator into store.dispatch
+    // you have to be more verbose asi
+    this.props.store.subscribe(() => {
+      localStorage.setItem('AUTHENTICATION', JSON.stringify(this.props.store.getState().authentication));
+    });
     this.props.store.dispatch(fetchUser('self'));
   }
 
