@@ -1,22 +1,48 @@
 import React from 'react';
 import { Animated, Touchable, View } from '../primitives';
 import Text from './Text';
+import Touch from './Touch';
+import Icon from './Icon';
+import Flex from './Flex';
+import FlexItem from './FlexItem';
 import styles from '../styles/styles';
+import swatches from '../styles/swatches';
 import { METRICS, EASE } from '../designConstants';
+import uuid from 'uuid/v1';
 
 const duration = 200;
 
 class ToastItem extends React.Component {
+
+	static defaultProps = {
+    	onCompleteClose: ()=>{ },
+  	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
 			visibility: new Animated.Value(0),
-			display: 'block'
 		}
-		this.teardown = this.teardown.bind(this);
 	}
 
 	componentDidMount(){
+		if(this.props.visible){
+			setTimeout(()=>{
+				this.open();
+			}, 1);
+		}
+	}
+
+	componentWillReceiveProps(nextProps){
+		if(nextProps.visible){
+			this.open();
+		}
+		else{
+			this.close();
+		}
+	}
+
+	open(){
 		Animated.timing(
 			this.state.visibility,{
 				toValue: 1,
@@ -26,29 +52,22 @@ class ToastItem extends React.Component {
 		).start();
 	}
 
-	teardown(){
-		const self = this;
-		return new Promise(
-			function (resolve, reject) {
-				Animated.timing(
-					self.state.visibility, {
-						toValue: 0,
-						easing: EASE,
-						duration
-					})
-					.start(()=>{
-						self.setState({display: 'none'});
-						resolve();
-					});
-			}
-		);
+	close(){
+		Animated.timing(
+			this.state.visibility, {
+				toValue: 0,
+				easing: EASE,
+				duration
+			})
+			.start(()=>{
+				this.props.onCompleteClose();
+			});
 	}
 
 	render(){
 		return(
 			<Animated.View
 				style={{
-					display: this.state.display,
 					marginTop: this.state.visibility.interpolate({
 				    	inputRange: [0, 1],
 				        outputRange: [-60, 0]
@@ -57,7 +76,22 @@ class ToastItem extends React.Component {
 				}}
 				>
 				<View style={styles.toast}>
-					<Text color="primary" inverted>{this.props.toast.message}</Text>
+					<Flex direction="row">
+						<FlexItem>
+							<Text color="primary" inverted>{this.props.toast.message}</Text>
+						</FlexItem>
+						<FlexItem shrink>
+							<Touch onPress={()=>{
+								this.props.onRequestClose();
+							}}>
+								<Icon
+									shape='X'
+									color={swatches.textSecondaryInverted}
+									size="medium"
+									/>
+							</Touch>
+						</FlexItem>
+					</Flex>
 				</View>
 			</Animated.View>
 		);
@@ -71,52 +105,44 @@ class Toast extends React.Component {
 		super(props);
 		this.state = {
 			toasts: [],
-			toastCursor: 0,
 		}
-		this.addToast = this.addToast.bind(this);
-		this.removeToast = this.removeToast.bind(this);
-		this.getToastId = this.getToastId.bind(this);
 	}
-
-	getToastId(){
-		const thisToastId = this.state.toastCursor;
-		this.setState({toastCursor: this.state.toastCursor+1})
-		return `toast${thisToastId}`;
-	}
-
-	// clearToasts being used at the moment
-	// seems to be the problem
-	// i think it has to do with the refs getting weird
-	// when state gets recreated
-	/*
-	clearToasts(){
-		const newToasts = [...this.state.toasts];
-		const index = newToasts.findIndex((t)=>{
-			return t.id == toast.id
-		})
-		newToasts.splice(index, 1);
-		this.setState({toasts: newToasts});
-	}
-	*/
 
 	addToast(message){
-		const thisToastId = this.getToastId();
+		const toastId = uuid();
 		const toasts = [...this.state.toasts];
 		const newToast = {
-			message: `${thisToastId} -- ${message}`,
-			id: thisToastId,
-			ref: React.createRef()
+			message: `${toastId} -- ${message}`,
+			id: toastId,
+			visible: true
 		};
 		toasts.push(newToast);
 		this.setState({toasts});
-		this.removeToast(newToast);
+		this.startRemoveCountdown(toastId);
 	}
 
-	removeToast(toast){
-		const self = this;
+	startRemoveCountdown(toastId){
 		setTimeout(()=>{
-			toast.ref.current.teardown()
+			this.hideToast(toastId);
 		}, 5000);
+	}
+
+	hideToast(toastId){
+		const newToasts = [...this.state.toasts];
+		const index = newToasts.findIndex( toast => toast.id == toastId );
+		if(index >= 0){
+			newToasts[index].visible = false;
+			this.setState({toasts: newToasts})
+		}
+	}
+
+	removeToast(toastId){
+		const newToasts = [...this.state.toasts];
+		const index = newToasts.findIndex( toast => toast.id == toastId );
+		if(index >= 0){
+			newToasts.splice(index, 1);
+			this.setState({toasts: newToasts})
+		}
 	}
 
 	render() {
@@ -127,7 +153,13 @@ class Toast extends React.Component {
 		return(
 			<View style={{position: 'fixed', top: 0, left: 0, right: 0}}>
 				{this.state.toasts.map((toast, i)=>{
-					return <ToastItem key={i} toast={toast} ref={toast.ref} />
+					return <ToastItem
+								key={toast.id}
+								toast={toast}
+								visible={toast.visible}
+								onRequestClose={()=>{this.hideToast(toast.id)}}
+								onCompleteClose={()=>{this.removeToast(toast.id)}}
+								/>
 				})}
 			</View>
 		);

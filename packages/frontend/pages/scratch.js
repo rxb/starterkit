@@ -67,7 +67,6 @@ class PromptManager extends React.Component{
 	}
 
 	showPrompt(content){
-		console.log('show');
 		const id = uuid();
 		const prompts = [...this.state.prompts];
 		prompts.push({
@@ -186,6 +185,7 @@ class Scratch extends React.Component {
 		} = this.state;
 
 		return (
+			<Fragment>
 			<Page>
 				<Head>
 					<meta property='og:title' content='Scratch' />
@@ -228,10 +228,13 @@ class Scratch extends React.Component {
 					</Bounds>
 				</Stripe>
 
-				<PromptManager
+
+			</Page>
+
+			<PromptManager
 					ref={ref => {this.promptManager = ref}}
 					/>
-			</Page>
+			</Fragment>
 		);
 	}
 }

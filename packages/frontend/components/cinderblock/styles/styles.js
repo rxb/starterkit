@@ -317,7 +317,6 @@ const styles = StyleSheet.create({
 		borderRadius: METRICS.borderRadius,
 		marginTop: space,
 		marginHorizontal: space,
-		textAlign: 'center'
 	},
 
 	// AVATAR
