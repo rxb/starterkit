@@ -98,23 +98,26 @@ class PromptManager extends React.Component{
 			children
 		} = this.props;
 		const thisPrompt = this.state.prompts[0];
-		return(
-			<Fragment>
-				{ thisPrompt &&
-					<Prompt
-						visible={thisPrompt.showable}
-						onRequestClose={()=>{
-							this.hidePrompt(thisPrompt.id)
-						}}
-						onCompleteClose={()=>{
-							this.deletePrompt(thisPrompt.id)
-						}}
-						>
-						{thisPrompt.content}
-					</Prompt>
-				}
-			</Fragment>
-		)
+		if(thisPrompt){
+			const onRequestClose = () => { this.hidePrompt(thisPrompt.id) };
+			const promptContent = React.cloneElement(thisPrompt.content, {onRequestClose});
+			return(
+				<Prompt
+					visible={thisPrompt.showable}
+					onRequestClose={onRequestClose}
+					onCompleteClose={()=>{
+						this.deletePrompt(thisPrompt.id)
+					}}
+					>
+					{promptContent}
+				</Prompt>
+			);
+		}
+		else{
+			return false;
+		}
+
+
 	}
 }
 
@@ -132,26 +135,48 @@ class Scratch extends React.Component {
 		}
 	}
 
-	_renderDeletePrompt(thing){
-		return(
-			<Chunk>
-			<Text>some garbage</Text>
-			<Button
-				onPress={()=>{
-					const things = [...this.state.things];
-					const index = things.findIndex(item => item.id == thing.id);
-					if(index >= 0){
-						things.splice(index, 1);
-						this.setState({things: things});
-					}
-				}}
-				label="Yes I'm sure"
-				/>
-			</Chunk>
-		);
-	}
-
 	render() {
+
+		const DeletePrompt = (props) => {
+			const {
+				thing,
+				onRequestClose
+			} = props;
+			return (
+				<Sectionless>
+					<Chunk>
+						<Text type="sectionHead">Are you sure?</Text>
+					</Chunk>
+					<Chunk>
+						<Text>Deleting your comment {thing.id}</Text>
+					</Chunk>
+					<Chunk>
+						<Button
+							onPress={()=>{
+								const things = [...this.state.things];
+								const index = things.findIndex(item => item.id == thing.id);
+								if(index >= 0){
+									things.splice(index, 1);
+									this.setState({things: things});
+								}
+								onRequestClose();
+							}}
+							label="Yes I'm sure"
+							width="full"
+							/>
+						<Button
+							onPress={()=>{
+								onRequestClose();
+							}}
+							label="No thanks"
+							color="secondary"
+							width="full"
+							/>
+					</Chunk>
+
+				</Sectionless>
+			)
+		};
 
 		const {
 			user
@@ -179,7 +204,7 @@ class Scratch extends React.Component {
 								  		<Chunk>
 									  		<Text>{thing.message} {thing.id}</Text>
 									  		<Link  onPress={()=>{
-												this.promptManager.showPrompt( this._renderDeletePrompt(thing) );
+												this.promptManager.showPrompt( <DeletePrompt thing={thing} /> );
 									  		}}>
 									  			<Text color="tint">Delete</Text>
 									  		</Link>
@@ -187,15 +212,16 @@ class Scratch extends React.Component {
 
 
 								  ))}
-
-								<Button
-									label="add thing"
-									onPress={()=>{
-										const things = [...this.state.things];
-										things.push({message: 'ok new thing', id: uuid()});
-										this.setState({things: things});
-									}}
-									/>
+								<Chunk>
+									<Button
+										label="add thing"
+										onPress={()=>{
+											const things = [...this.state.things];
+											things.push({message: 'ok new thing', id: uuid()});
+											this.setState({things: things});
+										}}
+										/>
+								</Chunk>
 
 							</Section>
 						</Sections>
