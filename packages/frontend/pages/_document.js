@@ -36,18 +36,17 @@ export default class MyDocument extends Document {
           }
 
           /* form focus */
+          *:focus{
+            outline-offset: 0;
+          }
           input:focus, textarea:focus, select:focus{
             outline: none;
-            border-color: ${swatches.textPrimary};
+            border-color: ${swatches.textHint};
             background-color: transparent;
+            box-shadow: 0 0 0 3px ${swatches.focus};
           }
 
-          /* other element focus https://nelo.is/writing/styling-better-focus-states/ */
-          /*
-          :focus:not(.focus-visible) {
-            outline: none;
-          }
-          */
+
         `}}
       />,
       getStyleElement()

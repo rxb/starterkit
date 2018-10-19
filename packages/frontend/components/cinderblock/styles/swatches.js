@@ -8,6 +8,7 @@ const swatches = {
 	shade: 'rgba(0,0,0,.07)',
 	notwhite: 'rgba(0,0,0,.015)',
 	tint: 'blue',
+	focus: 'rgba(0,0,255,.25)',
 	border: 'rgba(0,0,0,.15)',
 	backgroundDark: '#222',
 	backgroundShade: '#fafafa'
