@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom'
 import { StyleSheet } from '../primitives';
 import { View, TextInput as TextInputWeb } from 'react-native-web';
@@ -71,11 +71,10 @@ class TextInput extends React.Component{
 			height: 0
 		}
 		this.counter = React.createRef();
-		this.onChangeText = this.onChangeText.bind(this);
+		this.countText = this.countText.bind(this);
 	}
 
-	onChangeText(text){
-		this.props.onChangeText(text);
+	countText(text){
 		if(this.props.maxLength && this.props.showCounter){
 			this.counter.current.updateCount(text);
 		}
@@ -88,6 +87,7 @@ class TextInput extends React.Component{
 			maxLength,
 			onChange,
 			onChangeText,
+
 			autoExpand = true,
 			showCounter,
 			style,
@@ -95,7 +95,7 @@ class TextInput extends React.Component{
 		} = this.props;
 
 		return (
-			<View>
+			<Fragment>
 				<TextInputWeb
 					accessibilityLabel={placeholder}
 					placeholder={placeholder}
@@ -103,7 +103,8 @@ class TextInput extends React.Component{
 					multiline={multiline}
 					maxLength={maxLength}
 					onChangeText={(text)=>{
-						debounce(this.onChangeText, 100)(text);
+						this.props.onChangeText(text);
+						debounce(this.countText, 100)(text);
 					}}
 					onChange={(event) => {
 						// don't call setState unless you have to
@@ -126,7 +127,7 @@ class TextInput extends React.Component{
 				{ maxLength && showCounter &&
 					<CharCount ref={this.counter} maxLength={maxLength} style={{/*position: 'absolute', bottom: 8, right: 8*/}} />
 				}
-			</View>
+			</Fragment>
 		);
 	}
 }

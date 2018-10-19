@@ -129,8 +129,6 @@ class Page extends React.Component {
 	}
 
 	_renderForm(){
-		let formState = {};
-
 		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
 			this.props.logIn(values);
 		};
@@ -251,13 +249,10 @@ class Page extends React.Component {
 						<Section isFirstChild>
 							<Chunk>
 								<Text type="pageHead">Log in</Text>
+								<Text>{String(authentication.loading)}</Text>
 							</Chunk>
 
-							{!user.id && this._renderForm()}
-
-							{user.id &&
-								<Text>Welcome back!</Text>
-							}
+							{this._renderForm()}
 
 						</Section>
 					</Stripe>

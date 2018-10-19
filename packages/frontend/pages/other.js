@@ -34,6 +34,48 @@ import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
 
+class TextInputFormik extends React.Component {
+
+	static defaultProps = {
+    	value: null
+  	}
+
+	constructor(props){
+		super(props);
+		this.state = {
+			value: props.value
+		}
+		this.onChange = this.onChange.bind(this);
+	}
+
+	onChange(text){
+		this.setState({value: text});
+	}
+
+	render(){
+		const {
+			id,
+			onChangeText,
+			value,
+			...other
+		} = this.props;
+
+		return(
+			<TextInput
+				id={id}
+				value={this.state.value}
+				onChangeText={this.onChange}
+				onBlur={(event)=>{
+					const {text} = event.nativeEvent;
+					onChangeText(text);
+				}}
+				{...other}
+				/>
+		);
+	}
+}
+
+
 const OtherFormInner = props => {
 	return(
 		<form>
@@ -47,23 +89,6 @@ const OtherFormInner = props => {
 					<Text type="sectionHead">Basic info</Text>
 				</Chunk>
 
-				{/*
-				<Chunk>
-					<Label htmlFor="test-mde">Let's write some stuff</Label>
-					<SimpleMDE
-					  id="test-mde"
-					  label=""
-
-					  onChange={text => {
-					  	props.setFieldValue('testmde', text)
-					  }}
-					  options={{
-					    autofocus: true,
-					    spellChecker: false,
-					  }}
-					/>
-				</Chunk>
-				*/}
 
 				<Chunk>
 					<Label htmlFor="theseoptions">Pick one of these</Label>
@@ -76,17 +101,18 @@ const OtherFormInner = props => {
 					</Picker>
 				</Chunk>
 				<Chunk>
-					<Label htmlFor="favoriteshow">Favorite show</Label>
-					<TextInput
-						id="favoriteshow"
-						defaultValue={props.values.favoriteshow}
-						onChangeText={text => props.setFieldValue('favoriteshow', text)}
+					<Label htmlFor="bestmemory">Best memory</Label>
+					<TextInputFormik
+						id="bestmemory"
+						value={props.values.bestmemory}
+						onChangeText={text => props.setFieldValue('worstmemory', text)}
 						autoComplete="off"
 						/>
 				</Chunk>
+
 				<Chunk>
 					<Label htmlFor="worstmemory">Worst memory</Label>
-					<TextInput
+					<TextInputFormik
 						id="worstmemory"
 						defaultValue={props.values.worstmemory}
 						onChangeText={text => props.setFieldValue('worstmemory', text)}
@@ -96,11 +122,10 @@ const OtherFormInner = props => {
 				</Chunk>
 				<Chunk>
 					<Label htmlFor="clean">Tell me about yourself</Label>
-					<TextInput
+					<TextInputFormik
 						id="clean"
 						multiline
 						numberOfLines={4}
-						maxLength={1000}
 						showCounter={false}
 						defaultValue={props.values.clean}
 						onChangeText={text => props.setFieldValue('clean', text)}
@@ -108,7 +133,7 @@ const OtherFormInner = props => {
 				</Chunk>
 				<Chunk>
 					<Label htmlFor="tellMe">Tell me about yourself</Label>
-					<TextInput
+					<TextInputFormik
 						id="tellMe"
 						multiline
 						numberOfLines={4}
@@ -120,7 +145,7 @@ const OtherFormInner = props => {
 				</Chunk>
 				<Chunk>
 					<Label htmlFor="description">This input updates</Label>
-					<TextInput
+					<TextInputFormik
 						id="description"
 						multiline
 						numberOfLines={4}
@@ -130,6 +155,7 @@ const OtherFormInner = props => {
 						defaultValue={props.values.description}
 						/>
 				</Chunk>
+
 			</Section>
 			<Section>
 				<Chunk>
@@ -152,7 +178,7 @@ const OtherFormInner = props => {
 				</Chunk>
 				<Chunk>
 					<Label htmlFor="firstname">First name</Label>
-					<TextInput
+					<TextInputFormik
 						id="firstname"
 						onChangeText={text => props.setFieldValue('firstName', text)}
 						defaultValue={props.values.firstName}
@@ -161,7 +187,7 @@ const OtherFormInner = props => {
 				</Chunk>
 				<Chunk>
 					<Label htmlFor="lastname">Last name</Label>
-					<TextInput
+					<TextInputFormik
 						id="lastname"
 						onChangeText={text => props.setFieldValue('lastName', text)}
 						defaultValue={props.values.lastName}
