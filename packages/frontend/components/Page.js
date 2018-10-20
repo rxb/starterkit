@@ -112,7 +112,6 @@ class Page extends React.Component {
 
 		// got auth, so get new user info
 		if (nextProps.authentication !== this.props.authentication) {
-			console.log('pagejs');
 			this.props.fetchUser('self');
 		}
 

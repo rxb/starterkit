@@ -31,6 +31,8 @@ import {
 	Text,
 	TextInput
 } from '../components/cinderblock';
+import TextInputFormik from '../components/cinderblock/components/TextInputFormik';
+
 
 import Page from '../components/Page';
 
@@ -48,17 +50,21 @@ const LoginFormInner = props => {
 	return(
 		<Chunk>
 			<form name="loginForm">
-				<TextInput
+				<TextInputFormik
 					id="email"
 					keyboardType="email-address"
 					placeholder="email"
+					value={props.values.email}
 					onChangeText={text => props.setFieldValue('email', text)}
+					note="email on index"
 					/>
-				<TextInput
+				<TextInputFormik
 					id="password"
 					secureTextEntry={true}
 					placeholder="password!!!"
+					value={props.values.password}
 					onChangeText={text => props.setFieldValue('password', text)}
+					note="password on index"
 					/>
 				<Button
 					onPress={props.handleSubmit}
@@ -153,8 +159,8 @@ class Hello extends React.Component {
 
 	_renderForm(){
 		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
-			this.props.logIn(values);
-			//alert(`in theory we are submitting... ${JSON.stringify(values)}`);
+			//this.props.logIn(values);
+			alert(`in theory we are submitting... ${JSON.stringify(values)}`);
 		};
 
 		const LoginForm = withFormik({
@@ -260,7 +266,17 @@ class Hello extends React.Component {
 										</Chunk>
 
 
-										{!user.id && this._renderForm()}
+										{!user.id &&
+											<Fragment>
+												{this._renderForm()}
+												<TextInputFormik
+													id="outsideinput"
+													keyboardType="outsideinput"
+													placeholder="outsideinput"
+													note="outsideinput on index"
+													/>
+											</Fragment>
+										}
 
 
 										<Chunk>

@@ -95,7 +95,7 @@ class TextInput extends React.Component{
 		} = this.props;
 
 		return (
-			<Fragment>
+			<View>
 				<TextInputWeb
 					accessibilityLabel={placeholder}
 					placeholder={placeholder}
@@ -127,7 +127,7 @@ class TextInput extends React.Component{
 				{ maxLength && showCounter &&
 					<CharCount ref={this.counter} maxLength={maxLength} style={{/*position: 'absolute', bottom: 8, right: 8*/}} />
 				}
-			</Fragment>
+			</View>
 		);
 	}
 }

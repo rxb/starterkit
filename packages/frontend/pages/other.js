@@ -28,52 +28,13 @@ import {
 	TextInput,
 	Touch
 } from '../components/cinderblock';
+import TextInputFormik from '../components/cinderblock/components/TextInputFormik';
+
 
 import styles from '../components/cinderblock/styles/styles';
 
 import Page from '../components/Page';
 
-
-class TextInputFormik extends React.Component {
-
-	static defaultProps = {
-    	value: null
-  	}
-
-	constructor(props){
-		super(props);
-		this.state = {
-			value: props.value
-		}
-		this.onChange = this.onChange.bind(this);
-	}
-
-	onChange(text){
-		this.setState({value: text});
-	}
-
-	render(){
-		const {
-			id,
-			onChangeText,
-			value,
-			...other
-		} = this.props;
-
-		return(
-			<TextInput
-				id={id}
-				value={this.state.value}
-				onChangeText={this.onChange}
-				onBlur={(event)=>{
-					const {text} = event.nativeEvent;
-					onChangeText(text);
-				}}
-				{...other}
-				/>
-		);
-	}
-}
 
 
 const OtherFormInner = props => {
