@@ -29,9 +29,11 @@ import {
 	Sectionless,
 	Stripe,
 	Text,
-	TextInput
+	TextInput,
+	withFormState
 } from '../components/cinderblock';
-import TextInputFormik from '../components/cinderblock/components/TextInputFormik';
+
+//import TextInputFormik from '../components/cinderblock/components/TextInputFormik';
 
 
 import Page from '../components/Page';
@@ -46,25 +48,23 @@ import {
 
 
 
-const LoginFormInner = props => {
+const LoginForm = withFormState((props) => {
 	return(
 		<Chunk>
 			<form name="loginForm">
-				<TextInputFormik
+				<TextInput
 					id="email"
+					value={props.getFieldValue('email')}
+					onChange={ e => props.setFieldValue('email', e.target.value) }
 					keyboardType="email-address"
 					placeholder="email"
-					value={props.values.email}
-					onChangeText={text => props.setFieldValue('email', text)}
-					note="email on index"
 					/>
-				<TextInputFormik
+				<TextInput
 					id="password"
+					value={props.getFieldValue('password')}
+					onChange={ e => props.setFieldValue('password', e.target.value) }
 					secureTextEntry={true}
-					placeholder="password!!!"
-					value={props.values.password}
-					onChangeText={text => props.setFieldValue('password', text)}
-					note="password on index"
+					placeholder="password"
 					/>
 				<Button
 					onPress={props.handleSubmit}
@@ -76,7 +76,7 @@ const LoginFormInner = props => {
 			</form>
 		</Chunk>
 	);
-}
+});
 
 
 
@@ -156,7 +156,7 @@ class Hello extends React.Component {
 		);
 	}
 
-
+	/*
 	_renderForm(){
 		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
 			//this.props.logIn(values);
@@ -168,6 +168,7 @@ class Hello extends React.Component {
 		})(LoginFormInner);
 		return <LoginForm />;
 	}
+	*/
 
 	render() {
 		const {
@@ -267,15 +268,11 @@ class Hello extends React.Component {
 
 
 										{!user.id &&
-											<Fragment>
-												{this._renderForm()}
-												<TextInputFormik
-													id="outsideinput"
-													keyboardType="outsideinput"
-													placeholder="outsideinput"
-													note="outsideinput on index"
-													/>
-											</Fragment>
+											<LoginForm
+												onSubmit={(fields)=>{
+													this.props.logIn(fields);
+												}}
+												/>
 										}
 
 

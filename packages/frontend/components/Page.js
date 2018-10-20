@@ -43,6 +43,7 @@ import {
 	Icon,
 	Inline,
 	Image,
+	LoadingBlock,
 	Link,
 	List,
 	Touch,
@@ -55,7 +56,8 @@ import {
 	Sectionless,
 	Stripe,
 	Text,
-	TextInput
+	TextInput,
+	withFormState
 } from './cinderblock';
 
 import styles from './cinderblock/styles/styles';
@@ -64,37 +66,35 @@ import swatches from './cinderblock/styles/swatches';
 
 
 
-
-
-
-const LoginFormInner = props => {
+const LoginForm = withFormState((props) => {
 	return(
 		<Chunk>
 			<form name="loginForm">
 				<TextInput
+					id="email"
+					value={props.getFieldValue('email')}
+					onChange={ e => props.setFieldValue('email', e.target.value) }
 					keyboardType="email-address"
 					placeholder="email"
-					name="email"
-					defaultValue={props.values.email}
-					onChangeText={text => props.setFieldValue('email', text)}
 					/>
 				<TextInput
+					id="password"
+					value={props.getFieldValue('password')}
+					onChange={ e => props.setFieldValue('password', e.target.value) }
 					secureTextEntry={true}
 					placeholder="password"
-					name="password"
-					defaultValue={props.values.password}
-					onChangeText={text => props.setFieldValue('password', text)}
 					/>
 				<Button
+					onPress={props.handleSubmit}
+					accessibilityRole="submit"
+					isLoading={props.isSubmitting}
 					label="Log in"
 					width="full"
-					type="submit"
-					onPress={props.handleSubmit}
 					/>
 			</form>
 		</Chunk>
 	);
-}
+});
 
 
 class Page extends React.Component {
@@ -248,10 +248,15 @@ class Page extends React.Component {
 						<Section isFirstChild>
 							<Chunk>
 								<Text type="pageHead">Log in</Text>
-								<Text>{String(authentication.loading)}</Text>
 							</Chunk>
 
-							{this._renderForm()}
+							<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
+								<LoginForm
+									onSubmit={(fields)=>{
+										this.props.logIn(fields);
+									}}
+									/>
+							</LoadingBlock>
 
 						</Section>
 					</Stripe>
