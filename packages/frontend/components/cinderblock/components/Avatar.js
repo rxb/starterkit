@@ -9,12 +9,10 @@ const Avatar = (props) => {
 		source
 	} = props;
 
-	const style = styles[`avatar--${size}`];
-
 	return(
 		<Image
 			source={source}
-			style={style}
+			style={[styles['avatar'], styles[`avatar--${size}`]]}
 			/>
 	);
 }

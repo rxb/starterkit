@@ -322,6 +322,7 @@ const styles = StyleSheet.create({
 	// AVATAR
 	avatar: {
 		resizeMode: 'cover',
+		backgroundColor: swatches.shade
 	},
 	'avatar--small':{
 		width: 24,

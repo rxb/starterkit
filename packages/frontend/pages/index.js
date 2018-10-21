@@ -67,6 +67,13 @@ class Hello extends React.Component {
 		this.props.fetchShows();
 	}
 
+
+	componentWillReceiveProps(nextProps){
+		if(nextProps.authentication.error && nextProps.authentication.error !== this.props.authentication.error){
+			this.addToast(nextProps.authentication.error.message);
+		}
+	}
+
 	toggleModal() {
 		this.setState({modalVisible: !this.state.modalVisible})
 	}
