@@ -13,40 +13,17 @@ const Icon = (props) => {
 			...other
 		} = props;
 
-
-		/*
-
-		// sketch can't do SVG yet, so we need a PNG for them
-		// to be able to tint this, even on web we need to use svgs not as a standard image
-		// would be nice to implement tintcolor from RN
-
-		if(Platform.OS =='sketch')
-			return(
-				<Image
-					source={{uri: `http://localhost:4000/${shape}?color=${color}`}}
-					style={{width: 24, height: 24}}
-					/>
-			);
-
-
-		if(Platform.OS =='web')
-			return(
-				<svg className="icon" style={{height: 24, width: 24, stroke: color, fill: 'none'}}>
-					<use xlinkHref={`#icon-${shape}`} />
-				</svg>
-			);
-
-		*/
-
 		const SIZES = {
 			small: 16,
 			medium: 24,
 			large: 36
 		}
 		const pixelSize = SIZES[size];
-		const ThisIcon = Icons[shape];
 
+		const ThisIcon = Icons[shape];
 		return <ThisIcon color={color} size={pixelSize} {...other} />;
+
+		//return <View />;
 
 }
 

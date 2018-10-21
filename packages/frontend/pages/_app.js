@@ -1,5 +1,4 @@
-//import 'isomorphic-unfetch'
-import "cross-fetch/polyfill";
+import fetch from 'isomorphic-unfetch';
 
 import App, {Container} from 'next/app'
 import React from 'react'
@@ -26,6 +25,14 @@ const authMiddleware = ({getState, dispatch}) => next => action => {
   return next(action)
 }
 
+// for the ssr, you need to explicitly set fetch
+// window.fetch doesn't do it, I guess
+const fetchMiddleware = ({getState, dispatch}) => next => action => {
+  if (action[RSAA]) {
+    action[RSAA].fetch = fetch;
+  }
+  return next(action)
+}
 
 // will need to use next cookies somehow?
 const startState = {authentication: {}};
@@ -40,6 +47,7 @@ const makeStore = (initialState, options) => {
       startState,
       applyMiddleware(
         thunk,
+        fetchMiddleware,
         authMiddleware,
         // refreshMiddleware,
         apiMiddleware,

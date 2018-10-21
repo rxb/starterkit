@@ -10,6 +10,7 @@ const Chunk = (props) => {
 		...other
 	} = props;
 
+	// optimized way to inline layout without explicit <Inline> component
 	const inlineStyle = (inline) ? styles.inline : {};
 
 	return(
