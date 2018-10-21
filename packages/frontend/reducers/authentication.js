@@ -4,6 +4,8 @@ const authentication = (state = {}, action) => {
       return { loading: true };
     case 'LOG_IN_SUCCESS':
     	return { token: action.payload.accessToken, loading: false };
+    case 'LOG_IN_FAILURE':
+      return { loading: false }
     case 'REAUTHENTICATE':
       return { token: action.payload.token, loading: false };
     case 'LOG_OUT':

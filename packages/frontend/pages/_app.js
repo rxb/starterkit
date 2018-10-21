@@ -48,10 +48,6 @@ const makeStore = (initialState, options) => {
 };
 
 
-/*
-
-    */
-
 class ThisApp extends App {
 
  static async getInitialProps ({ Component, router, ctx }) {

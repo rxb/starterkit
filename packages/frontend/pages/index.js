@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react';
-import { withFormik } from 'formik';
 import Head from 'next/head'
 
 import styles from '../components/cinderblock/styles/styles';
@@ -33,10 +32,8 @@ import {
 	withFormState
 } from '../components/cinderblock';
 
-//import TextInputFormik from '../components/cinderblock/components/TextInputFormik';
-
-
 import Page from '../components/Page';
+import LoginForm from '../components/LoginForm';
 
 
 import { connect } from 'react-redux';
@@ -45,38 +42,6 @@ import {
 	fetchShows,
 	fetchUser
 } from '../actions';
-
-
-
-const LoginForm = withFormState((props) => {
-	return(
-		<Chunk>
-			<form name="loginForm">
-				<TextInput
-					id="email"
-					value={props.getFieldValue('email')}
-					onChange={ e => props.setFieldValue('email', e.target.value) }
-					keyboardType="email-address"
-					placeholder="email"
-					/>
-				<TextInput
-					id="password"
-					value={props.getFieldValue('password')}
-					onChange={ e => props.setFieldValue('password', e.target.value) }
-					secureTextEntry={true}
-					placeholder="password"
-					/>
-				<Button
-					onPress={props.handleSubmit}
-					accessibilityRole="submit"
-					isLoading={props.isSubmitting}
-					label="Log in"
-					width="full"
-					/>
-			</form>
-		</Chunk>
-	);
-});
 
 
 
@@ -155,20 +120,6 @@ class Hello extends React.Component {
 			</Chunk>
 		);
 	}
-
-	/*
-	_renderForm(){
-		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
-			//this.props.logIn(values);
-			alert(`in theory we are submitting... ${JSON.stringify(values)}`);
-		};
-
-		const LoginForm = withFormik({
-			handleSubmit: handleSubmit,
-		})(LoginFormInner);
-		return <LoginForm />;
-	}
-	*/
 
 	render() {
 		const {
@@ -266,13 +217,14 @@ class Hello extends React.Component {
 											<Text>Consectetur Lorem amet qui do. Veniam officia pariatur dolore exercitation. Enim elit do deserunt qui commodo aliquip adipisicing aliqua ea occaecat!</Text>
 										</Chunk>
 
-
 										{!user.id &&
-											<LoginForm
-												onSubmit={(fields)=>{
-													this.props.logIn(fields);
-												}}
-												/>
+											<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
+												<LoginForm
+													onSubmit={(fields)=>{
+														this.props.logIn(fields);
+													}}
+													/>
+											</LoadingBlock>
 										}
 
 

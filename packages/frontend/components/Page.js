@@ -1,16 +1,14 @@
 import React, {Fragment} from 'react';
-import { withFormik } from 'formik';
 import Head from 'next/head'
-import NProgress from 'nprogress'
-import Router from 'next/router'
 
+import NProgress from 'nprogress'
 NProgress.configure({ trickle: true, trickleSpeed: 400, showSpinner: false });
 
+import Router from 'next/router'
 Router.onRouteChangeStart = (url) => {
   console.log(`Loading: ${url}`)
   NProgress.start()
 }
-
 Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
@@ -23,13 +21,8 @@ import {
 } from '../actions';
 
 
-import {
-  Platform,
-  View,
-  Text as ReactText,
-  StyleSheet
-} from './cinderblock/primitives';
-
+import styles from './cinderblock/styles/styles';
+import swatches from './cinderblock/styles/swatches';
 import {
 	Avatar,
 	Bounds,
@@ -57,44 +50,10 @@ import {
 	Stripe,
 	Text,
 	TextInput,
-	withFormState
+	View,
 } from './cinderblock';
 
-import styles from './cinderblock/styles/styles';
-import swatches from './cinderblock/styles/swatches';
-
-
-
-
-const LoginForm = withFormState((props) => {
-	return(
-		<Chunk>
-			<form name="loginForm">
-				<TextInput
-					id="email"
-					value={props.getFieldValue('email')}
-					onChange={ e => props.setFieldValue('email', e.target.value) }
-					keyboardType="email-address"
-					placeholder="email"
-					/>
-				<TextInput
-					id="password"
-					value={props.getFieldValue('password')}
-					onChange={ e => props.setFieldValue('password', e.target.value) }
-					secureTextEntry={true}
-					placeholder="password"
-					/>
-				<Button
-					onPress={props.handleSubmit}
-					accessibilityRole="submit"
-					isLoading={props.isSubmitting}
-					label="Log in"
-					width="full"
-					/>
-			</form>
-		</Chunk>
-	);
-});
+import LoginForm from './LoginForm';
 
 
 class Page extends React.Component {
@@ -125,17 +84,6 @@ class Page extends React.Component {
 
 	toggleModal() {
 		this.setState({modalVisible: !this.state.modalVisible})
-	}
-
-	_renderForm(){
-		const handleSubmit = (values, { props, setSubmitting, setErrors }) => {
-			this.props.logIn(values);
-		};
-
-		const LoginForm = withFormik({
-			handleSubmit: handleSubmit,
-		})(LoginFormInner);
-		return <LoginForm />;
 	}
 
 	render(){

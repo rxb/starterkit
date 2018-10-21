@@ -39,7 +39,7 @@ export default class MyDocument extends Document {
           *:focus{
             outline-offset: 0;
           }
-          input:focus, textarea:focus, select:focus{
+          input:focus, textarea:focus, select:focus, .focus{
             outline: none;
             border-color: ${swatches.textHint};
             background-color: transparent;

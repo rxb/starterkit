@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react';
-import { withFormik } from 'formik';
 import { connect } from 'react-redux';
 import Head from 'next/head'
 import uuid from 'uuid/v1';

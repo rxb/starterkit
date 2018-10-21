@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react';
-import { withFormik } from 'formik';
 import { connect } from 'react-redux';
 import Head from 'next/head';
 
@@ -38,7 +37,8 @@ import {
 	Stripe,
 	Text,
 	TextInput,
-	Touch
+	Touch,
+	withFormState
 } from '../components/cinderblock';
 
 
@@ -85,37 +85,31 @@ class ListItem extends React.Component {
 import { Animated, Easing, Touchable, View } from '../components/cinderblock/primitives';
 
 
-
-const CommentFormInner = props => {
+const CommentForm = withFormState((props) => {
 	return(
 		<form>
-
-				<Chunk>
-					<TextInput
-						id="comment"
-						placeholder="Post a comment about this show"
-						autoComplete="off"
-						defaultValue={props.values.body}
-						onChangeText={text => props.setFieldValue('body', text)}
-						multiline={true}
-						showCounter={true}
-						numberOfLines={4}
-						maxLength={1000}
-						/>
-				</Chunk>
-				<Chunk>
-					<Button
-						onPress={props.handleSubmit}
-						label="Post Comment"
-						/>
-				</Chunk>
-
+			<Chunk>
+				<TextInput
+					id="body"
+					value={props.getFieldValue('body')}
+					onChange={e => props.setFieldValue('body', e.target.value)}
+					placeholder="Post a comment about this show"
+					autoComplete="off"
+					multiline={true}
+					showCounter={true}
+					numberOfLines={4}
+					maxLength={1000}
+					/>
+			</Chunk>
+			<Chunk>
+				<Button
+					onPress={props.handleSubmit}
+					label="Post Comment"
+					/>
+			</Chunk>
 		</form>
 	);
-}
-
-
-
+});
 
 
 
@@ -143,16 +137,6 @@ class Show extends React.Component {
 	componentDidMount(){
 		// this.props.fetchShow(this.props.showId);
 		this.props.fetchShowComments({showId: this.props.showId});
-	}
-
-	_renderForm(){
-		const CommentForm = withFormik({
-			mapPropsToValues: props => ({}),
-			handleSubmit: (values, { props, setSubmitting, setErrors }) => {
-				this.props.createShowComment({ ...values, showId: this.props.show.id }, { user: this.props.user } );
-			},
-		})(CommentFormInner);
-		return <CommentForm />;
 	}
 
 
@@ -225,7 +209,15 @@ class Show extends React.Component {
 									);
 								})}
 
-								{user.id && this._renderForm()}
+								{user.id &&
+									<CommentForm
+										onSubmit={ (fields, context) => {
+											const data = { ...fields, showId: this.props.show.id };
+											this.props.createShowComment(data, { user: this.props.user } );
+											context.resetFields();
+										}}
+										/>
+								}
 
 							</Section>
 						</Sections>

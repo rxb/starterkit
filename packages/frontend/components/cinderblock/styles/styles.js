@@ -397,11 +397,7 @@ const styles = StyleSheet.create({
 		marginBottom: 0,
 	},
 
-	// MODIFIERS
-	pseudoLineHeight: {
-		marginVertical: METRICS.pseudoLineHeight
-	},
-
+	// HEADER
 	header: {
 		position: 'sticky',
 		zIndex: 1,
@@ -416,7 +412,12 @@ const styles = StyleSheet.create({
 	},
 	'header--atMedium': {
 		paddingHorizontal: METRICS.spaceSection + (METRICS.space * .66),
-	}
+	},
+
+	// MODIFIERS
+	pseudoLineHeight: {
+		marginVertical: METRICS.pseudoLineHeight
+	},
 });
 
 export default {...styles, ...flexStyles};

@@ -1,8 +1,5 @@
 import React, {Fragment} from 'react';
-import { withFormik } from 'formik';
 import { connect } from 'react-redux';
-
-//import SimpleMDE from 'react-simplemde-editor';
 
 import {
 	Bounds,
@@ -26,166 +23,114 @@ import {
 	Stripe,
 	Text,
 	TextInput,
-	Touch
+	Touch,
+	withFormState
 } from '../components/cinderblock';
-import TextInputFormik from '../components/cinderblock/components/TextInputFormik';
-
 
 import styles from '../components/cinderblock/styles/styles';
-
 import Page from '../components/Page';
 
-
-
-const OtherFormInner = props => {
+const OtherForm = withFormState((props) => {
 	return(
 		<form>
-		<Sections>
-			<Section>
-				<Chunk>
-					<Text type="pageHead">Settings</Text>
-				</Chunk>
+			<Sections>
+				<Section>
+					<Chunk>
+						<Text type="pageHead">Settings</Text>
+					</Chunk>
 
-				<Chunk>
-					<Text type="sectionHead">Basic info</Text>
-				</Chunk>
+					<Chunk>
+						<Text type="sectionHead">Basic info</Text>
+					</Chunk>
+					<Chunk>
+						<Label htmlFor="theseoptions">Pick one of these</Label>
+						<Picker
+							onValueChange={(itemValue, itemIndex) => props.setFieldValue('pickone', itemValue)}
+							selectedValue={props.getFieldValue('pickone')}
+							>
+							<Picker.Item label="One" value="one" />
+							<Picker.Item label="Two" value="two" />
+							<Picker.Item label="Three" value="three" />
+							<Picker.Item label="Four" value="four" />
+						</Picker>
+					</Chunk>
+					<Chunk>
+						<Label htmlFor="bestmemory">Best memory</Label>
+						<TextInput
+							id="bestmemory"
+							value={props.getFieldValue('bestmemory')}
+							onChangeText={text => props.setFieldValue('bestmemory', text)}
+							autoComplete="off"
+							/>
+					</Chunk>
 
-
-				<Chunk>
-					<Label htmlFor="theseoptions">Pick one of these</Label>
-					<Picker
-						>
-						<Picker.Item label="One" value="java" />
-						<Picker.Item label="Two" value="js" />
-						<Picker.Item label="Three" value="js" />
-						<Picker.Item label="Four" value="js" />
-					</Picker>
-				</Chunk>
-				<Chunk>
-					<Label htmlFor="bestmemory">Best memory</Label>
-					<TextInputFormik
-						id="bestmemory"
-						value={props.values.bestmemory}
-						onChangeText={text => props.setFieldValue('worstmemory', text)}
-						autoComplete="off"
-						/>
-				</Chunk>
-
-				<Chunk>
-					<Label htmlFor="worstmemory">Worst memory</Label>
-					<TextInputFormik
-						id="worstmemory"
-						defaultValue={props.values.worstmemory}
-						onChangeText={text => props.setFieldValue('worstmemory', text)}
-						autoComplete="off"
-						/>
-					<Text type="small" color="hint">Sucks, doesn't it?</Text>
-				</Chunk>
-				<Chunk>
-					<Label htmlFor="clean">Tell me about yourself</Label>
-					<TextInputFormik
-						id="clean"
-						multiline
-						numberOfLines={4}
-						showCounter={false}
-						defaultValue={props.values.clean}
-						onChangeText={text => props.setFieldValue('clean', text)}
-						/>
-				</Chunk>
-				<Chunk>
-					<Label htmlFor="tellMe">Tell me about yourself</Label>
-					<TextInputFormik
-						id="tellMe"
-						multiline
-						numberOfLines={4}
-						maxLength={1000}
-						showCounter={true}
-						defaultValue={props.values.tellMe}
-						onChangeText={text => props.setFieldValue('tellMe', text)}
-						/>
-				</Chunk>
-				<Chunk>
-					<Label htmlFor="description">This input updates</Label>
-					<TextInputFormik
-						id="description"
-						multiline
-						numberOfLines={4}
-						maxLength={1000}
-						showCounter={true}
-						onChangeText={text => props.setFieldValue('description', text)}
-						defaultValue={props.values.description}
-						/>
-				</Chunk>
-
-			</Section>
-			<Section>
-				<Chunk>
-					<Text type="sectionHead">More stuff</Text>
-				</Chunk>
-				<Chunk>
-					<Label htmlFor="whatisthis">What is this?</Label>
-					<Picker
-						id="whatisthis"
-						selectedValue={props.values.whatisthis}
-						onValueChange={(value, index) => {
-							props.setFieldValue('whatisthis', value)}
-						}
-						>
-						<Picker.Item label="One" value="one" />
-						<Picker.Item label="Two" value="two" />
-						<Picker.Item label="Three" value="three" />
-						<Picker.Item label="Four" value="four" />
-					</Picker>
-				</Chunk>
-				<Chunk>
-					<Label htmlFor="firstname">First name</Label>
-					<TextInputFormik
-						id="firstname"
-						onChangeText={text => props.setFieldValue('firstName', text)}
-						defaultValue={props.values.firstName}
-						keyboardType="email-address"
-						/>
-				</Chunk>
-				<Chunk>
-					<Label htmlFor="lastname">Last name</Label>
-					<TextInputFormik
-						id="lastname"
-						onChangeText={text => props.setFieldValue('lastName', text)}
-						defaultValue={props.values.lastName}
-						/>
-				</Chunk>
-				<Chunk>
-					<CheckBox
-						id="lastname"
-						value={props.values.isRed}
-						onChange={text => props.setFieldValue('isRed', !props.values.isRed)}
-						label="It's red"
-						/>
-
-				</Chunk>
-			</Section>
-			<Section>
-				<Chunk>
-					<Button
-						onPress={props.handleSubmit}
-						label="Submit"
-						/>
-				</Chunk>
-			</Section>
-		</Sections>
+					<Chunk>
+						<Label htmlFor="worstmemory">Worst memory</Label>
+						<TextInput
+							id="worstmemory"
+							defaultValue={props.getFieldValue('worstmemory')}
+							onChangeText={text => props.setFieldValue('worstmemory', text)}
+							autoComplete="off"
+							/>
+						<Text type="small" color="hint">Sucks, doesn't it?</Text>
+					</Chunk>
+					<Chunk>
+						<Label htmlFor="clean">Tell me about yourself</Label>
+						<TextInput
+							id="clean"
+							multiline
+							numberOfLines={4}
+							showCounter={false}
+							defaultValue={props.getFieldValue('clean')}
+							onChangeText={text => props.setFieldValue('clean', text)}
+							/>
+					</Chunk>
+					<Chunk>
+						<Label htmlFor="tellMe">Tell me about yourself</Label>
+						<TextInput
+							id="tellMe"
+							multiline
+							numberOfLines={4}
+							maxLength={1000}
+							showCounter={true}
+							defaultValue={props.getFieldValue('tellMe')}
+							onChangeText={text => props.setFieldValue('tellMe', text)}
+							/>
+					</Chunk>
+					<Chunk>
+						<Label htmlFor="description">This input updates</Label>
+						<TextInput
+							id="description"
+							multiline
+							numberOfLines={4}
+							maxLength={1000}
+							showCounter={true}
+							onChangeText={text => props.setFieldValue('description', text)}
+							defaultValue={props.getFieldValue('description')}
+							/>
+					</Chunk>
+					<Chunk>
+						<CheckBox
+							id="lastname"
+							value={props.getFieldValue('isRed')}
+							onChange={text => props.setFieldValue('isRed', !props.getFieldValue('isRed'))}
+							label="It's red"
+							/>
+					</Chunk>
+				</Section>
+				<Section>
+					<Chunk>
+						<Button
+							onPress={props.handleSubmit}
+							label="Submit"
+							/>
+					</Chunk>
+				</Section>
+			</Sections>
 		</form>
 	)
-}
-const OtherForm = withFormik({
-	mapPropsToValues: props => ({
-		whatisthis: props.data.whatisthis,
-		firstName: props.data.firstName,
-		lastName: props.data.lastName
-	}),
-	handleSubmit: (values, { props, setSubmitting, setErrors }) => {
-		alert(`in theory we are submitting... ${JSON.stringify(values)}`);
-	},
-})(OtherFormInner);
+});
+
 
 
 class Other extends React.Component {
@@ -200,7 +145,12 @@ class Other extends React.Component {
 			<Page>
 				<Stripe>
 					<Bounds>
-						<OtherForm data={{firstName: 'Joe', lastName: 'Schmo', whatisthis: 'three'}} />
+						<OtherForm
+							initialFields={{firstName: 'Joe', lastName: 'Schmo', whatisthis: 'three'}}
+							onSubmit={(fields) => {
+								alert(`in theory we are submitting... ${JSON.stringify(fields)}`);
+							}}
+							/>
 					</Bounds>
 				</Stripe>
 			</Page>

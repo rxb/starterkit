@@ -27,7 +27,7 @@ class CheckBoxWeb extends CheckBoxRNW {
     	const elementsTree = super.render();
     	const newChildren = [...elementsTree.props.children];
     	const fakeChild = newChildren[0];
-		const props = Object.assign({}, fakeChild.props, {style: [...fakeChild.props.style, this.props.fakeControlStyle]});
+		const props = Object.assign({}, fakeChild.props, {style: [...fakeChild.props.style, this.props.fakeControlStyle], className: this.props.fakeControlClassName});
     	newChildren[0] = React.cloneElement(newChildren[0], props);
     	return React.cloneElement(elementsTree, {}, newChildren);
     }
@@ -58,6 +58,9 @@ class CheckBox extends React.Component {
 						borderColor: (this.state.hasFocus) ? swatches.textPrimary : swatches.border,
 						borderWidth: 1
 					}}
+					fakeControlClassName={
+						(this.state.hasFocus) ? 'input focus' : 'input'
+					}
 					onFocus={()=>{
 						this.setState({hasFocus: true});
 					}}
