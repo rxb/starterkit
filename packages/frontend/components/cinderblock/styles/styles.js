@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
 
 	modal: {
 		marginHorizontal: '5%',
-		minWidth: 380,
+		minWidth: 400,
 		maxWidth: 600,
 		maxHeight: `95%`,
 		top: '5%',
@@ -318,16 +318,7 @@ const styles = StyleSheet.create({
 	},
 
 
-	// TOAST
-	toast: {
-		padding: space,
-		backgroundColor: swatches.backgroundDark,
-		borderRadius: METRICS.borderRadius,
-		marginTop: space,
-		marginHorizontal: space,
-		width: 'auto',
-		flex: 1,
-	},
+
 
 	// AVATAR
 	avatar: {
@@ -431,7 +422,7 @@ const styles = StyleSheet.create({
 		top: 0,
 		left: 0,
 		right: 0,
-		zIndex: 2
+		zIndex: 3
 	},
 	'toaster-inner': {
 		maxWidth: 800,
@@ -439,6 +430,16 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: 0,
 		overflow: 'visible'
+	},
+	toast: {
+		padding: space,
+		backgroundColor: swatches.backgroundDark,
+		borderRadius: METRICS.borderRadius,
+		marginTop: space,
+		marginHorizontal: space,
+		width: 'auto',
+		flex: 1,
+		boxShadow: '0 0 0 1px rgba(255,255,255,.1)'
 	},
 
 	// MODIFIERS

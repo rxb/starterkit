@@ -57,7 +57,6 @@ class Scratch extends React.Component {
 
 	render() {
 
-
 		const DeletePrompt = (props) => {
 			const {
 				thing,
