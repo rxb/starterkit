@@ -18,7 +18,7 @@ import LoadingBlock from './components/LoadingBlock';
 import Menu from './components/Menu';
 import Modal from './components/Modal';
 import Picker from './components/Picker';
-import Prompt from './components/Prompt';
+import Prompter from './components/Prompter';
 import Section from './components/Section';
 import Sections from './components/Sections';
 import Sectionless from './components/Sectionless';
@@ -26,7 +26,7 @@ import Stripe from './components/Stripe';
 import Tabs from './components/Tabs';
 import Text from './components/Text';
 import TextInput from './components/TextInput';
-import Toast from './components/Toast';
+import Toaster from './components/Toaster';
 import withFormState from './components/WithFormState';
 import { Image, View } from './primitives';
 
@@ -53,7 +53,7 @@ export {
 	Menu,
 	Modal,
 	Picker,
-	Prompt,
+	Prompter,
 	Section,
 	Sectionless,
 	Sections,
@@ -61,7 +61,7 @@ export {
 	Tabs,
 	Text,
 	TextInput,
-	Toast,
+	Toaster,
 	View,
 	withFormState
 };

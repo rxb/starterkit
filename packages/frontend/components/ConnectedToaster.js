@@ -10,9 +10,9 @@ import {
 	removeToast
 } from '../actions';
 
-import{ Toast } from './cinderblock';
+import{ Toaster } from './cinderblock';
 
-const Toaster = (props) => ( <Toast {...props} /> );
+const ConnectedToaster = (props) => ( <Toaster {...props} /> );
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
@@ -29,4 +29,4 @@ const actionCreators = {
 export default connect(
 	mapStateToProps,
 	actionCreators
-)(Toaster);
+)(ConnectedToaster);

@@ -18,11 +18,9 @@ import {
 	List,
 	LoadingBlock,
 	Tabs,
-	Toast,
 	Touch,
 	Modal,
 	Picker,
-	Prompt,
 	Section,
 	Sections,
 	Sectionless,
@@ -41,8 +39,40 @@ import {
 	logIn,
 	fetchShows,
 	fetchUser,
-	addToast
+	addToast,
+	addPrompt
 } from '../actions';
+
+
+
+const FakePrompt = (props) => {
+	const {
+		onRequestClose
+	} = props;
+	return (
+		<Section>
+			<Chunk>
+				<Text type="sectionHead">What do you think?</Text>
+			</Chunk>
+			<Chunk>
+				<Text>Here I asking a question and seeing what to do about it.</Text>
+			</Chunk>
+			<Chunk>
+				<Button
+					onPress={onRequestClose}
+					label="Let's do it"
+					width="full"
+					/>
+				<Button
+					onPress={onRequestClose}
+					color="secondary"
+					label="No thanks"
+					width="full"
+					/>
+			</Chunk>
+		</Section>
+	);
+};
 
 
 
@@ -52,10 +82,8 @@ class Hello extends React.Component {
 		super(props);
 		this.state = {
 			modalVisible: false,
-			promptVisible: false
 		}
 		this.toggleModal = this.toggleModal.bind(this);
-		this.togglePrompt = this.togglePrompt.bind(this);
 	}
 
 	static async getInitialProps(ctx){
@@ -74,17 +102,13 @@ class Hello extends React.Component {
 				NotAuthenticated: 'You shall not pass'
 			}
 			if(messages[nextProps.authentication.error.name]){
-				this.props.addToast(messages[nextProps.authentication.error.name], {autoHide: false});
+				this.props.addToast(messages[nextProps.authentication.error.name]);
 			}
 		}
 	}
 
 	toggleModal() {
 		this.setState({modalVisible: !this.state.modalVisible})
-	}
-
-	togglePrompt(event) {
-		this.setState({promptVisible: !this.state.promptVisible})
 	}
 
 
@@ -129,12 +153,17 @@ class Hello extends React.Component {
 		);
 	}
 
+
+
 	render() {
+
 		const {
 			authentication,
 			shows,
 			user
 		} = this.props
+
+
 
 		return (
 		<Fragment>
@@ -254,7 +283,9 @@ class Hello extends React.Component {
 												}}
 												/>
 											<Button
-												onPress={this.togglePrompt}
+												onPress={()=>{
+													this.props.addPrompt(<FakePrompt />)
+												}}
 												color="secondary"
 												label="Do a prompt"
 												width="full"
@@ -320,34 +351,6 @@ class Hello extends React.Component {
 					</Stripe>
 				</Modal>
 
-				<Prompt
-					visible={this.state.promptVisible}
-					onRequestClose={this.togglePrompt}
-					onPressEnter={this.togglePrompt}
-					>
-					<Section isFirstChild>
-						<Chunk>
-							<Text type="sectionHead">What do you think?</Text>
-						</Chunk>
-						<Chunk>
-							<Text>Here I asking a question and seeing what to do about it.</Text>
-						</Chunk>
-						<Chunk>
-							<Button
-								onPress={this.togglePrompt}
-								label="Let's do it"
-								width="full"
-								/>
-							<Button
-								onPress={this.togglePrompt}
-								color="secondary"
-								label="No thanks"
-								width="full"
-								/>
-						</Chunk>
-					</Section>
-				</Prompt>
-
 			</Fragment>
 		);
 	}
@@ -366,7 +369,8 @@ const actionCreators = {
 	fetchShows,
 	fetchUser,
 	logIn,
-	addToast
+	addToast,
+	addPrompt
 }
 
 export default connect(

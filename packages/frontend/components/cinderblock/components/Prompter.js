@@ -147,4 +147,39 @@ class Prompt extends React.Component{
 	}
 }
 
-export default WithMatchMedia(Prompt);
+
+class Prompter extends React.Component {
+
+	render() {
+		const {
+			children,
+			prompts,
+			...other
+		} = this.props;
+		const thisPrompt = this.props.prompts[0];
+		if(thisPrompt){
+			const onRequestClose = () => { this.props.hidePrompt(thisPrompt.id) };
+			const promptContent = React.cloneElement(thisPrompt.content, {onRequestClose});
+			return(
+				<Prompt
+					visible={thisPrompt.showable}
+					onRequestClose={onRequestClose}
+					onCompleteClose={()=>{
+						this.props.removePrompt(thisPrompt.id)
+					}}
+					{...other}
+					>
+					{promptContent}
+				</Prompt>
+			);
+		}
+		else{
+			return false;
+		}
+	}
+
+}
+
+
+
+export default WithMatchMedia(Prompter);

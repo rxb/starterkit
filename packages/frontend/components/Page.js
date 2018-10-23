@@ -43,7 +43,6 @@ import {
 	Menu,
 	Modal,
 	Picker,
-	Prompt,
 	Section,
 	Sections,
 	Sectionless,
@@ -54,7 +53,9 @@ import {
 } from './cinderblock';
 
 import LoginForm from './LoginForm';
-import Toaster from './Toaster';
+import ConnectedToaster from './ConnectedToaster';
+import ConnectedPrompter from './ConnectedPrompter';
+
 
 class Page extends React.Component {
 	constructor(props){
@@ -215,7 +216,8 @@ class Page extends React.Component {
 					</Stripe>
 				</Modal>
 
-				<Toaster />
+				<ConnectedToaster />
+				<ConnectedPrompter />
 
 			</View>
 

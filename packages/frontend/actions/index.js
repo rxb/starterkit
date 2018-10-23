@@ -49,6 +49,31 @@ export const removeToast = (id) => ({
 });
 
 
+// PROMPTS
+export const addPrompt = (content, options = {}) => ({
+    type: 'ADD_PROMPT',
+    payload: {
+	    content: content,
+	    id: uuid(),
+	    showable: true,
+	    ...options
+    }
+});
+
+export const hidePrompt = (id) => ({
+    type: 'HIDE_PROMPT',
+    payload: {
+		id: id,
+    }
+});
+
+export const removePrompt = (id) => ({
+    type: 'REMOVE_PROMPT',
+    payload: {
+		id: id,
+    }
+});
+
 // FETCH SHOWS
 export const fetchShows = () => ({
 	[RSAA]: {

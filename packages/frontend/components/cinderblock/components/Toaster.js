@@ -12,7 +12,7 @@ import { METRICS, EASE } from '../designConstants';
 
 const duration = 200;
 
-class ToastItem extends React.Component {
+class Toast extends React.Component {
 
 	static defaultProps = {
     	onCompleteClose: ()=>{ },
@@ -134,11 +134,7 @@ class ToastItem extends React.Component {
 }
 
 
-class Toast extends React.Component {
-
-	componentDidMount(){
-		console.log(`toaster mounted`);
-	}
+class Toaster extends React.Component {
 
 	render() {
 		const {
@@ -150,7 +146,7 @@ class Toast extends React.Component {
 			<View style={styles.toaster}>
 				<View style={styles['toaster-inner']}>
 					{toasts.map((toast, i)=>{
-						return <ToastItem
+						return <Toast
 									key={toast.id}
 									toast={toast}
 									visible={toast.visible}
@@ -164,4 +160,4 @@ class Toast extends React.Component {
 }
 
 
-export default Toast;
+export default Toaster;
