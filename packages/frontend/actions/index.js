@@ -1,5 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
 import querystring from 'querystring';
+import uuid from 'uuid/v1';
 
 const apiHost = 'http://localhost:3030/';
 
@@ -20,6 +21,31 @@ export const removeModal = (id) => ({
     payload: {content: content}
 });
 */
+
+
+// TOASTS
+export const addToast = (message, options) => ({
+    type: 'ADD_TOAST',
+    payload: {
+	    message: message,
+	    id: uuid(),
+	    visible: true
+    }
+});
+
+export const hideToast = (id) => ({
+    type: 'HIDE_TOAST',
+    payload: {
+		id: id,
+    }
+});
+
+export const removeToast = (id) => ({
+    type: 'REMOVE_TOAST',
+    payload: {
+		id: id,
+    }
+});
 
 
 // FETCH SHOWS

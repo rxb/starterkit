@@ -1,5 +1,4 @@
 const authentication = (state = {}, action) => {
-  console.log(action);
   switch (action.type) {
     case 'LOG_IN':
       return { loading: true };

@@ -8,7 +8,7 @@ import FlexItem from './FlexItem';
 import styles from '../styles/styles';
 import swatches from '../styles/swatches';
 import { METRICS, EASE } from '../designConstants';
-import uuid from 'uuid/v1';
+
 
 const duration = 200;
 
@@ -23,9 +23,12 @@ class ToastItem extends React.Component {
 		this.state = {
 			visibility: new Animated.Value(0),
 		}
+		this.startHideTimeout = this.startHideTimeout.bind(this);
+		this.remove = this.remove.bind(this);
 	}
 
 	componentDidMount(){
+		console.log(`mount ${this.props.toast.id}`)
 		if(this.props.visible){
 			setTimeout(()=>{
 				this.open();
@@ -33,23 +36,27 @@ class ToastItem extends React.Component {
 		}
 	}
 
+
 	componentWillReceiveProps(nextProps){
-		if(nextProps.visible){
-			this.open();
-		}
-		else{
-			this.close();
+		if (this.props.visible != nextProps.visible){
+			if(nextProps.visible){
+				this.open();
+			}
+			else{
+				this.close();
+			}
 		}
 	}
 
 	open(){
+		console.log(`open ${this.props.toast.id}`);
 		Animated.timing(
 			this.state.visibility,{
 				toValue: 1,
 				easing: EASE,
 				duration
 			}
-		).start();
+		).start(this.startHideTimeout);
 	}
 
 	close(){
@@ -59,9 +66,36 @@ class ToastItem extends React.Component {
 				easing: EASE,
 				duration
 			})
-			.start(()=>{
-				this.props.onCompleteClose();
-			});
+			.start(this.remove);
+	}
+
+
+	remove(){
+		try{
+			this.props.removeToast(this.props.toast.id)
+		}
+		catch{
+			console.log('do you have multiple toasters mounted?');
+			// toast is gone already
+			// there are probably multiple toasters mounted
+			// not the worst thing ever, but maybe look into that
+		}
+	}
+
+	startHideTimeout(){
+		const hideToast = this.props.hideToast;
+		const id = this.props.toast.id;
+		setTimeout(()=>{
+			try{
+				hideToast(id);
+			}
+			catch{
+				console.log('do you have multiple toasters mounted?');
+				// toast is gone already
+				// there are probably multiple toasters mounted
+				// not the worst thing ever, but maybe look into that
+			}
+		}, 5000);
 	}
 
 	render(){
@@ -82,7 +116,7 @@ class ToastItem extends React.Component {
 						</FlexItem>
 						<FlexItem shrink>
 							<Touch onPress={()=>{
-								this.props.onRequestClose();
+								this.close();
 							}}>
 								<Icon
 									shape='X'
@@ -101,66 +135,28 @@ class ToastItem extends React.Component {
 
 class Toast extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			toasts: [],
-		}
-	}
-
-	addToast(message){
-		const toastId = uuid();
-		const toasts = [...this.state.toasts];
-		const newToast = {
-			message: `${toastId} -- ${message}`,
-			id: toastId,
-			visible: true
-		};
-		toasts.push(newToast);
-		this.setState({toasts});
-		this.startRemoveCountdown(toastId);
-	}
-
-	startRemoveCountdown(toastId){
-		setTimeout(()=>{
-			this.hideToast(toastId);
-		}, 5000);
-	}
-
-	hideToast(toastId){
-		const newToasts = [...this.state.toasts];
-		const index = newToasts.findIndex( toast => toast.id == toastId );
-		if(index >= 0){
-			newToasts[index].visible = false;
-			this.setState({toasts: newToasts})
-		}
-	}
-
-	removeToast(toastId){
-		const newToasts = [...this.state.toasts];
-		const index = newToasts.findIndex( toast => toast.id == toastId );
-		if(index >= 0){
-			newToasts.splice(index, 1);
-			this.setState({toasts: newToasts})
-		}
+	componentDidMount(){
+		console.log(`toaster mounted`);
 	}
 
 	render() {
 		const {
+			toasts,
 			...other
 		} = this.props;
 
 		return(
-			<View style={{position: 'fixed', top: 0, left: 0, right: 0}}>
-				{this.state.toasts.map((toast, i)=>{
-					return <ToastItem
-								key={toast.id}
-								toast={toast}
-								visible={toast.visible}
-								onRequestClose={()=>{this.hideToast(toast.id)}}
-								onCompleteClose={()=>{this.removeToast(toast.id)}}
-								/>
-				})}
+			<View style={styles.toaster}>
+				<View style={styles['toaster-inner']}>
+					{toasts.map((toast, i)=>{
+						return <ToastItem
+									key={toast.id}
+									toast={toast}
+									visible={toast.visible}
+									{...other}
+									/>
+					})}
+				</View>
 			</View>
 		);
 	}

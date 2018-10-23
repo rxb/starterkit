@@ -34,11 +34,12 @@ const OtherForm = withFormState((props) => {
 	return(
 		<form>
 			<Sections>
-				<Section>
+				<Section type="pageHead">
 					<Chunk>
 						<Text type="pageHead">Settings</Text>
 					</Chunk>
-
+				</Section>
+				<Section>
 					<Chunk>
 						<Text type="sectionHead">Basic info</Text>
 					</Chunk>

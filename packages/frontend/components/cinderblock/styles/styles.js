@@ -35,9 +35,17 @@ const styles = StyleSheet.create({
 		//borderTopWidth: 1,
 		//borderTopColor: swatches.border
 	},
+
+	'section--pageHead': {
+		paddingTop: spaceSection + (space * .33),
+		paddingBottom: 0
+	},
+
+	/*
 	'section--firstChild': {
 		borderTopWidth: 0
 	},
+	*/
 
 	/*
 	// removing the border between two sections
@@ -317,6 +325,8 @@ const styles = StyleSheet.create({
 		borderRadius: METRICS.borderRadius,
 		marginTop: space,
 		marginHorizontal: space,
+		width: 'auto',
+		flex: 1,
 	},
 
 	// AVATAR
@@ -413,6 +423,22 @@ const styles = StyleSheet.create({
 	},
 	'header--atMedium': {
 		paddingHorizontal: METRICS.spaceSection + (METRICS.space * .66),
+	},
+
+	// TOASTER
+	toaster: {
+		position: 'fixed',
+		top: 0,
+		left: 0,
+		right: 0,
+		zIndex: 2
+	},
+	'toaster-inner': {
+		maxWidth: 800,
+		marginHorizontal: 'auto',
+		width: '100%',
+		height: 0,
+		overflow: 'visible'
 	},
 
 	// MODIFIERS

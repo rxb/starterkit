@@ -160,16 +160,15 @@ class Show extends React.Component {
 				<Stripe>
 					<Bounds>
 						<Sections>
-							<Section>
+							<Section type="pageHead">
 								<Chunk>
 									<Text type="pageHead">{show.title}</Text>
 								</Chunk>
-
-
+							</Section>
+							<Section>
 								<Chunk>
 									<Text type="sectionHead">Comments</Text>
 								</Chunk>
-
 
 								{showComments && showComments.map((comment, i)=>{
 									comment.user = comment.user || {};

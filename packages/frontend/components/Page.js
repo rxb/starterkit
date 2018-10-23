@@ -54,7 +54,7 @@ import {
 } from './cinderblock';
 
 import LoginForm from './LoginForm';
-
+import Toaster from './Toaster';
 
 class Page extends React.Component {
 	constructor(props){
@@ -63,6 +63,10 @@ class Page extends React.Component {
 			modalVisible: false,
 		}
 		this.toggleModal = this.toggleModal.bind(this);
+	}
+
+	componentDidMount(){
+		console.log(`page mounted`);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -193,11 +197,12 @@ class Page extends React.Component {
 					onRequestClose={this.toggleModal}
 					>
 					<Stripe>
-						<Section isFirstChild>
+						<Section type="pageHead">
 							<Chunk>
 								<Text type="pageHead">Log in</Text>
 							</Chunk>
-
+						</Section>
+						<Section>
 							<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
 								<LoginForm
 									onSubmit={(fields)=>{
@@ -209,6 +214,9 @@ class Page extends React.Component {
 						</Section>
 					</Stripe>
 				</Modal>
+
+				<Toaster />
+
 			</View>
 
 		);

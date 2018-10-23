@@ -40,7 +40,8 @@ import { connect } from 'react-redux';
 import {
 	logIn,
 	fetchShows,
-	fetchUser
+	fetchUser,
+	addToast
 } from '../actions';
 
 
@@ -55,7 +56,7 @@ class Hello extends React.Component {
 		}
 		this.toggleModal = this.toggleModal.bind(this);
 		this.togglePrompt = this.togglePrompt.bind(this);
-		this.addToast = this.addToast.bind(this);
+		this.addDummyToast = this.addDummyToast.bind(this);
 		this.toastRef = React.createRef();
 	}
 
@@ -70,7 +71,13 @@ class Hello extends React.Component {
 
 	componentWillReceiveProps(nextProps){
 		if(nextProps.authentication.error && nextProps.authentication.error !== this.props.authentication.error){
-			this.addToast(nextProps.authentication.error.message);
+			const messages = {
+				BadRequest: 'That was one bad request',
+				NotAuthenticated: 'You shall not pass'
+			}
+			if(messages[nextProps.authentication.error.name]){
+				this.addToast(messages[nextProps.authentication.error.name]);
+			}
 		}
 	}
 
@@ -82,10 +89,8 @@ class Hello extends React.Component {
 		this.setState({promptVisible: !this.state.promptVisible})
 	}
 
-	// this should probably come from Redux, ultimately
-	// update: wow, previous you, this is smart.
-	addToast(message) {
-		this.toastRef.current.addToast(message);
+	addDummyToast(message) {
+		this.props.addToast(message);
 	}
 
 	_renderItemCard(show, i) {
@@ -149,10 +154,12 @@ class Hello extends React.Component {
 						<Stripe>
 							<Bounds>
 								<Sections>
-									<Section>
+									<Section type="pageHead">
 										<Chunk>
-											<Text type="pageHead">Oh please work</Text>
+											<Text type="pageHead">Hey hello</Text>
 										</Chunk>
+									</Section>
+									<Section>
 										<Chunk>
 											<Text type="sectionHead">What is this, a crossover episode?</Text>
 										</Chunk>
@@ -247,7 +254,7 @@ class Hello extends React.Component {
 												label="Toast me"
 												width="full"
 												onPress={()=>{
-													this.addToast("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.")
+													this.addDummyToast("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.")
 												}}
 												/>
 											<Button
@@ -284,13 +291,16 @@ class Hello extends React.Component {
 					onRequestClose={this.toggleModal}
 					>
 					<Stripe>
-						<Section isFirstChild>
+						<Section type="pageHead">
 							<Chunk>
 								<Text type="pageHead">Modal Time</Text>
 							</Chunk>
+
 							<Chunk>
 								<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Text>
 							</Chunk>
+						</Section>
+						<Section>
 							<form onSubmit={this.onSubmitHandler}>
 								<Chunk>
 									<Text type="label">Pick one of these</Text>
@@ -342,9 +352,6 @@ class Hello extends React.Component {
 					</Section>
 				</Prompt>
 
-				<Toast
-					ref={this.toastRef}
-					/>
 			</Fragment>
 		);
 	}
@@ -355,14 +362,15 @@ const mapStateToProps = (state, ownProps) => {
 	return ({
 		shows: state.shows,
 		user: state.user,
-		authentication: state.authentication
+		authentication: state.authentication,
 	});
 }
 
 const actionCreators = {
 	fetchShows,
 	fetchUser,
-	logIn
+	logIn,
+	addToast
 }
 
 export default connect(

@@ -165,8 +165,8 @@ class Modal extends React.Component{
 					    }]
 					}
 				]}>
-					<Stripe>
-						<Section>
+					<Stripe style={{paddingBottom: 0}}>
+						<Section style={{ paddingBottom: 0}}>
 							<Touch
 								onPress={onRequestClose}
 								style={{position: 'relative', left: -5}}

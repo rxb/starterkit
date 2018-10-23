@@ -193,12 +193,12 @@ class Scratch extends React.Component {
 				<Stripe>
 					<Bounds>
 						<Sections>
-							<Section>
+							<Section type="pageHead">
 								<Chunk>
 									<Text type="pageHead">Scratch</Text>
 								</Chunk>
-
-
+							</Section>
+							<Section>
 								  {things.map(thing => (
 								  		<Chunk>
 									  		<Text>{thing.message} {thing.id}</Text>
