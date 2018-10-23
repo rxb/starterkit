@@ -56,8 +56,6 @@ class Hello extends React.Component {
 		}
 		this.toggleModal = this.toggleModal.bind(this);
 		this.togglePrompt = this.togglePrompt.bind(this);
-		this.addDummyToast = this.addDummyToast.bind(this);
-		this.toastRef = React.createRef();
 	}
 
 	static async getInitialProps(ctx){
@@ -68,7 +66,7 @@ class Hello extends React.Component {
 		this.props.fetchShows();
 	}
 
-
+	// this needs to somehow get moved out to the page.js level
 	componentWillReceiveProps(nextProps){
 		if(nextProps.authentication.error && nextProps.authentication.error !== this.props.authentication.error){
 			const messages = {
@@ -76,7 +74,7 @@ class Hello extends React.Component {
 				NotAuthenticated: 'You shall not pass'
 			}
 			if(messages[nextProps.authentication.error.name]){
-				this.addToast(messages[nextProps.authentication.error.name]);
+				this.props.addToast(messages[nextProps.authentication.error.name], {autoHide: false});
 			}
 		}
 	}
@@ -89,9 +87,7 @@ class Hello extends React.Component {
 		this.setState({promptVisible: !this.state.promptVisible})
 	}
 
-	addDummyToast(message) {
-		this.props.addToast(message);
-	}
+
 
 	_renderItemCard(show, i) {
 		return(
@@ -254,7 +250,7 @@ class Hello extends React.Component {
 												label="Toast me"
 												width="full"
 												onPress={()=>{
-													this.addDummyToast("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.")
+													this.props.addToast("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.");
 												}}
 												/>
 											<Button

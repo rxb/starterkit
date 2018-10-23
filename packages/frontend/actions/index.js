@@ -24,12 +24,13 @@ export const removeModal = (id) => ({
 
 
 // TOASTS
-export const addToast = (message, options) => ({
+export const addToast = (message, options = {}) => ({
     type: 'ADD_TOAST',
     payload: {
 	    message: message,
 	    id: uuid(),
-	    visible: true
+	    visible: true,
+	    ...options
     }
 });
 

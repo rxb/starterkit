@@ -28,10 +28,9 @@ class ToastItem extends React.Component {
 	}
 
 	componentDidMount(){
-		console.log(`mount ${this.props.toast.id}`)
 		if(this.props.visible){
 			setTimeout(()=>{
-				this.open();
+				this.show();
 			}, 1);
 		}
 	}
@@ -40,16 +39,15 @@ class ToastItem extends React.Component {
 	componentWillReceiveProps(nextProps){
 		if (this.props.visible != nextProps.visible){
 			if(nextProps.visible){
-				this.open();
+				this.show();
 			}
 			else{
-				this.close();
+				this.hide();
 			}
 		}
 	}
 
-	open(){
-		console.log(`open ${this.props.toast.id}`);
+	show(){
 		Animated.timing(
 			this.state.visibility,{
 				toValue: 1,
@@ -59,7 +57,7 @@ class ToastItem extends React.Component {
 		).start(this.startHideTimeout);
 	}
 
-	close(){
+	hide(){
 		Animated.timing(
 			this.state.visibility, {
 				toValue: 0,
@@ -68,7 +66,6 @@ class ToastItem extends React.Component {
 			})
 			.start(this.remove);
 	}
-
 
 	remove(){
 		try{
@@ -83,19 +80,23 @@ class ToastItem extends React.Component {
 	}
 
 	startHideTimeout(){
-		const hideToast = this.props.hideToast;
-		const id = this.props.toast.id;
-		setTimeout(()=>{
-			try{
-				hideToast(id);
-			}
-			catch{
-				console.log('do you have multiple toasters mounted?');
-				// toast is gone already
-				// there are probably multiple toasters mounted
-				// not the worst thing ever, but maybe look into that
-			}
-		}, 5000);
+		const hideDelay = (this.props.toast.hideDelay !== undefined) ? this.props.toast.hideDelay : 5000;
+		const autoHide = (this.props.toast.autoHide !== undefined) ? this.props.toast.autoHide : true;
+		if(autoHide){
+			const hideToast = this.props.hideToast;
+			const id = this.props.toast.id;
+			setTimeout(()=>{
+				try{
+					hideToast(id);
+				}
+				catch{
+					console.log('do you have multiple toasters mounted?');
+					// toast is gone already
+					// there are probably multiple toasters mounted
+					// not the worst thing ever, but maybe look into that
+				}
+			}, hideDelay);
+		}
 	}
 
 	render(){
@@ -116,7 +117,7 @@ class ToastItem extends React.Component {
 						</FlexItem>
 						<FlexItem shrink>
 							<Touch onPress={()=>{
-								this.close();
+								this.hide();
 							}}>
 								<Icon
 									shape='X'
