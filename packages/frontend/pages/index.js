@@ -36,9 +36,8 @@ import LoginForm from '../components/LoginForm';
 
 import { connect } from 'react-redux';
 import {
-	logIn,
+	logInAndFetchUser,
 	fetchShows,
-	fetchUser,
 	addToast,
 	addPrompt
 } from '../actions';
@@ -94,23 +93,9 @@ class Hello extends React.Component {
 		this.props.fetchShows();
 	}
 
-	// this needs to somehow get moved out to the page.js level
-	componentWillReceiveProps(nextProps){
-		if(nextProps.authentication.error && nextProps.authentication.error !== this.props.authentication.error){
-			const messages = {
-				BadRequest: 'That was one bad request',
-				NotAuthenticated: 'You shall not pass'
-			}
-			if(messages[nextProps.authentication.error.name]){
-				this.props.addToast(messages[nextProps.authentication.error.name]);
-			}
-		}
-	}
-
 	toggleModal() {
 		this.setState({modalVisible: !this.state.modalVisible})
 	}
-
 
 
 	_renderItemCard(show, i) {
@@ -260,7 +245,7 @@ class Hello extends React.Component {
 											<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
 												<LoginForm
 													onSubmit={(fields)=>{
-														this.props.logIn(fields);
+														this.props.logInAndFetchUser(fields);
 													}}
 													/>
 											</LoadingBlock>
@@ -367,8 +352,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionCreators = {
 	fetchShows,
-	fetchUser,
-	logIn,
+	logInAndFetchUser,
 	addToast,
 	addPrompt
 }

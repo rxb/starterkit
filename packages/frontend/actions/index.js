@@ -136,6 +136,17 @@ export const logOut = () => ({
 });
 
 
+// LOG IN AND FETCH USER
+// COMBO ACTION
+// HOLY SHIT IT WORKS
+export function logInAndFetchUser(data) {
+	return (dispatch, getState) => {
+		return dispatch(logIn(data)).then( () => {
+			return dispatch(fetchUser('self'));
+		});
+	}
+}
+
 
 
 // FETCH SHOW COMMENTS

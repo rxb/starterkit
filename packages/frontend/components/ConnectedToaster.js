@@ -4,6 +4,7 @@
 
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
+
 import {
 	addToast,
 	hideToast,
@@ -12,21 +13,18 @@ import {
 
 import{ Toaster } from './cinderblock';
 
-const ConnectedToaster = (props) => ( <Toaster {...props} /> );
+const ConnectedToaster = (props) => ( <Toaster {...props} />);
+const mapStateToProps = (state, ownProps) => ({ toasts: state.toasts });
+const actionCreators = { addToast, hideToast, removeToast }
+export default connect( mapStateToProps, actionCreators )(ConnectedToaster);
 
-const mapStateToProps = (state, ownProps) => {
-	return ({
-		toasts: state.toasts,
-	});
+export const checkToastableErrors = (newProps, oldProps, messages) => {
+	for (const key in messages){
+		if(newProps[key].error && newProps[key].error !== oldProps[key].error){
+			const message = messages[key][newProps[key].error.name];
+			if(message){
+				newProps.addToast(message);
+			}
+		}
+	}
 }
-
-const actionCreators = {
-	addToast,
-	hideToast,
-	removeToast
-}
-
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(ConnectedToaster);

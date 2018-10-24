@@ -17,6 +17,10 @@ const withFormState = ( WrappedComponent ) => {
 		constructor(props){
 			super(props);
 			this.state={
+				// why set initialFields and not just pass though props to values all the time?
+				// an input can be populated with initial values, but shouldn't change after being presented to the user
+				// the user should be the only active editor of the fields once they are presented
+				// they shouldn't have to fight a "computer user" trying to edit the fields at the same time they are
 				fields: props.initialFields
 			}
 			this.getFieldValue = this.getFieldValue.bind(this);

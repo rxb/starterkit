@@ -15,9 +15,9 @@ Router.onRouteChangeError = () => NProgress.done()
 
 import { connect } from 'react-redux';
 import {
-	logIn,
+	addToast,
+	logInAndFetchUser,
 	logOut,
-	fetchUser
 } from '../actions';
 
 
@@ -53,7 +53,7 @@ import {
 } from './cinderblock';
 
 import LoginForm from './LoginForm';
-import ConnectedToaster from './ConnectedToaster';
+import ConnectedToaster, {checkToastableErrors} from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 
 
@@ -66,24 +66,36 @@ class Page extends React.Component {
 		this.toggleModal = this.toggleModal.bind(this);
 	}
 
-	componentDidMount(){
-		console.log(`page mounted`);
-	}
-
 	componentWillReceiveProps(nextProps) {
-		// this stuff and the form could be
-		// separated into its own component i think
 
+		// going to try to do this in a chained/combo action
+
+		/*
 		// got auth, so get new user info
 		if (nextProps.authentication !== this.props.authentication) {
 			this.props.fetchUser('self');
 		}
+		*/
+
+
+	}
+
+	componentDidUpdate(prevProps){
 
 		// got user, so dismiss modal
 		// could do this on auth change, but the user fetch makes the UI jump
-		if(nextProps.user !== this.props.user && this.state.modalVisible){
+		if(prevProps.user !== this.props.user && this.state.modalVisible){
 			this.toggleModal();
 		}
+
+		// ERROR TOASTS
+		const messages = {
+			authentication: {
+				BadRequest: 'That was one bad request',
+				NotAuthenticated: 'You shall not pass'
+			}
+		};
+		checkToastableErrors(this.props, prevProps, messages);
 	}
 
 
@@ -207,7 +219,7 @@ class Page extends React.Component {
 							<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
 								<LoginForm
 									onSubmit={(fields)=>{
-										this.props.logIn(fields);
+										this.props.logInAndFetchUser(fields);
 									}}
 									/>
 							</LoadingBlock>
@@ -235,9 +247,9 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const actionCreators = {
-	logIn,
 	logOut,
-	fetchUser
+	addToast,
+	logInAndFetchUser
 }
 
 export default connect(

@@ -9,6 +9,8 @@ import {
 	withFormState
 } from './cinderblock';
 
+// TODO: maybe this should be a connected component. it's always used the same way.
+
 const LoginForm = withFormState((props) => {
 	return(
 		<Chunk>
