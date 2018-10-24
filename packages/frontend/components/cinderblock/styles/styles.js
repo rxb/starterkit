@@ -439,7 +439,9 @@ const styles = StyleSheet.create({
 		marginHorizontal: space,
 		width: 'auto',
 		flex: 1,
-		boxShadow: '0 0 0 1px rgba(255,255,255,.1)'
+		boxShadow: '0 0 0 1px rgba(255,255,255,.1)',
+		shadowRadius: 12,
+		shadowColor: 'rgba(0,0,0,.25)',
 	},
 
 	// MODIFIERS

@@ -26,14 +26,20 @@ const showComments = (state = [], action) => {
       newState[findByOptimisticId(action.meta.optimisticId)] = newComment;
       return newState;
     case 'CREATE_SHOW_COMMENT_FAILURE':
+      console.log('delete comment success');
       newState = [...state];
       delete newState[findByOptimisticId(action.meta.optimisticId)];
       return newState;
+   case 'DELETE_SHOW_COMMENT':
+      console.log('starting to delete comment');
+      return state;
    case 'DELETE_SHOW_COMMENT_SUCCESS':
+      console.log('delete comment success');
       newState = [...state];
       newState.splice(newState.findIndex(comment => comment.id == action.payload.id), 1);
       return newState;
     case 'DELETE_SHOW_COMMENT_FAILURE':
+      console.log('delete comment failure');
       alert(`${action.payload.message}`);
     default:
       return state

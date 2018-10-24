@@ -10,7 +10,8 @@ import {
 	fetchShow,
 	createShowComment,
 	deleteShowComment,
-	fetchShowComments
+	fetchShowComments,
+	addPrompt
 } from '../actions';
 
 
@@ -41,49 +42,7 @@ import {
 	withFormState
 } from '../components/cinderblock';
 
-
-import styles from '../components/cinderblock/styles/styles';
-
 import Page from '../components/Page';
-
-
-
-class ListItem extends React.Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			visibilityValue: new Animated.Value(0)
-		}
-	}
-	componentWillEnter (callback) {
-		Animated.timing(
-			this.state.visibilityValue,{
-				toValue: 1,
-				duration: 250
-			}
-		).start(()=>{
-			callback();
-		});
-
-	}
-	componentWillLeave (callback) {
-		callback();
-	}
-	render(){
-		const {
-			thing,
-			i
-		} = this.props;
-		return(
-			<Animated.View style={{opacity: this.state.visibilityValue, backgroundColor: 'red', marginBottom: 2}}>
-				<Text>{i}. {thing}</Text>
-			</Animated.View>
-		)
-	}
-}
-
-import { Animated, Easing, Touchable, View } from '../components/cinderblock/primitives';
-
 
 const CommentForm = withFormState((props) => {
 	return(
@@ -111,6 +70,43 @@ const CommentForm = withFormState((props) => {
 	);
 });
 
+
+const DeletePrompt = (props) => {
+	const {
+		comment,
+		deleteShowComment,
+		onRequestClose
+	} = props;
+	return (
+		<Sectionless>
+			<Chunk>
+				<Text type="sectionHead">Are you sure?</Text>
+			</Chunk>
+			<Chunk>
+				<Text>Deleting your comment {comment.id}</Text>
+			</Chunk>
+			<Chunk>
+				<Button
+					onPress={()=>{
+						deleteShowComment(comment.id);
+						onRequestClose();
+					}}
+					label="Yes I'm sure"
+					width="full"
+					/>
+				<Button
+					onPress={()=>{
+						onRequestClose();
+					}}
+					label="No thanks"
+					color="secondary"
+					width="full"
+					/>
+			</Chunk>
+
+		</Sectionless>
+	)
+};
 
 
 
@@ -147,6 +143,7 @@ class Show extends React.Component {
 			showComments,
 			user
 		} = this.props;
+
 
 		return (
 			<Page>
@@ -189,7 +186,12 @@ class Show extends React.Component {
 														{ comment.user.id == user.id &&
 															<Fragment>
 																<Link onPress={()=>{
-																	this.props.deleteShowComment(comment.id);
+																	this.props.addPrompt(
+																		<DeletePrompt
+																			comment={comment}
+																			deleteShowComment={this.props.deleteShowComment}
+																			/>
+																	);
 																}}>
 																	<Text type="small" color="tint">&middot; Delete</Text>
 																</Link>
@@ -240,7 +242,8 @@ const actionCreators = {
 	createShowComment,
 	deleteShowComment,
 	fetchShowComments,
-	fetchShow
+	fetchShow,
+	addPrompt
 };
 
 export default connect(
