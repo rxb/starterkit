@@ -87,7 +87,7 @@ const OtherForm = withFormState((props) => {
 							/>
 					</Chunk>
 					<Chunk>
-						<Label htmlFor="tellMe">Tell me about yourself</Label>
+						<Label htmlFor="tellMe">Check out this counter</Label>
 						<TextInput
 							id="tellMe"
 							multiline
@@ -99,23 +99,11 @@ const OtherForm = withFormState((props) => {
 							/>
 					</Chunk>
 					<Chunk>
-						<Label htmlFor="description">This input updates</Label>
-						<TextInput
-							id="description"
-							multiline
-							numberOfLines={4}
-							maxLength={1000}
-							showCounter={true}
-							onChangeText={text => props.setFieldValue('description', text)}
-							defaultValue={props.getFieldValue('description')}
-							/>
-					</Chunk>
-					<Chunk>
 						<CheckBox
 							id="lastname"
 							value={props.getFieldValue('isRed')}
 							onChange={text => props.setFieldValue('isRed', !props.getFieldValue('isRed'))}
-							label="It's red"
+							label="I agree to everything"
 							/>
 					</Chunk>
 				</Section>

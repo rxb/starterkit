@@ -15,6 +15,7 @@ may not work exactly as expected with non-body text sizes
 const Inline = (props) => {
 	const {
 		children,
+		style,
 		space
 	} = props;
 
@@ -23,7 +24,7 @@ const Inline = (props) => {
 			// "if" statements can return null components, so needs to check
 			if(React.isValidElement(child)){
 				return (
-					<View style={[styles.inlineItem, (i==0 ? styles['inlineItem--firstChild'] : '')]}>
+					<View style={[styles.inlineItem, (i==0 ? styles['inlineItem--firstChild'] : ''), style]}>
 						{child}
 					</View>
 				);

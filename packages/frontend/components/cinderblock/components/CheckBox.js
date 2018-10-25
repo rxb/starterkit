@@ -48,7 +48,7 @@ class CheckBox extends React.Component {
 		} = this.props;
 
 		return (
-			<Inline>
+			<Inline style={{justifyContent: 'center'}}>
 				<CheckBoxWeb
 					style={{
 						width: 24,

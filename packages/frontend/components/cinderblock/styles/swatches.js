@@ -7,8 +7,8 @@ const swatches = {
 	textHintInverted: 'rgba(255,255,255,0.5)',
 	shade: 'rgba(0,0,0,.07)',
 	notwhite: 'rgba(0,0,0,.015)',
-	tint: 'blue',
-	focus: 'rgba(0,0,255,.25)',
+	tint: '#0f65ef',
+	focus: 'rgba(15,101,239,.25)',
 	border: 'rgba(0,0,0,.15)',
 	backgroundDark: '#222',
 	backgroundShade: '#fafafa'

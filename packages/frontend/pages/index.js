@@ -175,7 +175,7 @@ class Hello extends React.Component {
 											<Text type="sectionHead">What is this, a crossover episode?</Text>
 										</Chunk>
 										<Chunk>
-											<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <Link style={styles.textTint} href={{pathname:'/other', query:{what: 'yeah'}}}>LINK LINK LINK</Link> nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+											<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <Link style={styles.textTint} href={{pathname:'/other', query:{what: 'yeah'}}}>Check out this test form</Link> nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</Text>
 										</Chunk>
 										<Chunk>
 											<Text type="small" color="secondary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Text>
@@ -213,7 +213,7 @@ class Hello extends React.Component {
 									</Section>
 									<Section>
 										<Chunk>
-											<Text type="sectionHead">Some typing</Text>
+											<Text type="sectionHead">Testing tabs</Text>
 										</Chunk>
 										<Chunk>
 											<Tabs>
@@ -223,7 +223,7 @@ class Hello extends React.Component {
 											</Tabs>
 										</Chunk>
 										<Chunk>
-											<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</Text>
+											<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
 										</Chunk>
 									</Section>
 								</Sections>
