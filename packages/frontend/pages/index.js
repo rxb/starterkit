@@ -168,8 +168,7 @@ class Hello extends React.Component {
 										<Chunk>
 											<Text type="pageHead">Hey hello</Text>
 										</Chunk>
-									</Section>
-									<Section>
+
 										<Chunk>
 											<Text type="sectionHead">What is this, a crossover episode?</Text>
 										</Chunk>
@@ -250,7 +249,6 @@ class Hello extends React.Component {
 													/>
 											</LoadingBlock>
 										}
-
 
 										<Chunk>
 											<Button

@@ -13,6 +13,21 @@ module.exports = function (app) {
       },
       body: {
         type: DataTypes.TEXT,
+        // sequelize has a problem with notNull for now
+        // so until v5 comes out, do a default value and then validate it out if you have to
+        // https://github.com/sequelize/sequelize/issues/1500
+        defaultValue: '',
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Please say something"
+          },
+          // TODO: remove; this is a joke
+          notContains: {
+            args: "garbage",
+            msg: "Please don't make comments about garbage"
+          }
+        }
       },
       authorId: {
         type: DataTypes.INTEGER,

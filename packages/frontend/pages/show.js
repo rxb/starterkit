@@ -44,6 +44,8 @@ import {
 
 import Page from '../components/Page';
 
+
+
 const CommentForm = withFormState((props) => {
 	return(
 		<form>
@@ -152,7 +154,7 @@ class Show extends React.Component {
 					<meta property='og:image' content={this.props.show.photo} />
 					<title>{this.props.show.title}</title>
 				</Head>
-				<Stripe image={show.photo} style={{height: 300, backgroundColor: '#eee'}}>
+				<Stripe image={show.photo} style={{backgroundColor: '#eee'}}>
 				</Stripe>
 				<Stripe>
 					<Bounds>

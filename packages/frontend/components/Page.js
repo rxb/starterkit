@@ -166,8 +166,8 @@ class Page extends React.Component {
 												<Menu ref={ref => this.userMenu = ref}>
 													<Sectionless>
 														<Chunk>
-															{ ['Profile', 'Settings', 'Log out'].map(item=>(
-																<Touch onPress={logOut}>
+															{ ['Profile', 'Settings', 'Log out'].map((item, i)=>(
+																<Touch onPress={logOut} key={i}>
 																	<Text color="tint" >{item}</Text>
 																</Touch>
 															))}
