@@ -24,8 +24,8 @@ class Prompt extends React.Component{
 
 	static defaultProps = {
     	onPressEnter: ()=>{},
-    	onRequestClose: ()=>{ console.log('onRequestClose not implemented') },
-    	onCompleteClose: ()=>{ },
+    	onRequestClose: ()=>{},
+    	onCompleteClose: ()=>{},
     	dismissable: true,
     	visible: false
   	}
@@ -37,11 +37,13 @@ class Prompt extends React.Component{
 			visibilityValue: new Animated.Value(0)
 		}
 		this.onKeyPress = this.onKeyPress.bind(this);
+		this.onRequestClose = this.onRequestClose.bind(this);
+		this.onCompleteClose = this.onCompleteClose.bind(this);
 	}
 
 	componentDidMount(){
 		document.addEventListener("keydown", this.onKeyPress, false);
-		if(this.props.visible){
+		if(this.props.showable){
 			setTimeout(()=>{
 				this.open();
 			}, 1);
@@ -52,7 +54,7 @@ class Prompt extends React.Component{
 	}
 
 	onKeyPress(event){
-		if(this.props.visible){
+		if(this.props.showable){
 			if(event.keyCode === 27 && this.props.dismissable) {
 				this.props.onRequestClose();
 			}
@@ -63,12 +65,22 @@ class Prompt extends React.Component{
 	}
 
 	componentWillReceiveProps(nextProps){
-		if(nextProps.visible){
+		if(nextProps.showable){
 			this.open();
 		}
 		else{
 			this.close();
 		}
+	}
+
+	onRequestClose(){
+		this.props.hidePrompt(this.props.id);
+		this.props.onRequestClose();
+	}
+
+	onCompleteClose(){
+		this.props.removePrompt(this.props.id)
+		this.props.onCompleteClose();
 	}
 
 	open(){
@@ -93,24 +105,24 @@ class Prompt extends React.Component{
 			}
 		).start(()=>{
 			this.setState({display: 'none'});
-			this.props.onCompleteClose();
+			this.onCompleteClose();
 		});
 	}
 
 
 	render() {
 		const {
-			children,
-			onRequestClose,
-			onCompleteClose,
 			media,
 			dismissable,
-			visible,
+			content,
 			...other
 		} = this.props;
 
 		const promptStyle = styles['prompt'];
-
+		const promptContent = React.cloneElement(content, {
+			onRequestClose: this.onRequestClose,
+			onCompleteClose: this.onCompleteClose
+		});
 
 		return(
 			<Animated.View style={[
@@ -122,7 +134,7 @@ class Prompt extends React.Component{
 			]}>
 
 				<Touch
-					onPress={(dismissable) ? onRequestClose : ()=>{} }
+					onPress={(dismissable) ? this.onRequestClose : ()=>{} }
 					noFeedback
 					>
 						<View style={[ styles['modal-backdrop'] ]} />
@@ -139,7 +151,7 @@ class Prompt extends React.Component{
 					}
 				]}>
 					<Stripe>
-						{children}
+						{promptContent}
 					</Stripe>
 				</Animated.View>
 			</Animated.View>
@@ -158,19 +170,12 @@ class Prompter extends React.Component {
 		} = this.props;
 		const thisPrompt = this.props.prompts[0];
 		if(thisPrompt){
-			const onRequestClose = () => { this.props.hidePrompt(thisPrompt.id) };
-			const promptContent = React.cloneElement(thisPrompt.content, {onRequestClose});
 			return(
 				<Prompt
-					visible={thisPrompt.showable}
-					onRequestClose={onRequestClose}
-					onCompleteClose={()=>{
-						this.props.removePrompt(thisPrompt.id)
-					}}
+					showable={thisPrompt.showable}
+					{...thisPrompt}
 					{...other}
-					>
-					{promptContent}
-				</Prompt>
+					/>
 			);
 		}
 		else{

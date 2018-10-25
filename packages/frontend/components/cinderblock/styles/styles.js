@@ -348,6 +348,7 @@ const styles = StyleSheet.create({
 		fontFamily: METRICS.fontFamily,
 		fontWeight: '400',
 		WebkitFontSmoothing: 'antialiased', // retina/non-retina rendering
+		letterSpacing: '0.01em'
 	},
 	textPrimary: {
 		color: swatches.textPrimary,
@@ -387,12 +388,14 @@ const styles = StyleSheet.create({
 		fontSize: METRICS.sectionHeadSize,
 		lineHeight: METRICS.sectionHeadLineHeight,
 		fontWeight: '600',
+		letterSpacing: '.015em'
 	},
 	textPageHead: {
 		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
 		fontSize: METRICS.pageHeadSize,
 		lineHeight: METRICS.pageHeadLineHeight,
-		fontWeight: '700'
+		fontWeight: '700',
+		letterSpacing: '-.001em'
 	},
 	textLabel: {
 		marginTop: 4,

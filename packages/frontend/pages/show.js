@@ -77,7 +77,8 @@ const DeletePrompt = (props) => {
 	const {
 		comment,
 		deleteShowComment,
-		onRequestClose
+		onRequestClose,
+		onCompleteClose
 	} = props;
 	return (
 		<Sectionless>
@@ -91,7 +92,9 @@ const DeletePrompt = (props) => {
 				<Button
 					onPress={()=>{
 						deleteShowComment(comment.id);
-						onRequestClose();
+						onRequestClose(()=>{
+							alert('yes!');
+						});
 					}}
 					label="Yes I'm sure"
 					width="full"
