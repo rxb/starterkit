@@ -21,6 +21,7 @@ const LoginForm = withFormState((props) => {
 					onChange={ e => props.setFieldValue('email', e.target.value) }
 					keyboardType="email-address"
 					placeholder="email"
+					onSubmitEditing={props.handleSubmit}
 					/>
 				<TextInput
 					id="password"
@@ -28,6 +29,7 @@ const LoginForm = withFormState((props) => {
 					onChange={ e => props.setFieldValue('password', e.target.value) }
 					secureTextEntry={true}
 					placeholder="password"
+					onSubmitEditing={props.handleSubmit}
 					/>
 				<Button
 					onPress={props.handleSubmit}
