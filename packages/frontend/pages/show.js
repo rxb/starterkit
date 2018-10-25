@@ -163,6 +163,12 @@ class Show extends React.Component {
 								<Chunk>
 									<Text type="pageHead">{show.title}</Text>
 								</Chunk>
+								<Chunk>
+									<Text color="secondary">United States &middot; 1998 &middot; Sitcom</Text>
+								</Chunk>
+								<Chunk>
+									<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</Text>
+								</Chunk>
 							</Section>
 							<Section>
 								<Chunk>
@@ -195,14 +201,10 @@ class Show extends React.Component {
 																			/>
 																	);
 																}}>
-																	<Text type="small" color="tint">&middot; Delete</Text>
+																	<Text type="small" color="hint">&middot; Delete</Text>
 																</Link>
 
-																<Link onPress={()=>{
-																	alert('edit comment?')
-																}}>
-																	<Text type="small" color="tint">&middot; Edit</Text>
-																</Link>
+
 															</Fragment>
 														}
 													</Text>

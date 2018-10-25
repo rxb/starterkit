@@ -23,7 +23,7 @@ const Stripe = (props) => {
 	const {
 		children,
 		image,
-		imageHeight = {small: 225, medium: 325, large: 400, xlarge: 475},
+		imageHeight = {small: 225, medium: 325, large: 400, xlarge: 450},
 		media,
 		style,
 	} = props
