@@ -16,7 +16,6 @@ const Inline = (props) => {
 	const {
 		children,
 		style,
-		space
 	} = props;
 
 	const wrappedChildren = React.Children.map(children,
@@ -24,7 +23,7 @@ const Inline = (props) => {
 			// "if" statements can return null components, so needs to check
 			if(React.isValidElement(child)){
 				return (
-					<View style={[styles.inlineItem, (i==0 ? styles['inlineItem--firstChild'] : ''), style]}>
+					<View style={[styles.inlineItem, (i==0 ? styles['inlineItem--firstChild'] : {}), style]}>
 						{child}
 					</View>
 				);
