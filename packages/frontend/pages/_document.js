@@ -17,6 +17,12 @@ export default class MyDocument extends Document {
       <style
         key={index++}
         dangerouslySetInnerHTML={{ __html: `
+
+          /*
+          WEB-ONLY CSS HACKS
+          All the weird stuff that React Native will never care about
+          */
+
           html, body, #__next{
             width: 100%;
             height: 'auto',
@@ -46,6 +52,24 @@ export default class MyDocument extends Document {
             box-shadow: 0 0 0 3px ${swatches.focus};
           }
 
+          /* remove autofill styles (might be evil, but let's try it) */
+          @-webkit-keyframes autofill {
+              to {
+                  background: ${swatches.shade};
+              }
+          }
+          @-webkit-keyframes autofillfocus {
+              to {
+                  background: transparent;
+              }
+          }
+          input:-webkit-autofill {
+              -webkit-animation-name: autofill;
+              -webkit-animation-fill-mode: both;
+          }
+          input:-webkit-autofill:focus {
+              -webkit-animation-name: autofillfocus;
+          }
 
         `}}
       />,

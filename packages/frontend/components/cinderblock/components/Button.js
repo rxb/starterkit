@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {Fragment} from 'react';
+import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from '../primitives';
 import styles from '../styles/styles';
@@ -17,6 +18,7 @@ const Button = (props) => {
 			shape,
 			color = 'primary',
 			media,
+			isLoading = false,
 			width = 'snap',
 			...other
 		} = props;
@@ -49,10 +51,21 @@ const Button = (props) => {
 				{...actionComponentProps}
 				{...other}
 				>
-				{ shape &&
-					<Icon shape={shape} color="white" />
+
+				<View style={{visibility: (isLoading) ? 'hidden' : 'visible'}}>
+					{ shape &&
+						<Icon shape={shape} color="white" />
+					}
+					<Text style={[styles.text, styles.buttonText, styles[`buttonText--${color}`]]}>{label}</Text>
+				</View>
+
+				{ isLoading &&
+					<View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
+						<ActivityIndicator
+							color={'white'}
+							/>
+					</View>
 				}
-				<Text style={[styles.text, styles.buttonText, styles[`buttonText--${color}`]]}>{label}</Text>
 			</ActionComponent>
 		);
 }

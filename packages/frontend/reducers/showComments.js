@@ -17,15 +17,20 @@ const showComments = (state = [], action) => {
     case 'FETCH_SHOW_COMMENTS_SUCCESS':
     	return action.payload.data;
     case 'CREATE_SHOW_COMMENT':
+      console.log('start');
       newComment = {...action.payload};
       newState = [...state, newComment];
       return newState;
     case 'CREATE_SHOW_COMMENT_SUCCESS':
+      console.log('success');
     	newComment = action.payload;
     	newState = [...state];
       newState[findByOptimisticId(action.meta.optimisticId)] = newComment;
       return newState;
     case 'CREATE_SHOW_COMMENT_FAILURE':
+      console.log('failure start');
+      console.log(action.payload.response);
+      console.log('failure stop')
       newState = [...state];
       newState.splice(findByOptimisticId(action.meta.optimisticId), 1);
       return newState;

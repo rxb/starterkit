@@ -34,7 +34,7 @@ const LoginForm = withFormState((props) => {
 				<Button
 					onPress={props.handleSubmit}
 					accessibilityRole="submit"
-					isLoading={props.isSubmitting}
+					isLoading={props.isLoading}
 					label="Log in"
 					width="full"
 					/>

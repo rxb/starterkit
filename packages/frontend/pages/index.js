@@ -248,6 +248,7 @@ class Hello extends React.Component {
 													onSubmit={(fields)=>{
 														this.props.logInAndFetchUser(fields);
 													}}
+													isLoading={(authentication.loading || authentication.token)}
 													/>
 											</LoadingBlock>
 										}
