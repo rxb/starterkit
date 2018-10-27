@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
 		zIndex: 3,
 	},
 	'toaster-inner': {
-		maxWidth: 800,
+		maxWidth: 600,
 		marginHorizontal: 'auto',
 		width: '100%',
 		height: 0,
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: space,
 		width: 'auto',
 		flex: 1,
-		boxShadow: '0 0 0 1px rgba(255,255,255,.1)',
+		boxShadow: '0 0 0 1px rgba(255,255,255,.25)',
 		shadowRadius: 12,
 		shadowColor: 'rgba(0,0,0,.25)',
 	},
