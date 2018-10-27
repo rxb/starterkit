@@ -11,7 +11,8 @@ import {
 	createShowComment,
 	deleteShowComment,
 	fetchShowComments,
-	addPrompt
+	addPrompt,
+	addToast
 } from '../actions';
 
 
@@ -44,6 +45,7 @@ import {
 } from '../components/cinderblock';
 
 import Page from '../components/Page';
+import {checkToastableErrors} from '../components/ConnectedToaster';
 
 
 
@@ -150,6 +152,21 @@ class Show extends React.Component {
 		this.props.fetchShowComments({showId: this.props.showId});
 	}
 
+	componentDidUpdate(prevProps){
+
+		// it's looking for .error, not createError
+		// do they really need to be separate?
+		// trying to figure out the consequences here
+		const messages = {
+			showComments: {
+				BadRequest: 'Something went wrong',
+			}
+		};
+		checkToastableErrors(this.props, prevProps, messages);
+
+	}
+
+
 
 	render() {
 
@@ -228,7 +245,7 @@ class Show extends React.Component {
 								{user.id &&
 									<Fragment>
 										<CommentForm
-											fieldErrors={showComments.createError.fieldErrors}
+											fieldErrors={showComments.error.fieldErrors}
 											onSubmit={ (fields, context) => {
 												const data = { ...fields, showId: this.props.show.id };
 												this.props.createShowComment(data, { user: this.props.user } );
@@ -261,7 +278,8 @@ const actionCreators = {
 	deleteShowComment,
 	fetchShowComments,
 	fetchShow,
-	addPrompt
+	addPrompt,
+	addToast
 };
 
 export default connect(

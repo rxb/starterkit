@@ -9,7 +9,7 @@ https://stackoverflow.com/questions/45130429/must-normalizing-state-shape-for-ar
 const startState = {
   items: [],
   error: {},
-  createError: {}, // seems separate?
+  /* createError: {}, // seems separate? but if it's really separate, probably should be separate reducer */
   loading: false
 };
 
@@ -34,17 +34,22 @@ const showComments = (state = {...startState}, action) => {
 
   switch (action.type) {
     case 'FETCH_SHOW_COMMENTS':
-      return {...startState};
+      return {
+        ...startState,
+        loading: true
+      };
     case 'FETCH_SHOW_COMMENTS_SUCCESS':
-      newState = {...state};
-      newState.items = action.payload.data
-      return newState;
+      return {
+        items: action.payload.data,
+        error: {},
+        loading: false
+      }
     case 'CREATE_SHOW_COMMENT':
-      newState = {...state};
-      newComment = action.payload;
-      newState.items.push(newComment);
-      newState.createError = {};
-      return newState;
+      return {
+        items: [...state.items, action.payload],
+        error: {},
+        loading: false
+      }
     case 'CREATE_SHOW_COMMENT_SUCCESS':
       newState = {...state};
       newComment = action.payload;
@@ -53,17 +58,17 @@ const showComments = (state = {...startState}, action) => {
     case 'CREATE_SHOW_COMMENT_FAILURE':
       newState = {...state};
       newState.items.splice(findByOptimisticId(action.meta.optimisticId), 1);
-      error = {...action.payload.response};
+      error = action.payload.response;
       error.fieldErrors = buildFieldErrors(error.errors);
-      newState.createError = error;
+      newState.error = error;
       return newState;
-   case 'DELETE_SHOW_COMMENT':
-      return state;
    case 'DELETE_SHOW_COMMENT_SUCCESS':
       newState = {...state};
       newState.items.splice(newState.items.findIndex(comment => comment.id == action.payload.id), 1);
       return newState;
+    case 'FETCH_SHOW_COMMENTS_FAILURE':
     case 'DELETE_SHOW_COMMENT_FAILURE':
+      // handle these better
       alert(`${action.payload.message}`);
     default:
       return state

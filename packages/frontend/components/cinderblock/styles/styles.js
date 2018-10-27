@@ -152,7 +152,8 @@ const styles = StyleSheet.create({
 		fontFamily: METRICS.fontFamily,
 		marginVertical: METRICS.pseudoLineHeight,
 	},
-	'input--multiline': {
+	'input--multilineAndCounter': {
+		paddingBottom: 13 + METRICS.bodySize
 	},
 
 	// BUTTON

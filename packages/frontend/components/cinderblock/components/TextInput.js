@@ -87,7 +87,6 @@ class TextInput extends React.Component{
 			maxLength,
 			onChange,
 			onChangeText,
-
 			autoExpand = true,
 			showCounter,
 			style,
@@ -118,14 +117,15 @@ class TextInput extends React.Component{
 					style={[
 						styles.input,
 						multiline && styles['input--multiline'],
+						multiline && maxLength && showCounter && styles['input--multilineAndCounter'],
 						styles.text,
 						{minHeight: this.state.height},
-						style
+						style,
 					]}
 					{...other}
 					/>
 				{ maxLength && showCounter &&
-					<CharCount ref={this.counter} maxLength={maxLength} style={{/*position: 'absolute', bottom: 8, right: 8*/}} />
+					<CharCount ref={this.counter} maxLength={maxLength} style={{position: 'absolute', bottom: 8, right: 8}} />
 				}
 			</View>
 		);
