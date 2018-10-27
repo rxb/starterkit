@@ -154,9 +154,8 @@ class Show extends React.Component {
 
 	componentDidUpdate(prevProps){
 
-		// it's looking for .error, not createError
-		// do they really need to be separate?
-		// trying to figure out the consequences here
+		// watching for toastable errors
+		// still feel like maybe this could go with form?
 		const messages = {
 			showComments: {
 				BadRequest: 'Something went wrong',

@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
 	// stacking up some inline
 	inline: {
 		flexDirection: 'row',
-		flexWrap: 'wrap'
+		flexWrap: 'wrap',
+		alignItems: 'center'
 	},
 	inlineItem: {
 		marginLeft: space/3
@@ -434,7 +435,7 @@ const styles = StyleSheet.create({
 	'toaster-inner': {
 		maxWidth: 600,
 		marginHorizontal: 'auto',
-		width: '100%',
+		//width: '100%',
 		height: 0,
 		overflow: 'visible',
 		justifyContent: 'flex-end'

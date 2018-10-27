@@ -80,7 +80,7 @@ class Toast extends React.Component {
 	}
 
 	startHideTimeout(){
-		const hideDelay = (this.props.toast.hideDelay !== undefined) ? this.props.toast.hideDelay : 5000;
+		const hideDelay = (this.props.toast.hideDelay !== undefined) ? this.props.toast.hideDelay : 2500;
 		const autoHide = (this.props.toast.autoHide !== undefined) ? this.props.toast.autoHide : true;
 		if(autoHide){
 			const hideToast = this.props.hideToast;
@@ -115,14 +115,14 @@ class Toast extends React.Component {
 						<FlexItem>
 							<Text color="primary" inverted>{this.props.toast.message}</Text>
 						</FlexItem>
-						<FlexItem shrink>
+						<FlexItem shrink justify="center">
 							<Touch onPress={()=>{
 								this.hide();
 							}}>
 								<Icon
 									shape='X'
-									color={swatches.textSecondaryInverted}
-									size="medium"
+									color={swatches.textHintInverted}
+									size="small"
 									/>
 							</Touch>
 						</FlexItem>
