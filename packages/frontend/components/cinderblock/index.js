@@ -5,6 +5,7 @@ import CheckBox from './components/CheckBox';
 import Chip from './components/Chip';
 import Chunk from './components/Chunk';
 import Button from './components/Button';
+import FieldError from './components/FieldError';
 import Flex from './components/Flex';
 import FlexItem from './components/FlexItem';
 import Header from './components/Header';
@@ -39,6 +40,7 @@ export {
 	CheckBox,
 	Chip,
 	Chunk,
+	FieldError,
 	Flex,
 	FlexItem,
 	Header,

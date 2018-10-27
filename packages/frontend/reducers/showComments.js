@@ -6,6 +6,56 @@ If you're doing a lot of state maintaining on the client side, then byId starts 
 https://stackoverflow.com/questions/45130429/must-normalizing-state-shape-for-array-data-involve-round-trip-conversion-betwee
 */
 
+const startState = {
+  items: [],
+  error: {},
+  createError: {}, // seems separate?
+  loading: false
+};
+
+const showComments = (state = {...startState}, action) => {
+  let newComment, newState, index;
+  const findByOptimisticId = (optimisticId) => (
+    state.items.findIndex( comment => comment.optimisticId === optimisticId )
+  );
+  switch (action.type) {
+    case 'FETCH_SHOW_COMMENTS':
+      return {...startState};
+    case 'FETCH_SHOW_COMMENTS_SUCCESS':
+      newState = {...state};
+      newState.items = action.payload.data
+      return newState;
+    case 'CREATE_SHOW_COMMENT':
+      newState = {...state};
+      newComment = action.payload;
+      newState.items.push(newComment);
+      newState.createError = {};
+      return newState;
+    case 'CREATE_SHOW_COMMENT_SUCCESS':
+      newState = {...state};
+      newComment = action.payload;
+      newState.items[findByOptimisticId(action.meta.optimisticId)] = newComment;
+      return newState;
+    case 'CREATE_SHOW_COMMENT_FAILURE':
+      newState = {...state};
+      newState.items.splice(findByOptimisticId(action.meta.optimisticId), 1);
+      newState.createError = action.payload.response; // individual errors action.payload.response.errors
+      return newState;
+   case 'DELETE_SHOW_COMMENT':
+      return state;
+   case 'DELETE_SHOW_COMMENT_SUCCESS':
+      newState = {...state};
+      newState.items.splice(newState.items.findIndex(comment => comment.id == action.payload.id), 1);
+      return newState;
+    case 'DELETE_SHOW_COMMENT_FAILURE':
+      alert(`${action.payload.message}`);
+    default:
+      return state
+  }
+}
+
+
+/*
 const showComments = (state = [], action) => {
   let newComment, newState, index;
   const findByOptimisticId = (optimisticId) => (
@@ -17,20 +67,17 @@ const showComments = (state = [], action) => {
     case 'FETCH_SHOW_COMMENTS_SUCCESS':
     	return action.payload.data;
     case 'CREATE_SHOW_COMMENT':
-      console.log('start');
       newComment = {...action.payload};
       newState = [...state, newComment];
       return newState;
     case 'CREATE_SHOW_COMMENT_SUCCESS':
-      console.log('success');
     	newComment = action.payload;
     	newState = [...state];
       newState[findByOptimisticId(action.meta.optimisticId)] = newComment;
       return newState;
     case 'CREATE_SHOW_COMMENT_FAILURE':
-      console.log('failure start');
       console.log(action.payload.response);
-      console.log('failure stop')
+      console.log(action.payload.response.errors);
       newState = [...state];
       newState.splice(findByOptimisticId(action.meta.optimisticId), 1);
       return newState;
@@ -46,5 +93,6 @@ const showComments = (state = [], action) => {
       return state
   }
 }
+*/
 
 export default showComments;

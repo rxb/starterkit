@@ -401,6 +401,9 @@ const styles = StyleSheet.create({
 		marginTop: 4,
 		marginBottom: 0,
 	},
+	textError: {
+		color: swatches.error,
+	},
 
 	// HEADER
 	header: {

@@ -55,7 +55,7 @@ export default class MyDocument extends Document {
           /* remove autofill styles (might be evil, but let's try it) */
           @-webkit-keyframes autofill {
               to {
-                  background: ${swatches.shade};
+                  background: ${swatches.notwhite};
               }
           }
           @-webkit-keyframes autofillfocus {

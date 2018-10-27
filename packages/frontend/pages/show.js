@@ -22,6 +22,7 @@ import {
 	Card,
 	CheckBox,
 	Chunk,
+	FieldError,
 	Flex,
 	FlexItem,
 	Icon,
@@ -47,6 +48,14 @@ import Page from '../components/Page';
 
 
 const CommentForm = withFormState((props) => {
+
+	// REMAP ERRORS TO NICE OBJECT
+	const { errors: rawErrors = [] } = props;
+	const errors = {};
+	rawErrors.forEach( err => {
+		errors[err.path] = err.message;
+	});
+
 	return(
 		<form>
 			<Chunk>
@@ -61,6 +70,9 @@ const CommentForm = withFormState((props) => {
 					numberOfLines={4}
 					maxLength={1000}
 					/>
+				{ errors.body &&
+					<FieldError error={errors.body} />
+				}
 			</Chunk>
 			<Chunk>
 				<Button
@@ -178,7 +190,7 @@ class Show extends React.Component {
 									<Text type="sectionHead">Comments</Text>
 								</Chunk>
 
-								{showComments && showComments.map((comment, i)=>{
+								{showComments.items.map((comment, i)=>{
 									comment.user = comment.user || {};
 									return (
 										<Chunk key={i} style={{...(comment.optimistic ? {opacity:.5} : {}) }}>
@@ -206,8 +218,6 @@ class Show extends React.Component {
 																}}>
 																	<Text type="small" color="hint">&middot; Delete</Text>
 																</Link>
-
-
 															</Fragment>
 														}
 													</Text>
@@ -218,13 +228,16 @@ class Show extends React.Component {
 								})}
 
 								{user.id &&
-									<CommentForm
-										onSubmit={ (fields, context) => {
-											const data = { ...fields, showId: this.props.show.id };
-											this.props.createShowComment(data, { user: this.props.user } );
-											context.resetFields();
-										}}
-										/>
+									<Fragment>
+										<CommentForm
+											errors={showComments.createError.errors}
+											onSubmit={ (fields, context) => {
+												const data = { ...fields, showId: this.props.show.id };
+												this.props.createShowComment(data, { user: this.props.user } );
+												context.resetFields();
+											}}
+											/>
+									</Fragment>
 								}
 
 							</Section>

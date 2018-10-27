@@ -9,6 +9,7 @@ const swatches = {
 	notwhite: 'rgba(0,0,0,.015)',
 	tint: 'rgb(0,122,255)',
 	focus: 'rgba(0,122,255,.25)',
+	error: 'red',
 	border: 'rgba(0,0,0,.15)',
 	backgroundDark: '#222',
 	backgroundShade: '#fafafa'
