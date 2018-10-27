@@ -103,7 +103,7 @@ class Toast extends React.Component {
 		return(
 			<Animated.View
 				style={{
-					marginTop: this.state.visibility.interpolate({
+					marginBottom: this.state.visibility.interpolate({
 				    	inputRange: [0, 1],
 				        outputRange: [-60, 0]
 				    }),

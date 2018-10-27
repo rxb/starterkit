@@ -425,23 +425,24 @@ const styles = StyleSheet.create({
 	// TOASTER
 	toaster: {
 		position: 'fixed',
-		top: 0,
+		bottom: 0,
 		left: 0,
 		right: 0,
-		zIndex: 3
+		zIndex: 3,
 	},
 	'toaster-inner': {
 		maxWidth: 800,
 		marginHorizontal: 'auto',
 		width: '100%',
 		height: 0,
-		overflow: 'visible'
+		overflow: 'visible',
+		justifyContent: 'flex-end'
 	},
 	toast: {
 		padding: space,
 		backgroundColor: swatches.backgroundDark,
 		borderRadius: METRICS.borderRadius,
-		marginTop: space,
+		marginBottom: space,
 		marginHorizontal: space,
 		width: 'auto',
 		flex: 1,
