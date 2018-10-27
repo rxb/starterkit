@@ -14,10 +14,24 @@ const startState = {
 };
 
 const showComments = (state = {...startState}, action) => {
-  let newComment, newState, index;
+
+  // HELPERS
+  // should move to some kind of util include
+
   const findByOptimisticId = (optimisticId) => (
     state.items.findIndex( comment => comment.optimisticId === optimisticId )
   );
+
+  const buildFieldErrors = (errors) => {
+    const fieldErrors = {};
+    errors.forEach( err => {
+      fieldErrors[err.path] = err.message;
+    });
+    return fieldErrors;
+  }
+
+  let newComment, newState, index, error;
+
   switch (action.type) {
     case 'FETCH_SHOW_COMMENTS':
       return {...startState};
@@ -39,7 +53,9 @@ const showComments = (state = {...startState}, action) => {
     case 'CREATE_SHOW_COMMENT_FAILURE':
       newState = {...state};
       newState.items.splice(findByOptimisticId(action.meta.optimisticId), 1);
-      newState.createError = action.payload.response; // individual errors action.payload.response.errors
+      error = {...action.payload.response};
+      error.fieldErrors = buildFieldErrors(error.errors);
+      newState.createError = error;
       return newState;
    case 'DELETE_SHOW_COMMENT':
       return state;

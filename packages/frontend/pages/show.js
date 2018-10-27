@@ -49,20 +49,20 @@ import Page from '../components/Page';
 
 const CommentForm = withFormState((props) => {
 
-	// REMAP ERRORS TO NICE OBJECT
-	const { errors: rawErrors = [] } = props;
-	const errors = {};
-	rawErrors.forEach( err => {
-		errors[err.path] = err.message;
-	});
+	const {
+		getFieldValue,
+		setFieldValue,
+		handleSubmit,
+		fieldErrors = {}
+	} = props;
 
 	return(
 		<form>
 			<Chunk>
 				<TextInput
 					id="body"
-					value={props.getFieldValue('body')}
-					onChange={e => props.setFieldValue('body', e.target.value)}
+					value={getFieldValue('body')}
+					onChange={e => setFieldValue('body', e.target.value)}
 					placeholder="Post a comment about this show"
 					autoComplete="off"
 					multiline={true}
@@ -70,13 +70,11 @@ const CommentForm = withFormState((props) => {
 					numberOfLines={4}
 					maxLength={1000}
 					/>
-				{ errors.body &&
-					<FieldError error={errors.body} />
-				}
+				<FieldError error={fieldErrors.body} />
 			</Chunk>
 			<Chunk>
 				<Button
-					onPress={props.handleSubmit}
+					onPress={handleSubmit}
 					label="Post Comment"
 					/>
 			</Chunk>
@@ -230,7 +228,7 @@ class Show extends React.Component {
 								{user.id &&
 									<Fragment>
 										<CommentForm
-											errors={showComments.createError.errors}
+											fieldErrors={showComments.createError.fieldErrors}
 											onSubmit={ (fields, context) => {
 												const data = { ...fields, showId: this.props.show.id };
 												this.props.createShowComment(data, { user: this.props.user } );
