@@ -143,7 +143,7 @@ class Upload extends React.Component {
 									<Chunk>
 										<Text>This is the server ID</Text>
 										<Link
-											href={`http://localhost:3030/uploads/${this.state.fileid}`}
+											href={`http://localhost:3030/photos/${this.state.fileid}`}
 											target="_blank"
 											>
 											{this.state.fileid}

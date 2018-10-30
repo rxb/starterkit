@@ -8,7 +8,7 @@ const multipartMiddleware = multer();
 // feathers-blob service
 const blobService = require('feathers-blob');
 const fs = require('fs-blob-store'); // could be any blob storage system
-const blobStorage = fs(__dirname + '/uploads');
+const blobStorage = fs('./public/photos');
 
 module.exports = function (app) {
 
