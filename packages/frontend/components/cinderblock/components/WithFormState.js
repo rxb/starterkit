@@ -1,3 +1,5 @@
+import React from 'react';
+
 /*
 
 Fields.js
@@ -51,6 +53,7 @@ const withFormState = ( WrappedComponent ) => {
 			return (
 				<WrappedComponent
 					handleSubmit={this.handleSubmit}
+					resetFields={this.resetFields}
 					setFieldValue={this.setFieldValue}
 					getFieldValue={this.getFieldValue}
 					{...this.props}

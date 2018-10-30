@@ -55,6 +55,7 @@ const CommentForm = withFormState((props) => {
 		getFieldValue,
 		setFieldValue,
 		handleSubmit,
+		resetFields,
 		fieldErrors = {}
 	} = props;
 
