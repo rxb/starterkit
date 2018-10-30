@@ -8,6 +8,7 @@ module.exports = {
     create: [
         function(hook) {
             if (!hook.data.uri && hook.params.file){
+                // convert regular old files to base64 for blob
                 const file = hook.params.file;
                 const uri = dauria.getBase64DataURI(file.buffer, file.mimetype);
                 hook.data = {uri: uri};

@@ -38,6 +38,21 @@ import {
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
+const readFileAsDataUrl = (inputFile) => {
+  const temporaryFileReader = new FileReader();
+  return new Promise((resolve, reject) => {
+    temporaryFileReader.onerror = () => {
+      temporaryFileReader.abort();
+      reject(new DOMException("Problem parsing input file."));
+    };
+
+    temporaryFileReader.onload = () => {
+      resolve(temporaryFileReader.result);
+    };
+    temporaryFileReader.readAsDataURL(inputFile);
+  });
+};
+
 
 class Upload extends React.Component {
 
@@ -86,8 +101,9 @@ class Upload extends React.Component {
 											id="somephoto"
 											onChange={(e)=>{
 												this.setState({
-											      file: URL.createObjectURL(e.target.files[0]),
-											      filename: e.target.value.split(/(\\|\/)/g).pop()
+												  file: e.target.files[0],
+											      filepreview: URL.createObjectURL(e.target.files[0]),
+											      filename: e.target.value.split(/(\\|\/)/g).pop(),
 											    })
 											}}
 											style={{
@@ -104,15 +120,41 @@ class Upload extends React.Component {
 										type="primary"
 										label="Let's do this"
 										onPress={()=>{
-											alert('filez');
+											readFileAsDataUrl(this.state.file).then((encodedFile)=>{
+												fetch('http://localhost:3030/uploads', {
+													method: 'POST',
+													headers: {
+														'Accept': 'application/json',
+														'Content-Type': 'application/json'
+													},
+													body: JSON.stringify({
+													uri: encodedFile,
+													name: "Some guy"
+													})
+												})
+												.then( response => response.json() )
+												.then( json => this.setState({fileid: json.id }) );
+											})
 										}}
 										/>
 								</Chunk>
 
-								{this.state.file &&
+								{this.state.fileid &&
+									<Chunk>
+										<Text>This is the server ID</Text>
+										<Link
+											href={`http://localhost:3030/uploads/${this.state.fileid}`}
+											target="_blank"
+											>
+											{this.state.fileid}
+										</Link>
+									</Chunk>
+								}
+
+								{this.state.filepreview &&
 									<Chunk>
 										<Image
-											source={{uri: this.state.file}}
+											source={{uri: this.state.filepreview}}
 											style={[{
 												height: 300,
 												width: 300
