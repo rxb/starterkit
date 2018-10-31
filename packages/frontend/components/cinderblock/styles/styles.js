@@ -156,6 +156,14 @@ const styles = StyleSheet.create({
 	'input--multilineAndCounter': {
 		paddingBottom: 13 + METRICS.bodySize
 	},
+	'input-icon': {
+		position: 'absolute',
+		right: 13,
+		top: 0,
+		height: '100%',
+		justifyContent: 'center',
+		pointerEvents: 'none'
+	},
 
 	// BUTTON
 	button: {

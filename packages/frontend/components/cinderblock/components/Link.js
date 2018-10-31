@@ -14,7 +14,6 @@ Don't worry about it for now
 
 */
 
-
 class Link extends React.Component {
 
 	render() {

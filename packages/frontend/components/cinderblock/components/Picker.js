@@ -28,7 +28,7 @@ class Picker extends PickerWeb{
             return (
             	<View style={{position: 'relative'}}>
             		{elementsTree}
-            		<View style={{position: 'absolute', right: 13, top: 0, height: '100%', justifyContent: 'center', pointerEvents: 'none' }}>
+            		<View style={styles['input-icon']}>
             			<Icon shape="ChevronDown" color={swatches.textHint} />
             		</View>
             	</View>

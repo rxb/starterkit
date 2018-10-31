@@ -16,6 +16,7 @@ import {
 	Chunk,
 	Flex,
 	FlexItem,
+	FileInput,
 	Icon,
 	Inline,
 	Image,
@@ -89,31 +90,15 @@ class Upload extends React.Component {
 							<Section>
 								<Chunk>
 									<Label>Your photo</Label>
-									<View style={[styles.input]}>
-										{!this.state.filename &&
-											<Text color="hint">Pick a file</Text>
-										}
-										{this.state.filename &&
-											<Text color="primary">{this.state.filename}</Text>
-										}
-										<input
-											type="file"
-											id="somephoto"
-											onChange={(e)=>{
-												this.setState({
-												  file: e.target.files[0],
-											      filepreview: URL.createObjectURL(e.target.files[0]),
-											      filename: e.target.value.split(/(\\|\/)/g).pop(),
-											    })
-											}}
-											style={{
-												position: 'absolute',
-												opacity: 0,
-												width: '100%',
-												height: '100%'
-											}}
-											/>
-									</View>
+									<FileInput
+										id="yourphoto"
+										onChangeFile={(file)=>{
+											this.setState({
+												file: file,
+												filepreview: URL.createObjectURL(file)
+											});
+										}}
+										/>
 								</Chunk>
 								<Chunk>
 									<Button
@@ -139,20 +124,13 @@ class Upload extends React.Component {
 										/>
 								</Chunk>
 
-								{this.state.fileid &&
-									<Chunk>
-										<Text>This is the server ID</Text>
-										<Link
-											href={`http://localhost:3030/photos/${this.state.fileid}`}
-											target="_blank"
-											>
-											{this.state.fileid}
-										</Link>
-									</Chunk>
-								}
+								<Flex direction="row">
 
+								<FlexItem>
 								{this.state.filepreview &&
+
 									<Chunk>
+										<Text>Local preview</Text>
 										<Image
 											source={{uri: this.state.filepreview}}
 											style={[{
@@ -162,7 +140,32 @@ class Upload extends React.Component {
 											/>
 
 									</Chunk>
+
 								}
+								</FlexItem>
+								<FlexItem>
+
+								{this.state.fileid &&
+
+									<Chunk>
+										<Text>Server image <Link
+											href={`http://localhost:3030/photos/${this.state.fileid}`}
+											target="_blank"
+											>
+											{this.state.fileid}
+										</Link></Text>
+										<Image
+											source={{uri: `http://localhost:3030/photos/${this.state.fileid}`}}
+											style={[{
+												height: 300,
+												width: 300
+											}, styles.pseudoLineHeight]}
+											/>
+									</Chunk>
+
+								}
+								</FlexItem>
+								</Flex>
 							</Section>
 						</Sections>
 					</Bounds>
