@@ -9,7 +9,6 @@ https://stackoverflow.com/questions/45130429/must-normalizing-state-shape-for-ar
 const startState = {
   items: [],
   error: {},
-  /* createError: {}, // seems separate? but if it's really separate, probably should be separate reducer */
   loading: false
 };
 

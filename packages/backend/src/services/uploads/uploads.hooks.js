@@ -19,26 +19,17 @@ module.exports = {
           return hook;
         },
 
+        // process image
         async (hook) => {
           const uri = hook.data.uri.split(';base64,').pop();
           const inBuffer = Buffer.from(uri, 'base64');
           const outBuffer = await sharp(inBuffer)
-            .resize(500, 500)
-            .greyscale()
+            .resize(500)
+            .jpeg()
             .toBuffer();
-          hook.data.uri = `data:image/png;base64,${outBuffer.toString('base64')}`;
+          hook.data.uri = `data:image/jpeg;base64,${outBuffer.toString('base64')}`;
           return hook;
         }
-
-        /*
-        // process image
-        async (hook) => {
-          const uri = await sharp(hook.data.uri)
-            .greyscale()
-            .toString('base64');
-          hook.data = {uri: uri};
-        }
-        */
 
     ],
     update: [],

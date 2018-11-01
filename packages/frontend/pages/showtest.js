@@ -32,13 +32,16 @@ import {
 	Text,
 	TextInput,
 	Touch,
-	View
+	View,
+	withFormState
 } from '../components/cinderblock';
 
 
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
+// move this somewhere
+// utils? or even file input, (like a thunkable thing that can be run when needed?)
 const readFileAsDataUrl = (inputFile) => {
   const temporaryFileReader = new FileReader();
   return new Promise((resolve, reject) => {
@@ -46,13 +49,72 @@ const readFileAsDataUrl = (inputFile) => {
       temporaryFileReader.abort();
       reject(new DOMException("Problem parsing input file."));
     };
-
     temporaryFileReader.onload = () => {
       resolve(temporaryFileReader.result);
     };
     temporaryFileReader.readAsDataURL(inputFile);
   });
 };
+
+
+const CommentForm = withFormState((props) => {
+	const {
+		getFieldValue,
+		setFieldValue,
+		handleSubmit,
+		resetFields,
+		fieldErrors = {}
+	} = props;
+
+	return(
+		<form>
+			<Chunk>
+				<Label for="title">Show title</Label>
+				<TextInput
+					id="title"
+					value={getFieldValue('title')}
+					onChange={e => setFieldValue('title', e.target.value)}
+					/>
+			</Chunk>
+			<Chunk>
+				<Label>Your photo</Label>
+				<FileInput
+					id="yourphoto"
+					onChangeFile={(file)=>{
+						this.setState({
+							file: file,
+							filepreview: URL.createObjectURL(file)
+						});
+					}}
+					/>
+			</Chunk>
+			<Chunk>
+				<Button
+					type="primary"
+					label="Let's do this"
+					onPress={()=>{
+						readFileAsDataUrl(this.state.file).then((encodedFile)=>{
+							fetch('http://localhost:3030/uploads', {
+								method: 'POST',
+								headers: {
+									'Accept': 'application/json',
+									'Content-Type': 'application/json'
+								},
+								body: JSON.stringify({
+								uri: encodedFile,
+								name: "Some guy"
+								})
+							})
+							.then( response => response.json() )
+							.then( json => this.setState({fileid: json.id }) );
+						})
+					}}
+					/>
+			</Chunk>
+		</form>
+	);
+});
+
 
 
 class Upload extends React.Component {
@@ -69,7 +131,7 @@ class Upload extends React.Component {
 	render() {
 
 		const {
-			user
+			show
 		} = this.props;
 
 		return (
@@ -77,95 +139,49 @@ class Upload extends React.Component {
 			<Page>
 				<Head>
 					<meta property='og:title' content='Scratch' />
-					<title>Upload test</title>
+					<title>Show test</title>
 				</Head>
 				<Stripe>
 					<Bounds>
 						<Sections>
 							<Section type="pageHead">
 								<Chunk>
-									<Text type="pageHead">Upload test</Text>
+									<Text type="pageHead">New show</Text>
 								</Chunk>
 							</Section>
-							<Section>
-								<Chunk>
-									<Label>Your photo</Label>
-									<FileInput
-										id="yourphoto"
-										onChangeFile={(file)=>{
-											this.setState({
-												file: file,
-												filepreview: URL.createObjectURL(file)
-											});
-										}}
-										/>
-								</Chunk>
-								<Chunk>
-									<Button
-										type="primary"
-										label="Let's do this"
-										onPress={()=>{
-											readFileAsDataUrl(this.state.file).then((encodedFile)=>{
-												fetch('http://localhost:3030/uploads', {
-													method: 'POST',
-													headers: {
-														'Accept': 'application/json',
-														'Content-Type': 'application/json'
-													},
-													body: JSON.stringify({
-													uri: encodedFile,
-													name: "Some guy"
-													})
-												})
-												.then( response => response.json() )
-												.then( json => this.setState({fileid: json.id }) );
-											})
-										}}
-										/>
-								</Chunk>
+							<Flex direction="row">
+								<FlexItem>
+									<Section>
 
-								<Flex direction="row">
-									<FlexItem>
-										{this.state.filepreview &&
+									</Section>
+								</FlexItem>
+								<FlexItem>
+									<Section>
+										{show.item &&
 											<Chunk>
-												<Text>Local preview</Text>
-												<Image
-													source={{uri: this.state.filepreview}}
-													style={[{
-														height: 300,
-													}, styles.pseudoLineHeight]}
-													/>
-											</Chunk>
-										}
-									</FlexItem>
-									<FlexItem>
-										{this.state.fileid &&
-											<Chunk>
-												<Text numberOfLines={1}>Server <Link
-													href={`http://localhost:3030/photos/${this.state.fileid}`}
+												<Text type="sectionHead">{show.title}</Text>
+												<Text numberOfLines={1}><Link
+													href={show.item.url}
 													target="_blank"
+													color="tint"
 													>
-													{this.state.fileid}
+													{show.item.url}
 												</Link></Text>
 												<Image
-													source={{uri: `http://localhost:3030/photos/${this.state.fileid}`}}
+													source={{uri: show.item.url}}
 													style={[{
 														height: 300,
 													}, styles.pseudoLineHeight]}
 													/>
 											</Chunk>
-
 										}
-									</FlexItem>
-								</Flex>
-							</Section>
+									</Section>
+								</FlexItem>
+							</Flex>
 						</Sections>
 					</Bounds>
 				</Stripe>
-
-
 			</Page>
-
 			</Fragment>
 		);
 	}

@@ -74,6 +74,19 @@ export const removePrompt = (id) => ({
     }
 });
 
+
+// CREATE SHOW
+export const createShow = (data) => ({
+	[RSAA]: {
+		endpoint: `${apiHost}shows/`,
+		method: 'POST',
+		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+		types: ["CREATE_SHOW", "CREATE_SHOW_SUCCESS", "CREATE_SHOW_FAILURE"]
+ 	}
+});
+
+
 // FETCH SHOWS
 export const fetchShows = () => ({
 	[RSAA]: {
