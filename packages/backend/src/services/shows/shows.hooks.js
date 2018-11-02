@@ -1,4 +1,16 @@
 
+// HANDLE RESULT
+// massage the data before sending to the client
+const handleResult = (result) => {
+
+  // photo urlify
+  if(result.photo && !result.photo.startsWith('http')){
+    result.photo = `http://localhost:3030/photos/${result.photo}`
+  }
+
+  return result;
+}
+
 
 module.exports = {
   before: {
@@ -34,6 +46,7 @@ module.exports = {
     create: [
       async (context) => {
         if(context.data.uri){
+          // insert photo and get id for reference
           const upload = await context.app.service('uploads').create({
             uri: context.data.uri
           })
@@ -41,14 +54,6 @@ module.exports = {
           context.data.photo = upload.id;
         }
         return context;
-        /*
-        console.log('here we are creating a show');
-        const wait = () => new Promise(resolve => {
-          console.log('waiting');
-          setTimeout(resolve, 500)
-        });
-        return await wait();
-        */
       }
     ],
     update: [],
@@ -58,16 +63,32 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
-    get: [],
-    create: [],
+    find: [
+      hook => {
+        hook.result.data.forEach(result => {
+          handleResult(result)
+        })
+      }
+    ],
+    get: [
+      hook => {
+        handleResult(hook.result)
+      }
+    ],
+    create: [
+      hook => {
+        hook.result.forEach(result => {
+          handleResult(result)
+        })
+      }
+    ],
     update: [],
     patch: [],
     remove: []
   },
 
   error: {
-    all: [],
+    all: [ ],
     find: [],
     get: [],
     create: [],
