@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Head from 'next/head'
 
 import {
-	createShowComment,
 	createShow
 } from '../actions';
 
@@ -144,16 +143,11 @@ class ShowTest extends React.Component {
 												});
 											}}
 											onSubmit={(fields)=>{
-												console.log('onSubmit');
 												const {file, ...otherFields} = fields;
-												createShow({...otherFields});
-												/*
 												readFileAsDataUrl(file).then((encodedFile)=>{
 													const showFields = {...otherFields, uri: encodedFile};
-													const what = createShow(showFields);
-													console.log(what);
+													createShow(showFields);
 												})
-												*/
 											}}
 											/>
 									</Section>
@@ -166,28 +160,29 @@ class ShowTest extends React.Component {
 									</Section>
 									<Section>
 										{show.item &&
-											<Chunk>
-												<Text type="sectionHead">{show.item.title}</Text>
-												<Text numberOfLines={1}><Link
-													href={show.item.uri}
-													target="_blank"
-													color="tint"
-													>
-													{show.item.url}
-												</Link></Text>
-												<Image
-													source={{uri: `http://localhost:3030/photos/${this.state.fileid}`}}
-													style={[{
-														height: 300,
-													}, styles.pseudoLineHeight]}
-													/>
-												<Image
-													source={{uri: show.item.url}}
-													style={[{
-														height: 300,
-													}, styles.pseudoLineHeight]}
-													/>
-											</Chunk>
+											<Fragment>
+												<Chunk>
+													<Text type="sectionHead">{show.item.title}</Text>
+												</Chunk>
+												<Chunk>
+													<Text>server</Text>
+													<Image
+														source={{uri: `http://localhost:3030/photos/${show.item.photo}`}}
+														style={[{
+															height: 300,
+														}, styles.pseudoLineHeight]}
+														/>
+												</Chunk>
+												<Chunk>
+													<Text>client preview</Text>
+													<Image
+														source={{uri: this.state.filepreview}}
+														style={[{
+															height: 300,
+														}, styles.pseudoLineHeight]}
+														/>
+												</Chunk>
+											</Fragment>
 										}
 									</Section>
 								</FlexItem>
@@ -210,7 +205,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionCreators = {
 	createShow,
-	createShowComment
 };
 
 export default connect(

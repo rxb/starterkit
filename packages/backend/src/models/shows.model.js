@@ -9,7 +9,8 @@ module.exports = function (app) {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
+      autoIncrement: true
     },
     title: {
       type: DataTypes.STRING,

@@ -31,7 +31,26 @@ module.exports = {
         return context;
       }
     ],
-    create: [],
+    create: [
+      async (context) => {
+        if(context.data.uri){
+          const upload = await context.app.service('uploads').create({
+            uri: context.data.uri
+          })
+          delete context.uri;
+          context.data.photo = upload.id;
+        }
+        return context;
+        /*
+        console.log('here we are creating a show');
+        const wait = () => new Promise(resolve => {
+          console.log('waiting');
+          setTimeout(resolve, 500)
+        });
+        return await wait();
+        */
+      }
+    ],
     update: [],
     patch: [],
     remove: []
