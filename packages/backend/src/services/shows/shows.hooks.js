@@ -77,9 +77,7 @@ module.exports = {
     ],
     create: [
       hook => {
-        hook.result.forEach(result => {
-          handleResult(result)
-        })
+        handleResult(hook.result)
       }
     ],
     update: [],
