@@ -21,13 +21,17 @@ const show = (state = startState, action) => {
 		newState = {...state, item: action.payload}
 		return newState;
 	case 'CREATE_SHOW':
+		console.log('createShow first');
 		newState = {...startState, loading: true}
+		return newState;
 	case 'CREATE_SHOW_SUCCESS':
-		newState = {...state, loading: false, item: action.payload}
+		console.log('createShow success');
+		newState = {...state, loading: false, item: action.payload};
+		return newState;
 	case 'CREATE_SHOW_FAILURE':
+		console.log('createShow fail');
 		newState = {...state, loading: false, error: action.payload.response}
-		show = action.payload;
-		return show;
+		return newState;
 	default:
 		return state
 	}

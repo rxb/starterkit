@@ -153,6 +153,12 @@ const styles = StyleSheet.create({
 		fontFamily: METRICS.fontFamily,
 		marginVertical: METRICS.pseudoLineHeight,
 	},
+	'input--focus': {
+        outline: 'none',
+        borderColor: swatches.textHint,
+        backgroundColor: 'transparent',
+        boxShadow: `0 0 0 3px ${swatches.focus}`
+	},
 	'input--multilineAndCounter': {
 		paddingBottom: 13 + METRICS.bodySize
 	},

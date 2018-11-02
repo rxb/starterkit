@@ -31,9 +31,9 @@ class FileInput extends React.Component {
             return (
             	<View style={[
                               styles.input,
+                              (this.state.hasFocus) ? styles['input--focus'] : {},
                               style,
                         ]}
-                        className={(this.state.hasFocus) ? 'input focus' : 'input'}
                         >
                         {!this.state.filename &&
                               <Fragment>

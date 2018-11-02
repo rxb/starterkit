@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import Head from 'next/head'
 
 import {
-	addPrompt
+	createShowComment,
+	createShow
 } from '../actions';
 
 
@@ -57,7 +58,7 @@ const readFileAsDataUrl = (inputFile) => {
 };
 
 
-const CommentForm = withFormState((props) => {
+const ShowForm = withFormState((props) => {
 	const {
 		getFieldValue,
 		setFieldValue,
@@ -81,10 +82,8 @@ const CommentForm = withFormState((props) => {
 				<FileInput
 					id="yourphoto"
 					onChangeFile={(file)=>{
-						this.setState({
-							file: file,
-							filepreview: URL.createObjectURL(file)
-						});
+						props.onPhotoUpdate(file);
+						setFieldValue('file', file)
 					}}
 					/>
 			</Chunk>
@@ -92,23 +91,7 @@ const CommentForm = withFormState((props) => {
 				<Button
 					type="primary"
 					label="Let's do this"
-					onPress={()=>{
-						readFileAsDataUrl(this.state.file).then((encodedFile)=>{
-							fetch('http://localhost:3030/uploads', {
-								method: 'POST',
-								headers: {
-									'Accept': 'application/json',
-									'Content-Type': 'application/json'
-								},
-								body: JSON.stringify({
-								uri: encodedFile,
-								name: "Some guy"
-								})
-							})
-							.then( response => response.json() )
-							.then( json => this.setState({fileid: json.id }) );
-						})
-					}}
+					onPress={ handleSubmit }
 					/>
 			</Chunk>
 		</form>
@@ -117,7 +100,7 @@ const CommentForm = withFormState((props) => {
 
 
 
-class Upload extends React.Component {
+class ShowTest extends React.Component {
 
 	static async getInitialProps (context) {
 		return {};
@@ -131,7 +114,9 @@ class Upload extends React.Component {
 	render() {
 
 		const {
-			show
+			show,
+			createShow,
+			createShowComment
 		} = this.props;
 
 		return (
@@ -152,21 +137,50 @@ class Upload extends React.Component {
 							<Flex direction="row">
 								<FlexItem>
 									<Section>
-
+										<ShowForm
+											onPhotoUpdate={(file)=>{
+												this.setState({
+													filepreview: URL.createObjectURL(file)
+												});
+											}}
+											onSubmit={(fields)=>{
+												console.log('onSubmit');
+												const {file, ...otherFields} = fields;
+												createShow({...otherFields});
+												/*
+												readFileAsDataUrl(file).then((encodedFile)=>{
+													const showFields = {...otherFields, uri: encodedFile};
+													const what = createShow(showFields);
+													console.log(what);
+												})
+												*/
+											}}
+											/>
 									</Section>
 								</FlexItem>
 								<FlexItem>
 									<Section>
+										<Text>{JSON.stringify(show.error)}</Text>
+										<Text>{JSON.stringify(show.item)}</Text>
+										<Text>{JSON.stringify(show.loading)}</Text>
+									</Section>
+									<Section>
 										{show.item &&
 											<Chunk>
-												<Text type="sectionHead">{show.title}</Text>
+												<Text type="sectionHead">{show.item.title}</Text>
 												<Text numberOfLines={1}><Link
-													href={show.item.url}
+													href={show.item.uri}
 													target="_blank"
 													color="tint"
 													>
 													{show.item.url}
 												</Link></Text>
+												<Image
+													source={{uri: `http://localhost:3030/photos/${this.state.fileid}`}}
+													style={[{
+														height: 300,
+													}, styles.pseudoLineHeight]}
+													/>
 												<Image
 													source={{uri: show.item.url}}
 													style={[{
@@ -195,11 +209,12 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const actionCreators = {
-	addPrompt
+	createShow,
+	createShowComment
 };
 
 export default connect(
 	mapStateToProps,
 	actionCreators
-)(Upload);
+)(ShowTest);
 

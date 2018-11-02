@@ -82,9 +82,10 @@ export const createShow = (data) => ({
 		method: 'POST',
 		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
 		body: JSON.stringify(data),
-		types: ["CREATE_SHOW", "CREATE_SHOW_SUCCESS", "CREATE_SHOW_FAILURE"]
+		types: ["CREATE_SHOW","CREATE_SHOW_SUCCESS", "CREATE_SHOW_FAILURE"]
  	}
 });
+
 
 
 // FETCH SHOWS
