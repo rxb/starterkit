@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import { View } from 'react-native-web';
+import { View, Image } from 'react-native-web';
 import Icon from './Icon';
 import Text from './Text';
 import styles from '../styles/styles';

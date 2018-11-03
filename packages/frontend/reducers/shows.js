@@ -5,7 +5,7 @@ const shows = (state = startState, action) => {
   		return {items: [], loading: true};
     case 'FETCH_SHOWS_SUCCESS':
     	const shows = action.payload.data;
-    	const items = [...shows, ...shows, ...shows, ...shows];
+    	const items = [...shows, ...shows];
     	return {items: items, loading: false};
     default:
       return state

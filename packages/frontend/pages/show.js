@@ -192,6 +192,11 @@ class Show extends React.Component {
 							<Section type="pageHead">
 								<Chunk>
 									<Text type="pageHead">{show.title}</Text>
+									<Link
+										href={{pathname:'/showedit', query: {showId: show.id}}}
+										>
+										<Text color="tint">Edit show</Text>
+									</Link>
 								</Chunk>
 								<Chunk>
 									<Text color="secondary">United States &middot; 1998 &middot; Sitcom</Text>

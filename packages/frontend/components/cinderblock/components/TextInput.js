@@ -90,11 +90,12 @@ class TextInput extends React.Component{
 			autoExpand = true,
 			showCounter,
 			style,
+			wrapperStyle,
 			...other
 		} = this.props;
 
 		return (
-			<View>
+			<View style={wrapperStyle}>
 				<TextInputWeb
 					accessibilityLabel={placeholder}
 					placeholder={placeholder}
