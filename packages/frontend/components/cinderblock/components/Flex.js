@@ -80,10 +80,14 @@ const Flex = (props) => {
 		});
 
 		const childrenWithProps = React.Children.map(children,
-			(child, i) => React.cloneElement(child, {
-				descendantStyles: combinedDescendantStyles,
-				isFirstChild: (i==0)
-			})
+			(child, i) => {
+				if(child){
+					return React.cloneElement(child, {
+						descendantStyles: combinedDescendantStyles,
+						isFirstChild: (i==0)
+					})
+				}
+			}
 		);
 
 		return (

@@ -18,6 +18,7 @@ const withFormState = ( WrappedComponent ) => {
 
 		constructor(props){
 			super(props);
+			console.log(props.initialFields);
 			this.state={
 				// why set initialFields and not just pass though props to values all the time?
 				// an input can be populated with initial values, but shouldn't change after being presented to the user
@@ -27,12 +28,23 @@ const withFormState = ( WrappedComponent ) => {
 			}
 			this.getFieldValue = this.getFieldValue.bind(this);
 			this.setFieldValue = this.setFieldValue.bind(this);
+			this.setFieldState = this.setFieldState.bind(this);
 			this.handleSubmit = this.handleSubmit.bind(this);
 			this.resetFields = this.resetFields.bind(this);
 		}
 
+		setFieldState(payload){
+			const fields = { ...this.state.fields, ...payload};
+			this.setState({fields: fields});
+		}
+
 		setFieldValue(key, value){
-			const fields = {...this.state.fields};
+			// in case i forget
+			// it's because setstate isn't synchronous
+			// and the 3 calls are all using original state value
+			// set field
+
+			const fields = { ...this.state.fields};
 			fields[key] = value;
 			this.setState({fields: fields});
 		}
@@ -52,11 +64,13 @@ const withFormState = ( WrappedComponent ) => {
 		render(){
 			return (
 				<WrappedComponent
+					{...this.props}
 					handleSubmit={this.handleSubmit}
 					resetFields={this.resetFields}
 					setFieldValue={this.setFieldValue}
+					setFieldState={this.setFieldState}
 					getFieldValue={this.getFieldValue}
-					{...this.props}
+					fields={this.state.fields}
 					/>
 			);
 		}
