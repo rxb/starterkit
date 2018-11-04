@@ -16,9 +16,13 @@ module.exports = function (app) {
       type: DataTypes.STRING,
       allowNull: true
     },
-    photo: {
+    photoId: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    photoUrl: {
+      // needs to be defined even if we set in hooks
+      type: DataTypes.VIRTUAL
     }
   },
   {

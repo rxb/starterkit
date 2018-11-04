@@ -4,8 +4,11 @@
 const handleResult = (result) => {
 
   // photo urlify
-  if(result.photo && !result.photo.startsWith('http')){
-    result.photo = `http://localhost:3030/photos/${result.photo}`
+  if(result.photoId){
+    // photoUrl is a virtual field
+    // defined in the model as DataTypes.VIRTUAL
+    // https://sequelize-guides.netlify.com/virtual-columns/
+    result.photoUrl = `http://localhost:3030/photos/${result.photoId}`
   }
 
   return result;
@@ -51,7 +54,7 @@ module.exports = {
             uri: context.data.uri
           })
           delete context.uri;
-          context.data.photo = upload.id;
+          context.data.photoId = upload.id;
         }
         return context;
       }
@@ -65,19 +68,21 @@ module.exports = {
     all: [],
     find: [
       hook => {
-        hook.result.data.forEach(result => {
-          handleResult(result)
-        })
+        // there's a way to package up this into a cleaner hook
+        hook.result.data = hook.result.data.map(result => handleResult(result));
+        return hook;
       }
     ],
     get: [
       hook => {
-        handleResult(hook.result)
+        hook.result = handleResult(hook.result);
+        return hook;
       }
     ],
     create: [
       hook => {
-        handleResult(hook.result)
+        hook.result = handleResult(hook.result);
+        return hook;
       }
     ],
     update: [],

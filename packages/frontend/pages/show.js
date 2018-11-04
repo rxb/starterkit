@@ -166,8 +166,6 @@ class Show extends React.Component {
 
 	}
 
-
-
 	render() {
 
 		const {
@@ -181,10 +179,10 @@ class Show extends React.Component {
 			<Page>
 				<Head>
 					<meta property='og:title' content={`Show: ${this.props.show.title}`} />
-					<meta property='og:image' content={this.props.show.photo} />
+					<meta property='og:image' content={this.props.show.photoUrl} />
 					<title>{this.props.show.title}</title>
 				</Head>
-				<Stripe image={show.photo} style={{backgroundColor: '#eee'}}>
+				<Stripe image={show.photoUrl} style={{backgroundColor: '#eee'}}>
 				</Stripe>
 				<Stripe>
 					<Bounds>

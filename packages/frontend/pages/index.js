@@ -103,7 +103,7 @@ class Hello extends React.Component {
 			<Chunk>
 				<Link style={styles.textTint} href={{pathname:'/show', query: {showId: show.id}}}>
 					<Card key={i}>
-						<Image source={{uri: show.photo}} style={{
+						<Image source={{uri: show.photoUrl}} style={{
 							height: 200,
 						}} />
 						<Sectionless>
@@ -111,6 +111,7 @@ class Hello extends React.Component {
 								<Text weight="strong" numberOfLines={1}>{show.title}</Text>
 								<Text numberOfLines={2} type="small" color="secondary">A show that you might like</Text>
 							</Chunk>
+							<Text>??{show.photoUrl}</Text>
 						</Sectionless>
 					</Card>
 				</Link>
@@ -123,7 +124,7 @@ class Hello extends React.Component {
 			<Chunk key={i}>
 				<Flex direction="row" growFactor={1}>
 					<FlexItem>
-						<Image source={{uri: show.photo}} style={{
+						<Image source={{uri: show.photoUrl}} style={{
 							height: 80,
 						}} />
 					</FlexItem>

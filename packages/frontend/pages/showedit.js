@@ -182,8 +182,8 @@ class ShowTest extends React.Component {
 										<ShowForm
 											initialFields={{
 												title: show.item.title,
-												photoUrl: show.item.photo,
-												photoId: show.item.photo,
+												photoUrl: show.item.photoUrl,
+												photoId: show.item.photoId,
 												id: show.item.id
 											}}
 											onSubmit={(fields)=>{
