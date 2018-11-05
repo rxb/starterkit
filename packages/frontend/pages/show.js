@@ -15,7 +15,6 @@ import {
 	addToast
 } from '../actions';
 
-
 import {
 	Avatar,
 	Bounds,
@@ -188,13 +187,27 @@ class Show extends React.Component {
 					<Bounds>
 						<Sections>
 							<Section type="pageHead">
-								<Chunk>
-									<Text type="pageHead">{show.title}</Text>
-									<Link
-										href={{pathname:'/showedit', query: {showId: show.id}}}
+								<Chunk style={{
+									borderBottomWidth: 1,
+									borderBottomColor: 'rgba(0,0,0,.15)',
+									marginBottom: 20
+								}}>
+									<Flex
+										direction="column"
+										switchDirection="medium"
+										align="center"
 										>
-										<Text color="tint">Edit show</Text>
-									</Link>
+										<FlexItem>
+											<Text type="pageHead">{show.title}</Text>
+										</FlexItem>
+										<FlexItem shrink>
+											<Link
+												href={{pathname:'/showedit', query: {showId: show.id}}}
+												>
+												<Text color="tint">Edit show</Text>
+											</Link>
+										</FlexItem>
+									</Flex>
 								</Chunk>
 								<Chunk>
 									<Text color="secondary">United States &middot; 1998 &middot; Sitcom</Text>
