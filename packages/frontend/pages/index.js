@@ -111,7 +111,6 @@ class Hello extends React.Component {
 								<Text weight="strong" numberOfLines={1}>{show.title}</Text>
 								<Text numberOfLines={2} type="small" color="secondary">A show that you might like</Text>
 							</Chunk>
-							<Text>??{show.photoUrl}</Text>
 						</Sectionless>
 					</Card>
 				</Link>
