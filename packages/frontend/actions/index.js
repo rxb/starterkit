@@ -87,9 +87,9 @@ export const createShow = (data) => ({
 });
 
 // PATCH SHOW
-export const patchShow = (data) => ({
+export const patchShow = (id, data) => ({
 	[RSAA]: {
-		endpoint: `${apiHost}shows/`,
+		endpoint: `${apiHost}shows/${id}`,
 		method: 'PATCH',
 		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
 		body: JSON.stringify(data),

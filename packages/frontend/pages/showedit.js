@@ -188,10 +188,10 @@ class ShowTest extends React.Component {
 												id: show.item.id
 											}}
 											onSubmit={(fields)=>{
-												const {photoNewFile, ...otherFields} = fields;
+												const {id, photoNewFile, ...otherFields} = fields;
 												readFileAsDataUrl(photoNewFile).then((encodedFile)=>{
 													const showFields = {...otherFields, uri: encodedFile};
-													patchShow(showFields);
+													patchShow(id, showFields);
 												})
 											}}
 											/>
