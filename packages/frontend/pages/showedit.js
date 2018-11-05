@@ -4,7 +4,8 @@ import Head from 'next/head'
 
 import {
 	fetchShow,
-	createShow
+	createShow,
+	patchShow
 } from '../actions';
 
 
@@ -157,7 +158,7 @@ class ShowTest extends React.Component {
 		const {
 			show,
 			createShow,
-			createShowComment
+			patchShow
 		} = this.props;
 
 		return (
@@ -190,7 +191,7 @@ class ShowTest extends React.Component {
 												const {photoNewFile, ...otherFields} = fields;
 												readFileAsDataUrl(photoNewFile).then((encodedFile)=>{
 													const showFields = {...otherFields, uri: encodedFile};
-													createShow(showFields);
+													patchShow(showFields);
 												})
 											}}
 											/>
@@ -241,7 +242,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionCreators = {
 	fetchShow,
-	createShow
+	createShow,
+	patchShow
 };
 
 export default connect(

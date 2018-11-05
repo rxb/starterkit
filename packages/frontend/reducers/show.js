@@ -1,5 +1,5 @@
 const startState = {
-  item: [],
+  item: {},
   error: {},
   loading: false
 };
@@ -27,6 +27,15 @@ const show = (state = startState, action) => {
 		newState = {...state, loading: false, item: action.payload};
 		return newState;
 	case 'CREATE_SHOW_FAILURE':
+		newState = {...state, loading: false, error: action.payload.response}
+		return newState;
+	case 'PATCH_SHOW':
+		newState = {...state, loading: true}
+		return newState;
+	case 'PATCH_SHOW_SUCCESS':
+		newState = {...state, loading: false, item: action.payload};
+		return newState;
+	case 'PATCH_SHOW_FAILURE':
 		newState = {...state, loading: false, error: action.payload.response}
 		return newState;
 	default:
