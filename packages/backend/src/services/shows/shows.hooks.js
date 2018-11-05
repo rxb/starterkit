@@ -1,10 +1,11 @@
-
-const photoUrlHook = (context) => {
+// POPULATE PHOTO URL
+// photoUrl is a DataTypes.VIRTUAL field
+// https://sequelize-guides.netlify.com/virtual-columns/
+const populatePhotoUrl = (context) => {
   const buildPhotoUrl = (result) => {
     if(result.photoId){
       result.photoUrl = `http://localhost:3030/photos/${result.photoId}`
-      // photoUrl is a DataTypes.VIRTUAL field
-      // https://sequelize-guides.netlify.com/virtual-columns/
+
     }
     return result;
   }
@@ -16,59 +17,59 @@ const photoUrlHook = (context) => {
   return context;
 }
 
+// HANDLE NEW IMAGE
+const saveAndGetNewImageReference = async (context) => {
+  if(context.data.uri){
+    // insert photo and get id for reference
+    const upload = await context.app.service('uploads').create({
+      uri: context.data.uri
+    })
+    delete context.uri;
+    context.data.photoId = upload.id;
+  }
+  return context;
+}
+
+
+// POPULATE EXTRA SHOWCOMMENTS (and users/authors)
+const populateShowComments = (context) => {
+  const sequelize = context.app.get('sequelizeClient');
+  const { ShowComments, users } = sequelize.models;
+  context.params.sequelize = {
+    raw: false, // don't know why, but it needs this to not flatten the children
+    include: [ {
+      model: ShowComments,
+      include: [ users ]
+    } ]
+  }
+  return context;
+}
+
 
 module.exports = {
   before: {
     all: [],
     find: [
-      (context) => {
-        const sequelize = context.app.get('sequelizeClient');
-        const { ShowComments, users } = sequelize.models;
-        context.params.sequelize = {
-          raw: false, // don't know why, but it needs this to not flatten the children
-          include: [ {
-            model: ShowComments,
-            include: [ users ]
-          } ]
-        }
-        return context;
-      }
+      populateShowComments
     ],
     get: [
-      (context) => {
-        const sequelize = context.app.get('sequelizeClient');
-        const { ShowComments, users } = sequelize.models;
-        context.params.sequelize = {
-          raw: false, // don't know why, but it needs this to not flatten the children
-          include: [ {
-            model: ShowComments,
-            include: [ users ]
-          } ]
-        }
-        return context;
-      }
+      populateShowComments
     ],
     create: [
-      async (context) => {
-        if(context.data.uri){
-          // insert photo and get id for reference
-          const upload = await context.app.service('uploads').create({
-            uri: context.data.uri
-          })
-          delete context.uri;
-          context.data.photoId = upload.id;
-        }
-        return context;
-      }
+      saveAndGetNewImageReference
     ],
-    update: [],
-    patch: [],
+    update: [
+      saveAndGetNewImageReference
+    ],
+    patch: [
+      saveAndGetNewImageReference
+    ],
     remove: []
   },
 
   after: {
     all: [
-      photoUrlHook
+      populatePhotoUrl
     ],
     find: [],
     get: [],
