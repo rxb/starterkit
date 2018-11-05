@@ -41,6 +41,8 @@ import {
 
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
+import ShowCard from '../components/ShowCard';
+
 
 // move this somewhere
 // utils? or even file input, (like a thunkable thing that can be run when needed?)
@@ -187,41 +189,24 @@ class ShowTest extends React.Component {
 												photoId: show.item.photoId,
 												id: show.item.id
 											}}
-											onSubmit={(fields)=>{
-												const {id, photoNewFile, ...otherFields} = fields;
-												readFileAsDataUrl(photoNewFile).then((encodedFile)=>{
-													const showFields = {...otherFields, uri: encodedFile};
-													patchShow(id, showFields);
-												})
+											onSubmit={ async (fields)=>{
+												const {id, photoNewFile, ...showFields} = fields;
+												if(photoNewFile){
+													showFields.uri = await readFileAsDataUrl(photoNewFile);
+												}
+												patchShow(id, showFields);
 											}}
 											/>
 										}
 									</Section>
 								</FlexItem>
 								<FlexItem growFactor={1}>
+
 									<Section>
-										<Text>{JSON.stringify(show.error)}</Text>
-										<Text>{JSON.stringify(show.item)}</Text>
-										<Text>{JSON.stringify(show.loading)}</Text>
+										<ShowCard show={show.item} />
 									</Section>
-									<Section>
-										{show.item &&
-											<Fragment>
-												<Chunk>
-													<Text type="sectionHead">{show.item.title}</Text>
-												</Chunk>
-												<Chunk>
-													<Text>server</Text>
-													<Image
-														source={{uri: show.item.photo}}
-														style={[{
-															height: 300,
-														}, styles.pseudoLineHeight]}
-														/>
-												</Chunk>
-											</Fragment>
-										}
-									</Section>
+
+
 								</FlexItem>
 							</Flex>
 						</Sections>

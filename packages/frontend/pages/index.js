@@ -32,7 +32,7 @@ import {
 
 import Page from '../components/Page';
 import LoginForm from '../components/LoginForm';
-
+import ShowCard from '../components/ShowCard';
 
 import { connect } from 'react-redux';
 import {
@@ -100,19 +100,11 @@ class Hello extends React.Component {
 
 	_renderItemCard(show, i) {
 		return(
-			<Chunk>
+			<Chunk key={i}>
 				<Link style={styles.textTint} href={{pathname:'/show', query: {showId: show.id}}}>
-					<Card key={i}>
-						<Image source={{uri: show.photoUrl}} style={{
-							height: 200,
-						}} />
-						<Sectionless>
-							<Chunk>
-								<Text weight="strong" numberOfLines={1}>{show.title}</Text>
-								<Text numberOfLines={2} type="small" color="secondary">A show that you might like</Text>
-							</Chunk>
-						</Sectionless>
-					</Card>
+					<ShowCard show={show} />
+
+
 				</Link>
 			</Chunk>
 		);
