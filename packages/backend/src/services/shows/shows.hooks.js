@@ -1,17 +1,19 @@
 
-// HANDLE RESULT
-// massage the data before sending to the client
-const handleResult = (result) => {
-
-  // photo urlify
-  if(result.photoId){
-    // photoUrl is a virtual field
-    // defined in the model as DataTypes.VIRTUAL
-    // https://sequelize-guides.netlify.com/virtual-columns/
-    result.photoUrl = `http://localhost:3030/photos/${result.photoId}`
+const photoUrlHook = (context) => {
+  const buildPhotoUrl = (result) => {
+    if(result.photoId){
+      result.photoUrl = `http://localhost:3030/photos/${result.photoId}`
+      // photoUrl is a DataTypes.VIRTUAL field
+      // https://sequelize-guides.netlify.com/virtual-columns/
+    }
+    return result;
   }
-
-  return result;
+  if (context.result.data) {
+      context.result.data = context.result.data.map(item => buildPhotoUrl(item));
+  } else {
+      context.result = buildPhotoUrl(context.result);
+  }
+  return context;
 }
 
 
@@ -65,26 +67,12 @@ module.exports = {
   },
 
   after: {
-    all: [],
-    find: [
-      hook => {
-        // there's a way to package up this into a cleaner hook
-        hook.result.data = hook.result.data.map(result => handleResult(result));
-        return hook;
-      }
+    all: [
+      photoUrlHook
     ],
-    get: [
-      hook => {
-        hook.result = handleResult(hook.result);
-        return hook;
-      }
-    ],
-    create: [
-      hook => {
-        hook.result = handleResult(hook.result);
-        return hook;
-      }
-    ],
+    find: [],
+    get: [],
+    create: [],
     update: [],
     patch: [],
     remove: []
