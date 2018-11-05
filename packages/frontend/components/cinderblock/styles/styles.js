@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
 	},
 	toast: {
 		padding: space,
-		backgroundColor: swatches.tint,
+		backgroundColor: swatches.backgroundDark,
 		borderRadius: METRICS.borderRadius,
 		marginBottom: space,
 		marginHorizontal: space,
