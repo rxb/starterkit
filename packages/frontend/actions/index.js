@@ -86,6 +86,16 @@ export const createShow = (data) => ({
  	}
 });
 
+// PATCH SHOW
+export const patchShow = (data) => ({
+	[RSAA]: {
+		endpoint: `${apiHost}shows/`,
+		method: 'PATCH',
+		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+		types: ["PATCH_SHOW","PATCH_SHOW_SUCCESS", "PATCH_SHOW_FAILURE"]
+ 	}
+});
 
 
 // FETCH SHOWS
