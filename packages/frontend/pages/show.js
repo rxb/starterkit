@@ -40,12 +40,13 @@ import {
 	Text,
 	TextInput,
 	Touch,
+	View,
 	withFormState
 } from '../components/cinderblock';
 
 import Page from '../components/Page';
 import {checkToastableErrors} from '../components/ConnectedToaster';
-
+import swatches from '../components/cinderblock/styles/swatches';
 
 
 const CommentForm = withFormState((props) => {
@@ -187,41 +188,49 @@ class Show extends React.Component {
 					<Bounds>
 						<Sections>
 							<Section>
-								<Chunk style={{
-									/*
+								<View style={{
 									borderBottomWidth: 1,
-									borderBottomColor: 'rgba(0,0,0,.15)',
-									marginBottom: 20
-									*/
+									borderBottomColor: swatches.border
 								}}>
 									<Flex
-										direction="column"
-										switchDirection="medium"
-										align="center"
 										>
 										<FlexItem>
-											<Text type="pageHead">{show.title}</Text>
+											<Chunk>
+												<Text type="pageHead">{show.title}</Text>
+											</Chunk>
 										</FlexItem>
-										<FlexItem shrink>
-											<Link
-												href={{pathname:'/showedit', query: {showId: show.id}}}
-												>
-												<Icon
-													shape="Edit"
-													color="tint"
-													/>
-												<Text
-													color="tint"
-													type="small"
-													>Edit</Text>
-											</Link>
+										<FlexItem
+											shrink
+											style={{justifyContent: 'flex-end'}}
+											>
+											<Chunk>
+												<Link
+													href={{pathname:'/showedit', query: {showId: show.id}}}
+													style={{alignItems: 'center'}}
+													>
+													<Icon
+														shape="Edit"
+														color={swatches.tint}
+														/>
+													<Text
+														color="tint"
+														type="micro"
+														>EDIT</Text>
+												</Link>
+											</Chunk>
 										</FlexItem>
 									</Flex>
-								</Chunk>
+								</View>
 							</Section>
 							<Section>
 								<Chunk>
-									<Text color="secondary">United States &middot; 1998 &middot; Sitcom</Text>
+									<Text color="secondary">
+										United States &middot;
+										1998
+										{ show.genres.map((genre, i)=>(
+											<Fragment> &middot; {genre}</Fragment>
+										))}
+									</Text>
 								</Chunk>
 								<Chunk>
 									<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</Text>

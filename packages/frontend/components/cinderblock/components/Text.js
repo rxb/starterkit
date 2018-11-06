@@ -3,6 +3,7 @@ import { Text as ReactText } from '../primitives';
 import styles from '../styles/styles';
 
 const VALID_TYPES = {
+	micro: 'Micro',
 	small: 'Small',
 	big: 'Big',
 	sectionHead: 'SectionHead',

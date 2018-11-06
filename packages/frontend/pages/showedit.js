@@ -16,6 +16,7 @@ import {
 	Card,
 	CheckBox,
 	Chunk,
+	FakeInput,
 	Flex,
 	FlexItem,
 	FileInput,
@@ -88,25 +89,26 @@ const ShowForm = withFormState((props) => {
 			<Chunk>
 				<Label for="title">Genres</Label>
 				{(['Comedy', 'Drama', 'Documentary']).map((item, i)=>{
-					const checked = fields.genre.indexOf(item) != -1;
+					const checked = fields.genres.indexOf(item) != -1;
 					return(
 						<CheckBox
 							label={item}
 							value={checked}
 							onChange={() => {
-								const newItems = (checked) ?  fields.genre.filter(a => a !== item) : fields.genre.concat([item]);
-								setFieldState({genre: newItems})
+								const newItems = (checked) ?  fields.genres.filter(a => a !== item) : fields.genres.concat([item]);
+								setFieldState({genres: newItems})
 							}}
 							/>
 					);
 				})}
 			</Chunk>
 			<Chunk>
+				<Label>Your photo</Label>
 				<Flex>
 					<FlexItem>
-						<Label>Your photo</Label>
 						<FileInput
 							id="photo"
+							placeholder={(fields.photoUrl) ? 'Select a new file' : 'Select a file'}
 							onChangeFile={(file)=>{
 								setFieldState({
 									// comes from server, doesn't get sent back to server
@@ -118,13 +120,25 @@ const ShowForm = withFormState((props) => {
 								});
 							}}
 							/>
+						{ fields.photoUrl &&
+							<FakeInput
+								label="Remove photo"
+								shape="X"
+								onPress={()=>{
+									setFieldState({
+										photoId: false,
+										photoUrl: false
+									});
+								}}
+								/>
+						}
 					</FlexItem>
 					{ fields.photoUrl &&
 						<FlexItem shrink>
 							<Image
 							    source={{uri: fields.photoUrl }}
 							    style={[{
-							          width: 84,
+							          width: 120,
 							          flex: 1,
 							          resizeMode: 'cover',
 							          borderRadius: 4,
@@ -204,7 +218,7 @@ class ShowTest extends React.Component {
 												photoUrl: show.item.photoUrl,
 												photoId: show.item.photoId,
 												id: show.item.id,
-												genre: []
+												genres: show.item.genres
 											}}
 											onSubmit={ async (fields)=>{
 												const {id, photoNewFile, ...showFields} = fields;

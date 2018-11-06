@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Touchable } from '../primitives';
 import { CheckBox as CheckBoxRNW } from 'react-native-web';
 import Label from './Label';
+import Text from './Text';
 import Inline from './Inline';
 import styles from '../styles/styles';
 import swatches from '../styles/swatches';
@@ -48,13 +49,14 @@ class CheckBox extends React.Component {
 		} = this.props;
 
 		return (
-			<Inline style={{justifyContent: 'center'}}>
+			<Inline style={[styles.pseudoLineHeight, {justifyContent: 'center'}]}>
 				<CheckBoxWeb
 					style={{
 						width: 24,
 						height: 24
 					}}
 					fakeControlStyle={{
+						...styles.input,
 						borderColor: (this.state.hasFocus) ? swatches.textPrimary : swatches.border,
 						borderWidth: 1
 					}}
@@ -72,7 +74,7 @@ class CheckBox extends React.Component {
 					{...other}
 					/>
 					<Touchable onPress={onChange}>
-						<Label>{label}</Label>
+						<Text>{label}</Text>
 					</Touchable>
 			</Inline>
 		);

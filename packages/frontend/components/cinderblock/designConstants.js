@@ -36,6 +36,12 @@ export const METRICS = {
 	get smallLineHeight() {
 		return this.smallSize * 1.75
 	},
+	get microSize() {
+		return this.base * 0.6
+	},
+	get microLineHeight() {
+		return this.microSize * 2
+	},
 	get bigSize() {
 		return this.base * 1.15
 	},

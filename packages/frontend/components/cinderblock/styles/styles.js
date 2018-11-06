@@ -389,6 +389,10 @@ const styles = StyleSheet.create({
 	textTint:{
 		color: swatches.tint,
 	},
+	textMicro: {
+		fontSize: METRICS.microSize,
+		lineHeight: METRICS.microLineHeight,
+	},
 	textSmall: {
 		fontSize: METRICS.smallSize,
 		lineHeight: METRICS.smallLineHeight,
@@ -425,6 +429,8 @@ const styles = StyleSheet.create({
 	textLabel: {
 		marginTop: 4,
 		marginBottom: 0,
+		fontWeight: '500',
+
 	},
 	textError: {
 		color: swatches.error,
