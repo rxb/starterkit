@@ -186,11 +186,13 @@ class Show extends React.Component {
 				<Stripe>
 					<Bounds>
 						<Sections>
-							<Section type="pageHead">
+							<Section>
 								<Chunk style={{
+									/*
 									borderBottomWidth: 1,
 									borderBottomColor: 'rgba(0,0,0,.15)',
 									marginBottom: 20
+									*/
 								}}>
 									<Flex
 										direction="column"
@@ -204,11 +206,20 @@ class Show extends React.Component {
 											<Link
 												href={{pathname:'/showedit', query: {showId: show.id}}}
 												>
-												<Text color="tint">Edit show</Text>
+												<Icon
+													shape="Edit"
+													color="tint"
+													/>
+												<Text
+													color="tint"
+													type="small"
+													>Edit</Text>
 											</Link>
 										</FlexItem>
 									</Flex>
 								</Chunk>
+							</Section>
+							<Section>
 								<Chunk>
 									<Text color="secondary">United States &middot; 1998 &middot; Sitcom</Text>
 								</Chunk>

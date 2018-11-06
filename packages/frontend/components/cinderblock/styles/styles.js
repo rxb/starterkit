@@ -36,10 +36,12 @@ const styles = StyleSheet.create({
 		//borderTopColor: swatches.border
 	},
 
+	/*
 	'section--pageHead': {
 		paddingTop: spaceSection + (space * .33),
 		paddingBottom: 0
 	},
+	*/
 
 	/*
 	'section--firstChild': {
@@ -410,6 +412,13 @@ const styles = StyleSheet.create({
 		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
 		fontSize: METRICS.pageHeadSize,
 		lineHeight: METRICS.pageHeadLineHeight,
+		fontWeight: '700',
+		letterSpacing: '-.001em'
+	},
+	textHero: {
+		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+		fontSize: METRICS.heroSize,
+		lineHeight: METRICS.heroLineHeight,
 		fontWeight: '700',
 		letterSpacing: '-.001em'
 	},

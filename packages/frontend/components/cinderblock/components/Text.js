@@ -6,7 +6,8 @@ const VALID_TYPES = {
 	small: 'Small',
 	big: 'Big',
 	sectionHead: 'SectionHead',
-	pageHead: 'PageHead'
+	pageHead: 'PageHead',
+	hero: 'Hero'
 }
 
 const VALID_COLORS = {
@@ -31,8 +32,6 @@ const Text = (props) => {
 		weight,
 		...other
 	} = props;
-
-
 
 
 	const invertedModifier = (inverted) ? '--inverted' : '';

@@ -54,6 +54,12 @@ export const METRICS = {
 	get pageHeadLineHeight() {
 		return this.pageHeadSize * 1.1
 	},
+	get heroSize() {
+		return this.base * 3.6
+	},
+	get heroLineHeight() {
+		return this.pageHeadSize * 1.1
+	},
 	get pseudoLineHeight(){
 		return 6
 	},

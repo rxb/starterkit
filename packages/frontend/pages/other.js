@@ -102,7 +102,7 @@ const OtherForm = withFormState((props) => {
 						<CheckBox
 							id="lastname"
 							value={props.getFieldValue('isRed')}
-							onChange={text => props.setFieldValue('isRed', !props.getFieldValue('isRed'))}
+							onChange={() => props.setFieldValue('isRed', !props.getFieldValue('isRed'))}
 							label="I agree to everything"
 							/>
 					</Chunk>

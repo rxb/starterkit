@@ -160,9 +160,10 @@ class Hello extends React.Component {
 								<Sections>
 									<Section type="pageHead">
 										<Chunk>
-											<Text type="pageHead">Hey hello</Text>
+											<Text type="hero">Hey hello</Text>
 										</Chunk>
-
+									</Section>
+									<Section>
 										<Chunk>
 											<Text type="sectionHead">What is this, a crossover episode?</Text>
 										</Chunk>

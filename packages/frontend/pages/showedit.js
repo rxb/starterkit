@@ -86,6 +86,22 @@ const ShowForm = withFormState((props) => {
 					/>
 			</Chunk>
 			<Chunk>
+				<Label for="title">Genres</Label>
+				{(['Comedy', 'Drama', 'Documentary']).map((item, i)=>{
+					const checked = fields.genre.indexOf(item) != -1;
+					return(
+						<CheckBox
+							label={item}
+							value={checked}
+							onChange={() => {
+								const newItems = (checked) ?  fields.genre.filter(a => a !== item) : fields.genre.concat([item]);
+								setFieldState({genre: newItems})
+							}}
+							/>
+					);
+				})}
+			</Chunk>
+			<Chunk>
 				<Flex>
 					<FlexItem>
 						<Label>Your photo</Label>
@@ -187,7 +203,8 @@ class ShowTest extends React.Component {
 												title: show.item.title,
 												photoUrl: show.item.photoUrl,
 												photoId: show.item.photoId,
-												id: show.item.id
+												id: show.item.id,
+												genre: []
 											}}
 											onSubmit={ async (fields)=>{
 												const {id, photoNewFile, ...showFields} = fields;
