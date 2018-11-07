@@ -174,7 +174,8 @@ class Hello extends React.Component {
 											<Text type="small" color="secondary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Text>
 										</Chunk>
 
-
+									</Section>
+									<Section>
 										{shows.loading &&
 											<Chunk>
 												<Text>Loading...</Text>

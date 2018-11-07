@@ -189,8 +189,10 @@ class Show extends React.Component {
 						<Sections>
 							<Section>
 								<View style={{
+									/*
 									borderBottomWidth: 1,
 									borderBottomColor: swatches.border
+									*/
 								}}>
 									<Flex
 										>
