@@ -4,6 +4,7 @@ import prompts from './prompts'
 import show from './show'
 import shows from './shows'
 import showComments from './showComments'
+import tags from './tags'
 import toasts from './toasts'
 import users from './users'
 import user from './user'
@@ -15,6 +16,7 @@ const reducers = combineReducers({
 	show,
 	shows,
 	showComments,
+	tags,
 	toasts,
 	user,
 	users,

@@ -4,6 +4,7 @@ import Head from 'next/head'
 
 import {
 	fetchShow,
+	fetchTags,
 	createShow,
 	patchShow
 } from '../actions';
@@ -64,9 +65,6 @@ const readFileAsDataUrl = (inputFile) => {
 
 
 const ShowForm = withFormState((props) => {
-	console.log('props');
-	console.log(props.fields)
-
 
 	const {
 		fields,
@@ -183,12 +181,14 @@ class ShowTest extends React.Component {
 
 	componentDidMount(){
 		this.props.fetchShow(this.props.showId);
+		this.props.fetchTags();
 	}
 
 	render() {
 
 		const {
 			show,
+			tags,
 			createShow,
 			patchShow
 		} = this.props;
@@ -229,6 +229,13 @@ class ShowTest extends React.Component {
 											}}
 											/>
 										}
+
+										{ tags.items.length &&
+											<Fragment>
+												<Text type="sectionHead">Tags</Text>
+												<Text>{JSON.stringify(tags.items)}</Text>
+											</Fragment>
+										}
 									</Section>
 								</FlexItem>
 								<FlexItem growFactor={1}>
@@ -252,12 +259,14 @@ class ShowTest extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
-		show: state.show
+		show: state.show,
+		tags: state.tags
 	});
 }
 
 const actionCreators = {
 	fetchShow,
+	fetchTags,
 	createShow,
 	patchShow
 };

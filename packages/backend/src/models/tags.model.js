@@ -6,7 +6,12 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const tags = sequelizeClient.define('tags', {
-    text: {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    label: {
       type: DataTypes.STRING,
       allowNull: false
     }

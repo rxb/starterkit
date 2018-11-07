@@ -116,6 +116,16 @@ export const fetchShow = (id) => ({
 });
 
 
+// FETCH TAGS
+export const fetchTags = () => ({
+	[RSAA]: {
+		types: ["FETCH_TAGS", "FETCH_TAGS_SUCCESS", "FETCH_TAGS_FAILURE"],
+		endpoint: `${apiHost}tags`,
+		method: 'GET',
+ 	}
+});
+
+
 // FETCH USERS
 export const fetchUsers = () => ({
 	[RSAA]: {
