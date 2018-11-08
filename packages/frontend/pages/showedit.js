@@ -149,6 +149,23 @@ const ShowForm = withFormState((props) => {
 				</Flex>
 			</Chunk>
 			<Chunk>
+				<Label for="title">Tags</Label>
+				{tags.items.map((item, i)=>{
+					const checked = fields.tags.indexOf(item.id) != -1;
+					return(
+						<CheckBox
+							key={i}
+							label={item.label}
+							value={checked}
+							onChange={() => {
+								const newItems = (checked) ?  fields.tags.filter(a => a !== item.id) : fields.tags.concat([item.id]);
+								setFieldState({tags: newItems})
+							}}
+							/>
+					);
+				})}
+			</Chunk>
+			<Chunk>
 				{ tags.items.length &&
 					<Fragment>
 						<Text type="sectionHead">Tags</Text>
@@ -224,7 +241,8 @@ class ShowTest extends React.Component {
 												photoUrl: show.item.photoUrl,
 												photoId: show.item.photoId,
 												id: show.item.id,
-												genres: show.item.genres
+												genres: show.item.genres,
+												tags: []
 											}}
 											onSubmit={ async (fields)=>{
 												const {id, photoNewFile, ...showFields} = fields;

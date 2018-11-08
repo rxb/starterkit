@@ -40,8 +40,7 @@ const withFormState = ( WrappedComponent ) => {
 
 		setFieldState(payload){
 			const fields = { ...this.state.fields, ...payload};
-			this.setState({fields: fields});
-			this.handleChange();
+			this.setState({fields: fields}, this.handleChange);
 		}
 
 		setFieldValue(key, value){
@@ -52,8 +51,8 @@ const withFormState = ( WrappedComponent ) => {
 
 			const fields = { ...this.state.fields};
 			fields[key] = value;
-			this.setState({fields: fields});
-			this.handleChange();
+			this.setState({fields: fields}, this.handleChange);
+			this.handleChange(fields);
 		}
 
 		getFieldValue(key){
@@ -67,6 +66,7 @@ const withFormState = ( WrappedComponent ) => {
 		handleChange(){
 			// if elements outside the form need to know what's happening in the form
 			// as fields are being edited, before submit
+			// passed in because setState won't be set yet
 			this.props.onChange(this.state.fields, this);
 		}
 
