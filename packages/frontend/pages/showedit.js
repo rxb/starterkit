@@ -71,7 +71,8 @@ const ShowForm = withFormState((props) => {
 		setFieldState,
 		handleSubmit,
 		resetFields,
-		fieldErrors = {}
+		fieldErrors = {},
+		tags
 	} = props;
 
 	return(
@@ -148,14 +149,19 @@ const ShowForm = withFormState((props) => {
 				</Flex>
 			</Chunk>
 			<Chunk>
+				{ tags.items.length &&
+					<Fragment>
+						<Text type="sectionHead">Tags</Text>
+						<Text>{JSON.stringify(tags.items)}</Text>
+					</Fragment>
+				}
+			</Chunk>
+			<Chunk>
 				<Button
 					type="primary"
 					label="Let's do this"
 					onPress={ handleSubmit }
 					/>
-			</Chunk>
-			<Chunk>
-				<Text>{JSON.stringify(fields)}</Text>
 			</Chunk>
 		</form>
 	);
@@ -227,23 +233,23 @@ class ShowTest extends React.Component {
 												}
 												patchShow(id, showFields);
 											}}
+											onChange={(fields) => {
+												this.setState({showFormFields: fields});
+											}}
+											tags={tags}
 											/>
 										}
 
-										{ tags.items.length &&
-											<Fragment>
-												<Text type="sectionHead">Tags</Text>
-												<Text>{JSON.stringify(tags.items)}</Text>
-											</Fragment>
-										}
+
 									</Section>
 								</FlexItem>
 								<FlexItem growFactor={1}>
 
 									<Section>
-										<ShowCard show={show.item} />
+										<Chunk>
+											<Text>{JSON.stringify(this.state.showFormFields)}</Text>
+										</Chunk>
 									</Section>
-
 
 								</FlexItem>
 							</Flex>

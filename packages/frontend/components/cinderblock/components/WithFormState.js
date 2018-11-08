@@ -13,7 +13,8 @@ const withFormState = ( WrappedComponent ) => {
 
 		static defaultProps = {
 	    	initialFields: {},
-	    	onSubmit: (fields) => { console.log(`withFormState: implement onSubmit prop to do something with your form\n${JSON.stringify(fields)}`) }
+	    	onSubmit: (fields) => { console.log(`withFormState: implement onSubmit prop to do something with your form\n${JSON.stringify(fields)}`) },
+	    	onChange: () => {}
 	  	}
 
 		constructor(props){
@@ -33,9 +34,14 @@ const withFormState = ( WrappedComponent ) => {
 			this.resetFields = this.resetFields.bind(this);
 		}
 
+		componentDidMount(){
+			this.handleChange();
+		}
+
 		setFieldState(payload){
 			const fields = { ...this.state.fields, ...payload};
 			this.setState({fields: fields});
+			this.handleChange();
 		}
 
 		setFieldValue(key, value){
@@ -47,6 +53,7 @@ const withFormState = ( WrappedComponent ) => {
 			const fields = { ...this.state.fields};
 			fields[key] = value;
 			this.setState({fields: fields});
+			this.handleChange();
 		}
 
 		getFieldValue(key){
@@ -55,6 +62,12 @@ const withFormState = ( WrappedComponent ) => {
 
 		resetFields(){
 			this.setState({fields: {}});
+		}
+
+		handleChange(){
+			// if elements outside the form need to know what's happening in the form
+			// as fields are being edited, before submit
+			this.props.onChange(this.state.fields, this);
 		}
 
 		handleSubmit(){
