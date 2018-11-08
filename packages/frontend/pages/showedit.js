@@ -158,7 +158,9 @@ const ShowForm = withFormState((props) => {
 							label={item.label}
 							value={checked}
 							onChange={() => {
-								const newItems = (checked) ?  fields.tags.filter(a => a !== item.id) : fields.tags.concat([item.id]);
+								const newItems = (checked) ?
+									fields.tags.filter(a => a !== item.id) :
+									fields.tags.concat([item.id]);
 								setFieldState({tags: newItems})
 							}}
 							/>

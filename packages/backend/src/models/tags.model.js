@@ -27,6 +27,11 @@ module.exports = function (app) {
   tags.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    tags.belongsToMany(models.shows, {
+      through: 'shows_tags',
+      as: 'shows',
+      foreignKey: 'tagId'
+    });
   };
 
   return tags;

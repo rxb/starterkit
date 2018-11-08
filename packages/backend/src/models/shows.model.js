@@ -44,6 +44,11 @@ module.exports = function (app) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
     shows.hasMany(models.ShowComments);
+    shows.belongsToMany(models.tags, {
+      through: 'shows_tags',
+      as: 'tags',
+      foreignKey: 'showId'
+    });
   };
 
   return shows;

@@ -34,13 +34,19 @@ const saveAndGetNewImageReference = async (context) => {
 // POPULATE EXTRA SHOWCOMMENTS (and users/authors)
 const populateShowComments = (context) => {
   const sequelize = context.app.get('sequelizeClient');
-  const { ShowComments, users } = sequelize.models;
+  const { ShowComments, users, tags } = sequelize.models;
   context.params.sequelize = {
     raw: false, // don't know why, but it needs this to not flatten the children
-    include: [ {
-      model: ShowComments,
-      include: [ users ]
-    } ]
+    include: [
+      {
+        model: ShowComments,
+        include: [ users ]
+      },
+      {
+        model: tags,
+        as: 'tags'
+      }
+    ]
   }
   return context;
 }
