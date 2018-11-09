@@ -6,6 +6,7 @@ import Text from './Text';
 import Inline from './Inline';
 import styles from '../styles/styles';
 import swatches from '../styles/swatches';
+import uuid from 'uuid/v1';
 
 /*
 
@@ -35,6 +36,8 @@ class CheckBoxWeb extends CheckBoxRNW {
 }
 
 class CheckBox extends React.Component {
+
+
 	constructor(props){
 		super(props);
 		this.state = {
@@ -43,10 +46,17 @@ class CheckBox extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState){
+		// render hijacking is expensive
+		// really don't want to rerender on every keydown
 		if(this.state.hasFocus != nextState.hasFocus){
 			return true;
 		}
 		if(this.props.value != nextProps.value){
+			return true;
+		}
+		if(this.state.lastManualUpdate != nextState.lastManualUpdate){
+			// this one is a bit hacky
+			// but it gets the job done
 			return true;
 		}
 		return false;
@@ -54,6 +64,7 @@ class CheckBox extends React.Component {
 
 	render(){
 		const {
+			id,
 			label,
 			onChange,
 			...other
@@ -62,6 +73,7 @@ class CheckBox extends React.Component {
 		return (
 			<Inline style={[styles.pseudoLineHeight, {justifyContent: 'center'}]}>
 				<CheckBoxWeb
+					ref={ ref => this.checkbox = ref}
 					style={{
 						width: 24,
 						height: 24
@@ -84,8 +96,10 @@ class CheckBox extends React.Component {
 					color={swatches.tint}
 					{...other}
 					/>
-					<Touchable onPress={onChange}>
-						<Text>{label}</Text>
+					<Touchable onPress={()=>{
+						this.setState({lastManualUpdate: new Date().getTime() }, this.props.onChange)
+					}}>
+						<Text accessibilityRole="label">{label}</Text>
 					</Touchable>
 			</Inline>
 		);

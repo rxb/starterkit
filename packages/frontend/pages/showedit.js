@@ -102,15 +102,11 @@ const ShowForm = withFormState((props) => {
 				{(['Comedy', 'Drama', 'Documentary']).map((item, i)=>{
 					const checked = fields.genres.indexOf(item) != -1;
 					return(
-
-						/*<Text>{item}</Text>*/
-
 						<CheckBox
 							key={i}
 							label={item}
 							value={checked}
 							onChange={() => {
-								console.log('check check check');
 								const newItems = (checked) ?  fields.genres.filter(a => a !== item) : fields.genres.concat([item]);
 								setFieldState({genres: newItems})
 							}}
@@ -166,7 +162,7 @@ const ShowForm = withFormState((props) => {
 					}
 				</Flex>
 			</Chunk>
-			{/*
+
 			<Chunk>
 				<Label for="title">Tags</Label>
 				{tags.items.map((item, i)=>{
@@ -178,20 +174,17 @@ const ShowForm = withFormState((props) => {
 							value={checked}
 							onChange={() => {
 								const {id, label} = item;
-
 								// keep an obj with id and label
 								// with the idea that maybe an obj with label and without id would be created
 								const newItems = (checked) ?
 									fields.tags.filter(a => a.id !== id) :
 									fields.tags.concat([{id, label}]);
-
-								setFieldState({tags: newItems})
+								setFieldState({tags: newItems});
 							}}
 							/>
 					);
 				})}
 			</Chunk>
-			*/}
 			<Chunk>
 				<Button
 					type="primary"
