@@ -111,7 +111,6 @@ const ShowForm = withFormState((props) => {
 								setFieldState({genres: newItems})
 							}}
 							/>
-
 					);
 				})}
 			</Chunk>
@@ -169,18 +168,9 @@ const ShowForm = withFormState((props) => {
 					const checked = fields.tags.findIndex( tag => tag.id == item.id ) != -1;
 					return(
 						<CheckBox
-							key={i}
+							key={String(item.id)}
 							label={item.label}
 							value={checked}
-							onChange={() => {
-								const {id, label} = item;
-								// keep an obj with id and label
-								// with the idea that maybe an obj with label and without id would be created
-								const newItems = (checked) ?
-									fields.tags.filter(a => a.id !== id) :
-									fields.tags.concat([{id, label}]);
-								setFieldState({tags: newItems});
-							}}
 							/>
 					);
 				})}

@@ -80,6 +80,17 @@ class TextInput extends React.Component{
 		}
 	}
 
+	shouldComponentUpdate(nextProps, nextState){
+		if(this.props.value != nextProps.value){
+			return true;
+		}
+		if(this.state != nextState){
+			return true;
+		}
+		return false;
+	}
+
+
 	render() {
 		const {
 			multiline,
