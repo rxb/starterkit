@@ -52,6 +52,16 @@ const populateShowComments = (context) => {
 }
 
 
+// ASSOCIATE TAGS (many-to-many)
+const associateTags = async (context) => {
+  const associations = context.data.tags.map( tag => ({tagId: tag.id, showId: context.data.id}) );
+  // TODO: would be better if this were a transaction, but i'm not going to stress about it at the moment
+  await context.app.service('shows-tags').remove(null, {query: {showId: context.data.id}});
+  await context.app.service('shows-tags').create(associations);
+  return context;
+}
+
+
 module.exports = {
   before: {
     all: [],
@@ -68,7 +78,7 @@ module.exports = {
       saveAndGetNewImageReference
     ],
     patch: [
-      saveAndGetNewImageReference
+      saveAndGetNewImageReference,
     ],
     remove: []
   },
@@ -81,7 +91,9 @@ module.exports = {
     get: [],
     create: [],
     update: [],
-    patch: [],
+    patch: [
+      associateTags
+    ],
     remove: []
   },
 

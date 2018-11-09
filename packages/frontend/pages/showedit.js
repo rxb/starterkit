@@ -151,16 +151,21 @@ const ShowForm = withFormState((props) => {
 			<Chunk>
 				<Label for="title">Tags</Label>
 				{tags.items.map((item, i)=>{
-					const checked = fields.tags.indexOf(item.id) != -1;
+					const checked = fields.tags.findIndex( tag => tag.id == item.id ) != -1;
 					return(
 						<CheckBox
 							key={i}
 							label={item.label}
 							value={checked}
 							onChange={() => {
+								const {id, label} = item;
+
+								// keep an obj with id and label
+								// with the idea that maybe an obj with label and without id would be created
 								const newItems = (checked) ?
-									fields.tags.filter(a => a !== item.id) :
-									fields.tags.concat([item.id]);
+									fields.tags.filter(a => a.id !== id) :
+									fields.tags.concat([{id, label}]);
+
 								setFieldState({tags: newItems})
 							}}
 							/>
@@ -244,14 +249,16 @@ class ShowTest extends React.Component {
 												photoId: show.item.photoId,
 												id: show.item.id,
 												genres: show.item.genres,
-												tags: []
+												tags: show.item.tags
 											}}
 											onSubmit={ async (fields)=>{
-												const {id, photoNewFile, ...showFields} = fields;
+												const {photoNewFile, ...showFields} = fields;
 												if(photoNewFile){
 													showFields.uri = await readFileAsDataUrl(photoNewFile);
 												}
-												patchShow(id, showFields);
+												patchShow(showFields.id, showFields);
+												// id is needed in data as well for relations
+												// maybe it should be extracted in the action?
 											}}
 											onChange={(fields) => {
 												this.setState({showFormFields: fields});
