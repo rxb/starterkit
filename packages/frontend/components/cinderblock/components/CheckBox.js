@@ -41,6 +41,17 @@ class CheckBox extends React.Component {
 			hasFocus: false
 		}
 	}
+
+	shouldComponentUpdate(nextProps, nextState){
+		if(this.state.hasFocus != nextState.hasFocus){
+			return true;
+		}
+		if(this.props.value != nextProps.value){
+			return true;
+		}
+		return false;
+	}
+
 	render(){
 		const {
 			label,

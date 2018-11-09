@@ -86,18 +86,36 @@ const ShowForm = withFormState((props) => {
 					/>
 			</Chunk>
 			<Chunk>
+				<Label for="description">Description</Label>
+				<TextInput
+					id="description"
+					value={fields.description}
+					onChangeText={text => setFieldState({description: text}) }
+					multiline
+					numberOfLines={4}
+					showCounter={true}
+					maxLength={1000}
+					/>
+			</Chunk>
+			<Chunk>
 				<Label for="title">Genres</Label>
 				{(['Comedy', 'Drama', 'Documentary']).map((item, i)=>{
 					const checked = fields.genres.indexOf(item) != -1;
 					return(
+
+						/*<Text>{item}</Text>*/
+
 						<CheckBox
+							key={i}
 							label={item}
 							value={checked}
 							onChange={() => {
+								console.log('check check check');
 								const newItems = (checked) ?  fields.genres.filter(a => a !== item) : fields.genres.concat([item]);
 								setFieldState({genres: newItems})
 							}}
 							/>
+
 					);
 				})}
 			</Chunk>
@@ -148,6 +166,7 @@ const ShowForm = withFormState((props) => {
 					}
 				</Flex>
 			</Chunk>
+			{/*
 			<Chunk>
 				<Label for="title">Tags</Label>
 				{tags.items.map((item, i)=>{
@@ -172,14 +191,7 @@ const ShowForm = withFormState((props) => {
 					);
 				})}
 			</Chunk>
-			<Chunk>
-				{ tags.items.length &&
-					<Fragment>
-						<Text type="sectionHead">Tags</Text>
-						<Text>{JSON.stringify(tags.items)}</Text>
-					</Fragment>
-				}
-			</Chunk>
+			*/}
 			<Chunk>
 				<Button
 					type="primary"
@@ -249,7 +261,8 @@ class ShowTest extends React.Component {
 												photoId: show.item.photoId,
 												id: show.item.id,
 												genres: show.item.genres,
-												tags: show.item.tags
+												tags: show.item.tags,
+												description: show.item.description
 											}}
 											onSubmit={ async (fields)=>{
 												const {photoNewFile, ...showFields} = fields;

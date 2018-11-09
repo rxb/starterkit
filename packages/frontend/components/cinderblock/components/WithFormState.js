@@ -7,6 +7,21 @@ Ultra-lightweight (1k) form helper for React
 
 */
 
+function debounce(callback, time = 60) {
+	var timeout;
+	return function() {
+		var context = this;
+		var args = arguments;
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+		timeout = setTimeout(function() {
+			timeout = null;
+			callback.apply(context, args);
+		}, time);
+	}
+}
+
 const withFormState = ( WrappedComponent ) => {
 
 	return class extends React.Component {
@@ -19,7 +34,6 @@ const withFormState = ( WrappedComponent ) => {
 
 		constructor(props){
 			super(props);
-			console.log(props.initialFields);
 			this.state={
 				// why set initialFields and not just pass though props to values all the time?
 				// an input can be populated with initial values, but shouldn't change after being presented to the user
@@ -31,6 +45,7 @@ const withFormState = ( WrappedComponent ) => {
 			this.setFieldValue = this.setFieldValue.bind(this);
 			this.setFieldState = this.setFieldState.bind(this);
 			this.handleSubmit = this.handleSubmit.bind(this);
+			this.handleChange = this.handleChange.bind(this);
 			this.resetFields = this.resetFields.bind(this);
 		}
 
@@ -40,7 +55,8 @@ const withFormState = ( WrappedComponent ) => {
 
 		setFieldState(payload){
 			const fields = { ...this.state.fields, ...payload};
-			this.setState({fields: fields}, this.handleChange);
+			this.setState({fields: fields}/*, this.handleChange*/);
+			//debounce(this.handleChange, 10)();
 		}
 
 		setFieldValue(key, value){
@@ -51,8 +67,8 @@ const withFormState = ( WrappedComponent ) => {
 
 			const fields = { ...this.state.fields};
 			fields[key] = value;
-			this.setState({fields: fields}, this.handleChange);
-			this.handleChange(fields);
+			this.setState({fields: fields}/*, this.handleChange*/);
+			//debounce(this.handleChange, 10)();
 		}
 
 		getFieldValue(key){
@@ -67,7 +83,7 @@ const withFormState = ( WrappedComponent ) => {
 			// if elements outside the form need to know what's happening in the form
 			// as fields are being edited, before submit
 			// passed in because setState won't be set yet
-			this.props.onChange(this.state.fields, this);
+			//this.props.onChange(this.state.fields, this);
 		}
 
 		handleSubmit(){

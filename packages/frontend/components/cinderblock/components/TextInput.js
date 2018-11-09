@@ -113,6 +113,7 @@ class TextInput extends React.Component{
 							this.setState({height: height});
 						}
 						onChange(event);
+
 					}}
 					className='input'
 					style={[

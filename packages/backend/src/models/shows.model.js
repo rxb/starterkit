@@ -16,6 +16,10 @@ module.exports = function (app) {
       type: DataTypes.STRING,
       allowNull: true
     },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     genres: {
       type: DataTypes.JSONB,
       allowNull: true
