@@ -37,11 +37,9 @@ class TextInput extends React.Component{
 			count: 0,
 			countColor: 'secondary'
 		}
-		this.countText = this.countText.bind(this);
 		this.onChange = this.onChange.bind(this);
-		this.onChangeText = this.onChangeText.bind(this);
+		this.updateTextInput = this.updateTextInput.bind(this);
 	}
-
 
 	shouldComponentUpdate(nextProps, nextState){
 		if(this.props.value != nextProps.value){
@@ -53,36 +51,36 @@ class TextInput extends React.Component{
 		return false;
 	}
 
-	componentDidMount(){
-		debounce(this.countText, 100)(this.props.value);
-	}
+	updateTextInput(text, height){
+		let dirty = false;
+		let newState = {};
 
-	countText(text){
-		const count = text.length;
-		let countColor = 'secondary';
-		const diff = this.props.maxLength - count;
-		if(diff < 10){
-			countColor = 'tint';
+		// counter
+		if(this.props.showCounter && this.props.maxLength){
+			dirty = true;
+			newState.count = text.length;
+			newState.countColor = 'secondary';
+			const diff = this.props.maxLength - newState.count;
+			if(diff < 10){
+				newState.countColor = 'tint';
+			}
 		}
-		this.setState({
-			count: count,
-			countColor: countColor
-		});
-	}
 
-	onChangeText(text){
-		this.props.onChangeText(text);
-		debounce(this.countText, 100)(text);
+		// autoexpand
+		if(this.props.multiline && this.props.autoExpand && this.state.height != height){
+			dirty = true;
+			newState.height = height;
+		}
+
+		if(dirty){
+			this.setState(newState);
+		}
 	}
 
 	onChange(event){
-		// don't call setState unless you have to
-		console.log('onchange');
 		const height = event.nativeEvent.srcElement.scrollHeight;
-		if(this.props.multiline && this.props.autoExpand && this.state.height != height){
-			console.log(height);
-			this.setState({height: height});
-		}
+		const text = event.target.value;
+		debounce(this.updateTextInput, 100)(text, height);
 		this.props.onChange(event);
 	}
 
@@ -92,7 +90,6 @@ class TextInput extends React.Component{
 			placeholder,
 			maxLength,
 			onChange,
-			onChangeText,
 			showCounter,
 			style,
 			wrapperStyle,
@@ -107,7 +104,6 @@ class TextInput extends React.Component{
 					placeholderTextColor={swatches.textHint}
 					multiline={multiline}
 					maxLength={maxLength}
-					onChangeText={this.onChangeText}
 					onChange={this.onChange}
 					className='input'
 					style={[
