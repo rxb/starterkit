@@ -103,7 +103,7 @@ const ShowForm = withFormState((props) => {
 					const checked = fields.genres.indexOf(item) != -1;
 					return(
 						<CheckBox
-							key={i}
+							key={item}
 							label={item}
 							value={checked}
 							onChange={() => {
@@ -111,6 +111,7 @@ const ShowForm = withFormState((props) => {
 								setFieldState({genres: newItems})
 							}}
 							/>
+
 					);
 				})}
 			</Chunk>
@@ -171,6 +172,15 @@ const ShowForm = withFormState((props) => {
 							key={String(item.id)}
 							label={item.label}
 							value={checked}
+							onChange={() => {
+								const {id, label} = item;
+								// keep an obj with id and label
+								// with the idea that maybe an obj with label and without id would be created
+								const newItems = (checked) ?
+									fields.tags.filter(a => a.id !== id) :
+									fields.tags.concat([{id, label}]);
+								setFieldState({tags: newItems});
+							}}
 							/>
 					);
 				})}
@@ -271,6 +281,9 @@ class ShowTest extends React.Component {
 									<Section>
 										<Chunk>
 											<Text>{JSON.stringify(this.state.showFormFields)}</Text>
+										</Chunk>
+										<Chunk>
+											<Text>{JSON.stringify(show.item)}</Text>
 										</Chunk>
 									</Section>
 

@@ -21,64 +21,27 @@ function debounce(callback, time = 60) {
 	}
 }
 
-class CharCount extends React.Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			count: 0,
-			color: this.getColor()
-		}
-		this.updateCount = this.updateCount.bind(this);
-	}
-	getColor(count = 0){
-		let color = 'secondary';
-		const diff = this.props.maxLength - count;
-		if(diff < 10){
-			color = 'tint';
-		}
-		return color;
-	}
-	updateCount(text){
-		const count = text.length;
-		this.setState({
-			count: count,
-			color: this.getColor(count)
-		});
-	}
-	render(){
-		const {
-			...other
-		} = this.props;
-		return(
-			<Text
-				color={this.state.color}
-				type="small"
-				{...other}
-				>{this.state.count}/{this.props.maxLength}</Text>
-		)
-	}
-}
 
 class TextInput extends React.Component{
 	static defaultProps = {
+		autoExpand: true,
 		onChange: ()=>{},
-		onChangeText: ()=>{}
+		onChangeText: ()=>{},
+		value: ''
 	}
 
 	constructor(props){
 		super(props);
 		this.state = {
-			height: 0
+			height: 0,
+			count: 0,
+			countColor: 'secondary'
 		}
-		this.counter = React.createRef();
 		this.countText = this.countText.bind(this);
+		this.onChange = this.onChange.bind(this);
+		this.onChangeText = this.onChangeText.bind(this);
 	}
 
-	countText(text){
-		if(this.props.maxLength && this.props.showCounter){
-			this.counter.current.updateCount(text);
-		}
-	}
 
 	shouldComponentUpdate(nextProps, nextState){
 		if(this.props.value != nextProps.value){
@@ -90,6 +53,38 @@ class TextInput extends React.Component{
 		return false;
 	}
 
+	componentDidMount(){
+		debounce(this.countText, 100)(this.props.value);
+	}
+
+	countText(text){
+		const count = text.length;
+		let countColor = 'secondary';
+		const diff = this.props.maxLength - count;
+		if(diff < 10){
+			countColor = 'tint';
+		}
+		this.setState({
+			count: count,
+			countColor: countColor
+		});
+	}
+
+	onChangeText(text){
+		this.props.onChangeText(text);
+		debounce(this.countText, 100)(text);
+	}
+
+	onChange(event){
+		// don't call setState unless you have to
+		console.log('onchange');
+		const height = event.nativeEvent.srcElement.scrollHeight;
+		if(this.props.multiline && this.props.autoExpand && this.state.height != height){
+			console.log(height);
+			this.setState({height: height});
+		}
+		this.props.onChange(event);
+	}
 
 	render() {
 		const {
@@ -98,7 +93,6 @@ class TextInput extends React.Component{
 			maxLength,
 			onChange,
 			onChangeText,
-			autoExpand = true,
 			showCounter,
 			style,
 			wrapperStyle,
@@ -113,19 +107,8 @@ class TextInput extends React.Component{
 					placeholderTextColor={swatches.textHint}
 					multiline={multiline}
 					maxLength={maxLength}
-					onChangeText={(text)=>{
-						this.props.onChangeText(text);
-						debounce(this.countText, 100)(text);
-					}}
-					onChange={(event) => {
-						// don't call setState unless you have to
-						const height = event.nativeEvent.srcElement.scrollHeight;
-						if(multiline && autoExpand && this.state.height != height){
-							this.setState({height: height});
-						}
-						onChange(event);
-
-					}}
+					onChangeText={this.onChangeText}
+					onChange={this.onChange}
 					className='input'
 					style={[
 						styles.input,
@@ -138,7 +121,12 @@ class TextInput extends React.Component{
 					{...other}
 					/>
 				{ maxLength && showCounter &&
-					<CharCount ref={this.counter} maxLength={maxLength} style={{position: 'absolute', bottom: 8, right: 8}} />
+					<Text
+						color={this.state.countColor}
+						type="small"
+						style={{position: 'absolute', bottom: 8, right: 8}}
+						{...other}
+						>{this.state.count}/{this.props.maxLength}</Text>
 				}
 			</View>
 		);
