@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
 		zIndex: 3
 	},
 
+	/*
 	'modal--full': {
 		position: 'fixed',
 		top: 0,
@@ -310,6 +311,22 @@ const styles = StyleSheet.create({
 		minWidth: 'auto',
 		maxWidth: 'auto'
 	},
+	*/
+
+	// bottom sheet
+	'modal--full': {
+		position: 'fixed',
+		maxHeight: '80%',
+		left: 0,
+		right: 0,
+		bottom: 0,
+		backgroundColor: 'white',
+		zIndex: 3,
+		minWidth: 'auto',
+		maxWidth: 'auto'
+	},
+
+
 	prompt: {
 		marginHorizontal: '5%',
 		maxWidth: 340,

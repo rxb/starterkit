@@ -146,7 +146,7 @@ class Modal extends React.Component{
 					opacity: this.state.visibilityValue
 				}
 			]}>
-				{ !isFull &&
+				{ (true || !isFull) &&
 					<Touch
 						onPress={onRequestClose}
 						noFeedback

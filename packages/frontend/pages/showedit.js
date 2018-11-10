@@ -2,6 +2,9 @@ import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head'
 
+import _ from 'lodash';
+import validator from '../components/cinderblock/validator';
+
 import {
 	fetchShow,
 	fetchTags,
@@ -258,13 +261,55 @@ class ShowTest extends React.Component {
 												description: show.item.description
 											}}
 											onSubmit={ async (fields)=>{
+												/*
+												const valid = validator.isLength(fields.title, {min: 1, max: 10});
+												alert(`valid: ${valid}`);
+												*/
+
+												/*
+												notContains: {
+										        	args: "garbage",
+										        	msg: "Please don't make comments about garbage"
+										        }
+										        */
+
+										        const runValidations = (fields, validators) => {
+											        let valid = true;
+											        let config, localValid, fieldValidators;
+											        for(let fKey in fields){
+														fieldValidators = validators[fKey];
+												        for(let vKey in fieldValidators){
+												        	config = fieldValidators[vKey];
+												        	localValid = validator[vKey](fields.title, config.args);
+												        	valid = (valid && localValid);
+												        }
+												    }
+											        return valid;
+										        }
+
+ 												const validators = {
+ 													title: {
+											        	isLength: {
+											        		args: {min: 1, max: 15}
+											        	},
+											        	contains: {
+											        		args: "horse"
+											        	}
+										        	}
+										        }
+
+										        const valid = runValidations(fields, validators);
+												alert(`valid: ${valid}`);
+
+
+
+												/*
 												const {photoNewFile, ...showFields} = fields;
 												if(photoNewFile){
 													showFields.uri = await readFileAsDataUrl(photoNewFile);
 												}
 												patchShow(showFields.id, showFields);
-												// id is needed in data as well for relations
-												// maybe it should be extracted in the action?
+												*/
 											}}
 											onChange={(fields) => {
 												this.setState({showFormFields: fields});
