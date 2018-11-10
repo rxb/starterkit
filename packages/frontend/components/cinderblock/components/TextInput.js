@@ -42,9 +42,7 @@ class TextInput extends React.Component{
 	}
 
 	componentDidMount(){
-		this._node = this.textinput._node;
-		const height = this._node.scrollHeight;
-		this.updateTextInput(this.props.value, height);
+		this.updateTextInput(this.props.value);
 	}
 
 	shouldComponentUpdate(nextProps, nextState){
@@ -57,9 +55,12 @@ class TextInput extends React.Component{
 		return false;
 	}
 
-	updateTextInput(text, height){
+	updateTextInput(text){
 		let dirty = false;
 		let newState = {};
+
+		this._node = this.textinput._node;
+		const height = this._node.scrollHeight;
 
 		// counter
 		if(this.props.showCounter && this.props.maxLength){
@@ -84,9 +85,8 @@ class TextInput extends React.Component{
 	}
 
 	onChange(event){
-		const height = event.nativeEvent.srcElement.scrollHeight;
 		const text = event.target.value;
-		debounce(this.updateTextInput, 100)(text, height);
+		debounce(this.updateTextInput, 100)(text);
 		this.props.onChange(event);
 	}
 
