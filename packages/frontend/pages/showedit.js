@@ -275,12 +275,14 @@ class ShowTest extends React.Component {
 
 										        const runValidations = (fields, validators) => {
 											        let valid = true;
-											        let config, localValid, fieldValidators;
+											        let args, localValid, fieldValidators;
 											        for(let fKey in fields){
 														fieldValidators = validators[fKey];
 												        for(let vKey in fieldValidators){
-												        	config = fieldValidators[vKey];
-												        	localValid = validator[vKey](fields.title, config.args);
+												        	args = fieldValidators[vKey].args;
+												        	args = Array.isArray(args) ? args : [args];
+												        	args = [fields[fKey], ...args];
+												        	localValid = validator[vKey].apply(this, args);
 												        	valid = (valid && localValid);
 												        }
 												    }
