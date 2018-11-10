@@ -41,6 +41,12 @@ class TextInput extends React.Component{
 		this.updateTextInput = this.updateTextInput.bind(this);
 	}
 
+	componentDidMount(){
+		this._node = this.textinput._node;
+		const height = this._node.scrollHeight;
+		this.updateTextInput(this.props.value, height);
+	}
+
 	shouldComponentUpdate(nextProps, nextState){
 		if(this.props.value != nextProps.value){
 			return true;
@@ -99,6 +105,7 @@ class TextInput extends React.Component{
 		return (
 			<View style={wrapperStyle}>
 				<TextInputWeb
+					ref={ref => this.textinput = ref}
 					accessibilityLabel={placeholder}
 					placeholder={placeholder}
 					placeholderTextColor={swatches.textHint}
