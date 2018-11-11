@@ -27,6 +27,13 @@ const showComments = (state = {...startState}, action) => {
       fieldErrors[err.path] = err.message;
     });
     return fieldErrors;
+    /*
+    // example data
+    {
+      title: "Sorry, can't make a title about 'garbage'"},
+      description: "Sorry, description can't be blank"},
+    }
+    */
   }
 
   let newComment, newState, index, error;

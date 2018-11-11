@@ -266,44 +266,41 @@ class ShowTest extends React.Component {
 												alert(`valid: ${valid}`);
 												*/
 
-												/*
-												notContains: {
-										        	args: "garbage",
-										        	msg: "Please don't make comments about garbage"
-										        }
-										        */
 
 										        const runValidations = (fields, validators) => {
-											        let valid = true;
-											        let args, localValid, fieldValidators;
+											        let errorCount = 0;
+											        let errors = {};
+											        let args, msg, fieldValidators;
 											        for(let fKey in fields){
 														fieldValidators = validators[fKey];
 												        for(let vKey in fieldValidators){
+												        	msg = fieldValidators[vKey].msg || 'There was a problem';
 												        	args = fieldValidators[vKey].args;
 												        	args = Array.isArray(args) ? args : [args];
 												        	args = [fields[fKey], ...args];
-												        	localValid = validator[vKey].apply(this, args);
-												        	valid = (valid && localValid);
+												        	if( !validator[vKey].apply(this, args) ){
+													        	errorCount++;
+													        	errors[fKey] = msg;
+												        	}
 												        }
 												    }
-											        return valid;
+											        return {errorCount, errors};
 										        }
 
  												const validators = {
  													title: {
 											        	isLength: {
-											        		args: {min: 1, max: 15}
+											        		args: {min: 1, max: 15},
+											        		msg: "Should be between 1 and 15 characters"
 											        	},
 											        	contains: {
-											        		args: "horse"
+											        		args: "horse",
 											        	}
 										        	}
 										        }
 
-										        const valid = runValidations(fields, validators);
-												alert(`valid: ${valid}`);
-
-
+										        const error = runValidations(fields, validators);
+												alert(JSON.stringify(error));
 
 												/*
 												const {photoNewFile, ...showFields} = fields;
