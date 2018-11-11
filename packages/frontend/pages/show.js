@@ -45,7 +45,8 @@ import {
 } from '../components/cinderblock';
 
 import Page from '../components/Page';
-import {checkToastableErrors} from '../components/ConnectedToaster';
+import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
+
 import swatches from '../components/cinderblock/styles/swatches';
 
 

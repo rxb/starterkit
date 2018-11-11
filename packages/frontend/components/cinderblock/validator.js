@@ -106,3 +106,4 @@ validator.isDate = function(dateString) {
 };
 
 export default validator;
+

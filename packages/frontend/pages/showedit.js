@@ -2,10 +2,9 @@ import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head'
 
-import _ from 'lodash';
-import validator from '../components/cinderblock/validator';
 
 import {
+	addToast,
 	fetchShow,
 	fetchTags,
 	createShow,
@@ -50,23 +49,7 @@ import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 import ShowCard from '../components/ShowCard';
 
-
-// move this somewhere
-// utils? or even file input, (like a thunkable thing that can be run when needed?)
-const readFileAsDataUrl = (inputFile) => {
-  const temporaryFileReader = new FileReader();
-  return new Promise((resolve, reject) => {
-    temporaryFileReader.onerror = () => {
-      temporaryFileReader.abort();
-      reject(new DOMException("Problem parsing input file."));
-    };
-    temporaryFileReader.onload = () => {
-      resolve(temporaryFileReader.result);
-    };
-    temporaryFileReader.readAsDataURL(inputFile);
-  });
-};
-
+import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
 
 
 const ShowForm = withFormState((props) => {
@@ -226,6 +209,19 @@ class ShowTest extends React.Component {
 		this.props.fetchTags();
 	}
 
+	componentDidUpdate(prevProps){
+
+		// watching for toastable errors
+		// still feel like maybe this could go with form?
+		const messages = {
+			show: {
+				BadRequest: 'Something went wrong',
+			}
+		};
+		checkToastableErrors(this.props, prevProps, messages);
+
+	}
+
 	render() {
 
 		const {
@@ -251,7 +247,6 @@ class ShowTest extends React.Component {
 									<Text type="pageHead">Edit show</Text>
 								</Chunk>
 							</Section>
-							<Text>Error: {JSON.stringify(show.error)}</Text>
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
@@ -269,25 +264,7 @@ class ShowTest extends React.Component {
 											fieldErrors={show.error.fieldErrors}
 											onSubmit={ async (fields)=>{
 
-										        const runValidations = (fields, validators) => {
-											        let errorCount = 0;
-											        let fieldErrors = {};
-											        let args, msg, fieldValidators;
-											        for(let fKey in fields){
-														fieldValidators = validators[fKey];
-												        for(let vKey in fieldValidators){
-												        	msg = fieldValidators[vKey].msg || 'There was a problem';
-												        	args = fieldValidators[vKey].args;
-												        	args = Array.isArray(args) ? args : [args];
-												        	args = [fields[fKey], ...args];
-												        	if( !validator[vKey].apply(this, args) ){
-													        	errorCount++;
-													        	fieldErrors[fKey] = msg;
-												        	}
-												        }
-												    }
-											        return {errorCount, fieldErrors};
-										        }
+
 
  												const validators = {
  													title: {
@@ -305,14 +282,15 @@ class ShowTest extends React.Component {
 										        const error = runValidations(fields, validators);
 										        validateShowFailure(error)
 
+										        if(!error.errorCount){
+													const {photoNewFile, ...showFields} = fields;
+													if(photoNewFile){
+														showFields.uri = await readFileAsDataUrl(photoNewFile);
+													}
+													patchShow(showFields.id, showFields);
+										        }
 
-												/*
-												const {photoNewFile, ...showFields} = fields;
-												if(photoNewFile){
-													showFields.uri = await readFileAsDataUrl(photoNewFile);
-												}
-												patchShow(showFields.id, showFields);
-												*/
+
 											}}
 											onChange={(fields) => {
 												this.setState({showFormFields: fields});
@@ -355,6 +333,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const actionCreators = {
+	addToast,
 	fetchShow,
 	fetchTags,
 	createShow,

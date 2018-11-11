@@ -53,8 +53,9 @@ import {
 } from './cinderblock';
 
 import LoginForm from './LoginForm';
-import ConnectedToaster, {checkToastableErrors} from './ConnectedToaster';
+import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
+import { checkToastableErrors } from './cinderblock/formUtils';
 
 
 class Page extends React.Component {

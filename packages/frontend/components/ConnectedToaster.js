@@ -17,14 +17,3 @@ const ConnectedToaster = (props) => ( <Toaster {...props} />);
 const mapStateToProps = (state, ownProps) => ({ toasts: state.toasts });
 const actionCreators = { addToast, hideToast, removeToast }
 export default connect( mapStateToProps, actionCreators )(ConnectedToaster);
-
-export const checkToastableErrors = (newProps, oldProps, messages) => {
-	for (const key in messages){
-		if(newProps[key].error && newProps[key].error !== oldProps[key].error){
-			const message = messages[key][newProps[key].error.name];
-			if(message){
-				newProps.addToast(message);
-			}
-		}
-	}
-}
