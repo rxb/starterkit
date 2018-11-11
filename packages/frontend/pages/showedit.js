@@ -269,12 +269,12 @@ class ShowTest extends React.Component {
  												const validators = {
  													title: {
 											        	isLength: {
-											        		args: {min: 1, max: 15},
-											        		msg: "Should be between 1 and 15 characters"
+											        		args: {min: 1},
+											        		msg: "Title can't be blank"
 											        	},
-											        	contains: {
-											        		args: "horse",
-											        		msg: "If you're not writing about horses, why bother?"
+											        	notContains: {
+											        		args: "garbage",
+											        		msg: "No shows about garbage, please"
 											        	}
 										        	}
 										        }

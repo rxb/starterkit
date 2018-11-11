@@ -11,13 +11,13 @@ export const runValidations = (fields, validators) => {
         	args = fieldValidators[vKey].args;
         	args = Array.isArray(args) ? args : [args];
         	args = [fields[fKey], ...args];
-        	if( !validator[vKey].apply(this, args) ){
+        	if( !validator[vKey].apply(validator, args) ){
 	        	errorCount++;
 	        	fieldErrors[fKey] = msg;
         	}
         }
     }
-    return {name: 'BadRequest', errorCount, fieldErrors};
+    return (errorCount) ? {name: 'BadRequest', errorCount, fieldErrors} : {};
 }
 
 export const readFileAsDataUrl = (inputFile) => {
