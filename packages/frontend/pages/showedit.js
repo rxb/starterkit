@@ -9,7 +9,8 @@ import {
 	fetchShow,
 	fetchTags,
 	createShow,
-	patchShow
+	patchShow,
+	validateShowFailure
 } from '../actions';
 
 
@@ -228,7 +229,8 @@ class ShowTest extends React.Component {
 			show,
 			tags,
 			createShow,
-			patchShow
+			patchShow,
+			validateShowFailure
 		} = this.props;
 
 		return (
@@ -246,6 +248,7 @@ class ShowTest extends React.Component {
 									<Text type="pageHead">Edit show</Text>
 								</Chunk>
 							</Section>
+							<Text>Error: {JSON.stringify(show.error)}</Text>
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
@@ -261,15 +264,10 @@ class ShowTest extends React.Component {
 												description: show.item.description
 											}}
 											onSubmit={ async (fields)=>{
-												/*
-												const valid = validator.isLength(fields.title, {min: 1, max: 10});
-												alert(`valid: ${valid}`);
-												*/
-
 
 										        const runValidations = (fields, validators) => {
 											        let errorCount = 0;
-											        let errors = {};
+											        let fieldErrors = {};
 											        let args, msg, fieldValidators;
 											        for(let fKey in fields){
 														fieldValidators = validators[fKey];
@@ -280,11 +278,11 @@ class ShowTest extends React.Component {
 												        	args = [fields[fKey], ...args];
 												        	if( !validator[vKey].apply(this, args) ){
 													        	errorCount++;
-													        	errors[fKey] = msg;
+													        	fieldErrors[fKey] = msg;
 												        	}
 												        }
 												    }
-											        return {errorCount, errors};
+											        return {errorCount, fieldErrors};
 										        }
 
  												const validators = {
@@ -300,7 +298,10 @@ class ShowTest extends React.Component {
 										        }
 
 										        const error = runValidations(fields, validators);
-												alert(JSON.stringify(error));
+												if(error.errorCount){
+													console.log(error);
+													validateShowFailure(error);
+												}
 
 												/*
 												const {photoNewFile, ...showFields} = fields;
@@ -354,7 +355,8 @@ const actionCreators = {
 	fetchShow,
 	fetchTags,
 	createShow,
-	patchShow
+	patchShow,
+	validateShowFailure
 };
 
 export default connect(

@@ -97,6 +97,11 @@ export const patchShow = (id, data) => ({
  	}
 });
 
+// VALIDATE SHOW FAILURE
+export const validateShowFailure = (error) => ({
+    type: 'VALIDATE_SHOW_FAILURE',
+    payload: error
+})
 
 // FETCH SHOWS
 export const fetchShows = () => ({
@@ -181,8 +186,6 @@ export function logInAndFetchUser(data) {
 	}
 }
 
-
-
 // FETCH SHOW COMMENTS
 export const fetchShowComments = (data) => ({
 	[RSAA]: {
@@ -224,6 +227,11 @@ const buildOptimisticActions = (baseType, data, extraPayload, extraMeta) => {
 	];
 }
 
+export const validateShowCommentFailure = (error) => ({
+    type: 'VALIDATE_SHOW_COMMENT_FAILURE',
+    payload: error
+})
+
 
 export const createShowComment = (data, extra) => ({
 	[RSAA]: {
@@ -236,15 +244,14 @@ export const createShowComment = (data, extra) => ({
 });
 
 
-export const deleteShowComment = (commentId) => {
-	return ({
-		[RSAA]: {
-			types: ["DELETE_SHOW_COMMENT", "DELETE_SHOW_COMMENT_SUCCESS", "DELETE_SHOW_COMMENT_FAILURE"],
-			endpoint: `${apiHost}show-comments/${commentId}`,
-			method: 'DELETE',
-	 	}
-	});
-};
+export const deleteShowComment = (commentId) => ({
+	[RSAA]: {
+		types: ["DELETE_SHOW_COMMENT", "DELETE_SHOW_COMMENT_SUCCESS", "DELETE_SHOW_COMMENT_FAILURE"],
+		endpoint: `${apiHost}show-comments/${commentId}`,
+		method: 'DELETE',
+ 	}
+});
+
 
 
 /*

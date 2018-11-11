@@ -1,3 +1,8 @@
+import{
+  findByOptimisticId,
+  parseFeathersError
+} from './utils.js'
+
 /*
 In the debate between arrays of objects vs. objects, the answer is: it depends.
 Which is more useful for your use case?
@@ -14,31 +19,11 @@ const startState = {
 
 const showComments = (state = {...startState}, action) => {
 
-  // HELPERS
-  // should move to some kind of util include
-
-  const findByOptimisticId = (optimisticId) => (
-    state.items.findIndex( comment => comment.optimisticId === optimisticId )
-  );
-
-  const buildFieldErrors = (errors) => {
-    const fieldErrors = {};
-    errors.forEach( err => {
-      fieldErrors[err.path] = err.message;
-    });
-    return fieldErrors;
-    /*
-    // example data
-    {
-      title: "Sorry, can't make a title about 'garbage'"},
-      description: "Sorry, description can't be blank"},
-    }
-    */
-  }
-
-  let newComment, newState, index, error;
+  let newComment, newState, index;
 
   switch (action.type) {
+
+    // FETCH SHOW COMMENTS
     case 'FETCH_SHOW_COMMENTS':
       return {
         ...startState,
@@ -50,6 +35,8 @@ const showComments = (state = {...startState}, action) => {
         error: {},
         loading: false
       }
+
+    // CREATE SHOW COMMENT
     case 'CREATE_SHOW_COMMENT':
       return {
         items: [...state.items, action.payload],
@@ -59,16 +46,18 @@ const showComments = (state = {...startState}, action) => {
     case 'CREATE_SHOW_COMMENT_SUCCESS':
       newState = {...state};
       newComment = action.payload;
-      newState.items[findByOptimisticId(action.meta.optimisticId)] = newComment;
+      newState.items[findByOptimisticId(newState.items, action.meta.optimisticId)] = newComment;
       return newState;
     case 'CREATE_SHOW_COMMENT_FAILURE':
       newState = {...state};
-      newState.items.splice(findByOptimisticId(action.meta.optimisticId), 1);
-      error = action.payload.response;
-      error.fieldErrors = buildFieldErrors(error.errors);
-      newState.error = error;
+      newState.items.splice(findByOptimisticId(newState.items, action.meta.optimisticId), 1);
+      newState.error = parseFeathersError(action.payload.response);
       return newState;
-   case 'DELETE_SHOW_COMMENT_SUCCESS':
+    case 'VALIDATE_SHOW_COMMENT_FAILURE':
+      return {...state, error: action.payload};
+
+    // DELETE SHOW COMMENT
+    case 'DELETE_SHOW_COMMENT_SUCCESS':
       newState = {...state};
       newState.items.splice(newState.items.findIndex(comment => comment.id == action.payload.id), 1);
       return newState;
@@ -76,6 +65,8 @@ const showComments = (state = {...startState}, action) => {
     case 'DELETE_SHOW_COMMENT_FAILURE':
       // handle these better
       alert(`${action.payload.message}`);
+
+    // ????
     default:
       return state
   }
