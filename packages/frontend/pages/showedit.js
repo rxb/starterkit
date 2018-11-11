@@ -22,6 +22,7 @@ import {
 	CheckBox,
 	Chunk,
 	FakeInput,
+	FieldError,
 	Flex,
 	FlexItem,
 	FileInput,
@@ -88,6 +89,7 @@ const ShowForm = withFormState((props) => {
 					value={fields.title}
 					onChange={e => setFieldState({title: e.target.value}) }
 					/>
+				<FieldError error={fieldErrors.title} />
 			</Chunk>
 			<Chunk>
 				<Label for="description">Description</Label>
@@ -100,6 +102,7 @@ const ShowForm = withFormState((props) => {
 					showCounter={true}
 					maxLength={1000}
 					/>
+				<FieldError error={fieldErrors.description} />
 			</Chunk>
 			<Chunk>
 				<Label for="title">Genres</Label>
@@ -263,6 +266,7 @@ class ShowTest extends React.Component {
 												tags: show.item.tags,
 												description: show.item.description
 											}}
+											fieldErrors={show.error.fieldErrors}
 											onSubmit={ async (fields)=>{
 
 										        const runValidations = (fields, validators) => {
@@ -293,15 +297,14 @@ class ShowTest extends React.Component {
 											        	},
 											        	contains: {
 											        		args: "horse",
+											        		msg: "If you're not writing about horses, why bother?"
 											        	}
 										        	}
 										        }
 
 										        const error = runValidations(fields, validators);
-												if(error.errorCount){
-													console.log(error);
-													validateShowFailure(error);
-												}
+										        validateShowFailure(error)
+
 
 												/*
 												const {photoNewFile, ...showFields} = fields;
