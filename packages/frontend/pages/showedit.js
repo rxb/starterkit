@@ -9,7 +9,7 @@ import {
 	fetchTags,
 	createShow,
 	patchShow,
-	validateShowFailure
+	updateErrorShow
 } from '../actions';
 
 
@@ -60,7 +60,7 @@ const ShowForm = withFormState((props) => {
 		handleSubmit,
 		resetFields,
 		fieldErrors = {},
-		tags
+		tags,
 	} = props;
 
 	return(
@@ -229,7 +229,7 @@ class ShowTest extends React.Component {
 			tags,
 			createShow,
 			patchShow,
-			validateShowFailure
+			updateErrorShow
 		} = this.props;
 
 		return (
@@ -263,9 +263,6 @@ class ShowTest extends React.Component {
 											}}
 											fieldErrors={show.error.fieldErrors}
 											onSubmit={ async (fields)=>{
-
-
-
  												const validators = {
  													title: {
 											        	isLength: {
@@ -278,10 +275,8 @@ class ShowTest extends React.Component {
 											        	}
 										        	}
 										        }
-
 										        const error = runValidations(fields, validators);
-										        validateShowFailure(error)
-
+										        updateErrorShow(error);
 										        if(!error.errorCount){
 													const {photoNewFile, ...showFields} = fields;
 													if(photoNewFile){
@@ -289,8 +284,6 @@ class ShowTest extends React.Component {
 													}
 													patchShow(showFields.id, showFields);
 										        }
-
-
 											}}
 											onChange={(fields) => {
 												this.setState({showFormFields: fields});
@@ -338,7 +331,7 @@ const actionCreators = {
 	fetchTags,
 	createShow,
 	patchShow,
-	validateShowFailure
+	updateErrorShow
 };
 
 export default connect(

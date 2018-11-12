@@ -98,8 +98,8 @@ export const patchShow = (id, data) => ({
 });
 
 // VALIDATE SHOW FAILURE
-export const validateShowFailure = (error) => ({
-    type: 'VALIDATE_SHOW_FAILURE',
+export const updateErrorShow = (error) => ({
+    type: 'UPDATE_ERROR_SHOW',
     payload: error
 })
 
@@ -227,8 +227,8 @@ const buildOptimisticActions = (baseType, data, extraPayload, extraMeta) => {
 	];
 }
 
-export const validateShowCommentFailure = (error) => ({
-    type: 'VALIDATE_SHOW_COMMENT_FAILURE',
+export const updateErrorShowComment = (error) => ({
+    type: 'UPDATE_ERROR_SHOW_COMMENT',
     payload: error
 })
 

@@ -50,9 +50,7 @@ const show = (state = startState, action) => {
 			return newState;
 
 		// VALIDATE
-		case 'VALIDATE_SHOW_FAILURE':
-			console.log('reducer');
-			console.log(action.payload);
+		case 'UPDATE_ERROR_SHOW':
 			newState = {...state, error: action.payload};
 			return newState;
 

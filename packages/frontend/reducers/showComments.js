@@ -53,7 +53,7 @@ const showComments = (state = {...startState}, action) => {
       newState.items.splice(findByOptimisticId(newState.items, action.meta.optimisticId), 1);
       newState.error = parseFeathersError(action.payload.response);
       return newState;
-    case 'VALIDATE_SHOW_COMMENT_FAILURE':
+    case 'UPDATE_ERROR_SHOW_COMMENT':
       return {...state, error: action.payload};
 
     // DELETE SHOW COMMENT

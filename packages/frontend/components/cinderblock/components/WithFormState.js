@@ -76,7 +76,7 @@ const withFormState = ( WrappedComponent ) => {
 		}
 
 		resetFields(){
-			this.setState({fields: {}});
+			this.setState({fields: this.props.initialFields});
 		}
 
 		handleChange(){

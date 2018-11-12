@@ -18,5 +18,6 @@ export const parseFeathersError = (error) => {
   error.errors.forEach( err => {
     error.fieldErrors[err.path] = err.message;
   });
+  error.errorCount = error.errors.length;
   return error;
 }

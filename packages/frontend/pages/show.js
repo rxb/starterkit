@@ -11,6 +11,7 @@ import {
 	createShowComment,
 	deleteShowComment,
 	fetchShowComments,
+	updateErrorShowComment,
 	addPrompt,
 	addToast
 } from '../actions';
@@ -172,7 +173,7 @@ class Show extends React.Component {
 		const {
 			show = {},
 			showComments,
-			user
+			user,
 		} = this.props;
 
 
@@ -284,11 +285,30 @@ class Show extends React.Component {
 								{user.id &&
 									<Fragment>
 										<CommentForm
+											initialFields={{
+												body: ''
+											}}
 											fieldErrors={showComments.error.fieldErrors}
 											onSubmit={ (fields, context) => {
-												const data = { ...fields, showId: this.props.show.id };
-												this.props.createShowComment(data, { user: this.props.user } );
-												context.resetFields();
+												const validators = {
+ 													body: {
+											        	notEmpty: {
+											        		msg: "Comment can't be blank"
+											        	},
+											        	notContains: {
+											        		args: "garbage",
+											        		msg: "No comments about garbage, please!"
+											        	}
+										        	}
+										        }
+										        const error = runValidations(fields, validators);
+										        this.props.updateErrorShowComment(error);
+
+										        if(!error.errorCount){
+													const data = { ...fields, showId: this.props.show.id };
+													this.props.createShowComment(data, { user: this.props.user } );
+													context.resetFields();
+												}
 											}}
 											/>
 									</Fragment>
@@ -315,10 +335,11 @@ const mapStateToProps = (state, ownProps) => {
 const actionCreators = {
 	createShowComment,
 	deleteShowComment,
+	updateErrorShowComment,
 	fetchShowComments,
 	fetchShow,
 	addPrompt,
-	addToast
+	addToast,
 };
 
 export default connect(
