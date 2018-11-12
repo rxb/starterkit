@@ -233,8 +233,6 @@ class ShowTest extends React.Component {
 			updateErrorShow
 		} = this.props;
 
-		console.log(show);
-
 		return (
 			<Fragment>
 			<Page>
