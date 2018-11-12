@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
+import Router from 'next/router'
 import Head from 'next/head'
 
 
@@ -232,6 +233,8 @@ class ShowTest extends React.Component {
 			updateErrorShow
 		} = this.props;
 
+		console.log(show);
+
 		return (
 			<Fragment>
 			<Page>
@@ -250,7 +253,7 @@ class ShowTest extends React.Component {
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
-										{ show.item && show.item.id &&
+										{ show.item.id &&
 										<ShowForm
 											initialFields={{
 												title: show.item.title,
@@ -263,6 +266,11 @@ class ShowTest extends React.Component {
 											}}
 											fieldErrors={show.error.fieldErrors}
 											onSubmit={ async (fields)=>{
+
+												// client-side validation rules
+												// should match up with server rules
+												// don't always need both unless speed is paramount
+												// or doing something like optimistic UI
  												const validators = {
  													title: {
 											        	isLength: {
@@ -275,14 +283,30 @@ class ShowTest extends React.Component {
 											        	}
 										        	}
 										        }
+
+										        // client-side validation
 										        const error = runValidations(fields, validators);
 										        updateErrorShow(error);
+
+										        // if not client errors...
 										        if(!error.errorCount){
+
+										        	// photo process
 													const {photoNewFile, ...showFields} = fields;
 													if(photoNewFile){
 														showFields.uri = await readFileAsDataUrl(photoNewFile);
 													}
-													patchShow(showFields.id, showFields);
+
+													// patch & redirect & toast (if no server errors)
+													patchShow(showFields.id, showFields)
+														.then( response => {
+															if(!response.error){
+																Router.push({pathname:'/show', query: {showId: show.item.id}})
+																	.then(()=>{
+																		this.props.addToast('Show saved; nice work!');
+																	})
+															}
+														});
 										        }
 											}}
 											onChange={(fields) => {
@@ -298,9 +322,6 @@ class ShowTest extends React.Component {
 								<FlexItem growFactor={1}>
 
 									<Section>
-										<Chunk>
-											<Text>{JSON.stringify(this.state.showFormFields)}</Text>
-										</Chunk>
 										<Chunk>
 											<Text>{JSON.stringify(show.item)}</Text>
 										</Chunk>

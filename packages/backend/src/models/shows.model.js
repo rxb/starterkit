@@ -14,7 +14,13 @@ module.exports = function (app) {
     },
     title: {
       type: DataTypes.STRING,
-      allowNull: true
+      defaultValue: '',
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Please say something"
+        }
+      }
     },
     description: {
       type: DataTypes.STRING,

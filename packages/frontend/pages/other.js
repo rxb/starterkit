@@ -46,7 +46,7 @@ const OtherForm = withFormState((props) => {
 					<Chunk>
 						<Label htmlFor="theseoptions">Pick one of these</Label>
 						<Picker
-							onValueChange={(itemValue, itemIndex) => props.setFieldValue('pickone', itemValue)}
+							onValueChange={(itemValue, itemIndex) => props.setFieldState({pickone: itemValue})}
 							selectedValue={props.getFieldValue('pickone')}
 							>
 							<Picker.Item label="One" value="one" />
@@ -82,7 +82,7 @@ const OtherForm = withFormState((props) => {
 							multiline
 							numberOfLines={4}
 							showCounter={false}
-							defaultValue={props.getFieldValue('clean')}
+							value={props.getFieldValue('clean')}
 							onChangeText={text => props.setFieldValue('clean', text)}
 							/>
 					</Chunk>
@@ -94,7 +94,7 @@ const OtherForm = withFormState((props) => {
 							numberOfLines={4}
 							maxLength={1000}
 							showCounter={true}
-							defaultValue={props.getFieldValue('tellMe')}
+							value={props.getFieldValue('tellMe')}
 							onChangeText={text => props.setFieldValue('tellMe', text)}
 							/>
 					</Chunk>

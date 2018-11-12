@@ -4,7 +4,6 @@ import Router from 'next/router'
 
 
 /*
-
 Consider using https://github.com/fridays/next-routes
 for nice dynamic routes like
 http://tldr.cards/c/finance
