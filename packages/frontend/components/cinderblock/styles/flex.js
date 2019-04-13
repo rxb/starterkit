@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
 },
 
 'flex-item--firstChild': {
-	paddingLeft: 0
+	//paddingLeft: 0
 },
-
 
 'flex--row' : {
 	flexDirection: 'row',
+	marginLeft: -1*base,
 },
 
 'flex--row__flex-item': {
@@ -96,6 +96,9 @@ FLEX VARIANTS
 
 */
 
+'flex--noGutters': {
+	marginLeft: 0
+},
 
 'flex--noGutters__flex-item': {
 	paddingLeft: 0,

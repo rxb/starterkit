@@ -71,7 +71,7 @@ class Toast extends React.Component {
 		try{
 			this.props.removeToast(this.props.toast.id)
 		}
-		catch{
+		catch(error){
 			console.log('do you have multiple toasters mounted?');
 			// toast is gone already
 			// there are probably multiple toasters mounted
@@ -89,7 +89,7 @@ class Toast extends React.Component {
 				try{
 					hideToast(id);
 				}
-				catch{
+				catch(error){
 					console.log('do you have multiple toasters mounted?');
 					// toast is gone already
 					// there are probably multiple toasters mounted

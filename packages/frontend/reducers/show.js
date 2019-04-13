@@ -21,6 +21,7 @@ const show = (state = startState, action) => {
 	switch (action.type) {
 		// FETCH
 		case 'FETCH_SHOW':
+			console.log(action);
 			newState = {...startState, loading: true}
 			return newState;
 		case 'FETCH_SHOW_SUCCESS':
