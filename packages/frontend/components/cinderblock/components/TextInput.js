@@ -92,6 +92,7 @@ class TextInput extends React.Component{
 
 	render() {
 		const {
+			autoExpand,
 			multiline,
 			placeholder,
 			maxLength,

@@ -25,9 +25,9 @@ module.exports = {
         return context;
       },
     ],
-    create: [ hashPassword() ],
-    update: [ hashPassword(), authenticate('jwt') ],
-    patch: [ hashPassword(), authenticate('jwt') ],
+    create: [ hashPassword('password') ],
+    update: [ hashPassword('password'), authenticate('jwt') ],
+    patch: [ hashPassword('password'), authenticate('jwt') ],
     remove: [ authenticate('jwt') ]
   },
 
