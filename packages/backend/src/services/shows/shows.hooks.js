@@ -31,8 +31,8 @@ const saveAndGetNewImageReference = async (context) => {
 }
 
 
-// POPULATE EXTRA SHOWCOMMENTS (and users/authors)
-const populateShowComments = (context) => {
+// POPULATE ASSOCIATED THINGS (and users/authors)
+const populateShowAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');
   const { ShowComments, users, tags } = sequelize.models;
   context.params.sequelize = {
@@ -54,10 +54,12 @@ const populateShowComments = (context) => {
 
 // ASSOCIATE TAGS (many-to-many)
 const associateTags = async (context) => {
+  /*
   const associations = context.data.tags.map( tag => ({tagId: tag.id, showId: context.data.id}) );
   // TODO: would be better if this were a transaction, but i'm not going to stress about it at the moment
   await context.app.service('shows-tags').remove(null, {query: {showId: context.data.id}});
   await context.app.service('shows-tags').create(associations);
+  */
   return context;
 }
 
@@ -66,10 +68,10 @@ module.exports = {
   before: {
     all: [],
     find: [
-      populateShowComments
+      populateShowAssociations
     ],
     get: [
-      populateShowComments
+      populateShowAssociations
     ],
     create: [
       saveAndGetNewImageReference

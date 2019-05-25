@@ -15,9 +15,11 @@ export const findByOptimisticId = (items, optimisticId) => {
 // }
 export const parseFeathersError = (error) => {
   error.fieldErrors = {};
-  error.errors.forEach( err => {
-    error.fieldErrors[err.path] = err.message;
-  });
-  error.errorCount = error.errors.length;
+  if(error.errors && error.errors.length > 0){
+	  error.errors.forEach( err => {
+	    error.fieldErrors[err.path] = err.message;
+	  });
+	  error.errorCount = error.errors.length;
+  }
   return error;
 }

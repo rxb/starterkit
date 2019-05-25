@@ -162,6 +162,7 @@ class Show extends React.Component {
 		const messages = {
 			showComments: {
 				BadRequest: 'Something went wrong',
+				GeneralError: 'Something went wrong (GeneralError)',
 			}
 		};
 		checkToastableErrors(this.props, prevProps, messages);
