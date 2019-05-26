@@ -2,24 +2,29 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
 const hydrate = require('feathers-sequelize/hooks/hydrate');
 
+const includeAssociations = (context) => {
+  const sequelize = context.app.get('sequelizeClient');
+  const { users } = sequelize.models;
+  context.params.sequelize = {
+    raw: false,
+    include: [ users ]
+  }
+  return context;
+}
+
 
 module.exports = {
   before: {
     all: [
-      (context) => {
-        const sequelize = context.app.get('sequelizeClient');
-        const { users } = sequelize.models;
-        context.params.sequelize = {
-          raw: false,
-          include: [ users ]
-        }
-        return context;
-      }
+      // doesn't seem like sequlize likes to mess with associations
+      // for create/update/patch/remove methods
+      // seems like you need .reload() on the model
+      // not sure how to do that in feathers-sequelize
     ],
     find: [
-      // this is only find-relevant
-      // if you put it in other hooks, they get weird
       (context) => {
+        // sorting is only find-relevant
+        // if you put it in other hooks, they get weird
         const { query = {} } = context.params;
         if(!query.$sort) {
           query.$sort = {
@@ -28,9 +33,12 @@ module.exports = {
         }
         context.params.query = query;
         return context;
-      }
+      },
+      includeAssociations,
     ],
-    get: [],
+    get: [
+      includeAssociations
+    ],
     create: [
       authenticate('jwt'),
       associateCurrentUser({ idField: 'id', as: 'authorId' }),
