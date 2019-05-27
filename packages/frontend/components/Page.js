@@ -115,7 +115,7 @@ class Page extends React.Component {
 
 		return (
 
-			<View style={{minHeight: '100%'}}>
+			<View style={{minHeight: '100vh'}}>
 
 
 				<Header>
