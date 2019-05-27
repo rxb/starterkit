@@ -105,6 +105,9 @@ const ShowForm = withFormState((props) => {
 
 					);
 				})}
+				<View>
+
+				</View>
 			</Chunk>
 			<Chunk>
 				<Label>Your photo</Label>
