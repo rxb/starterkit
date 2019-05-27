@@ -217,6 +217,7 @@ class ShowTest extends React.Component {
 		const messages = {
 			show: {
 				BadRequest: 'Something went wrong',
+				NotAuthenticated: 'Not signed in'
 			}
 		};
 		checkToastableErrors(this.props, prevProps, messages);
