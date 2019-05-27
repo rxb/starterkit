@@ -69,7 +69,7 @@ const OtherForm = withFormState((props) => {
 						<Label htmlFor="worstmemory">Worst memory</Label>
 						<TextInput
 							id="worstmemory"
-							defaultValue={props.getFieldValue('worstmemory')}
+							value={props.getFieldValue('worstmemory')}
 							onChangeText={text => props.setFieldValue('worstmemory', text)}
 							autoComplete="off"
 							/>
