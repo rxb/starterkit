@@ -4,6 +4,8 @@ import { ScrollView } from 'react-native-web';
 import styles from '../styles/styles';
 import swatches from '../styles/swatches';
 import Card from './Card';
+import Flex from './Flex';
+import FlexItem from './FlexItem';
 import Chunk from './Chunk';
 import Touch from './Touch';
 import Icon from './Icon';
@@ -165,21 +167,30 @@ class Modal extends React.Component{
 					    }]
 					}
 				]}>
-					<Stripe style={{paddingBottom: 0}}>
-						<Section style={{ paddingBottom: 0}}>
-							<Touch
-								onPress={onRequestClose}
-								style={{position: 'relative', left: -5}}
-								>
-								<Icon
-									shape='X'
-									color="gray"
-									size="large"
-									/>
-							</Touch>
+					<Stripe style={{backgroundColor: 'purple'}}>
+						<Section style={{backgroundColor: 'blue'}}>
+							<Flex>
+								<FlexItem shrink>
+									<Touch
+										onPress={onRequestClose}
+										style={{backgroundColor: 'red'}}
+										>
+										<View>
+										<Icon
+											shape='X'
+											color="gray"
+											size="large"
+											/>
+										</View>
+									</Touch>
+								</FlexItem>
+							</Flex>
 						</Section>
 					</Stripe>
-					<ScrollView>
+
+					{/* scrollview is blocking the rest */}
+
+					<ScrollView style={{backgroundColor: 'green'}}>
 						{children}
 					</ScrollView>
 				</Animated.View>

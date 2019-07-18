@@ -45,10 +45,13 @@ class Touch extends React.Component {
 						}
 					}}
 					>
-					<View style={ [
-						(isPressed || isLoading) ? stateStyles.active : stateStyles.default,
-						style
-					]}>
+					<View
+						style={ [
+							(isPressed || isLoading) ? stateStyles.active : stateStyles.default,
+							style
+						]}
+						{...this.props}
+						>
 						<React.Fragment>{children}</React.Fragment>
 					</View>
 				</Touchable>
