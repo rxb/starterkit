@@ -197,8 +197,7 @@ class Show extends React.Component {
 									borderBottomColor: swatches.border
 									*/
 								}}>
-									<Flex
-										>
+									<Flex>
 										<FlexItem>
 											<Chunk>
 												<Text type="pageHead">{show.title}</Text>
@@ -211,7 +210,7 @@ class Show extends React.Component {
 											<Chunk>
 												<Link
 													href={{pathname:'/showedit', query: {showId: show.id}}}
-													style={{alignItems: 'center'}}
+													style={{alignItems: 'center', backgroundColor: swatches.shade}}
 													>
 													<Icon
 														shape="Edit"
