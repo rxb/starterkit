@@ -48,6 +48,14 @@ const makeStore = (initialState, options) => {
 
 class ThisApp extends App {
 
+ /*
+ // INVESTIGATE
+ // nextjs 9 doesn't need this anymore?
+ // https://github.com/zeit/next.js/blob/canary/UPGRADING.md
+ // and
+ // https://github.com/zeit/next.js/#automatic-static-optimization
+ // you may be able to remove all getInitialProps from all pages
+ // see how it goes
  static async getInitialProps ({ Component, router, ctx }) {
 
     const {store} = ctx;
@@ -55,6 +63,7 @@ class ThisApp extends App {
     let pageProps = (Component.getInitialProps) ? await Component.getInitialProps(ctx) : {};
     return {pageProps}
   }
+  */
 
   componentDidMount(){
     // if you don't pass through connect
