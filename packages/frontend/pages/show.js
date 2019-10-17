@@ -259,7 +259,6 @@ class Show extends React.Component {
 												<FlexItem>
 													<Text>{comment.body}</Text>
 													<Text>
-														<Text>{JSON.stringify(comment)}</Text>
 														<Text type="small" color="secondary">{comment.user.name} </Text>
 														<Text type="small" color="hint">&middot; {dayjs(comment.createdAt).fromNow()} </Text>
 														{ comment.user.id == user.id &&
@@ -307,7 +306,7 @@ class Show extends React.Component {
 
 										        if(!error.errorCount){
 													const data = { ...fields, showId: this.props.show.id };
-													this.props.createShowComment(data/*, { user: this.props.user }*/ );
+													this.props.createShowComment(data, { user: this.props.user } );
 													context.resetFields();
 												}
 											}}
