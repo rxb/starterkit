@@ -321,6 +321,9 @@ const styles = StyleSheet.create({
 		right: 0,
 		bottom: 0,
 		backgroundColor: 'white',
+		borderTopLeftRadius: borderRadius,
+		borderTopRightRadius: borderRadius,
+		overflow: 'hidden',
 		zIndex: 3,
 		minWidth: 'auto',
 		maxWidth: 'auto'

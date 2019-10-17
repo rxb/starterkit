@@ -162,7 +162,7 @@ class Modal extends React.Component{
 						transform: [{
 					      translateY: this.state.visibilityValue.interpolate({
 					        inputRange: [0, 1],
-					        outputRange: [120, 0]
+					        outputRange: [180, 0]
 					      }),
 					    }]
 					}
