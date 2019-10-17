@@ -1,5 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
+const { setField } = require('feathers-authentication-hooks');
 const hydrate = require('feathers-sequelize/hooks/hydrate');
 
 const includeAssociations = (context) => {
@@ -41,16 +41,35 @@ module.exports = {
     ],
     create: [
       authenticate('jwt'),
+      setField({
+        from: 'params.user.id',
+        as: 'data.authorId'
+      })
+      /*
+      // see https://www.npmjs.com/package/feathers-authentication-hooks for migration
       associateCurrentUser({ idField: 'id', as: 'authorId' }),
+      */
     ],
     update: [
       authenticate('jwt'),
+      setField({
+        from: 'params.user.id',
+        as: 'params.query.authorId'
+      })
+      /*
       restrictToOwner({ idField: 'id', ownerField: 'authorId' })
+      */
     ],
     patch: [],
     remove: [
       authenticate('jwt'),
+      setField({
+        from: 'params.user.id',
+        as: 'params.query.authorId'
+      })
+      /*
       restrictToOwner({ idField: 'id', ownerField: 'authorId' })
+      */
     ]
   },
 
