@@ -200,8 +200,8 @@ export const fetchShowComments = (data) => ({
 /*
 example of optimistic posting
 while reusing existing client data for associations (user/author)
-if you really need the associations, you'd need to fetch a new full version of the comment
-or figure out some magical sequelize hook stuff that I haven't been able to crack after 2 days of research
+if you need stuff that can't be passed along in extraPayload, you'll need to wait for the real payload to be returned
+and to get associations on create, sequlize will make you requery in the after hook (see show-comments hooks)
 */
 
 let optimisticId = 0;
