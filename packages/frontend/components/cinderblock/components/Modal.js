@@ -162,23 +162,23 @@ class Modal extends React.Component{
 						transform: [{
 					      translateY: this.state.visibilityValue.interpolate({
 					        inputRange: [0, 1],
-					        outputRange: [150, 0]
+					        outputRange: [120, 0]
 					      }),
 					    }]
 					}
 				]}>
-					<Stripe style={{backgroundColor: 'purple'}}>
-						<Section style={{backgroundColor: 'blue'}}>
+					<Stripe style={{/*backgroundColor: 'purple'*/}}>
+						<Section style={{/*backgroundColor: 'blue',*/ paddingVertical: 0}}>
 							<Flex>
 								<FlexItem shrink>
 									<Touch
 										onPress={onRequestClose}
-										style={{backgroundColor: 'red'}}
+										style={{backgroundColor: 'lightgray', borderRadius: 32}}
 										>
 										<View>
 										<Icon
 											shape='X'
-											color="gray"
+											color="white"
 											size="large"
 											/>
 										</View>
@@ -190,7 +190,7 @@ class Modal extends React.Component{
 
 					{/* scrollview is blocking the rest */}
 
-					<ScrollView style={{backgroundColor: 'green'}}>
+					<ScrollView style={{/*backgroundColor: 'green'*/}}>
 						{children}
 					</ScrollView>
 				</Animated.View>

@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
 	// bottom sheet
 	'modal--full': {
 		position: 'fixed',
-		maxHeight: '80%',
+		maxHeight: '90%',
 		left: 0,
 		right: 0,
 		bottom: 0,

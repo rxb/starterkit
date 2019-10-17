@@ -13,33 +13,37 @@ import {
 
 const LoginForm = withFormState((props) => {
 	return(
-		<Chunk>
+
 			<form name="loginForm">
-				<TextInput
-					id="email"
-					value={props.getFieldValue('email')}
-					onChange={ e => props.setFieldValue('email', e.target.value) }
-					keyboardType="email-address"
-					placeholder="email"
-					onSubmitEditing={props.handleSubmit}
-					/>
-				<TextInput
-					id="password"
-					value={props.getFieldValue('password')}
-					onChange={ e => props.setFieldValue('password', e.target.value) }
-					secureTextEntry={true}
-					placeholder="password"
-					onSubmitEditing={props.handleSubmit}
-					/>
-				<Button
-					onPress={props.handleSubmit}
-					accessibilityRole="submit"
-					isLoading={props.isLoading}
-					label="Log in"
-					width="full"
-					/>
+				<Chunk>
+					<TextInput
+						id="email"
+						value={props.getFieldValue('email')}
+						onChange={ e => props.setFieldValue('email', e.target.value) }
+						keyboardType="email-address"
+						placeholder="email"
+						onSubmitEditing={props.handleSubmit}
+						/>
+					<TextInput
+						id="password"
+						value={props.getFieldValue('password')}
+						onChange={ e => props.setFieldValue('password', e.target.value) }
+						secureTextEntry={true}
+						placeholder="password"
+						onSubmitEditing={props.handleSubmit}
+						/>
+				</Chunk>
+				<Chunk>
+					<Button
+						onPress={props.handleSubmit}
+						accessibilityRole="submit"
+						isLoading={props.isLoading}
+						label="Log in"
+						width="full"
+						/>
+				</Chunk>
 			</form>
-		</Chunk>
+
 	);
 });
 
