@@ -11,7 +11,9 @@
     "stats": "next build --stats"
   },
   "dependencies": {
+    "@feathersjs/authentication-oauth": "^4.3.7",
     "babel-plugin-react-native-web": "^0.11.7",
+    "body-scroll-lock": "^2.6.4",
     "dayjs": "^1.8.16",
     "isomorphic-unfetch": "^3.0.0",
     "next": "^9.1.1",

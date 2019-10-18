@@ -21,6 +21,13 @@
     "local": {
       "usernameField": "email",
       "passwordField": "password"
+    },
+    "oauth": {
+      "redirect": "/auth/store"
+          "google":
+            "key": google-key
+            "secret": google-secret
+            "scope": ["email", "openid", "profile"]
     }
   },
   "postgres": "postgres://starterkit:starterkit@localhost:5432/starterkit"

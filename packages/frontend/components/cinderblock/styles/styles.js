@@ -8,7 +8,8 @@ const {
 	base,
 	space,
 	spaceSection,
-	borderRadius
+	borderRadius,
+	cardBorderRadius
 } = METRICS;
 
 
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
 		maxWidth: 600,
 		maxHeight: `95%`,
 		top: '5%',
-		borderRadius: borderRadius,
+		borderRadius: cardBorderRadius,
 		backgroundColor: 'white',
 		overflow: 'hidden',
 		zIndex: 3
@@ -321,8 +322,8 @@ const styles = StyleSheet.create({
 		right: 0,
 		bottom: 0,
 		backgroundColor: 'white',
-		borderTopLeftRadius: borderRadius,
-		borderTopRightRadius: borderRadius,
+		borderTopLeftRadius: cardBorderRadius,
+		borderTopRightRadius: cardBorderRadius,
 		overflow: 'hidden',
 		zIndex: 3,
 		minWidth: 'auto',
@@ -335,7 +336,7 @@ const styles = StyleSheet.create({
 		maxWidth: 340,
 		minWidth: 300,
 		maxHeight: `90%`,
-		borderRadius: borderRadius,
+		borderRadius: cardBorderRadius,
 		backgroundColor: 'white',
 		overflow: 'hidden',
 		zIndex: 3

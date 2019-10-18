@@ -15,6 +15,8 @@ import Stripe from './Stripe';
 import { WithMatchMedia } from './WithMatchMedia';
 import { METRICS, EASE } from '../designConstants';
 
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+
 /*
 
 know that there is an input bug in ios versions < 11.3
@@ -50,8 +52,11 @@ alternate way is to have a skeleton modal just hanging out and waiting to be pop
 */
 
 
-
 class Modal extends React.Component{
+
+	// for body locking
+	targetRef = React.createRef();
+  	targetElement = null;
 
 	static defaultProps = {
     	onPressEnter: ()=>{},
@@ -71,6 +76,11 @@ class Modal extends React.Component{
 	}
 
 	componentDidMount(){
+
+		// if there are problems in ios with body locking
+		// it's probably because of this https://github.com/willmcpo/body-scroll-lock/issues/102#issuecomment-482599456
+		this.targetElement = this.targetRef.current;
+
 		document.addEventListener("keydown", this.onKeyPress, false);
 		if(this.props.visible){
 			setTimeout(()=>{
@@ -101,6 +111,7 @@ class Modal extends React.Component{
 	}
 
 	open(){
+		disableBodyScroll(this.targetElement);
 		const duration = 250;
 		this.setState({display: 'flex'})
 		Animated.timing(
@@ -113,6 +124,7 @@ class Modal extends React.Component{
 	}
 
 	close(){
+		enableBodyScroll(this.targetElement);
 		const duration = 250;
 		Animated.timing(
 			this.state.visibilityValue,{
@@ -167,8 +179,9 @@ class Modal extends React.Component{
 					    }]
 					}
 				]}>
-					<Stripe style={{/*backgroundColor: 'purple'*/}}>
-						<Section style={{/*backgroundColor: 'blue',*/ paddingVertical: 0}}>
+					{/*
+					<Stripe style={{borderBottomWidth: 1, borderBottomColor: swatches.border}}>
+						<Section style={{ paddingVertical: 0}}>
 							<Flex>
 								<FlexItem shrink>
 									<Touch
@@ -179,7 +192,7 @@ class Modal extends React.Component{
 										<Icon
 											shape='X'
 											color="white"
-											size="large"
+											size="medium"
 											/>
 										</View>
 									</Touch>
@@ -187,6 +200,22 @@ class Modal extends React.Component{
 							</Flex>
 						</Section>
 					</Stripe>
+					*/}
+
+					<View style={{position: 'absolute', top: 0, right: 0, padding: METRICS.base, zIndex: 5}}>
+						<Touch
+							onPress={onRequestClose}
+							style={{backgroundColor: swatches.shade, borderRadius: 32, padding: 4}}
+							>
+							<View>
+							<Icon
+								shape='X'
+								color={swatches.textHint}
+								size="medium"
+								/>
+							</View>
+						</Touch>
+					</View>
 
 					{/* scrollview is blocking the rest */}
 
