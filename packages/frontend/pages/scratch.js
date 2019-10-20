@@ -40,7 +40,6 @@ import Page from '../components/Page';
 
 
 
-
 class Scratch extends React.Component {
 
 	static async getInitialProps (context) {
@@ -121,6 +120,17 @@ class Scratch extends React.Component {
 									<Text type="pageHead">Scratch</Text>
 								</Chunk>
 							</Section>
+							<Section>
+								<Chunk>
+									<Button
+										label="log in with facebook"
+										onPress={()=>{
+											location.href='https://localhost:3030'
+										}}
+										/>
+								</Chunk>
+							</Section>
+
 							<Section>
 								  {things.map(thing => (
 								  		<Chunk>

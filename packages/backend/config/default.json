@@ -23,11 +23,14 @@
       "passwordField": "password"
     },
     "oauth": {
-      "redirect": "/auth/store"
-          "google":
-            "key": google-key
-            "secret": google-secret
-            "scope": ["email", "openid", "profile"]
+      "redirect": {
+
+      },
+      "facebook": {
+        "key": "463734217825939",
+        "secret": "f41b2d79aeb65d3090bc9b45e90781b2",
+        "scope": ["email, public_profile"]
+      }
     }
   },
   "postgres": "postgres://starterkit:starterkit@localhost:5432/starterkit"
