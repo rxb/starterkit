@@ -13,7 +13,7 @@ module.exports = function (app) {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      //allowNull: false,
       unique: true,
       validate: {
         isEmail: true
@@ -21,13 +21,16 @@ module.exports = function (app) {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      //allowNull: false
     },
     name: {
       type: DataTypes.STRING,
     },
     photo: {
       type: DataTypes.STRING,
+    },
+    facebookId: {
+      type: DataTypes.BIGINT,
     },
   }, {
     hooks: {

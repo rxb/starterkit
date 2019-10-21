@@ -23,13 +23,11 @@
       "passwordField": "password"
     },
     "oauth": {
-      "redirect": {
-
-      },
+      "redirect": "http://localhost:3000/scratch",
       "facebook": {
         "key": "463734217825939",
         "secret": "f41b2d79aeb65d3090bc9b45e90781b2",
-        "scope": ["email, public_profile"]
+        "scope": ["email", "public_profile"]
       }
     }
   },

@@ -8,6 +8,7 @@ import {
 } from '../actions';
 
 
+
 import {
 	Avatar,
 	Bounds,
@@ -39,6 +40,19 @@ import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
 
+// FEATHERS CLIENT
+// let's try to get feathers client going
+import feathers from '@feathersjs/client';
+import io from 'socket.io-client';
+
+const apiUrl = 'http://localhost:3030';
+const socket = io(apiUrl);
+
+const client = feathers();
+client.configure(feathers.authentication(/*options*/))
+client.configure(feathers.socketio(socket));
+
+
 
 class Scratch extends React.Component {
 
@@ -50,8 +64,34 @@ class Scratch extends React.Component {
 		super(props);
 		this.state = {
 			things: [],
-			showPrompt: false
+			showPrompt: false,
+			token: ''
 		}
+	}
+
+	componentDidMount(){
+
+		// Log in either using the given email/password or the token from storage
+		const login = async credentials => {
+		  try {
+		    if(!credentials) {
+		      // Try to authenticate using an existing token
+		      await client.reAuthenticate();
+		      alert('reAuthenticate');
+		    } else {
+		      // Otherwise log in with the `local` strategy using the credentials we got
+		      await client.authenticate({
+		        strategy: 'local',
+		        ...credentials
+		      });
+		      alert('authenticate');
+		    }
+		  } catch(error) {
+		    alert(`error of some time ${error}`);
+		  }
+		};
+
+		login();
 	}
 
 	render() {
@@ -122,10 +162,11 @@ class Scratch extends React.Component {
 							</Section>
 							<Section>
 								<Chunk>
+									<Text>{this.state.accessToken}</Text>
 									<Button
 										label="log in with facebook"
 										onPress={()=>{
-											location.href='https://localhost:3030'
+											location.href='http://localhost:3030/oauth/facebook/'
 										}}
 										/>
 								</Chunk>
@@ -159,7 +200,6 @@ class Scratch extends React.Component {
 						</Sections>
 					</Bounds>
 				</Stripe>
-
 
 			</Page>
 
