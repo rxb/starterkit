@@ -74,10 +74,24 @@ class Scratch extends React.Component {
 		}
 	}
 
+	logout(){
+		client.logout();
+	}
+
+	loginLocal(fields){
+		client.authenticate({strategy: 'local', email: fields.email, password: fields.password});
+		// FYI, oauth login from passed access token in query string happens automatically on page load
+		// in react native it might need some help
+	}
+
 	componentDidMount(){
 
 		client.on('login', (authResult, params, context) => {
 			this.setState({user: authResult.user});
+		});
+
+		client.on('logout', (authResult, params, context) => {
+			this.setState({user: {} });
 		});
 
 		// existing token?
@@ -154,42 +168,56 @@ class Scratch extends React.Component {
 
 								<Flex direction="column" switchDirection="large">
 									<FlexItem>
-										<Section>
-										<Chunk>
-											<Button
-											  	width="full"
-												label="log in with Facebook"
-												onPress={()=>{
-													location.href='http://localhost:3030/oauth/facebook/'
-												}}
-												/>
-											<Button
-											  	width="full"
-												label="log in with Google"
-												onPress={()=>{
-													location.href='http://localhost:3030/oauth/google/'
-												}}
-												/>
-										</Chunk>
-										</Section>
+										{ !this.state.user.id &&
+											<Fragment>
+												<Section>
+													<Chunk>
+														<Button
+														  	width="full"
+															label="log in with Facebook"
+															onPress={()=>{
+																location.href='http://localhost:3030/oauth/facebook/'
+															}}
+															/>
+														<Button
+														  	width="full"
+															label="log in with Google"
+															onPress={()=>{
+																location.href='http://localhost:3030/oauth/google/'
+															}}
+															/>
+													</Chunk>
+												</Section>
+												<Section>
+													<LoginForm
+														onSubmit={(fields)=>{
+															this.loginLocal(fields);
+														}}
+														/>
+												</Section>
+											</Fragment>
+										}
+										{ this.state.user.id &&
+											<Section>
+												<Chunk>
+													<Button
+													  	width="full"
+														label="log out"
+														onPress={this.logout}
+														/>
+												</Chunk>
+											</Section>
+										}
 									</FlexItem>
 									<FlexItem>
 										<Section>
-											<LoginForm
-												onSubmit={(fields)=>{
-													console.log(fields);
-												}}
-												/>
+											<Chunk>
+												<Text>USER: {JSON.stringify(this.state.user)}</Text>
+											</Chunk>
 										</Section>
 									</FlexItem>
 								</Flex>
-								<Section>
-									<Chunk>
-										<Text>USER: {JSON.stringify(this.state.user)}</Text>
-									</Chunk>
 
-
-								</Section>
 
 							<Section>
 								  {things.map(thing => (
