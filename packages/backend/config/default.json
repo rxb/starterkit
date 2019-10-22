@@ -28,6 +28,11 @@
         "key": "463734217825939",
         "secret": "f41b2d79aeb65d3090bc9b45e90781b2",
         "scope": ["email", "public_profile"]
+      },
+      "google": {
+        "key": "639730743750-6h3ap849hqrnq4oud2u84smktpg8i7on.apps.googleusercontent.com",
+        "secret": "W01UyoYvqDcru8jCtVYi1tGL",
+        "scope": ["profile", "email", "openid"]
       }
     }
   },

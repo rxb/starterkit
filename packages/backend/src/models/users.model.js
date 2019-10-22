@@ -32,6 +32,9 @@ module.exports = function (app) {
     facebookId: {
       type: DataTypes.BIGINT,
     },
+    googleId: {
+      type: DataTypes.BIGINT,
+    },
   }, {
     hooks: {
       beforeCount(options) {

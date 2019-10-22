@@ -1,3 +1,5 @@
+import 'isomorphic-unfetch';
+
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head'
@@ -24,6 +26,7 @@ import {
 	Label,
 	List,
 	Link,
+	LoadingBlock,
 	Modal,
 	Picker,
 	Section,
@@ -38,19 +41,21 @@ import {
 
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
+import LoginForm from '../components/LoginForm';
 
 
 // FEATHERS CLIENT
 // let's try to get feathers client going
 import feathers from '@feathersjs/client';
-import io from 'socket.io-client';
+//import io from 'socket.io-client';
 
 const apiUrl = 'http://localhost:3030';
-const socket = io(apiUrl);
+//const socket = io(apiUrl);
 
 const client = feathers();
-client.configure(feathers.authentication(/*options*/))
-client.configure(feathers.socketio(socket));
+client.configure(feathers.authentication(/*options*/));
+client.configure(feathers.rest(apiUrl).fetch(fetch));
+//client.configure(feathers.socketio(socket));
 
 
 
@@ -65,33 +70,19 @@ class Scratch extends React.Component {
 		this.state = {
 			things: [],
 			showPrompt: false,
-			token: ''
+			user: {}
 		}
 	}
 
 	componentDidMount(){
 
-		// Log in either using the given email/password or the token from storage
-		const login = async credentials => {
-		  try {
-		    if(!credentials) {
-		      // Try to authenticate using an existing token
-		      await client.reAuthenticate();
-		      alert('reAuthenticate');
-		    } else {
-		      // Otherwise log in with the `local` strategy using the credentials we got
-		      await client.authenticate({
-		        strategy: 'local',
-		        ...credentials
-		      });
-		      alert('authenticate');
-		    }
-		  } catch(error) {
-		    alert(`error of some time ${error}`);
-		  }
-		};
+		client.on('login', (authResult, params, context) => {
+			this.setState({user: authResult.user});
+		});
 
-		login();
+		// existing token?
+		client.reAuthenticate();
+
 	}
 
 	render() {
@@ -160,17 +151,45 @@ class Scratch extends React.Component {
 									<Text type="pageHead">Scratch</Text>
 								</Chunk>
 							</Section>
-							<Section>
-								<Chunk>
-									<Text>{this.state.accessToken}</Text>
-									<Button
-										label="log in with facebook"
-										onPress={()=>{
-											location.href='http://localhost:3030/oauth/facebook/'
-										}}
-										/>
-								</Chunk>
-							</Section>
+
+								<Flex direction="column" switchDirection="large">
+									<FlexItem>
+										<Section>
+										<Chunk>
+											<Button
+											  	width="full"
+												label="log in with Facebook"
+												onPress={()=>{
+													location.href='http://localhost:3030/oauth/facebook/'
+												}}
+												/>
+											<Button
+											  	width="full"
+												label="log in with Google"
+												onPress={()=>{
+													location.href='http://localhost:3030/oauth/google/'
+												}}
+												/>
+										</Chunk>
+										</Section>
+									</FlexItem>
+									<FlexItem>
+										<Section>
+											<LoginForm
+												onSubmit={(fields)=>{
+													console.log(fields);
+												}}
+												/>
+										</Section>
+									</FlexItem>
+								</Flex>
+								<Section>
+									<Chunk>
+										<Text>USER: {JSON.stringify(this.state.user)}</Text>
+									</Chunk>
+
+
+								</Section>
 
 							<Section>
 								  {things.map(thing => (
@@ -185,6 +204,9 @@ class Scratch extends React.Component {
 
 
 								  ))}
+
+
+								{/*
 								<Chunk>
 									<Button
 										label="add thing"
@@ -195,6 +217,7 @@ class Scratch extends React.Component {
 										}}
 										/>
 								</Chunk>
+								*/}
 
 							</Section>
 						</Sections>
