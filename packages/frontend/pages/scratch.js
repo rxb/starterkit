@@ -212,6 +212,14 @@ class Scratch extends React.Component {
 									<FlexItem>
 										<Section>
 											<Chunk>
+												<Avatar
+													source={{uri: this.state.user.photo}}
+													size="large"
+													/>
+												<Text type="big">{this.state.user.name}</Text>
+												<Text color="hint">{this.state.user.email}</Text>
+											</Chunk>
+											<Chunk>
 												<Text>USER: {JSON.stringify(this.state.user)}</Text>
 											</Chunk>
 										</Section>

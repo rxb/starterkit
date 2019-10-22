@@ -1,6 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { iff } = require('feathers-hooks-common');
 const { queryWithCurrentUser } = require('feathers-authentication-hooks');
+const http = require('http');
 
 const {
   hashPassword,
@@ -39,7 +40,40 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      async (context) => {
+        console.log('post create');
+
+        // TEMP: give everyone same photo from url
+        // fetch photo from url
+        const fakeFileUrl = 'https://randomuser.me/api/portraits/women/9.jpg'
+
+        http.get(fakeFileUrl, (resp) => {
+            resp.setEncoding('base64');
+            body = "data:" + resp.headers["content-type"] + ";base64,";
+            resp.on('data', (data) => { body += data});
+            resp.on('end', () => {
+                console.log(body);
+                //return res.json({result: body, status: 'success'});
+            });
+        }).on('error', (e) => {
+            console.log(`Got error: ${e.message}`);
+        });
+        console.log('got the photo');
+
+
+        // upload photo for user and get local info
+        const photo = await context.app.service('uploads').create({}, {file: photoFile});
+        console.log('post upload');
+
+
+        // update user with photo
+        context.result = await context.service.update(context.result.id, {photoId: photo.photoId, photoUrl: photo.photoUrl});
+        console.log('post update');
+
+        return context;
+      },
+    ],
     update: [],
     patch: [],
     remove: []
