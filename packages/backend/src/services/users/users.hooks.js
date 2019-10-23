@@ -65,9 +65,6 @@ module.exports = {
     get: [],
     create: [
       async (context) => {
-        console.log('post create');
-
-        // TEMP: give everyone same photo from url
         // fetch photo from url
         const fakeFileUrl = 'https://randomuser.me/api/portraits/women/9.jpg'
         const image = await axios.get(fakeFileUrl, {responseType: 'arraybuffer'});
@@ -75,13 +72,9 @@ module.exports = {
 
         // upload photo for user and get local info
         const photo = await context.app.service('uploads').create({uri: returnedB64});
-        console.log('post upload');
-        console.log(photo);
 
         // update user with photo
         context.result = await context.service.patch(context.result.id, {photoId: photo.id});
-        console.log('post update');
-
         return context;
       },
     ],
