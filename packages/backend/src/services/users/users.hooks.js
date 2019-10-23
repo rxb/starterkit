@@ -1,34 +1,15 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { iff } = require('feathers-hooks-common');
 const { queryWithCurrentUser } = require('feathers-authentication-hooks');
-const axios = require('axios');
-
 const {
   hashPassword,
   protect
 } = require('@feathersjs/authentication-local').hooks;
 
-
-// POPULATE PHOTO URL
-// photoUrl is a DataTypes.VIRTUAL field
-// https://sequelize-guides.netlify.com/virtual-columns/
-// TODO: there should probably only be one of these functions... find all of them in the other hooks files
-const populatePhotoUrl = (context) => {
-  const buildPhotoUrl = (result) => {
-    if(result.photoId){
-      result.photoUrl = `http://localhost:3030/photos/${result.photoId}`
-
-    }
-    return result;
-  }
-  if (context.result.data) {
-      context.result.data = context.result.data.map(item => buildPhotoUrl(item));
-  } else {
-      context.result = buildPhotoUrl(context.result);
-  }
-  return context;
-}
-
+const {
+  populatePhotoUrl,
+  saveAndGetNewImageReference
+} = require('../common_hooks.js');
 
 module.exports = {
   before: {
@@ -48,10 +29,23 @@ module.exports = {
         return context;
       },
     ],
-    create: [ hashPassword('password') ],
-    update: [ hashPassword('password'), authenticate('jwt') ],
-    patch: [ hashPassword('password'), authenticate('jwt') ],
-    remove: [ authenticate('jwt') ]
+    create: [
+      hashPassword('password'),
+      saveAndGetNewImageReference
+    ],
+    update: [
+      hashPassword('password'),
+      authenticate('jwt'),
+      saveAndGetNewImageReference
+    ],
+    patch: [
+      hashPassword('password'),
+      authenticate('jwt'),
+      saveAndGetNewImageReference
+    ],
+    remove: [
+      authenticate('jwt')
+    ]
   },
 
   after: {
@@ -64,6 +58,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
+      /*
       async (context) => {
         // fetch photo from url
         const fakeFileUrl = 'https://randomuser.me/api/portraits/women/9.jpg'
@@ -76,7 +71,8 @@ module.exports = {
         // update user with photo
         context.result = await context.service.patch(context.result.id, {photoId: photo.id});
         return context;
-      },
+
+      }, */
     ],
     update: [],
     patch: [],

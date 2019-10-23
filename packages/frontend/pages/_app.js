@@ -66,12 +66,17 @@ class ThisApp extends App {
   */
 
   componentDidMount(){
+    // turning off self for a moment
+
+    /*
+
     // if you don't pass through connect
     // you have to be more verbose asi
     this.props.store.subscribe(() => {
       localStorage.setItem('AUTHENTICATION', JSON.stringify(this.props.store.getState().authentication));
     });
     this.props.store.dispatch(fetchUser('self'));
+    */
   }
 
   render () {

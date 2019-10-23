@@ -41,7 +41,10 @@ module.exports = function (app) {
       type: DataTypes.BIGINT,
     },
     googleId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING,
+    },
+    redditId: {
+      type: DataTypes.STRING,
     },
   }, {
     hooks: {

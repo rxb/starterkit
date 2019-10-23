@@ -30,9 +30,17 @@
         "scope": ["email", "public_profile"]
       },
       "google": {
-        "key": "639730743750-6h3ap849hqrnq4oud2u84smktpg8i7on.apps.googleusercontent.com",
-        "secret": "W01UyoYvqDcru8jCtVYi1tGL",
-        "scope": ["profile", "email", "openid"]
+        "key": "768305261543-okn8ajbkmp96a73ssbq7o77ab1m2s7uh.apps.googleusercontent.com",
+        "secret": "Gm0tpLnTtkLqapA0_cC3Lz6x",
+        "scope": ["openid", "profile", "email"]
+      },
+      "reddit": {
+        "key": "RJ4_ToL0RXcyuA",
+        "secret": "Zykey8XalEe9VobKKst8LkWUA8A",
+        "scope": ["identity"],
+        "duration": "temporary",
+        "state": true,
+        "profile_url": "https://oauth.reddit.com/api/v1/me"
       }
     }
   },

@@ -23,6 +23,12 @@ const sequelize = require('./sequelize');
 
 const app = express(feathers());
 
+/*
+// grant + feathers-authentication needs session for "state" param, required by reddit oauth
+const session = require('express-session');
+app.use(session({secret: 'grant'}))
+*/
+
 // Load app configuration
 app.configure(configuration());
 // Enable security, CORS, compression, favicon and body parsing

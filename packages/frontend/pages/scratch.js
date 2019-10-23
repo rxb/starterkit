@@ -186,6 +186,13 @@ class Scratch extends React.Component {
 																location.href='http://localhost:3030/oauth/google/'
 															}}
 															/>
+														<Button
+														  	width="full"
+															label="log in with Reddit"
+															onPress={()=>{
+																location.href='http://localhost:3030/oauth/reddit/'
+															}}
+															/>
 													</Chunk>
 												</Section>
 												<Section>
