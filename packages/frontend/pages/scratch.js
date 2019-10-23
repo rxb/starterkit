@@ -213,7 +213,7 @@ class Scratch extends React.Component {
 										<Section>
 											<Chunk>
 												<Avatar
-													source={{uri: this.state.user.photo}}
+													source={{uri: this.state.user.photoUrl}}
 													size="large"
 													/>
 												<Text type="big">{this.state.user.name}</Text>

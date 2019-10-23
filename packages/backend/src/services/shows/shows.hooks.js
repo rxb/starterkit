@@ -1,6 +1,7 @@
 // POPULATE PHOTO URL
 // photoUrl is a DataTypes.VIRTUAL field
 // https://sequelize-guides.netlify.com/virtual-columns/
+// TODO: there should probably only be one of these functions... find all of them in the other hooks files
 const populatePhotoUrl = (context) => {
   const buildPhotoUrl = (result) => {
     if(result.photoId){

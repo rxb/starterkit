@@ -1,12 +1,34 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { iff } = require('feathers-hooks-common');
 const { queryWithCurrentUser } = require('feathers-authentication-hooks');
-const http = require('http');
+const axios = require('axios');
 
 const {
   hashPassword,
   protect
 } = require('@feathersjs/authentication-local').hooks;
+
+
+// POPULATE PHOTO URL
+// photoUrl is a DataTypes.VIRTUAL field
+// https://sequelize-guides.netlify.com/virtual-columns/
+// TODO: there should probably only be one of these functions... find all of them in the other hooks files
+const populatePhotoUrl = (context) => {
+  const buildPhotoUrl = (result) => {
+    if(result.photoId){
+      result.photoUrl = `http://localhost:3030/photos/${result.photoId}`
+
+    }
+    return result;
+  }
+  if (context.result.data) {
+      context.result.data = context.result.data.map(item => buildPhotoUrl(item));
+  } else {
+      context.result = buildPhotoUrl(context.result);
+  }
+  return context;
+}
+
 
 module.exports = {
   before: {
@@ -34,6 +56,7 @@ module.exports = {
 
   after: {
     all: [
+      populatePhotoUrl,
       // Make sure the password field is never sent to the client
       // Always must be the last hook
       protect('password')
@@ -47,28 +70,16 @@ module.exports = {
         // TEMP: give everyone same photo from url
         // fetch photo from url
         const fakeFileUrl = 'https://randomuser.me/api/portraits/women/9.jpg'
-
-        http.get(fakeFileUrl, (resp) => {
-            resp.setEncoding('base64');
-            body = "data:" + resp.headers["content-type"] + ";base64,";
-            resp.on('data', (data) => { body += data});
-            resp.on('end', () => {
-                console.log(body);
-                //return res.json({result: body, status: 'success'});
-            });
-        }).on('error', (e) => {
-            console.log(`Got error: ${e.message}`);
-        });
-        console.log('got the photo');
-
+        const image = await axios.get(fakeFileUrl, {responseType: 'arraybuffer'});
+        const returnedB64 = Buffer.from(image.data).toString('base64');
 
         // upload photo for user and get local info
-        const photo = await context.app.service('uploads').create({}, {file: photoFile});
+        const photo = await context.app.service('uploads').create({uri: returnedB64});
         console.log('post upload');
-
+        console.log(photo);
 
         // update user with photo
-        context.result = await context.service.update(context.result.id, {photoId: photo.photoId, photoUrl: photo.photoUrl});
+        context.result = await context.service.patch(context.result.id, {photoId: photo.id});
         console.log('post update');
 
         return context;
