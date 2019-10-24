@@ -57,9 +57,6 @@ class GoogleStrategy extends OAuthStrategy {
 
 class RedditStrategy extends OAuthStrategy {
   async getEntityData(profile) {
-    console.log('REEEEDDDDDDITTTT');
-    console.log(profile);
-
     // this will set 'redditId'
     const baseData = await super.getEntityData(profile);
     return {

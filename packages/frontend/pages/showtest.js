@@ -167,7 +167,7 @@ class ShowTest extends React.Component {
 												<Chunk>
 													<Text>server</Text>
 													<Image
-														source={{uri: show.item.photo}}
+														source={{uri: show.item.photoUrl}}
 														style={[{
 															height: 300,
 														}, styles.pseudoLineHeight]}

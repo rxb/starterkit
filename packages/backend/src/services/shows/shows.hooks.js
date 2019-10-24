@@ -1,5 +1,4 @@
 const {
-  populatePhotoUrl,
   saveAndGetNewImageReference
 } = require('../common_hooks.js');
 
@@ -57,9 +56,7 @@ module.exports = {
   },
 
   after: {
-    all: [
-      populatePhotoUrl
-    ],
+    all: [],
     find: [],
     get: [],
     create: [],

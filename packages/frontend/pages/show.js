@@ -252,7 +252,7 @@ class Show extends React.Component {
 											<Flex>
 												<FlexItem shrink>
 													<Avatar
-														source={{uri: comment.user.photo}}
+														source={{uri: comment.user.photoUrl}}
 														size="medium"
 														/>
 												</FlexItem>

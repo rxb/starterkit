@@ -8,26 +8,41 @@ module.exports = {
     get: [],
     create: [
 
-        // become base64 for consistency
+        // upload should be able to aceept
+        // a base64 uri image, but also...
         (hook) => {
-          if (!hook.data.uri && hook.params.file){
-              // convert regular old files to base64 for blob
-              const file = hook.params.file;
-              const uri = dauria.getBase64DataURI(file.buffer, file.mimetype);
-              hook.data = {uri: uri};
+          let fileBuffer;
+
+          // a multipart image file
+          if(hook.params.file){
+            const file = hook.params.file;
+            fileBuffer = file.buffer;
           }
+
+          // a url to a remote image
+          if(context.data.url){
+            const urlImage = await axios.get(context.data.url, {responseType: 'arraybuffer'});
+            fileBuffer = Buffer.from(urlImage.data);
+          }
+
+          // convert those to base64 uri image
+          if(fileBuffer){
+            const dataUri = fileBuffer.toString('base64');
+            hook.data = {dataUri: dataUri};
+          }
+
           return hook;
         },
 
         // process image
         async (hook) => {
-          const uri = hook.data.uri.split(';base64,').pop();
-          const inBuffer = Buffer.from(uri, 'base64');
+          const dataUri = hook.data.dataUri.split(';base64,').pop();
+          const inBuffer = Buffer.from(dataUri, 'base64');
           const outBuffer = await sharp(inBuffer)
             .resize(500)
             .jpeg()
             .toBuffer();
-          hook.data.uri = `data:image/jpeg;base64,${outBuffer.toString('base64')}`;
+          hook.data.dataUri = `data:image/jpeg;base64,${outBuffer.toString('base64')}`;
           return hook;
         }
 

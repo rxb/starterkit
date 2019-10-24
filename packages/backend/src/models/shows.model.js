@@ -35,9 +35,12 @@ module.exports = function (app) {
       allowNull: true
     },
     photoUrl: {
-      // needs to be defined even if we set in hooks
-      type: DataTypes.VIRTUAL
-    }
+      // https://sequelize-guides.netlify.com/virtual-columns/
+      type: DataTypes.VIRTUAL,
+      get () {
+        return `http://localhost:3030/photos/${this.getDataValue('photoId')}`
+      }
+    },
   },
   {
     hooks: {

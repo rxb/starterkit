@@ -41,6 +41,15 @@
         "duration": "temporary",
         "state": true,
         "profile_url": "https://oauth.reddit.com/api/v1/me"
+      },
+      "apple": {
+        "authorize_url": "https://appleid.apple.com/auth/authorize",
+        "access_url": "https://appleid.apple.com/auth/token",
+        "oauth": 2,
+        "key": "OAUTH_CLIENT_ID",
+        "secret": "OAUTH_CLIENT_SECRET",
+        "scope": ["authorization_code"],
+        "nonce": true
       }
     }
   },
