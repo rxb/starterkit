@@ -30,17 +30,17 @@ module.exports = {
     ],
     create: [
       hashPassword('password'),
-      saveAndGetNewImageReference
+      saveAndGetNewImageReference(),
     ],
     update: [
       hashPassword('password'),
       authenticate('jwt'),
-      saveAndGetNewImageReference
+      saveAndGetNewImageReference(),
     ],
     patch: [
       hashPassword('password'),
       authenticate('jwt'),
-      saveAndGetNewImageReference
+      saveAndGetNewImageReference(),
     ],
     remove: [
       authenticate('jwt')

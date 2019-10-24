@@ -14,7 +14,7 @@ module.exports = function (app) {
     email: {
       type: DataTypes.STRING,
       //allowNull: false,
-      unique: true,
+      //unique: true,
       validate: {
         isEmail: true
       }
@@ -24,9 +24,6 @@ module.exports = function (app) {
       //allowNull: false
     },
     name: {
-      type: DataTypes.STRING,
-    },
-    photo: {
       type: DataTypes.STRING,
     },
     photoId: {

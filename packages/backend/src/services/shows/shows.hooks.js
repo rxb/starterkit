@@ -44,13 +44,13 @@ module.exports = {
       populateShowAssociations
     ],
     create: [
-      saveAndGetNewImageReference
+      saveAndGetNewImageReference()
     ],
     update: [
-      saveAndGetNewImageReference
+      saveAndGetNewImageReference()
     ],
     patch: [
-      saveAndGetNewImageReference,
+      saveAndGetNewImageReference(),
     ],
     remove: []
   },
