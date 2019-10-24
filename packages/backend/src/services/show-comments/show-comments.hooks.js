@@ -1,7 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
-const hydrate = require('feathers-sequelize/hooks/hydrate');
-const dehydrate = require('feathers-sequelize/hooks/dehydrate');
+//const hydrate = require('feathers-sequelize/hooks/hydrate');
+//const dehydrate = require('feathers-sequelize/hooks/dehydrate');
 
 const includeAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');
