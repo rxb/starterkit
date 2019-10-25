@@ -169,6 +169,13 @@ export const reauthenticate = (token) => {
 	})
 };
 
+export const setToken = (token) => {
+	return ({
+		type: 'REAUTHENTICATE',
+		payload: {token: token}
+	})
+};
+
 export const setUser = (user) => {
 	return ({
 		type: 'SET_USER',

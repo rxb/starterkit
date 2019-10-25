@@ -48,13 +48,10 @@ import LoginForm from '../components/LoginForm';
 
 
 // FEATHERS CLIENT
-// let's try to get feathers client going
 import feathers from '@feathersjs/client';
 //import io from 'socket.io-client';
-
 const apiUrl = 'http://localhost:3030';
 //const socket = io(apiUrl);
-
 const client = feathers();
 const authenticationOptions = {};
 if (process.browser) {

@@ -10,8 +10,10 @@ import withRedux from "next-redux-wrapper";
 import reducer from '../reducers';
 
 import {
+  setUser,
+  logOut,
+  setToken,
   fetchUser,
-  reauthenticate
 } from '../actions';
 
 const authMiddleware = ({getState, dispatch}) => next => action => {
@@ -45,38 +47,49 @@ const makeStore = (initialState, options) => {
     );
 };
 
+// FEATHERS CLIENT
+// Using this just for auth. It's possible to write our own but i'm going to take the easy way out for now.
+// I've commented out socket transoport until it's actually necessary in this project
+import feathers from '@feathersjs/client';
+//import io from 'socket.io-client';
+const apiUrl = 'http://localhost:3030';
+//const socket = io(apiUrl);
+const feathersClient = feathers();
+const authenticationOptions = {};
+if (process.browser) {
+  authenticationOptions["storage"] = window.localStorage
+}
+feathersClient.configure(feathers.authentication(authenticationOptions));
+feathersClient.configure(feathers.rest(apiUrl).fetch(fetch));
+//feathersClient.configure(feathers.socketio(socket));
+feathersClient.reAuthenticate();
+
 
 class ThisApp extends App {
 
- /*
- // INVESTIGATE
- // nextjs 9 doesn't need this anymore?
- // https://github.com/zeit/next.js/blob/canary/UPGRADING.md
- // and
- // https://github.com/zeit/next.js/#automatic-static-optimization
- // you may be able to remove all getInitialProps from all pages
- // see how it goes
- static async getInitialProps ({ Component, router, ctx }) {
-
-    const {store} = ctx;
-
-    let pageProps = (Component.getInitialProps) ? await Component.getInitialProps(ctx) : {};
-    return {pageProps}
-  }
-  */
-
   componentDidMount(){
-    // turning off self for a moment
+    feathersClient.on('login', (authResult, params, context) => {
+      // if actions don't pass through connect, they need the verbose version:
+      this.props.store.dispatch( setToken(authResult.token) );
+      this.props.store.dispatch( setUser(authResult.user) );
+    });
+
+    feathersClient.on('logout', (authResult, params, context) => {
+      this.props.store.dispatch( logOut() );
+    });
+
+    // existing token?
+    feathersClient.reAuthenticate();
 
     /*
-
-    // if you don't pass through connect
-    // you have to be more verbose asi
+    // comment out for now
+    // old non-feathersclient version of token management + user checking
     this.props.store.subscribe(() => {
       localStorage.setItem('AUTHENTICATION', JSON.stringify(this.props.store.getState().authentication));
     });
     this.props.store.dispatch(fetchUser('self'));
     */
+
   }
 
   render () {
