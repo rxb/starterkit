@@ -8,7 +8,6 @@ const populateShowAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');
   const { ShowComments, users, tags } = sequelize.models;
   context.params.sequelize = {
-    raw: false, // don't know why, but it needs this to not flatten the children
     include: [
       {
         model: ShowComments,
