@@ -7,6 +7,7 @@ const includeAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');
   const { users } = sequelize.models;
   context.params.sequelize = {
+    ...context.params.sequelize,
     include: [ users ]
   }
   return context;

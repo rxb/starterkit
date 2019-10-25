@@ -169,6 +169,13 @@ export const reauthenticate = (token) => {
 	})
 };
 
+export const setUser = (user) => {
+	return ({
+		type: 'SET_USER',
+		payload: user
+	})
+};
+
 // LOG OUT
 export const logOut = () => ({
 	type: 'LOG_OUT'

@@ -157,7 +157,7 @@ class Page extends React.Component {
 												<Touch onPress={()=> this.userMenu.toggle()}>
 													<Inline>
 														<Avatar
-															source={{uri: user.photo}}
+															source={{uri: user.photoUrl}}
 															size="small"
 															/>
 														<Text>{user.name}</Text>

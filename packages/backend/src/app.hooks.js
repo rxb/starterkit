@@ -8,7 +8,7 @@ const log = require('./hooks/log');
 const setRawFalse = (context) => {
   const sequelize = context.app.get('sequelizeClient');
   context.params.sequelize = {
-    raw: false,
+    raw: false
   }
   return context;
 }

@@ -6,9 +6,12 @@ import Head from 'next/head'
 import uuid from 'uuid/v1';
 
 import {
+	logInAndFetchUser,
+	reauthenticate,
+	setUser,
+	logOut,
 	addPrompt
 } from '../actions';
-
 
 
 import {
@@ -53,7 +56,11 @@ const apiUrl = 'http://localhost:3030';
 //const socket = io(apiUrl);
 
 const client = feathers();
-client.configure(feathers.authentication(/*options*/));
+const authenticationOptions = {};
+if (process.browser) {
+	authenticationOptions["storage"] = window.localStorage
+}
+client.configure(feathers.authentication(authenticationOptions));
 client.configure(feathers.rest(apiUrl).fetch(fetch));
 //client.configure(feathers.socketio(socket));
 
@@ -88,10 +95,13 @@ class Scratch extends React.Component {
 
 		client.on('login', (authResult, params, context) => {
 			this.setState({user: authResult.user});
+			this.props.reauthenticate(authResult.token);
+			this.props.setUser(authResult.user);
 		});
 
 		client.on('logout', (authResult, params, context) => {
 			this.setState({user: {} });
+			this.props.logOut();
 		});
 
 		// existing token?
@@ -282,7 +292,10 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const actionCreators = {
-	addPrompt
+	addPrompt,
+	reauthenticate,
+	setUser,
+	logOut
 };
 
 export default connect(
