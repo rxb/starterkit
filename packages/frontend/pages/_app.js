@@ -47,14 +47,19 @@ const makeStore = (initialState, options) => {
     );
 };
 
+
 // FEATHERS CLIENT
-// Using this just for auth. It's possible to write our own but i'm going to take the easy way out for now.
-// I've commented out socket transoport until it's actually necessary in this project
-import feathers from '@feathersjs/client';
+
+// Using this just for auth.
+// Commenting out socket transport until it's actually necessary in this project
+
+import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
+import feathers from '@feathersjs/client'; // but we still need the original to configure
+
 //import io from 'socket.io-client';
 const apiUrl = 'http://localhost:3030';
 //const socket = io(apiUrl);
-const feathersClient = feathers();
+
 const authenticationOptions = {};
 if (process.browser) {
   authenticationOptions["storage"] = window.localStorage

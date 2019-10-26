@@ -46,7 +46,9 @@ import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 import LoginForm from '../components/LoginForm';
 
+import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
 
+/*
 // FEATHERS CLIENT
 import feathers from '@feathersjs/client';
 //import io from 'socket.io-client';
@@ -60,7 +62,7 @@ if (process.browser) {
 client.configure(feathers.authentication(authenticationOptions));
 client.configure(feathers.rest(apiUrl).fetch(fetch));
 //client.configure(feathers.socketio(socket));
-
+*/
 
 
 class Scratch extends React.Component {
@@ -74,10 +76,11 @@ class Scratch extends React.Component {
 		this.state = {
 			things: [],
 			showPrompt: false,
-			user: {}
+			//user: {}
 		}
 	}
 
+	/*
 	logout(){
 		client.logout();
 	}
@@ -104,6 +107,11 @@ class Scratch extends React.Component {
 		// existing token?
 		client.reAuthenticate();
 
+	}
+	*/
+
+	componentDidMount(){
+		feathersClient.reAuthenticate();
 	}
 
 	render() {
@@ -175,7 +183,7 @@ class Scratch extends React.Component {
 
 								<Flex direction="column" switchDirection="large">
 									<FlexItem>
-										{ !this.state.user.id &&
+										{ !user.id &&
 											<Fragment>
 												<Section>
 													<Chunk>
@@ -205,19 +213,21 @@ class Scratch extends React.Component {
 												<Section>
 													<LoginForm
 														onSubmit={(fields)=>{
-															this.loginLocal(fields);
+															//this.loginLocal(fields);
+															feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
+
 														}}
 														/>
 												</Section>
 											</Fragment>
 										}
-										{ this.state.user.id &&
+										{ user.id &&
 											<Section>
 												<Chunk>
 													<Button
 													  	width="full"
 														label="log out"
-														onPress={this.logout}
+														onPress={feathersClient.logout}
 														/>
 												</Chunk>
 											</Section>
@@ -227,14 +237,14 @@ class Scratch extends React.Component {
 										<Section>
 											<Chunk>
 												<Avatar
-													source={{uri: this.state.user.photoUrl}}
+													source={{uri: user.photoUrl}}
 													size="large"
 													/>
-												<Text type="big">{this.state.user.name}</Text>
-												<Text color="hint">{this.state.user.email}</Text>
+												<Text type="big">{user.name}</Text>
+												<Text color="hint">{user.email}</Text>
 											</Chunk>
 											<Chunk>
-												<Text>USER: {JSON.stringify(this.state.user)}</Text>
+												<Text>USER: {JSON.stringify(user)}</Text>
 											</Chunk>
 										</Section>
 									</FlexItem>
@@ -290,9 +300,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionCreators = {
 	addPrompt,
-	reauthenticate,
-	setUser,
-	logOut
+	//reauthenticate,
+	//setUser,
+	//logOut
 };
 
 export default connect(

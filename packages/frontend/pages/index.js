@@ -42,6 +42,8 @@ import {
 	addPrompt
 } from '../actions';
 
+import feathersClient from '../components/FeathersClient';
+
 
 
 const FakePrompt = (props) => {
@@ -240,7 +242,8 @@ class Hello extends React.Component {
 											<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
 												<LoginForm
 													onSubmit={(fields)=>{
-														this.props.logInAndFetchUser(fields);
+														//this.props.logInAndFetchUser(fields);
+														feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
 													}}
 													isLoading={(authentication.loading || authentication.token)}
 													/>

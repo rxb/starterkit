@@ -20,6 +20,8 @@ import {
 	logOut,
 } from '../actions';
 
+import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
+
 
 import styles from './cinderblock/styles/styles';
 import swatches from './cinderblock/styles/swatches';
@@ -168,7 +170,7 @@ class Page extends React.Component {
 													<Sectionless>
 														<Chunk>
 															{ ['Profile', 'Settings', 'Log out'].map((item, i)=>(
-																<Touch onPress={logOut} key={i}>
+																<Touch onPress={feathersClient.logout} key={i}>
 																	<Text color="tint" >{item}</Text>
 																</Touch>
 															))}
@@ -220,7 +222,9 @@ class Page extends React.Component {
 							<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
 								<LoginForm
 									onSubmit={(fields)=>{
-										this.props.logInAndFetchUser(fields);
+										//this.props.logInAndFetchUser(fields);
+										feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
+
 									}}
 									isLoading={(authentication.loading || authentication.token)}
 									/>
