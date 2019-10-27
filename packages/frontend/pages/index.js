@@ -36,7 +36,8 @@ import ShowCard from '../components/ShowCard';
 
 import { connect } from 'react-redux';
 import {
-	logInAndFetchUser,
+	//logInAndFetchUser,
+	logIn,
 	fetchShows,
 	addToast,
 	addPrompt
@@ -138,6 +139,7 @@ class Hello extends React.Component {
 
 		const {
 			authentication,
+			logIn,
 			shows,
 			user
 		} = this.props
@@ -243,6 +245,7 @@ class Hello extends React.Component {
 												<LoginForm
 													onSubmit={(fields)=>{
 														//this.props.logInAndFetchUser(fields);
+														logIn();
 														feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
 													}}
 													isLoading={(authentication.loading || authentication.token)}
@@ -349,7 +352,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionCreators = {
 	fetchShows,
-	logInAndFetchUser,
+	//logInAndFetchUser,
+	logIn,
 	addToast,
 	addPrompt
 }

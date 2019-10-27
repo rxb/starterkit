@@ -151,6 +151,8 @@ export const fetchUser = (id) => ({
 
 
 // LOG IN
+/*
+// without client
 export const logIn = (data) => ({
 	[RSAA]: {
 		endpoint: `${apiHost}authentication/`,
@@ -159,6 +161,21 @@ export const logIn = (data) => ({
 		body: JSON.stringify({ ...data, strategy: 'local' }),
 		types: ["LOG_IN", "LOG_IN_SUCCESS", "LOG_IN_FAILURE"]
  	}
+});
+*/
+
+// LOG IN WITH FEATHERS CLIENT
+// just use plain action creators
+export const logIn = () => ({
+	type: 'LOG_IN'
+});
+export const logInSuccess = (token) => ({
+	type: 'LOG_IN_SUCCESS',
+	payload: {token: token}
+});
+export const logInError = (error) => ({
+	type: 'LOG_IN_ERROR',
+	payload: {response: error}
 });
 
 // REAUTHENTICATE

@@ -12,8 +12,8 @@ import reducer from '../reducers';
 import {
   setUser,
   logOut,
-  setToken,
   fetchUser,
+  logInSuccess
 } from '../actions';
 
 const authMiddleware = ({getState, dispatch}) => next => action => {
@@ -72,19 +72,27 @@ feathersClient.reAuthenticate();
 
 class ThisApp extends App {
 
+
   componentDidMount(){
-    feathersClient.on('login', (authResult, params, context) => {
-      // if actions don't pass through connect, they need the verbose version:
-      this.props.store.dispatch( setToken(authResult.token) );
+
+    const storeAuthAndUser = (authResult, params, context) => {
+      this.props.store.dispatch( logInSuccess(authResult.token) );
       this.props.store.dispatch( setUser(authResult.user) );
-    });
+    }
+
+    feathersClient.on('login', storeAuthAndUser);
 
     feathersClient.on('logout', (authResult, params, context) => {
       this.props.store.dispatch( logOut() );
     });
 
-    // existing token?
-    feathersClient.reAuthenticate();
+    feathersClient.reAuthenticate()
+      .then(storeAuthAndUser)
+      .catch((error)=>{
+        // no auth
+        // console.log(error);
+      }
+    );
 
     /*
     // comment out for now

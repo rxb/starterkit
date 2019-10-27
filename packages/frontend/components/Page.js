@@ -16,7 +16,8 @@ Router.onRouteChangeError = () => NProgress.done()
 import { connect } from 'react-redux';
 import {
 	addToast,
-	logInAndFetchUser,
+	//logInAndFetchUser,
+	logIn,
 	logOut,
 } from '../actions';
 
@@ -111,6 +112,7 @@ class Page extends React.Component {
 		const {
 			authentication = {},
 			children,
+			logIn,
 			logOut,
 			user = {}
 		} = this.props;
@@ -191,6 +193,7 @@ class Page extends React.Component {
 				</Header>
 
 				<View style={{flex: 1}}>
+					<Text>{JSON.stringify(authentication)}</Text>
 					{children}
 				</View>
 				<Stripe style={{
@@ -223,6 +226,7 @@ class Page extends React.Component {
 								<LoginForm
 									onSubmit={(fields)=>{
 										//this.props.logInAndFetchUser(fields);
+										logIn();
 										feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
 
 									}}
@@ -253,9 +257,10 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const actionCreators = {
+	logIn,
 	logOut,
 	addToast,
-	logInAndFetchUser
+	//logInAndFetchUser
 }
 
 export default connect(

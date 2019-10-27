@@ -6,10 +6,11 @@ import Head from 'next/head'
 import uuid from 'uuid/v1';
 
 import {
-	logInAndFetchUser,
+	//logInAndFetchUser,
 	reauthenticate,
 	setUser,
-	logOut,
+	logIn,
+	//logOut,
 	addPrompt
 } from '../actions';
 
@@ -111,7 +112,16 @@ class Scratch extends React.Component {
 	*/
 
 	componentDidMount(){
+		/*
+		feathersClient.on('login', (authResult, params, context) => {
+			console.log('scratch event');
+			this.props.reauthenticate(authResult.token);
+			this.props.setUser(authResult.user);
+		});
+
+
 		feathersClient.reAuthenticate();
+		*/
 	}
 
 	render() {
@@ -119,7 +129,7 @@ class Scratch extends React.Component {
 		const DeletePrompt = (props) => {
 			const {
 				thing,
-				onRequestClose
+				onRequestClose,
 			} = props;
 			return (
 				<Sectionless>
@@ -159,7 +169,9 @@ class Scratch extends React.Component {
 
 
 		const {
-			user
+			user,
+			logIn,
+			authentication
 		} = this.props;
 		const {
 			things
@@ -211,13 +223,17 @@ class Scratch extends React.Component {
 													</Chunk>
 												</Section>
 												<Section>
-													<LoginForm
-														onSubmit={(fields)=>{
-															//this.loginLocal(fields);
-															feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
+													<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
+														<LoginForm
+															onSubmit={(fields)=>{
+																//this.loginLocal(fields);
+																logIn(),
+																feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
 
-														}}
-														/>
+															}}
+															isLoading={(authentication.loading || authentication.token)}
+															/>
+													</LoadingBlock>
 												</Section>
 											</Fragment>
 										}
@@ -294,14 +310,16 @@ class Scratch extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
+		authentication: state.authentication,
 		user: state.user
 	});
 }
 
 const actionCreators = {
 	addPrompt,
-	//reauthenticate,
-	//setUser,
+	reauthenticate,
+	setUser,
+	logIn
 	//logOut
 };
 
