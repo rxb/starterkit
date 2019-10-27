@@ -76,7 +76,7 @@ class ThisApp extends App {
   componentDidMount(){
 
     const storeAuthAndUser = (authResult, params, context) => {
-      this.props.store.dispatch( logInSuccess(authResult.token) );
+      this.props.store.dispatch( logInSuccess(authResult.accessToken) );
       this.props.store.dispatch( setUser(authResult.user) );
     }
 

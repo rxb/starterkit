@@ -31,7 +31,6 @@ class Touch extends React.Component {
 		} = this.state
 
 		const stateStyle = (isPressed || isLoading) ? stateStyles.active : stateStyles.default;
-		console.log(stateStyle);
 
 		return(
 				<Touchable

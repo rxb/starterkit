@@ -3,7 +3,7 @@ const authentication = (state = {}, action) => {
     case 'LOG_IN':
       return { loading: true };
     case 'LOG_IN_SUCCESS':
-    	return { token: action.payload.accessToken, loading: false };
+    	return { token: action.payload.token, loading: false };
     case 'LOG_IN_FAILURE':
       return { loading: false, error: action.payload.response }
     case 'REAUTHENTICATE':
