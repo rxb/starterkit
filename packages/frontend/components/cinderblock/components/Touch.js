@@ -5,7 +5,7 @@ import styles from '../styles/styles';
 
 
 const stateStyles = {
-	active: {opacity: .5, backgroundColor: 'red'},
+	active: {opacity: .5},
 	default: {opacity: 1}
 };
 

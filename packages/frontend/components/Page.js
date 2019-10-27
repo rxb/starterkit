@@ -18,6 +18,7 @@ import {
 	addToast,
 	//logInAndFetchUser,
 	logIn,
+	logInFailure,
 	logOut,
 } from '../actions';
 
@@ -113,6 +114,7 @@ class Page extends React.Component {
 			authentication = {},
 			children,
 			logIn,
+			logInFailure,
 			logOut,
 			user = {}
 		} = this.props;
@@ -193,7 +195,6 @@ class Page extends React.Component {
 				</Header>
 
 				<View style={{flex: 1}}>
-					<Text>{JSON.stringify(authentication)}</Text>
 					{children}
 				</View>
 				<Stripe style={{
@@ -227,7 +228,12 @@ class Page extends React.Component {
 									onSubmit={(fields)=>{
 										//this.props.logInAndFetchUser(fields);
 										logIn();
-										feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
+										feathersClient
+											.authenticate({strategy: 'local', email: fields.email, password: fields.password})
+											.then()
+											.catch((e)=>{
+												logInFailure(e)
+											});
 
 									}}
 									isLoading={(authentication.loading || authentication.token)}
@@ -259,6 +265,7 @@ const mapStateToProps = (state, ownProps) => {
 const actionCreators = {
 	logIn,
 	logOut,
+	logInFailure,
 	addToast,
 	//logInAndFetchUser
 }

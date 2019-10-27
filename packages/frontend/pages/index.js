@@ -38,6 +38,7 @@ import { connect } from 'react-redux';
 import {
 	//logInAndFetchUser,
 	logIn,
+	logInFailure,
 	fetchShows,
 	addToast,
 	addPrompt
@@ -140,6 +141,7 @@ class Hello extends React.Component {
 		const {
 			authentication,
 			logIn,
+			logInFailure,
 			shows,
 			user
 		} = this.props
@@ -246,7 +248,7 @@ class Hello extends React.Component {
 													onSubmit={(fields)=>{
 														//this.props.logInAndFetchUser(fields);
 														logIn();
-														feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
+														feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password}).catch((e)=>logInFailure(e));
 													}}
 													isLoading={(authentication.loading || authentication.token)}
 													/>
@@ -354,6 +356,7 @@ const actionCreators = {
 	fetchShows,
 	//logInAndFetchUser,
 	logIn,
+	logInFailure,
 	addToast,
 	addPrompt
 }

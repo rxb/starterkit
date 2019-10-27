@@ -40,7 +40,8 @@
         "scope": ["identity"],
         "duration": "temporary",
         "state": true,
-        "profile_url": "https://oauth.reddit.com/api/v1/me"
+        "profile_url": "https://oauth.reddit.com/api/v1/me",
+        "authorize_url": "https://www.reddit.com/api/v1/authorize.compact"
       },
       "apple": {
         "authorize_url": "https://appleid.apple.com/auth/authorize",

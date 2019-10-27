@@ -173,8 +173,8 @@ export const logInSuccess = (token) => ({
 	type: 'LOG_IN_SUCCESS',
 	payload: {token: token}
 });
-export const logInError = (error) => ({
-	type: 'LOG_IN_ERROR',
+export const logInFailure = (error) => ({
+	type: 'LOG_IN_FAILURE',
 	payload: {response: error}
 });
 
