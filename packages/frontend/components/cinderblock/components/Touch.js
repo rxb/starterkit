@@ -5,7 +5,7 @@ import styles from '../styles/styles';
 
 
 const stateStyles = {
-	active: {opacity: .5},
+	active: {opacity: .5, backgroundColor: 'red'},
 	default: {opacity: 1}
 };
 
@@ -30,6 +30,9 @@ class Touch extends React.Component {
 			isPressed
 		} = this.state
 
+		const stateStyle = (isPressed || isLoading) ? stateStyles.active : stateStyles.default;
+		console.log(stateStyle);
+
 		return(
 				<Touchable
 					className="touch"
@@ -46,13 +49,12 @@ class Touch extends React.Component {
 					}}
 					>
 					<View
-						style={ [
-							(isPressed || isLoading) ? stateStyles.active : stateStyles.default,
-							style
-						]}
-						{...this.props}
+						style={ [ stateStyle, style ]}
+						{...other}
 						>
-						<React.Fragment>{children}</React.Fragment>
+						<React.Fragment>
+							{children}
+						</React.Fragment>
 					</View>
 				</Touchable>
 		);
