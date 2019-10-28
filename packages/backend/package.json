@@ -47,6 +47,7 @@
     "feathers-sequelize": "^6.1.0",
     "fs-blob-store": "^5.2.1",
     "helmet": "^3.21.1",
+    "jsonld-request": "^0.2.0",
     "multer": "^2.0.0-alpha.7",
     "pg": "^7.12.1",
     "sequelize": "^5.19.4",

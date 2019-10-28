@@ -120,6 +120,15 @@ export const fetchShow = (id) => ({
  	}
 });
 
+// FETCH EVENTS
+export const fetchEvents = () => ({
+	[RSAA]: {
+		types: ["FETCH_EVENTS", "FETCH_EVENTS_SUCCESS", "FETCH_EVENTS_FAILURE"],
+		endpoint: `${apiHost}events`,
+		method: 'GET',
+ 	}
+});
+
 
 // FETCH TAGS
 export const fetchTags = () => ({

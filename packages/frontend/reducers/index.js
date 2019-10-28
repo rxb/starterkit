@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import authentication from './authentication'
+import events from './events'
 import prompts from './prompts'
 import show from './show'
 import shows from './shows'
@@ -12,6 +13,7 @@ import user from './user'
 
 const reducers = combineReducers({
 	authentication,
+	events,
 	prompts,
 	show,
 	shows,
