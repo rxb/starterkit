@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
 
 'flex--column__flex-item': {
 	paddingLeft: 0,
-	minHeight: '-webkit-min-content'
+	minHeight: '-webkit-min-content',
+	minWidth: '-webkit-min-content'
 },
 
 

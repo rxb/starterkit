@@ -179,11 +179,11 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 13, /* this has something to do with lineheight */
 		borderRadius: borderRadius,
-		flexDirection: 'row',
-		justifyContent: 'center',
 		userSelect: 'none',
 		marginVertical: METRICS.pseudoLineHeight,
-		alignSelf: 'flex-start'
+		alignSelf: 'flex-start',
+		flexDirection: 'row',
+		justifyContent: 'center',
 	},
 	'button--fullWidth': {
 		alignSelf: 'stretch'
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		textAlign: 'center',
-		fontWeight: '600'
+		fontWeight: '600',
 	},
 	'buttonText--primary': {
 		color: '#ffffff',

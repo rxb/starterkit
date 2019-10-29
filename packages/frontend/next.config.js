@@ -9,6 +9,7 @@ module.exports = {
 	    });
 		config.plugins.push(providePlugin);
 
+
 		return config
 	}
 }
