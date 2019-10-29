@@ -23,7 +23,7 @@ const Inline = (props) => {
 			// "if" statements can return null components, so needs to check
 			if(React.isValidElement(child)){
 				return (
-					<View style={[styles.inlineItem, (i==0 ? styles['inlineItem--firstChild'] : {}), style]}>
+					<View style={[styles.inlineItem, (i==0 ? styles['inlineItem--firstChild'] : {})]}>
 						{child}
 					</View>
 				);
@@ -33,7 +33,7 @@ const Inline = (props) => {
 
 
 	return(
-		<View style={styles.inline}>
+		<View style={[styles.inline, style]}>
 			{wrappedChildren}
 		</View>
 	);

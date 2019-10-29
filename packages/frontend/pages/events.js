@@ -218,7 +218,7 @@ class Events extends React.Component {
 													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')} {event.latitude} {event.longitude}</Text>
 													  		<Text type="big" weight="strong">{event.title}</Text>
 													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
-													  		<Inline>
+													  		<Inline style={{flexWrap: 'noWrap'}}>
 														  		<Image
 														  			source={`https://www.google.com/s2/favicons?domain=${event.url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)[1]}`}
 														  			style={{
