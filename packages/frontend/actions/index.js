@@ -129,6 +129,16 @@ export const fetchEvents = () => ({
  	}
 });
 
+export const createEvent = (data) => ({
+	[RSAA]: {
+		endpoint: `${apiHost}events/`,
+		method: 'POST',
+		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+		types: ["CREATE_EVENT","CREATE_EVENT_SUCCESS", "CREATE_EVENT_FAILURE"]
+ 	}
+});
+
 
 // FETCH TAGS
 export const fetchTags = () => ({

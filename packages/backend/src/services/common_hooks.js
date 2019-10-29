@@ -1,5 +1,3 @@
-
-
 module.exports = {
 
   // SAVE AND GET NEW IMAGE REFERENCE

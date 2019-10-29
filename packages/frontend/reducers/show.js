@@ -36,7 +36,7 @@ const show = (state = startState, action) => {
 			newState = {...state, loading: false, item: action.payload};
 			return newState;
 		case 'CREATE_SHOW_FAILURE':
-			newState = {...state, loading: false, error: action.payload.response}
+			newState = {...state, loading: false, error: parseFeathersError(action.payload.response)}
 			return newState;
 
 		// PATCH
