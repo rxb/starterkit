@@ -167,7 +167,7 @@ class Events extends React.Component {
 						<Sections>
 							<Section type="pageHead">
 								<Chunk>
-									<Text type="pageHead">/r/apple</Text>
+									<Text type="pageHead">/r/leanfire</Text>
 								</Chunk>
 
 							</Section>
@@ -181,13 +181,20 @@ class Events extends React.Component {
 								<Chunk>
 									<Text type="sectionHead">Events near New York</Text>
 								</Chunk>
-
 							</Section>
 
 
 							<Flex direction="column" switchDirection="large">
 								<FlexItem growFactor={3}>
 									<Section>
+
+										{/*
+
+										Add events from Facebook, Meetup, Eventbrite, Splashthat
+										(other event sites might work too... put the link in and give it a try!)
+
+										*/}
+
 										<EventForm
 											initialFields={{
 												url: ''
@@ -205,13 +212,23 @@ class Events extends React.Component {
 											  	return (
 											  		<Chunk key={i}>
 											  			<Link
-											  				target="blank"
+											  				target="_blank"
 											  				href={event.url}
 											  				>
 													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')} {event.latitude} {event.longitude}</Text>
 													  		<Text type="big" weight="strong">{event.title}</Text>
 													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
-													  		<Text type="small" color="hint">{event.url}</Text>
+													  		<Inline>
+														  		<Image
+														  			source={`https://www.google.com/s2/favicons?domain=${event.url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)[1]}`}
+														  			style={{
+														  				width: 12,
+														  				height: 12
+														  			}}
+
+														  			/>
+														  		<Text type="small" color="hint" numberOfLines={1}>{event.url}</Text>
+													  		</Inline>
 													  	</Link>
 												  	</Chunk>
 											  	);
