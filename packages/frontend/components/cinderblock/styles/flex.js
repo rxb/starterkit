@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 'flex-item' : {
 	width: 'auto',
 	flex: 1,
-	flexBasis: 0
+	flexBasis: 0,
 },
 
 'flex-item--firstChild': {
@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
 
 'flex--row__flex-item': {
 	paddingLeft: base,
-	minHeight: '-webkit-min-content'
+	minHeight: '-webkit-min-content',
+	minWidth: 0
 },
 
 
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
 'flex--column__flex-item': {
 	paddingLeft: 0,
 	minHeight: '-webkit-min-content',
-	minWidth: '-webkit-min-content'
+	minWidth: '-webkit-min-content',
 },
 
 

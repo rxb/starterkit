@@ -76,11 +76,13 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		alignItems: 'center',
-		minWidth: 0
+		minWidth: 0,
+		overflow: 'hidden'
 	},
 	inlineItem: {
 		marginLeft: space/3,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		minWidth: 0
 	},
 	'inlineItem--firstChild': {
 		marginLeft: 0
