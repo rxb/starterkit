@@ -1,3 +1,7 @@
+# API keys
+/packages/backend/keys.js
+/packages/frontend/keys.js
+
 # Logs
 logs
 *.log

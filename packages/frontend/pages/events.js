@@ -8,6 +8,7 @@ import Map from 'pigeon-maps'
 
 import {
 	addPrompt,
+	addToast,
 	createEvent,
 	fetchEvents
 } from '../actions';
@@ -39,6 +40,7 @@ import {
 	Text,
 	TextInput,
 	Touch,
+	View,
 	withFormState
 } from '../components/cinderblock';
 import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
@@ -59,7 +61,7 @@ const EventForm = withFormState((props) => {
 	} = props;
 
 	return(
-		<form>
+		<form autocomplete="off">
 			<Chunk>
 				<Flex direction="column" switchDirection="large">
 					<FlexItem>
@@ -68,7 +70,7 @@ const EventForm = withFormState((props) => {
 							value={getFieldValue('url')}
 							onChange={e => setFieldValue('url', e.target.value)}
 							placeholder="URL of the event"
-							autoComplete="off"
+							autoComplete="whatever"
 							/>
 						<FieldError error={fieldErrors.url} />
 					</FlexItem>
@@ -76,6 +78,7 @@ const EventForm = withFormState((props) => {
 						<Button
 							onPress={handleSubmit}
 							label="Post Event"
+							isLoading={props.isLoading}
 							/>
 					</FlexItem>
 				</Flex>
@@ -121,19 +124,19 @@ class Events extends React.Component {
 	}
 
 	componentDidUpdate(prevProps){
-		/*
+
 
 		// watching for toastable errors
 		// still feel like maybe this could go with form?
 		const messages = {
-			showComments: {
+			events: {
 				BadRequest: 'Something went wrong',
 				GeneralError: 'Something went wrong (GeneralError)',
 			}
 		};
 		checkToastableErrors(this.props, prevProps, messages);
 
-		*/
+
 
 	}
 
@@ -190,7 +193,13 @@ class Events extends React.Component {
 
 										{/*
 
-										Add events from Facebook, Meetup, Eventbrite, Splashthat
+										Add events from
+											Facebook,
+											Meetup,
+											Eventbrite,
+											Splashthat
+											Patch,
+
 										(other event sites might work too... put the link in and give it a try!)
 
 										*/}
@@ -205,6 +214,7 @@ class Events extends React.Component {
 												context.resetFields();
 												return false;
 											}}
+											isLoading={events.loading}
 											/>
 
 										<List
@@ -218,16 +228,38 @@ class Events extends React.Component {
 													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')} {event.latitude} {event.longitude}</Text>
 													  		<Text type="big" weight="strong">{event.title}</Text>
 													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
-													  		<Inline style={{flexWrap: 'noWrap'}}>
+													  		<Inline style={{
+													  			flexWrap: 'noWrap',
+													  			overflow: 'hidden',
+													  			flexGrow: 0,
+																flexShrink: 1,
+																flexBasis: 'auto',
+																minWidth: 0
+													  		}}>
 														  		<Image
 														  			source={`https://www.google.com/s2/favicons?domain=${event.url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)[1]}`}
 														  			style={{
 														  				width: 12,
-														  				height: 12
+														  				height: 12,
+														  				resizeMode: 'contain'
 														  			}}
 
 														  			/>
-														  		<Text type="small" color="hint" numberOfLines={1}>{event.url}</Text>
+														  		<View
+														  			style={{
+																		overflow: 'hidden',
+																		textOverflow: 'ellipsis',
+																		flexGrow: 0,
+																		flexShrink: 1,
+																		flexBasis: 'auto'
+														  			}}
+														  			>
+															  		<Text
+															  			type="small"
+															  			color="hint"
+															  			numberOfLines={1}
+															  			>{event.url}</Text>
+														  		</View>
 													  		</Inline>
 													  	</Link>
 												  	</Chunk>
@@ -276,6 +308,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionCreators = {
 	addPrompt,
+	addToast,
 	createEvent,
 	fetchEvents
 };

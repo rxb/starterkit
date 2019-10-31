@@ -75,10 +75,12 @@ const styles = StyleSheet.create({
 	inline: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		alignItems: 'center'
+		alignItems: 'center',
+		minWidth: 0
 	},
 	inlineItem: {
-		marginLeft: space/3
+		marginLeft: space/3,
+		overflow: 'hidden'
 	},
 	'inlineItem--firstChild': {
 		marginLeft: 0
