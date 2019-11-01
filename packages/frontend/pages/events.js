@@ -228,6 +228,8 @@ class Events extends React.Component {
 													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')} {event.latitude} {event.longitude}</Text>
 													  		<Text type="big" weight="strong">{event.title}</Text>
 													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
+
+													  		{/* apparently you can inline images in text now woo */}
 													  		<Text
 													  			type="small"
 													  			color="hint"

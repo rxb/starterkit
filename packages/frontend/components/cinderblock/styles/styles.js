@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
 	buttonText: {
 		textAlign: 'center',
 		fontWeight: '600',
+		whiteSpace: 'nowrap'
 	},
 	'buttonText--primary': {
 		color: '#ffffff',
