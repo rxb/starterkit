@@ -65,15 +65,30 @@ class Scratch extends React.Component {
 										<FlexItem
 											growFactor={3}
 											>
-											<Inline>
-												<View
+
+											<View
 												style={{
 													background: 'blue'
 												}}
 												>
-												<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
-												</View>
-											</Inline>
+												<Inline style={{flexWrap: 'noWrap'}}>
+												<Image
+										  			source={`https://www.google.com/s2/favicons?domain=http://eventbrite.com`}
+										  			style={{
+										  				width: 12,
+										  				height: 12,
+										  				resizeMode: 'contain',
+										  			}}
+										  			/>
+												<Text
+													style={{
+														overflow: 'hidden',
+														textOverflow: 'ellipsis'
+													}}
+													ellipsizeMode="tail">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+												</Inline>
+											</View>
+
 										</FlexItem>
 										<FlexItem>
 											<View
@@ -136,6 +151,65 @@ class Scratch extends React.Component {
 												background: 'green',
 												height: 10
 
+											}}
+											>
+											</View>
+										</FlexItem>
+									</Flex>
+								</Chunk>
+								<Chunk>
+									<Text
+										numberOfLines={1}
+										ellipsizeMode="tail"
+										>
+										<Image
+								  			source={`https://www.google.com/s2/favicons?domain=http://eventbrite.com`}
+								  			style={{
+								  				width: 12,
+								  				height: 12,
+								  				resizeMode: 'contain',
+								  				flex: 1,
+								  				marginRight: 6
+								  			}}
+								  			/>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+									</Text>
+								</Chunk>
+								<Chunk>
+									<Flex>
+										<FlexItem
+											growFactor={3}
+											>
+
+											<View
+												style={{
+													background: 'blue'
+												}}
+												>
+												<Text
+													numberOfLines={1}
+													ellipsizeMode="tail"
+													>
+													<Image
+											  			source={`https://www.google.com/s2/favicons?domain=http://eventbrite.com`}
+											  			style={{
+											  				width: 12,
+											  				height: 12,
+											  				resizeMode: 'contain',
+											  				flex: 1,
+											  				marginRight: 6
+											  			}}
+											  			/>
+														Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+												</Text>
+											</View>
+
+										</FlexItem>
+										<FlexItem>
+											<View
+											style={{
+												background: 'green',
+												height: 10
 											}}
 											>
 											</View>
