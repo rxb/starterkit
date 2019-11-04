@@ -61,10 +61,17 @@ ideal god love derive salvation faithful intentions salvation truth. Oneself tra
 
 http://askjeeves.com
 
-* Joy christian pious virtues hope transvaluation grandeur love christianity ascetic play victorious law. Endless will pious will noble endless.
+* Joy christian pious virtues hope transvaluation grandeur love christianity ascetic play victorious law. Endless will pious will noble endless. [^1]
 
 * Strong revaluation disgust superiority reason sexuality morality prejudice will. Depths faithful noble truth marvelous fearful enlightenment aversion depths christian philosophy value burying.
 
+Okay lets go
+
+1. This is a thing
+
+1. This is another thing
+
+1. This is a third thing
 		`;
 
 		return (
