@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import Head from 'next/head'
 import dayjs from 'dayjs';
 
-import Map from 'pigeon-maps'
-
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet-universal'
 
 import {
 	addPrompt,
@@ -89,10 +88,6 @@ const EventForm = withFormState((props) => {
 
 
 class Events extends React.Component {
-
-	static async getInitialProps (context) {
-		return {};
-	}
 
 	constructor(props){
 		super(props);
@@ -239,11 +234,11 @@ class Events extends React.Component {
 														  		<Image
 														  			source={`https://www.google.com/s2/favicons?domain=${event.url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)[1]}`}
 														  			style={{
-														  				width: 12,
-														  				height: 12,
+														  				width: 13,
+														  				height: 13,
 														  				resizeMode: 'contain',
 														  				flex: 1,
-														  				marginRight: 4
+														  				marginRight: 4,
 														  			}}
 
 														  			/>
@@ -259,7 +254,7 @@ class Events extends React.Component {
 									</Section>
 									<Section>
 										<Chunk>
-											<Text type="sectionHead">Events around the world</Text>
+											<Text type="sectionHead">Events around the world!</Text>
 										</Chunk>
 									</Section>
 								</FlexItem>
@@ -267,7 +262,16 @@ class Events extends React.Component {
 									<Section>
 										<Chunk>
 											<Card>
-												<Map center={[this.state.coords.latitude, this.state.coords.longitude]} zoom={12} height={400}>
+												<Map center={[this.state.coords.latitude, this.state.coords.longitude]} zoom={13} style={{height: 300}}>
+												    <TileLayer
+												      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+												      attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+												    />
+												    {events.items.map((event, i)=>(
+													    <Marker key={i} position={[event.latitude, event.longitude]}>
+													      <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+													    </Marker>
+												    ))}
 												  </Map>
 											</Card>
 											<Text color="hint">{JSON.stringify(this.state.coords)}</Text>

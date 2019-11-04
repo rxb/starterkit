@@ -85,6 +85,7 @@ export default class MyDocument extends Document {
           <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no" />
           <link rel='stylesheet' type='text/css' href='/static/nprogress.css' />
           <link rel='stylesheet' type='text/css' href='/static/simplemde.min.css' />
+          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" crossOrigin=""/>
         </Head>
         <body>
 

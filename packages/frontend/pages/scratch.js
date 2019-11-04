@@ -31,9 +31,14 @@ import {
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
+// import createMarkdownRenderer from 'rn-markdown'
+// const Markdown = createMarkdownRenderer({ gfm: false })
+// const SimpleMarkdown = require("simple-markdown");
+// const defaultOutput = SimpleMarkdown.defaultOutput;
 
+import Markdown from 'markdown-to-jsx';
 
-
+//const Markdown = () => { return false }	;
 
 class Scratch extends React.Component {
 
@@ -43,179 +48,70 @@ class Scratch extends React.Component {
 			user
 		} = this.props;
 
+
+		const  markdownContent = `
+
+# Zarathustra
+
+## Zarathustra
+
+### Zarathustra
+
+ideal god love derive salvation faithful intentions salvation truth. Oneself transvaluation faithful war enlightenment ultimate right joy overcome faithful ideal christianity revaluation pious. Joy christianity mountains prejudice fearful abstract derive.
+
+http://askjeeves.com
+
+* Joy christian pious virtues hope transvaluation grandeur love christianity ascetic play victorious law. Endless will pious will noble endless.
+
+* Strong revaluation disgust superiority reason sexuality morality prejudice will. Depths faithful noble truth marvelous fearful enlightenment aversion depths christian philosophy value burying.
+
+		`;
+
 		return (
 			<Page>
 				<Stripe>
 					<Bounds>
 						<Sections>
 							<Section type="pageHead">
+
+								{/*
 								<Chunk>
 									<Text type="pageHead">Scratch</Text>
 								</Chunk>
-								<Chunk>
-									<View
-										style={{
-											height: 10,
-											background: 'red'
-										}}
-										/>
-								</Chunk>
-								<Chunk>
-									<Flex>
-										<FlexItem
-											growFactor={3}
-											>
+								*/}
 
-											<View
-												style={{
-													background: 'blue'
-												}}
-												>
-												<Inline style={{flexWrap: 'noWrap'}}>
-												<Image
-										  			source={`https://www.google.com/s2/favicons?domain=http://eventbrite.com`}
-										  			style={{
-										  				width: 12,
-										  				height: 12,
-										  				resizeMode: 'contain',
-										  			}}
-										  			/>
-												<Text
-													style={{
-														overflow: 'hidden',
-														textOverflow: 'ellipsis'
-													}}
-													ellipsizeMode="tail">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
-												</Inline>
-											</View>
-
-										</FlexItem>
-										<FlexItem>
-											<View
-											style={{
-												background: 'green',
-												height: 10
-											}}
-											>
-											</View>
-										</FlexItem>
-									</Flex>
-								</Chunk>
-								<Chunk>
-									<Flex>
-										<FlexItem
-											growFactor={3}
-											>
-											<Inline>
-												<View
-												style={{
-													background: 'blue',
-													height: 10
-
-												}}
-												>
-												<Text>ok</Text>
-												</View>
-											</Inline>
-										</FlexItem>
-										<FlexItem>
-											<View
-											style={{
-												background: 'green',
-												height: 10
-
-											}}
-											>
-											</View>
-										</FlexItem>
-									</Flex>
-								</Chunk>
-								<Chunk>
-									<Flex>
-										<FlexItem
-											growFactor={3}
-											>
-												<View
-												style={{
-													background: 'blue',
-													height: 10
-
-												}}
-												>
-												<Text>ok</Text>
-												</View>
-										</FlexItem>
-										<FlexItem>
-											<View
-											style={{
-												background: 'green',
-												height: 10
-
-											}}
-											>
-											</View>
-										</FlexItem>
-									</Flex>
-								</Chunk>
-								<Chunk>
-									<Text
-										numberOfLines={1}
-										ellipsizeMode="tail"
-										>
-										<Image
-								  			source={`https://www.google.com/s2/favicons?domain=http://eventbrite.com`}
-								  			style={{
-								  				width: 12,
-								  				height: 12,
-								  				resizeMode: 'contain',
-								  				flex: 1,
-								  				marginRight: 6
-								  			}}
-								  			/>
-											Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-									</Text>
-								</Chunk>
-								<Chunk>
-									<Flex>
-										<FlexItem
-											growFactor={3}
-											>
-
-											<View
-												style={{
-													background: 'blue'
-												}}
-												>
-												<Text
-													numberOfLines={1}
-													ellipsizeMode="tail"
-													>
-													<Image
-											  			source={`https://www.google.com/s2/favicons?domain=http://eventbrite.com`}
-											  			style={{
-											  				width: 12,
-											  				height: 12,
-											  				resizeMode: 'contain',
-											  				flex: 1,
-											  				marginRight: 6
-											  			}}
-											  			/>
-														Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-												</Text>
-											</View>
-
-										</FlexItem>
-										<FlexItem>
-											<View
-											style={{
-												background: 'green',
-												height: 10
-											}}
-											>
-											</View>
-										</FlexItem>
-									</Flex>
-								</Chunk>
+								<Card style={{
+									maxWidth: 500
+								}}>
+									<Section>
+									<Chunk>
+										<Text type="pageHead">What up!</Text>
+									</Chunk>
+									<Chunk>
+										<Markdown
+											options={{
+									            overrides: {
+									            	h1: {
+									            		component: Text,
+									            		props: {type: 'pageHead'}
+									            	},
+									            	h2: {
+									            		component: Text,
+									            		props: {type: 'sectionHead'}
+									            	},
+									            	h3: {
+									            		component: Text,
+									            		props: {type: 'big'}
+									            	},
+									                p: {
+									                    component: Text,
+									                },
+									            },
+									        }}
+											>{markdownContent}</Markdown>
+									</Chunk>
+								</Section>
+								</Card>
 							</Section>
 						</Sections>
 					</Bounds>

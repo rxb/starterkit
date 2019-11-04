@@ -27,17 +27,19 @@ const authMiddleware = ({getState, dispatch}) => next => action => {
   return next(action)
 }
 
+/*
 // will need to use next cookies somehow?
 const startState = {authentication: {}};
 if (process.browser) {
   // all values from localstorage are strings until parsed, even null
   startState['authentication'] = JSON.parse(localStorage.getItem('AUTHENTICATION')) || {};
 }
+*/
 
 const makeStore = (initialState, options) => {
     return createStore(
       reducer,
-      startState,
+      //startState,
       applyMiddleware(
         thunk,
         authMiddleware,
@@ -67,7 +69,7 @@ if (process.browser) {
 feathersClient.configure(feathers.authentication(authenticationOptions));
 feathersClient.configure(feathers.rest(apiUrl).fetch(fetch));
 //feathersClient.configure(feathers.socketio(socket));
-feathersClient.reAuthenticate();
+//feathersClient.reAuthenticate();
 
 
 class ThisApp extends App {
