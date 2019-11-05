@@ -18,6 +18,7 @@ import Label from './components/Label';
 import Link from './components/Link';
 import List from './components/List';
 import LoadingBlock from './components/LoadingBlock';
+import Map from './components/Map';
 import Menu from './components/Menu';
 import Modal from './components/Modal';
 import Picker from './components/Picker';
@@ -56,6 +57,7 @@ export {
 	Link,
 	List,
 	LoadingBlock,
+	Map,
 	Menu,
 	Modal,
 	Picker,

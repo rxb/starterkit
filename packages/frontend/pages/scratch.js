@@ -15,6 +15,7 @@ import {
 	Label,
 	List,
 	Link,
+	Map,
 	Modal,
 	Picker,
 	Section,
@@ -31,16 +32,17 @@ import {
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
-// import createMarkdownRenderer from 'rn-markdown'
-// const Markdown = createMarkdownRenderer({ gfm: false })
-// const SimpleMarkdown = require("simple-markdown");
-// const defaultOutput = SimpleMarkdown.defaultOutput;
+import AREAS from './areas';
+
+
 
 import Markdown from 'markdown-to-jsx';
 
-//const Markdown = () => { return false }	;
+
 
 class Scratch extends React.Component {
+
+
 
 	render() {
 
@@ -51,20 +53,19 @@ class Scratch extends React.Component {
 
 		const  markdownContent = `
 
-# Zarathustra
+# Buster
 
-## Zarathustra
+## Buster
 
-### Zarathustra
+### Buster
 
-ideal god love derive salvation faithful intentions salvation truth. Oneself transvaluation faithful war enlightenment ultimate right joy overcome faithful ideal christianity revaluation pious. Joy christianity mountains prejudice fearful abstract derive.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 http://askjeeves.com
 
-* Joy christian pious virtues hope transvaluation grandeur love christianity ascetic play victorious law. Endless will pious will noble endless. [^1]
+* Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. [^1]
 
-* Strong revaluation disgust superiority reason sexuality morality prejudice will. Depths faithful noble truth marvelous fearful enlightenment aversion depths christian philosophy value burying.
-
+* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
 Okay lets go
 
 1. This is a thing
@@ -118,8 +119,23 @@ Okay lets go
 											>{markdownContent}</Markdown>
 									</Chunk>
 								</Section>
+
 								</Card>
 							</Section>
+
+								<Section>
+									<Chunk>
+										<Map
+											style={{height: 350}}
+											cluster={true}
+											markers={AREAS.map((area, i)=>{
+												return {lat: area.lat, lon: area.lon, title: area.name}
+											})}
+											/>
+
+									</Chunk>
+								</Section>
+
 						</Sections>
 					</Bounds>
 				</Stripe>

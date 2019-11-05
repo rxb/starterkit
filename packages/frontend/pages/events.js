@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Head from 'next/head'
 import dayjs from 'dayjs';
 
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet-universal'
+//import { Map, Marker, Popup, TileLayer } from 'react-leaflet-universal'
 
 import {
 	addPrompt,
@@ -30,6 +30,7 @@ import {
 	List,
 	Link,
 	LoadingBlock,
+	Map,
 	Modal,
 	Picker,
 	Section,
@@ -47,6 +48,7 @@ import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../comp
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
+import AREAS from './areas';
 
 
 const EventForm = withFormState((props) => {
@@ -262,23 +264,26 @@ class Events extends React.Component {
 									<Section>
 										<Chunk>
 											<Card>
-												<Map center={[this.state.coords.latitude, this.state.coords.longitude]} zoom={13} style={{height: 300}}>
-												    <TileLayer
-												      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-												      attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-												    />
-												    {events.items.map((event, i)=>(
-													    <Marker key={i} position={[event.latitude, event.longitude]}>
-													      <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
-													    </Marker>
-												    ))}
-												  </Map>
+
+
+												<Map
+													cluster={false}
+													fitBounds={true}
+													style={{height: 300}}
+													markers={events.items.map((event, i)=>{
+														return {lat: event.latitude, lon: event.longitude}
+													})}
+													/>
+
+
 											</Card>
 											<Text color="hint">{JSON.stringify(this.state.coords)}</Text>
 										</Chunk>
 									</Section>
 								</FlexItem>
 							</Flex>
+
+
 
 						</Sections>
 					</Bounds>
