@@ -92,32 +92,34 @@ Okay lets go
 									maxWidth: 500
 								}}>
 									<Section>
-									<Chunk>
-										<Text type="pageHead">What up!</Text>
-									</Chunk>
-									<Chunk>
+
 										<Markdown
 											options={{
 									            overrides: {
 									            	h1: {
-									            		component: Text,
-									            		props: {type: 'pageHead'}
+									            		component: (props) => (<Chunk>
+									            			<Text type="pageHead">{props.children}</Text>
+									            		</Chunk>)
 									            	},
 									            	h2: {
-									            		component: Text,
-									            		props: {type: 'sectionHead'}
+									            		component: (props) => (<Chunk>
+									            			<Text type="sectionHead">{props.children}</Text>
+									            		</Chunk>)
 									            	},
 									            	h3: {
-									            		component: Text,
-									            		props: {type: 'big'}
+									            		component: (props) => (<Chunk>
+									            			<Text type="big">{props.children}</Text>
+									            		</Chunk>)
 									            	},
 									                p: {
-									                    component: Text,
+									                    component: (props) => (<Chunk>
+									            			<Text >{props.children}</Text>
+									            		</Chunk>),
 									                },
 									            },
 									        }}
 											>{markdownContent}</Markdown>
-									</Chunk>
+
 								</Section>
 
 								</Card>

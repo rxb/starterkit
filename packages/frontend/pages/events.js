@@ -196,6 +196,8 @@ class Events extends React.Component {
 											Eventbrite,
 											Splashthat
 											Patch,
+											Evensi.us,
+
 
 										(other event sites might work too... put the link in and give it a try!)
 
