@@ -31,7 +31,7 @@ const List = (props) => {
 		itemsInRow,
 		variant = 'linear',
 		items = [],
-		renderItem = ()=>{},
+		renderItem = item => item,
 		media,
 		style,
 		...other
