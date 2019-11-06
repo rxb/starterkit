@@ -30,6 +30,7 @@ import {
 } from '../components/cinderblock';
 
 import styles from '../components/cinderblock/styles/styles';
+import swatches from '../components/cinderblock/styles/swatches';
 import Page from '../components/Page';
 
 
@@ -71,13 +72,13 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 
 		return (
 			<Page>
-				<Stripe>
+				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 					<Bounds>
 						<Sections>
 
 							<Flex direction="column" switchDirection="large">
 
-								<FlexItem growFactor={3}>
+								<FlexItem growFactor={5}>
 
 									<Section>
 
@@ -121,7 +122,6 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 												            },
 												        }}
 														>{markdownContent}</Markdown>
-
 												</Section>
 
 											</Card>
@@ -130,7 +130,7 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 									</Section>
 
 								</FlexItem>
-								<FlexItem growFactor={2}>
+								<FlexItem growFactor={3}>
 									<Section>
 										<Chunk>
 											<Flex>
