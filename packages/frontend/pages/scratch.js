@@ -53,26 +53,21 @@ class Scratch extends React.Component {
 
 		const  markdownContent = `
 
-# Buster
+# Buster Bluth
 
-## Buster
+*Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.*
 
-### Buster
+* **Excepteur sint occaecat cupidatat**
+Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+* **Lorem ipsum dolor sit amet, consectetur adipiscing elit**
+sed do eiusmod tempor incididunt ut labore Okay lets go
 
-http://askjeeves.com
+* **Excepteur sint occaecat cupidatat**
+Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-* Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. [^1]
-
-* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-Okay lets go
-
-1. This is a thing
-
-1. This is another thing
-
-1. This is a third thing
+* **Lorem ipsum dolor sit amet, consectetur adipiscing elit**
+sed do eiusmod tempor incididunt ut labore Okay lets go
 		`;
 
 		return (
@@ -89,7 +84,10 @@ Okay lets go
 								*/}
 
 								<Card style={{
-									maxWidth: 500
+									maxWidth: 500,
+									borderTopWidth: 10,
+									borderTopColor: 'blue',
+									borderTopStyle: 'solid'
 								}}>
 									<Section>
 
