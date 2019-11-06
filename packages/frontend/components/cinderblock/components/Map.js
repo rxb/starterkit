@@ -13,30 +13,33 @@ class Map extends React.Component {
 
 	static defaultProps = {
         center: [0,0],
-        zoom: 18
+        zoom: null
     }
 
 	componentDidMount() {
 
-		import('leaflet').then( () => {
-			// this is some crazy shit
-			// but leaflet really wants to be global
-			// hopefully this isn't a problem later
-			require('leaflet.markercluster');
+		// DIV needs to wait to be mounted completely
+		setTimeout( () => {
+			import('leaflet').then( () => {
+				// this is some crazy shit
+				// but leaflet really wants to be global
+				// hopefully this isn't a problem later
+				require('leaflet.markercluster');
 
-			this.map = L.map(this.mapRef.current, {
-				center: this.props.center,
-				zoom: this.props.zoom,
-				layers: [
-					L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-						attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-					}),
-				]
-			});
-			this.test = 'okay okay';
-			this.layerGroup = L.featureGroup().addTo(this.map);
-			this.drawMarkers(this.props.markers);
-		});
+				this.map = L.map(this.mapRef.current, {
+					center: this.props.center,
+					zoom: this.props.zoom,
+					layers: [
+						L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+							attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+						}),
+					]
+				});
+				this.layerGroup = L.featureGroup().addTo(this.map);
+		      	this.drawMarkers(this.props.markers);
+		 	});
+		}, 100);
+
 	}
 
 	drawMarkers(items = []){

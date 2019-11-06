@@ -126,6 +126,7 @@ Okay lets go
 								<Section>
 									<Chunk>
 										<Map
+											fitBounds={true}
 											style={{height: 350}}
 											cluster={true}
 											markers={AREAS.map((area, i)=>{

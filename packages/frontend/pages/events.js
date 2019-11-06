@@ -265,7 +265,6 @@ class Events extends React.Component {
 										<Chunk>
 											<Card>
 
-
 												<Map
 													cluster={false}
 													fitBounds={true}
@@ -274,7 +273,6 @@ class Events extends React.Component {
 														return {lat: event.latitude, lon: event.longitude}
 													})}
 													/>
-
 
 											</Card>
 											<Text color="hint">{JSON.stringify(this.state.coords)}</Text>
