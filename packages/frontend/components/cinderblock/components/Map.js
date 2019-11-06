@@ -13,7 +13,7 @@ class Map extends React.Component {
 
 	static defaultProps = {
         center: [0,0],
-        zoom: null
+        zoom: 1
     }
 
 	componentDidMount() {
@@ -60,7 +60,6 @@ class Map extends React.Component {
 		});
 
 		if(this.props.fitBounds && items.length > 0){
-			this.map.setZoom(null);
 			this.map.fitBounds( items.map( m => ([m.lat, m.lon]) )  );
 		}
 	}

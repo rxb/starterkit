@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
 	width: 'auto',
 	flex: 1,
 	flexBasis: 0,
+	minWidth: 0
 },
 
 'flex-item--firstChild': {
@@ -55,7 +56,6 @@ const styles = StyleSheet.create({
 'flex--row__flex-item': {
 	paddingLeft: base,
 	minHeight: '-webkit-min-content',
-	minWidth: 0
 },
 
 

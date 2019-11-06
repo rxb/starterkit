@@ -64,7 +64,7 @@ const EventForm = withFormState((props) => {
 	return(
 		<form autocomplete="off">
 			<Chunk>
-				<Flex direction="column" switchDirection="large">
+				<Flex direction="column" switchDirection="medium">
 					<FlexItem>
 						<TextInput
 							id="url"
