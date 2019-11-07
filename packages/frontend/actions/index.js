@@ -128,6 +128,13 @@ export const fetchEvents = (data) => ({
 		method: 'GET',
  	}
 });
+export const fetchLocalEvents = (data) => ({
+	[RSAA]: {
+		types: ["FETCH_LOCAL_EVENTS", "FETCH_LOCAL_EVENTS_SUCCESS", "FETCH_LOCAL_EVENTS_FAILURE"],
+		endpoint: `${apiHost}events?${querystring.stringify(data)}`,
+		method: 'GET',
+ 	}
+});
 
 export const createEvent = (data) => ({
 	[RSAA]: {

@@ -1,21 +1,40 @@
 import{
-  parseFeathersError
+  parseFeathersError,
+  convertArrayToObject
 } from './utils.js'
 
 const startState = {
   items: [],
+  itemsById: {},
+  itemIds: [],
+  localItemIds: [],
   error: {},
   loading: false
 };
 
-let newState;
+let newState, items;
 
 const events = (state = startState, action) => {
   switch (action.type) {
     case 'FETCH_EVENTS':
-      return {...state, items: [], loading: true};
+    case 'FETCH_LOCAL_EVENTS':
+      return {...state,  loading: true};
     case 'FETCH_EVENTS_SUCCESS':
-      return {...state, items: action.payload.data, loading: false};
+      items = action.payload.data;
+      return {
+        ...state,
+        itemIds: items.map( item => item.id ),
+        itemsById: {...state.itemsById, ...convertArrayToObject(items, "id")},
+        loading: false
+      };
+    case 'FETCH_LOCAL_EVENTS_SUCCESS':
+      items = action.payload.data;
+      return {
+        ...state,
+        localItemIds: items.map( item => item.id ),
+        itemsById: {...state.itemsById, ...convertArrayToObject(items, "id")},
+        loading: false
+      };
 
     // CREATE
     case 'CREATE_EVENT':

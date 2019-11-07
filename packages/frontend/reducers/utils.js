@@ -23,3 +23,13 @@ export const parseFeathersError = (error) => {
   }
   return error;
 }
+
+export const convertArrayToObject = (array, key) => {
+	const initialValue = {};
+	return array.reduce((obj, item) => {
+		return {
+		  ...obj,
+		  [item[key]]: item,
+		};
+	}, initialValue);
+}

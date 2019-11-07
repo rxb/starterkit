@@ -9,7 +9,8 @@ import {
 	addPrompt,
 	addToast,
 	createEvent,
-	fetchEvents
+	fetchEvents,
+	fetchLocalEvents
 } from '../actions';
 
 
@@ -117,7 +118,8 @@ class Events extends React.Component {
 			this.setState({test: 'whatever'})
 		});
 
-		this.props.fetchEvents({radius: 80, latitude: 40.7128, longitude: -74.0060});
+		this.props.fetchEvents();
+		this.props.fetchLocalEvents({radius: 80, latitude: 40.7128, longitude: -74.0060});
 	}
 
 	componentDidUpdate(prevProps){
@@ -153,6 +155,8 @@ class Events extends React.Component {
 		const {
 			createEvent,
 			events,
+			allEvents,
+			localEvents,
 			user,
 		} = this.props;
 
@@ -224,7 +228,7 @@ class Events extends React.Component {
 											  				target="_blank"
 											  				href={event.url}
 											  				>
-													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')} {event.latitude} {event.longitude}</Text>
+													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')}</Text>
 													  		<Text type="big" weight="strong">{event.title}</Text>
 													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
 
@@ -252,7 +256,7 @@ class Events extends React.Component {
 												  	</Chunk>
 											  	);
 											}}
-											items={events.items}
+											items={localEvents.items}
 											/>
 
 									</Section>
@@ -260,6 +264,45 @@ class Events extends React.Component {
 										<Chunk>
 											<Text type="sectionHead">Events around the world!</Text>
 										</Chunk>
+											<List
+											renderItem={(event, i)=>{
+											  	return (
+											  		<Chunk key={i}>
+											  			<Link
+											  				target="_blank"
+											  				href={event.url}
+											  				>
+													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')}</Text>
+													  		<Text type="big" weight="strong">{event.title}</Text>
+													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
+
+													  		{/* apparently you can inline images in text now woo */}
+													  		<Text
+													  			type="small"
+													  			color="hint"
+													  			numberOfLines={1}
+													  			ellipsizeMode="tail"
+													  			>
+														  		<Image
+														  			source={`https://www.google.com/s2/favicons?domain=${event.url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)[1]}`}
+														  			style={{
+														  				width: 13,
+														  				height: 13,
+														  				resizeMode: 'contain',
+														  				flex: 1,
+														  				marginRight: 4,
+														  			}}
+
+														  			/>
+															  		{event.url}
+													  		</Text>
+													  	</Link>
+												  	</Chunk>
+											  	);
+											}}
+											items={allEvents.items}
+											/>
+
 									</Section>
 								</FlexItem>
 								<FlexItem growFactor={2}>
@@ -271,7 +314,7 @@ class Events extends React.Component {
 													cluster={false}
 													fitBounds={true}
 													style={{height: 300}}
-													markers={events.items.map((event, i)=>{
+													markers={localEvents.items.map((event, i)=>{
 														return {lat: event.latitude, lon: event.longitude}
 													})}
 													/>
@@ -299,7 +342,15 @@ class Events extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 	return ({
 		user: state.user,
-		events: state.events
+		events: state.events,
+		allEvents: {
+			items: state.events.itemIds.map( id => state.events.itemsById[id] ),
+			loading: state.events.loading
+		},
+		localEvents: {
+			items: state.events.localItemIds.map( id => state.events.itemsById[id] ),
+			loading: state.events.loading
+		}
 	});
 }
 
@@ -307,7 +358,8 @@ const actionCreators = {
 	addPrompt,
 	addToast,
 	createEvent,
-	fetchEvents
+	fetchEvents,
+	fetchLocalEvents,
 };
 
 export default connect(

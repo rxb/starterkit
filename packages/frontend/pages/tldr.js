@@ -116,6 +116,9 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 												            			<Text >{props.children}</Text>
 												            		</Chunk>),
 												                },
+												                ul: {
+												                	component: (props) => (<Chunk><ul style={{margin: 0, paddingLeft: 18}}>{props.children}</ul></Chunk>)
+												                },
 												                li: {
 												                	component: (props) => (<li>{props.children}</li>)
 												                }
