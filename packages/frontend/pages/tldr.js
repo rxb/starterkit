@@ -171,7 +171,17 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 											renderItem={(item, i)=>{
 												return(
 													<Chunk key={i}>
-														{item}
+														<Flex>
+															<FlexItem>
+																{item}
+															</FlexItem>
+															<FlexItem shrink>
+																<Icon
+																	shape="ChevronRight"
+																	color={swatches.textHint}
+																	/>
+															</FlexItem>
+														</Flex>
 													</Chunk>
 												);
 											}}

@@ -69,7 +69,7 @@ export const METRICS = {
 	get pseudoLineHeight(){
 		return 6
 	},
-	borderRadius: 6,
+	borderRadius: 4,
 	cardBorderRadius: 8,
 	fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
 }

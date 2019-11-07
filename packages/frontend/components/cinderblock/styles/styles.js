@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 13, /* this has something to do with lineheight */
 		borderRadius: borderRadius,
+		borderRadius: 500,
 		userSelect: 'none',
 		marginVertical: METRICS.pseudoLineHeight,
 		alignSelf: 'flex-start',
