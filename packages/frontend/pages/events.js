@@ -117,7 +117,7 @@ class Events extends React.Component {
 			this.setState({test: 'whatever'})
 		});
 
-		this.props.fetchEvents();
+		this.props.fetchEvents({radius: 80, latitude: 40.7128, longitude: -74.0060});
 	}
 
 	componentDidUpdate(prevProps){

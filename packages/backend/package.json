@@ -47,6 +47,7 @@
     "feathers-permissions": "^1.1.0",
     "feathers-sequelize": "^6.1.0",
     "fs-blob-store": "^5.2.1",
+    "geolib": "^3.1.0",
     "helmet": "^3.21.1",
     "multer": "^2.0.0-alpha.7",
     "node-geocoder": "^3.25.0",

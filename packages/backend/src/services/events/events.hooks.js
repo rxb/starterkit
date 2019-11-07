@@ -2,6 +2,7 @@ const KEYS = require('../../../keys');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const NodeGeocoder = require('node-geocoder');
+const geolib = require('geolib');
 
 const coords = {
   latitude: 40.726910472048125,
@@ -13,14 +14,37 @@ module.exports = {
     all: [],
     find: [
       (context) => {
-        // sorting is only find-relevant
-        // if you put it in other hooks, they get weird
+
+
+
         const { query = {} } = context.params;
+
+        // default sort by upcoming
         if(!query.$sort) {
           query.$sort = {
-            'createdAt': -1
+            'startDate': 1
           }
         }
+
+        // if radius, get bouding coordinates
+        if(query.radius){
+          const bounds = geolib.getBoundsOfDistance(
+              { latitude: query.latitude, longitude: query.longitude },
+              query.radius * 1000
+          );
+          query.latitude = {
+            $lt: bounds[1].latitude,
+            $gt: bounds[0].latitude
+          };
+          query.longitude = {
+            $lt: bounds[1].longitude,
+            $gt: bounds[0].longitude
+          };
+
+          // should never actually make it into queries
+          delete query.radius;
+        }
+
         context.params.query = query;
         return context;
       },
