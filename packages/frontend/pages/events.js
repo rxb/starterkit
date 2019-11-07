@@ -1,7 +1,11 @@
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head'
+
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
+
 
 //import { Map, Marker, Popup, TileLayer } from 'react-leaflet-universal'
 
@@ -272,9 +276,8 @@ class Events extends React.Component {
 											  				target="_blank"
 											  				href={event.url}
 											  				>
-													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')}</Text>
-													  		<Text type="big" weight="strong">{event.title}</Text>
-													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
+													  		<Text type="big" weight="strong">{event.city}</Text>
+													  		<Text type="small">{event.title} &middot; {dayjs(event.startDate).fromNow()}</Text>
 
 													  		{/* apparently you can inline images in text now woo */}
 													  		<Text
