@@ -2,7 +2,7 @@ import { StyleSheet } from '../primitives';
 import swatches from './swatches';
 import flexStyles from './flex';
 
-import { METRICS } from '../designConstants';
+import { METRICS, BREAKPOINT_SIZES} from '../designConstants';
 
 const {
 	base,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: space*.75,
 	},
 	bounds: {
-		maxWidth: 1000,
+		maxWidth: BREAKPOINT_SIZES.xlarge,
 		minWidth: 1,
 		marginHorizontal: 'auto',
 		width: '100%',
@@ -59,6 +59,19 @@ const styles = StyleSheet.create({
 		paddingTop: 0
 	},
 	*/
+
+	imageSnap: {
+		marginHorizontal: spaceSection * -1,
+		resizeMode: 'cover',
+		borderRadius: 6,
+	},
+
+	'imageSnap--atLarge': {
+		marginTop: spaceSection,
+		marginHorizontal: spaceSection,
+		marginBottom: spaceSection - space,
+		borderRadius: 0
+	},
 
 	// for sets of chunks with no possibility of sections
 	// basically, inside simple, small cards

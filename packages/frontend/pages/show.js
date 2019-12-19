@@ -29,6 +29,7 @@ import {
 	Icon,
 	Inline,
 	Image,
+	ImageSnap,
 	Label,
 	List,
 	Link,
@@ -185,11 +186,21 @@ class Show extends React.Component {
 					<meta property='og:image' content={this.props.show.photoUrl} />
 					<title>{this.props.show.title}</title>
 				</Head>
-				<Stripe image={show.photoUrl} style={{backgroundColor: '#eee'}}>
-				</Stripe>
+
+
+
+
+				{/*
+					<Stripe image={show.photoUrl} style={{backgroundColor: '#eee'}}>
+					</Stripe>
+				*/}
+
 				<Stripe>
 					<Bounds>
 						<Sections>
+							<ImageSnap
+								image={show.photoUrl}
+								/>
 							<Section>
 								<View style={{
 									/*
@@ -201,6 +212,13 @@ class Show extends React.Component {
 										<FlexItem>
 											<Chunk>
 												<Text type="pageHead">{show.title}</Text>
+												<Text color="secondary">
+													United States &middot;
+													1998
+													{ show.genres.map((genre, i)=>(
+														<Fragment> &middot; {genre}</Fragment>
+													))}
+												</Text>
 											</Chunk>
 										</FlexItem>
 										<FlexItem
@@ -210,7 +228,7 @@ class Show extends React.Component {
 											<Chunk>
 												<Link
 													href={{pathname:'/showedit', query: {showId: show.id}}}
-													style={{alignItems: 'center', backgroundColor: swatches.shade}}
+													style={{alignItems: 'center', justifyContent: 'center', backgroundColor: swatches.notwhite, borderRadius: 1000, width: 64, height: 64}}
 													>
 													<Icon
 														shape="Edit"
@@ -227,15 +245,7 @@ class Show extends React.Component {
 								</View>
 							</Section>
 							<Section>
-								<Chunk>
-									<Text color="secondary">
-										United States &middot;
-										1998
-										{ show.genres.map((genre, i)=>(
-											<Fragment> &middot; {genre}</Fragment>
-										))}
-									</Text>
-								</Chunk>
+
 								<Chunk>
 									<Text>{show.description}</Text>
 								</Chunk>

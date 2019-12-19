@@ -188,6 +188,7 @@ class Events extends React.Component {
 							<Section type="pageHead">
 								<Chunk>
 									<Text type="sectionHead">Events near New York</Text>
+									{/* all events near you + a planning thread */}
 								</Chunk>
 							</Section>
 
@@ -267,6 +268,7 @@ class Events extends React.Component {
 									<Section>
 										<Chunk>
 											<Text type="sectionHead">Events around the world!</Text>
+											{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
 										</Chunk>
 											<List
 											renderItem={(event, i)=>{
@@ -276,7 +278,7 @@ class Events extends React.Component {
 											  				target="_blank"
 											  				href={event.url}
 											  				>
-													  		<Text type="big" weight="strong">{event.city}</Text>
+													  		<Text type="big" weight="strong">{event.city}, {event.sourceData.location.address.addressRegion}</Text>
 													  		<Text type="small">{event.title} &middot; {dayjs(event.startDate).fromNow()}</Text>
 
 													  		{/* apparently you can inline images in text now woo */}
@@ -309,6 +311,15 @@ class Events extends React.Component {
 									</Section>
 								</FlexItem>
 								<FlexItem growFactor={2}>
+									<Section>
+										<Chunk>
+											<Text>About this subreddit</Text>
+										</Chunk>
+										<Chunk>
+											<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory.</Text>
+										</Chunk>
+									</Section>
+
 									<Section>
 										<Chunk>
 											<Card>

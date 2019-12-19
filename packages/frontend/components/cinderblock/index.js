@@ -12,6 +12,7 @@ import Flex from './components/Flex';
 import FlexItem from './components/FlexItem';
 import Header from './components/Header';
 import Icon from './components/Icon';
+import ImageSnap from './components/ImageSnap';
 import Inline from './components/Inline';
 import Touch from './components/Touch';
 import Label from './components/Label';
@@ -52,6 +53,7 @@ export {
 	Icon,
 	Inline,
 	Image,
+	ImageSnap,
 	Touch,
 	Label,
 	Link,
