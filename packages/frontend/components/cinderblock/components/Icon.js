@@ -21,6 +21,10 @@ const Icon = (props) => {
 		const pixelSize = SIZES[size];
 
 		const ThisIcon = Icons[shape];
+
+
+
+
 		return <ThisIcon color={color} size={pixelSize} {...other} />;
 
 		//return <View />;

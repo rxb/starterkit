@@ -3,19 +3,7 @@ import PropTypes from 'prop-types';
 import { View } from '../primitives';
 import { WithMatchMedia } from './WithMatchMedia';
 import styles from '../styles/styles';
-import { BREAKPOINTS } from '../designConstants';
-
-// find current values for largest breakpoint with a match in media[*]
-const findWidestActiveValue = (values, media) => {
-	let valuesMap = (typeof values === 'object') ? values : { small: values }
-	let activeValue = valuesMap['small'];
-	BREAKPOINTS.forEach( BP => {
-		if( valuesMap[BP] && media[BP] ){
-			activeValue = valuesMap[BP];
-		}
-	});
-	return activeValue;
-}
+import {findWidestActiveValue} from '../componentUtils';
 
 // combine styles
 const combineStyles = (styleKeys) => styleKeys.map((key, i)=>{

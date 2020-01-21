@@ -12,6 +12,12 @@ const swatches = {
 	error: 'red',
 	border: 'rgba(0,0,0,.15)',
 	backgroundDark: '#222',
-	backgroundShade: '#fafafa'
+	backgroundShade: '#fafafa',
+	get buttonPrimaryInk() {
+		return this.textPrimaryInverted
+	},
+	get buttonSecondaryInk() {
+		return this.tint
+	}
 }
 export default swatches;

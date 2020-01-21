@@ -23,8 +23,13 @@ const styles = StyleSheet.create({
 	'stripe--atMedium': {
 		paddingHorizontal: space*.75,
 	},
+	/*
+	'stripe--atLarge': {
+		paddingHorizontal: space*1.5,
+	},
+	*/
 	bounds: {
-		maxWidth: BREAKPOINT_SIZES.xlarge,
+		maxWidth: 1200,
 		minWidth: 1,
 		marginHorizontal: 'auto',
 		width: '100%',
@@ -60,17 +65,19 @@ const styles = StyleSheet.create({
 	},
 	*/
 
+/*
 	imageSnap: {
 		marginHorizontal: spaceSection * -1,
 		resizeMode: 'cover',
-		borderRadius: 6,
+		borderRadius: 0,
 	},
+*/
 
-	'imageSnap--atLarge': {
-		marginTop: spaceSection,
+	'imageSnap': {
+		marginTop: space,
 		marginHorizontal: spaceSection,
 		marginBottom: spaceSection - space,
-		borderRadius: 0
+		borderRadius: 6
 	},
 
 	// for sets of chunks with no possibility of sections
@@ -193,7 +200,7 @@ const styles = StyleSheet.create({
 
 	// BUTTON
 	button: {
-		paddingHorizontal: 16,
+		paddingHorizontal: 13,
 		paddingVertical: 13, /* this has something to do with lineheight */
 		borderRadius: borderRadius,
 		borderRadius: 500,
@@ -203,7 +210,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 	},
-	'button--fullWidth': {
+	'button--shrink': {},
+	'button--iconOnly': {},
+	'button--grow': {
 		alignSelf: 'stretch'
 	},
 	'button--primary': {
@@ -215,13 +224,14 @@ const styles = StyleSheet.create({
 	buttonText: {
 		textAlign: 'center',
 		fontWeight: '600',
-		whiteSpace: 'nowrap'
+		whiteSpace: 'nowrap',
+		marginHorizontal: 3
 	},
 	'buttonText--primary': {
-		color: '#ffffff',
+		color: swatches.buttonPrimaryInk,
 	},
 	'buttonText--secondary': {
-		color: swatches.tint,
+		color: swatches.buttonSecondaryInk,
 	},
 
 
@@ -457,14 +467,16 @@ const styles = StyleSheet.create({
 		fontSize: METRICS.pageHeadSize,
 		lineHeight: METRICS.pageHeadLineHeight,
 		fontWeight: '700',
-		letterSpacing: '-.001em'
+		letterSpacing: '-.001em',
+		marginVertical: METRICS.pseudoLineHeight
 	},
 	textHero: {
 		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
 		fontSize: METRICS.heroSize,
 		lineHeight: METRICS.heroLineHeight,
 		fontWeight: '700',
-		letterSpacing: '-.001em'
+		letterSpacing: '-.001em',
+		marginVertical: METRICS.pseudoLineHeight
 	},
 	textLabel: {
 		marginTop: 4,

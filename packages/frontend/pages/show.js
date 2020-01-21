@@ -226,19 +226,16 @@ class Show extends React.Component {
 											style={{justifyContent: 'flex-end'}}
 											>
 											<Chunk>
-												<Link
+												<Button
 													href={{pathname:'/showedit', query: {showId: show.id}}}
-													style={{alignItems: 'center', justifyContent: 'center', backgroundColor: swatches.notwhite, borderRadius: 1000, width: 64, height: 64}}
-													>
-													<Icon
-														shape="Edit"
-														color={swatches.tint}
-														/>
-													<Text
-														color="tint"
-														type="micro"
-														>EDIT</Text>
-												</Link>
+													shape="Edit"
+													label="Edit"
+													color="secondary"
+													variant={{
+														small: 'iconOnly',
+														large: 'shrink'
+													}}
+													/>
 											</Chunk>
 										</FlexItem>
 									</Flex>

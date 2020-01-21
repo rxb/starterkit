@@ -198,7 +198,7 @@ class Page extends React.Component {
 					{children}
 				</View>
 				<Stripe style={{
-					backgroundColor: swatches.backgroundDark,
+					//backgroundColor: swatches.backgroundDark,
 					flex: 0,
 					minHeight: 0,
 					flexBasis: 'auto',
@@ -206,7 +206,9 @@ class Page extends React.Component {
 					<Sections>
 						<Section>
 							<Chunk>
-								<Text inverted color="secondary">This is the footer</Text>
+								<Text color="secondary">Help</Text>
+								<Text color="secondary">Privacy</Text>
+								<Text color="secondary">This is the footer</Text>
 							</Chunk>
 						</Section>
 					</Sections>

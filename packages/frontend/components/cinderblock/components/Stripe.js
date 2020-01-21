@@ -32,7 +32,8 @@ const Stripe = (props) => {
 
 	const styleKeys = [
 		'stripe',
-		...[ (media && media.medium) ? 'stripe--atMedium' : undefined]
+		...[ (media && media.medium) ? 'stripe--atMedium' : undefined],
+		/*...[ (media && media.large) ? 'stripe--atLarge' : undefined]*/
 	];
 	const combinedStyles = styleKeys.map((key, i)=>{
 		return styles[key];
