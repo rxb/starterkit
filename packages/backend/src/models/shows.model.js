@@ -13,7 +13,7 @@ module.exports = function (app) {
       autoIncrement: true
     },
     title: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       defaultValue: '',
       allowNull: false,
       validate: {
@@ -23,7 +23,7 @@ module.exports = function (app) {
       }
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true
     },
     genres: {
@@ -31,7 +31,7 @@ module.exports = function (app) {
       allowNull: true
     },
     photoId: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true
     },
     photoUrl: {

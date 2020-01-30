@@ -12,7 +12,7 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('ShowComments', [
+    return queryInterface.bulkInsert('users', [
 
       {
         "redditId" : null,
@@ -48,6 +48,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-    return queryInterface.bulkDelete('ShowComments', null, {});
+    return queryInterface.bulkDelete('users', null, {});
   }
 };

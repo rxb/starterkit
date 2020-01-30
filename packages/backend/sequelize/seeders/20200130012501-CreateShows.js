@@ -12,7 +12,7 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('Shows', [
+    return queryInterface.bulkInsert('shows', [
       {
         "genres" : ["Sitcom"],
         "title" : "What's updog?",
@@ -45,7 +45,7 @@ module.exports = {
         "photoId" : "f4fe7aab5490eead40a9b52f96387b3bfceb0d46239508ccc7be0abea1ccec81.jpeg",
         "description" : "Neigh. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. It's a real horse situation!"
       }
-    ], {});
+    ], {}, {genres: { type: new Sequelize.JSONB() }});
   },
 
   down: (queryInterface, Sequelize) => {
@@ -56,6 +56,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-    return queryInterface.bulkDelete('ShowComments', null, {});
+    return queryInterface.bulkDelete('shows', null, {});
   }
 };

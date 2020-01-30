@@ -54,5 +54,5 @@
       }
     }
   },
-  "postgres": "postgres://starterkit:starterkit@localhost:5432/starterkit"
+  "postgres": "postgres://richard@localhost:5432/starterkit"
 }

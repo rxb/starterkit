@@ -12,9 +12,9 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('ShowComments', [
+    return queryInterface.bulkInsert('shows_tags', [
       {
-        "tagId" : 5,
+        "tagId" : 1,
         "showId" : 1,
         createdAt: Sequelize.fn('NOW'),
         updatedAt: Sequelize.fn('NOW')
@@ -26,31 +26,31 @@ module.exports = {
         updatedAt: Sequelize.fn('NOW')
       },
       {
-        "tagId" : 4,
+        "tagId" : 2,
         "showId" : 2,
         createdAt: Sequelize.fn('NOW'),
         updatedAt: Sequelize.fn('NOW')
       },
       {
+        "tagId" : 1,
+        "showId" : 3,
+        createdAt: Sequelize.fn('NOW'),
+        updatedAt: Sequelize.fn('NOW')
+      },
+      {
+        "tagId" : 2,
+        "showId" : 3,
+        createdAt: Sequelize.fn('NOW'),
+        updatedAt: Sequelize.fn('NOW')
+      },
+      {
         "tagId" : 3,
-        "showId" : 3,
-        createdAt: Sequelize.fn('NOW'),
-        updatedAt: Sequelize.fn('NOW')
-      },
-      {
-        "tagId" : 4,
-        "showId" : 3,
-        createdAt: Sequelize.fn('NOW'),
-        updatedAt: Sequelize.fn('NOW')
-      },
-      {
-        "tagId" : 4,
         "showId" : 4,
         createdAt: Sequelize.fn('NOW'),
         updatedAt: Sequelize.fn('NOW')
       },
       {
-        "tagId" : 5,
+        "tagId" : 1,
         "showId" : 4,
         createdAt: Sequelize.fn('NOW'),
         updatedAt: Sequelize.fn('NOW')
@@ -66,6 +66,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-    return queryInterface.bulkDelete('ShowComments', null, {});
+    return queryInterface.bulkDelete('shows_tags', null, {});
   }
 };

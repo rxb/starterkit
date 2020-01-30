@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('events', {
+    return queryInterface.createTable('users', {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -17,29 +17,29 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
       password: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
       name: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
       photoId: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
       facebookId: {
-        type: DataTypes.BIGINT,
+        type: Sequelize.BIGINT,
       },
       googleId: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
       redditId: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('events');
+    return queryInterface.dropTable('users');
   }
 };

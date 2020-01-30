@@ -1,7 +1,8 @@
 // if node modules are written with advanced JS, you have to transpile (babelize) them
-const withTM = require('next-transpile-modules');
+// const withTM = require('next-transpile-modules');
 
-module.exports = withTM({
+//module.exports = withTM({
+module.exports = {
 	webpack: (config) => {
 
 		const webpack = require('webpack')
@@ -28,9 +29,8 @@ module.exports = withTM({
 	    };
 	    */
 
-
 		return config
 	},
 
 	//transpileModules: ['rn-markdown']
-});
+};

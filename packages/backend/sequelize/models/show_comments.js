@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var ShowComments = sequelize.define('ShowComments', {
+  var ShowComments = sequelize.define('show_comments', {
     body: DataTypes.TEXT,
     authorId: DataTypes.INTEGER,
     showId: DataTypes.INTEGER

@@ -12,7 +12,7 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('ShowComments', [
+    return queryInterface.bulkInsert('tags', [
       {
         "label" : "Sitcom",
         createdAt: Sequelize.fn('NOW'),
@@ -28,8 +28,6 @@ module.exports = {
         createdAt: Sequelize.fn('NOW'),
         updatedAt: Sequelize.fn('NOW')
       }
-
-      }
     ], {});
   },
 
@@ -41,6 +39,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-    return queryInterface.bulkDelete('ShowComments', null, {});
+    return queryInterface.bulkDelete('tags', null, {});
   }
 };

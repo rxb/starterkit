@@ -12,7 +12,7 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('ShowComments', [
+    return queryInterface.bulkInsert('show_comments', [
       {
         "body" : "Let's do this",
         "showId" : 1,
@@ -94,6 +94,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-    return queryInterface.bulkDelete('ShowComments', null, {});
+    return queryInterface.bulkDelete('show_comments', null, {});
   }
 };
