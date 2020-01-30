@@ -18,6 +18,27 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      sourceData: {
+        type: Sequelize.JSONB
+      },
+      startDate: {
+        type: Sequelize.DATE
+      },
+      url: {
+        type: Sequelize.TEXT
+      },
+      city: {
+        type: Sequelize.TEXT
+      },
+      locationName: {
+        type: Sequelize.TEXT
+      },
+      latitude: {
+        type: Sequelize.FLOAT
+      },
+      longitude: {
+        type: Sequelize.FLOAT
       }
     });
   },

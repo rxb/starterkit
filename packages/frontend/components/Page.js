@@ -203,15 +203,18 @@ class Page extends React.Component {
 					minHeight: 0,
 					flexBasis: 'auto',
 				}}>
-					<Sections>
-						<Section>
-							<Chunk>
-								<Text color="secondary">Help</Text>
-								<Text color="secondary">Privacy</Text>
-								<Text color="secondary">This is the footer</Text>
-							</Chunk>
-						</Section>
-					</Sections>
+					<Bounds>
+
+						<Sections>
+							<Section>
+								<Chunk>
+									<Text color="secondary">Help</Text>
+									<Text color="secondary">Privacy</Text>
+									<Text color="secondary">This is the footer</Text>
+								</Chunk>
+							</Section>
+						</Sections>
+					</Bounds>
 				</Stripe>
 
 				<Modal

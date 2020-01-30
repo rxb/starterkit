@@ -229,7 +229,7 @@ class Show extends React.Component {
 												<Button
 													href={{pathname:'/showedit', query: {showId: show.id}}}
 													shape="Edit"
-													label="Edit"
+													label="Edit show"
 													color="secondary"
 													variant={{
 														small: 'iconOnly',

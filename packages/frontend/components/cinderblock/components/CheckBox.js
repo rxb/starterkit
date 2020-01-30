@@ -71,7 +71,7 @@ class CheckBox extends React.Component {
 		} = this.props;
 
 		return (
-			<Inline style={[styles.pseudoLineHeight, {justifyContent: 'center'}]}>
+			<Inline style={[styles.pseudoLineHeight, {alignItems: 'center'}]}>
 				<CheckBoxWeb
 					ref={ ref => this.checkbox = ref}
 					style={{

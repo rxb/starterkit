@@ -22,6 +22,7 @@ const Button = (props) => {
 			media,
 			isLoading = false,
 			width,
+			style,
 			...other
 		} = props;
 
@@ -67,7 +68,7 @@ const Button = (props) => {
 
 		return(
 			<ActionComponent
-				style={[styles.button, styles[`button--${color}`], styles[`button--${currentVariant}`]]}
+				style={[styles.button, styles[`button--${color}`], styles[`button--${currentVariant}`], style]}
 				{...actionComponentProps}
 				{...other}
 				>
@@ -77,7 +78,7 @@ const Button = (props) => {
 						{ shape &&
 							<Icon shape={shape} color={swatches[inkColor]} style={{marginLeft: 3, marginRight: 3}} />
 						}
-						{ currentVariant != 'iconOnly' &&
+						{ label && currentVariant != 'iconOnly' &&
 							<Text style={[styles.text, styles.buttonText, styles[`buttonText--${color}`]]}>{label}</Text>
 						}
 					</View>

@@ -5,7 +5,7 @@ const swatches = {
 	textPrimaryInverted: '#ffffff',
 	textSecondaryInverted: 'rgba(255,255,255,0.7)',
 	textHintInverted: 'rgba(255,255,255,0.5)',
-	shade: 'rgba(0,0,0,.07)',
+	shade: 'rgba(0,0,0,.06)',
 	notwhite: 'rgba(0,0,0,.015)',
 	tint: 'rgb(0,122,255)',
 	focus: 'rgba(0,122,255,.25)',

@@ -53,9 +53,6 @@ class Tldr extends React.Component {
 
 		const  markdownContent = `
 
-# Buster Bluth
-
-*Lorem ipsum dolor sit amet, consectetur adipiscing elit*
 
 * **Excepteur sint occaecat cupidatat**
 Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -76,7 +73,7 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 					<Bounds>
 						<Sections>
 
-							<Flex direction="column" switchDirection="large">
+							<Flex direction="column" switchDirection="xlarge">
 
 								<FlexItem growFactor={5}>
 
@@ -84,13 +81,26 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 
 										<Chunk>
 											<Card style={{
-												borderWidth: 0,
+												/*
 												borderTopWidth: 12,
 												borderTopColor: 'blue',
 												borderTopStyle: 'solid',
+												*/
+												borderWidth: 0,
 												shadowRadius: 16,
-												shadowColor: 'rgba(0,0,0,.15)'
+												shadowColor: 'rgba(0,0,0,.15)',
+												borderRadius: 12
 											}}>
+											<Stripe style={{backgroundColor: swatches.tint}}>
+												<Section>
+													<Chunk>
+														<Text type="pageHead" inverted>Buster Bluth</Text>
+														<Text inverted>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Text>
+													</Chunk>
+												</Section>
+											</Stripe>
+											<Stripe>
+
 												<Section>
 
 													<Markdown
@@ -113,7 +123,7 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 												            	},
 												                p: {
 												                    component: (props) => (<Chunk>
-												            			<Text >{props.children}</Text>
+												            			<Text>{props.children}</Text>
 												            		</Chunk>),
 												                },
 												                ul: {
@@ -126,7 +136,7 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 												        }}
 														>{markdownContent}</Markdown>
 												</Section>
-
+												</Stripe>
 											</Card>
 
 										</Chunk>
@@ -138,17 +148,28 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 										<Chunk>
 											<Flex>
 												<FlexItem>
-													<Button
-														label="up / down"
-														width="full"
-														color="secondary"
-														/>
+													<Inline style={{flexWrap: 'noWrap', flex: 1}}>
+														<Button
+															label="3.1k"
+															width="full"
+															color="secondary"
+															shape="ArrowUp"
+															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1}}
+															/>
+														<Button
+															label="542"
+															width="full"
+															color="secondary"
+															shape="ArrowDown"
+															style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
+															/>
+													</Inline>
 												</FlexItem>
 												<FlexItem shrink>
 													<Inline style={{flexWrap: 'noWrap'}}>
-														<Button label="a" color="secondary" />
-														<Button label="b" color="secondary" />
-														<Button label="c" color="secondary" />
+														<Button shape="Edit3" color="secondary" />
+														<Button shape="GitPullRequest" color="secondary" />
+														<Button shape="Bookmark" color="secondary" />
 													</Inline>
 												</FlexItem>
 											</Flex>
@@ -194,6 +215,12 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 								</FlexItem>
 							</Flex>
 
+					</Sections>
+					</Bounds>
+				</Stripe>
+				<Stripe>
+					<Bounds>
+						<Sections>
 
 							<Section>
 								<Chunk>
