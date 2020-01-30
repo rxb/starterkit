@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 	},
 	*/
 	bounds: {
-		maxWidth: 1200,
+		maxWidth: 1100,
 		minWidth: 1,
 		marginHorizontal: 'auto',
 		width: '100%',

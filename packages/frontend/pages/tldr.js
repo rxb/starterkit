@@ -73,9 +73,9 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 					<Bounds>
 						<Sections>
 
-							<Flex direction="column" switchDirection="xlarge">
+							<Flex direction="column" switchDirection="large">
 
-								<FlexItem growFactor={5}>
+								<FlexItem growFactor={1}>
 
 									<Section>
 
@@ -143,21 +143,19 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 									</Section>
 
 								</FlexItem>
-								<FlexItem growFactor={3}>
+								<FlexItem growFactor={0} style={{flexBasis: 360}}>
 									<Section>
 										<Chunk>
 											<Flex>
 												<FlexItem>
 													<Inline style={{flexWrap: 'noWrap', flex: 1}}>
 														<Button
-															label="3.1k"
 															width="full"
 															color="secondary"
 															shape="ArrowUp"
 															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1}}
 															/>
 														<Button
-															label="542"
 															width="full"
 															color="secondary"
 															shape="ArrowDown"
