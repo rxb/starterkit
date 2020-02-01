@@ -89,16 +89,16 @@ class Hello extends React.Component {
 		this.toggleModal = this.toggleModal.bind(this);
 	}
 
+	toggleModal() {
+		this.setState({modalVisible: !this.state.modalVisible})
+	}
+
 	static async getInitialProps(ctx){
 		return {}
 	}
 
 	componentDidMount(){
 		this.props.fetchShows();
-	}
-
-	toggleModal() {
-		this.setState({modalVisible: !this.state.modalVisible})
 	}
 
 

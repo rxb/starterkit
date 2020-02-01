@@ -7,7 +7,7 @@ const swatches = {
 	textHintInverted: 'rgba(255,255,255,0.5)',
 	shade: 'rgba(0,0,0,.06)',
 	notwhite: 'rgba(0,0,0,.015)',
-	tint: 'rgb(0,122,255)',
+	tint: '#4353ff',
 	focus: 'rgba(0,122,255,.25)',
 	error: 'red',
 	border: 'rgba(0,0,0,.15)',

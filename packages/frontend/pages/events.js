@@ -58,6 +58,21 @@ import AREAS from './areas';
 
 const EventForm = withFormState((props) => {
 
+	/*
+
+	Add events from
+		Facebook,
+		Meetup,
+		Eventbrite,
+		Splashthat
+		Patch,
+		Evensi.us,
+
+
+	(other event sites might work too... put the link in and give it a try!)
+
+	*/
+
 	const {
 		getFieldValue,
 		setFieldValue,
@@ -68,27 +83,25 @@ const EventForm = withFormState((props) => {
 
 	return(
 		<form autocomplete="off">
-			<Chunk>
-				<Flex direction="column" switchDirection="medium">
-					<FlexItem>
-						<TextInput
-							id="url"
-							value={getFieldValue('url')}
-							onChange={e => setFieldValue('url', e.target.value)}
-							placeholder="URL of the event"
-							autoComplete="whatever"
-							/>
-						<FieldError error={fieldErrors.url} />
-					</FlexItem>
-					<FlexItem shrink>
-						<Button
-							onPress={handleSubmit}
-							label="Post Event"
-							isLoading={props.isLoading}
-							/>
-					</FlexItem>
-				</Flex>
-			</Chunk>
+			<LoadingBlock isLoading={props.isLoading}>
+				<Chunk>
+					<TextInput
+						id="url"
+						value={getFieldValue('url')}
+						onChange={e => setFieldValue('url', e.target.value)}
+						placeholder="Event URL"
+						autoComplete="whatever"
+						/>
+					<FieldError error={fieldErrors.url} />
+				</Chunk>
+				<Chunk>
+					<Button
+						onPress={handleSubmit}
+						label="Import event info"
+						isLoading={props.isLoading}
+						/>
+				</Chunk>
+			</LoadingBlock>
 		</form>
 	);
 });
@@ -100,12 +113,17 @@ class Events extends React.Component {
 		super(props);
 		this.state = {
 			events: [],
-			showPrompt: false,
 			user: {},
 			testEvent: {},
 			coords: {"latitude":0,"longitude":0},
-			test: 'test'
+			test: 'test',
+			modalVisible: false,
 		}
+		this.toggleModal = this.toggleModal.bind(this);
+	}
+
+	toggleModal() {
+		this.setState({modalVisible: !this.state.modalVisible})
 	}
 
 	componentDidMount(){
@@ -165,6 +183,9 @@ class Events extends React.Component {
 		} = this.props;
 
 		return (
+
+			<Fragment>
+
 			<Page>
 				<Head>
 					<meta property='og:title' content='Scratch' />
@@ -176,6 +197,7 @@ class Events extends React.Component {
 							<Section type="pageHead">
 								<Chunk>
 									<Text type="pageHead">/r/leanfire</Text>
+									<Text>New York, NY (Change location)</Text>
 								</Chunk>
 
 							</Section>
@@ -186,44 +208,20 @@ class Events extends React.Component {
 					<Bounds>
 						<Sections>
 							<Section type="pageHead">
-								<Chunk>
-									<Text type="sectionHead">Events near New York</Text>
-									{/* all events near you + a planning thread */}
-								</Chunk>
+					
 							</Section>
 
 
 							<Flex direction="column" switchDirection="large">
-								<FlexItem growFactor={3}>
+								<FlexItem growFactor={5}>
 									<Section>
 
-										{/*
-
-										Add events from
-											Facebook,
-											Meetup,
-											Eventbrite,
-											Splashthat
-											Patch,
-											Evensi.us,
 
 
-										(other event sites might work too... put the link in and give it a try!)
-
-										*/}
-
-										<EventForm
-											initialFields={{
-												url: ''
-											}}
-											fieldErrors={events.error.fieldErrors}
-											onSubmit={ (fields, context) => {
-												this.props.createEvent( fields );
-												context.resetFields();
-												return false;
-											}}
-											isLoading={events.loading}
-											/>
+										<Chunk>
+											<Text type="sectionHead">Upcoming events</Text>
+											{/* all events near you + a planning thread */}
+										</Chunk>
 
 										<List
 											renderItem={(event, i)=>{
@@ -310,8 +308,15 @@ class Events extends React.Component {
 
 									</Section>
 								</FlexItem>
-								<FlexItem growFactor={2}>
+								<FlexItem growFactor={3}>
 									<Section>
+										<Chunk>
+											<Button 
+												label="Post new event"
+												onPress={this.toggleModal}
+												width="full"
+												/>
+										</Chunk>
 										<Chunk>
 											<Text>About this subreddit</Text>
 										</Chunk>
@@ -347,7 +352,35 @@ class Events extends React.Component {
 				</Stripe>
 
 			</Page>
+				
+				<Modal
+					visible={this.state.modalVisible}
+					onRequestClose={this.toggleModal}
+					>
+					<Stripe>
+						<Section type="pageHead">
+							<Chunk>
+								<Text type="pageHead">Post new event</Text>
+								<Text>Import event info from Eventbrite, Facebook, Splashthat, Meetup, or many other event hosting sites</Text>
+							</Chunk>
+							<EventForm
+								initialFields={{
+									url: ''
+								}}
+								fieldErrors={events.error.fieldErrors}
+								onSubmit={ (fields, context) => {
+									this.props.createEvent( fields );
+									context.resetFields();
+									return false;
+								}}
+								isLoading={events.loading}
+								/>
 
+						</Section>
+					</Stripe>
+				</Modal>
+
+			</Fragment>
 		);
 	}
 }
