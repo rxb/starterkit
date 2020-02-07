@@ -69,7 +69,7 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 
 		return (
 			<Page>
-				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
+				<Stripe >
 					<Bounds>
 						<Sections>
 
@@ -216,7 +216,7 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 					</Sections>
 					</Bounds>
 				</Stripe>
-				<Stripe>
+				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 					<Bounds>
 						<Sections>
 
