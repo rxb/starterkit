@@ -34,7 +34,6 @@ class Touch extends React.Component {
 
 		return(
 				<Touchable
-					className="touch"
 					{...other}
 					onPressIn={()=>{
 						if(!noFeedback){
@@ -48,7 +47,7 @@ class Touch extends React.Component {
 					}}
 					>
 					<View
-						style={ [ stateStyle, style ]}
+						style={ [ styles.touch, stateStyle, style ]}
 						{...other}
 						>
 						<React.Fragment>

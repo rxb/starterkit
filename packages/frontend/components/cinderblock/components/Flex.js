@@ -59,7 +59,6 @@ const Flex = (props) => {
 			...[noGutters ? FLEX_NOGUTTER_CLASS : undefined],
 			...[justify ? `${FLEX_CLASS}--${justify}` : undefined],
 			...[align ? `${FLEX_ALIGN_CLASS}${align}` : undefined],
-
 		]
 
 		const combinedStyles = styleKeys.map((key, i)=>{
@@ -92,7 +91,7 @@ const Flex = (props) => {
 
 		return (
 			<View
-				style={combinedStyles}
+				style={[combinedStyles, style]}
 				media={media}
 				{...other}
 			>

@@ -54,6 +54,7 @@ import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
 import AREAS from './areas';
+import swatches from '../components/cinderblock/styles/swatches';
 
 
 const EventForm = withFormState((props) => {
@@ -127,7 +128,6 @@ class Events extends React.Component {
 	}
 
 	componentDidMount(){
-
 		const getPosition = function (options) {
 			return new Promise(function (resolve, reject) {
 				navigator.geolocation.getCurrentPosition(resolve, reject, options);
@@ -146,7 +146,6 @@ class Events extends React.Component {
 
 	componentDidUpdate(prevProps){
 
-
 		// watching for toastable errors
 		// still feel like maybe this could go with form?
 		const messages = {
@@ -157,7 +156,9 @@ class Events extends React.Component {
 		};
 		checkToastableErrors(this.props, prevProps, messages);
 
-
+		if(prevProps.events.itemsById !== this.props.events.itemsById && this.state.modalVisible){
+			this.toggleModal();
+		}
 
 	}
 
@@ -175,6 +176,7 @@ class Events extends React.Component {
 	render() {
 
 		const {
+			areas,
 			createEvent,
 			events,
 			allEvents,
@@ -265,45 +267,44 @@ class Events extends React.Component {
 									</Section>
 									<Section>
 										<Chunk>
-											<Text type="sectionHead">Events around the world!</Text>
+											<Text type="sectionHead">More /r/leanfire outposts</Text>
 											{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
 										</Chunk>
 											<List
-											renderItem={(event, i)=>{
+											variant={{
+												small: "scroll",
+												//small: "linear",
+												medium: "grid"
+											}}
+											itemsInRow={{
+												small: 1,
+												medium: 2,
+												large: 3
+											}}
+											renderItem={(area, i)=>{
 											  	return (
-											  		<Chunk key={i}>
-											  			<Link
-											  				target="_blank"
-											  				href={event.url}
-											  				>
-													  		<Text type="big" weight="strong">{event.city}, {event.sourceData.location.address.addressRegion}</Text>
-													  		<Text type="small">{event.title} &middot; {dayjs(event.startDate).fromNow()}</Text>
-
-													  		{/* apparently you can inline images in text now woo */}
-													  		<Text
-													  			type="small"
-													  			color="hint"
-													  			numberOfLines={1}
-													  			ellipsizeMode="tail"
-													  			>
-														  		<Image
-														  			source={`https://www.google.com/s2/favicons?domain=${event.url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)[1]}`}
-														  			style={{
-														  				width: 13,
-														  				height: 13,
-														  				resizeMode: 'contain',
-														  				flex: 1,
-														  				marginRight: 4,
-														  			}}
-
-														  			/>
-															  		{event.url}
-													  		</Text>
-													  	</Link>
-												  	</Chunk>
+														<Chunk>
+															<Card>
+																<Stripe style={{backgroundColor: swatches.tint}}>
+																<Section>
+																	<Chunk>
+																		<Text type="big" inverted>{area.hostname}</Text>
+																	</Chunk>
+																</Section>
+																</Stripe>
+															<Stripe>
+																<Section>
+																	<Chunk>
+																		<Text type="small">in 2 days: Let's hike to Mt Awesome</Text>
+																	</Chunk>
+																</Section>
+															</Stripe>
+																
+															</Card>
+														</Chunk>
 											  	);
 											}}
-											items={allEvents.items}
+											items={areas}
 											/>
 
 									</Section>
@@ -379,8 +380,8 @@ class Events extends React.Component {
 						</Section>
 					</Stripe>
 				</Modal>
-
 			</Fragment>
+
 		);
 	}
 }
@@ -397,7 +398,8 @@ const mapStateToProps = (state, ownProps) => {
 		localEvents: {
 			items: state.events.localItemIds.map( id => state.events.itemsById[id] ),
 			loading: state.events.loading
-		}
+		},
+		areas: AREAS.slice(0,32)
 	});
 }
 

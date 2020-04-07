@@ -41,7 +41,13 @@ const events = (state = startState, action) => {
       newState = {...state, loading: true}
       return newState;
     case 'CREATE_EVENT_SUCCESS':
-      return {...state, loading: false, items: [action.payload, ...newState.items] };
+      return {
+        ...state, 
+        loading: false, 
+        itemsById: {...state.itemsById, [action.payload.id]: action.payload}, 
+        localItemIds: [...state.localItemIds, action.payload.id],
+        itemIds: [...state.itemIds, action.payload.id],
+      };
     case 'CREATE_EVENT_FAILURE':
       newState = {...state, loading: false, error: parseFeathersError(action.payload.response)}
       return newState;

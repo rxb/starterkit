@@ -71,7 +71,6 @@ export default class MyDocument extends Document {
               -webkit-animation-name: autofillfocus;
           }
 
-
         `}}
       />,
       getStyleElement()

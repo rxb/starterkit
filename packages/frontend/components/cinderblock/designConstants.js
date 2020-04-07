@@ -49,7 +49,7 @@ export const METRICS = {
 		return this.bigSize * 1.4
 	},
 	get sectionHeadSize() {
-		return this.base * 1.55
+		return this.base * 1.5
 	},
 	get sectionHeadLineHeight() {
 		return this.sectionHeadSize * 1.25
@@ -61,7 +61,7 @@ export const METRICS = {
 		return this.pageHeadSize * 1.15
 	},
 	get heroSize() {
-		return this.base * 3.6
+		return this.base * 4
 	},
 	get heroLineHeight() {
 		return this.heroSize * 1.05

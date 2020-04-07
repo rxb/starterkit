@@ -198,6 +198,12 @@ const styles = StyleSheet.create({
 		pointerEvents: 'none'
 	},
 
+	// TOUCH
+	'touch': {
+		cursor: 'pointer'
+	},
+
+
 	// BUTTON
 	button: {
 		paddingHorizontal: 13,

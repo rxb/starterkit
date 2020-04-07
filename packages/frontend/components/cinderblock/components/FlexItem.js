@@ -21,6 +21,7 @@ const FlexItem = (props) => {
 			media,
 			justify,
 			align,
+			style,
 			...other
 		} = props;
 
@@ -39,7 +40,7 @@ const FlexItem = (props) => {
 
 		return (
 			<View
-				style={combinedStyles}
+				style={[combinedStyles, style]}
 				{...other}
 			>
 				{children}

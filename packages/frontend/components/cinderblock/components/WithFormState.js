@@ -45,7 +45,7 @@ const withFormState = ( WrappedComponent ) => {
 			this.setFieldValue = this.setFieldValue.bind(this);
 			this.setFieldState = this.setFieldState.bind(this);
 			this.handleSubmit = this.handleSubmit.bind(this);
-			this.handleChange = this.handleChange.bind(this);
+			this.handleChange = debounce(this.handleChange.bind(this), 100); // return debounced version
 			this.resetFields = this.resetFields.bind(this);
 		}
 
@@ -55,8 +55,7 @@ const withFormState = ( WrappedComponent ) => {
 
 		setFieldState(payload){
 			const fields = { ...this.state.fields, ...payload};
-			this.setState({fields: fields}/*, this.handleChange*/);
-			//debounce(this.handleChange, 10)();
+			//this.setState({fields: fields}, this.handleChange);
 		}
 
 		setFieldValue(key, value){
@@ -64,11 +63,9 @@ const withFormState = ( WrappedComponent ) => {
 			// it's because setstate isn't synchronous
 			// and the 3 calls are all using original state value
 			// set field
-
 			const fields = { ...this.state.fields};
 			fields[key] = value;
-			this.setState({fields: fields}/*, this.handleChange*/);
-			//debounce(this.handleChange, 10)();
+			this.setState({fields: fields}, this.handleChange);
 		}
 
 		getFieldValue(key){
@@ -83,7 +80,7 @@ const withFormState = ( WrappedComponent ) => {
 			// if elements outside the form need to know what's happening in the form
 			// as fields are being edited, before submit
 			// passed in because setState won't be set yet
-			//this.props.onChange(this.state.fields, this);
+			this.props.onChange(this.state.fields, this);
 		}
 
 		handleSubmit(){
