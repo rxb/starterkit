@@ -35,11 +35,13 @@ export default class MyDocument extends Document {
           }
 
           /* form nonstandard styles */
+          /*
           .input{
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
           }
+          */
 
           /* form focus */
           *:focus{

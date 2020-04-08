@@ -18,7 +18,7 @@ const findWidestActiveValue = (values, media) => {
 
 
 
-const Stripe = (props) => {
+const Stripe = WithMatchMedia((props) => {
 
 	const {
 		children,
@@ -26,6 +26,8 @@ const Stripe = (props) => {
 		imageHeight = {small: 225, medium: 325, large: 400, xlarge: 450},
 		media,
 		style,
+		forwardedRef,
+		...other
 	} = props
 
 	const imageHeightStyle = (image) ? {height: findWidestActiveValue(imageHeight, media)} : {};
@@ -43,8 +45,10 @@ const Stripe = (props) => {
 	if(image){
 		return(
 			<Image
+				ref={forwardedRef}
 				source={{uri: image}}
 				style={[combinedStyles, {resizeMode: 'cover'}, style, imageHeightStyle]}
+				{...other}
 				>
 				{children}
 			</Image>
@@ -52,12 +56,19 @@ const Stripe = (props) => {
 	}
 	else{
 		return(
-			<View style={[combinedStyles, style]}>
+			<View 
+				ref={forwardedRef}
+				style={[combinedStyles, style]} 
+				{...other}
+				>
 				{children}
 			</View>
 		);
 	}
+});
 
-}
+const WrappedComponent = React.forwardRef((props, ref) => {
+	return <Stripe {...props} forwardedRef={ref} />;
+});
 
-export default WithMatchMedia(Stripe);
+export default WrappedComponent;

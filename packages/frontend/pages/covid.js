@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
+const fetch = require('isomorphic-unfetch');
 
 import {
 	Bounds,
@@ -32,15 +33,23 @@ import {
 
 import acct from 'accounting';
 
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
+
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
 import swatches from '../components/cinderblock/styles/swatches';
 import {METRICS} from '../components/cinderblock/designConstants';
+import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedia';
 
-import getCovidData from './coviddata';
+//import getCovidData from './api/coviddata';
 
 const SearchForm = withFormState((props) => {
+	
+	const { onFocus = ()=>{} } = props;
+
 	return(
 		<form>
 			<Chunk>
@@ -49,9 +58,10 @@ const SearchForm = withFormState((props) => {
 					placeholder="Search locations"
 					value={props.getFieldValue('searchPlaces')}
 					onChangeText={text => props.setFieldValue('searchPlaces', text)}
+					onFocus={onFocus}
 					autoComplete="off"
-					style={{borderRadius: 4000}}
-					clearButtonMode="always"
+					style={{borderRadius: 4000, WebKitAppearance: 'searchfield'}}
+					keyboardType="search"
 					/>
 			</Chunk>
 			{/*
@@ -588,12 +598,12 @@ const Card7 = (props) => {
 	let rateDiffIcon = "ArrowRight";
 	let rateDiffLabel = "steady";
 	let rateDiffColor = "orange";
-	if(place.rateDiff.toFixed(1) < 0){
+	if(place.rateDiff && place.rateDiff.toFixed(1) < 0){
 		rateDiffIcon = "ArrowUp";
 		rateDiffLabel = "faster";	
 		rateDiffColor = "red";
 	}
-	else if(place.rateDiff.toFixed(1) > 0){
+	else if(place.rateDiff && place.rateDiff.toFixed(1) > 0){
 		rateDiffIcon = "ArrowDown";
 		rateDiffLabel = "slower";	
 		rateDiffColor = "green";
@@ -650,7 +660,6 @@ const Card7 = (props) => {
 						</Chunk>
 					</FlexItem>
 				</Flex> 
-
 		</Card>
 
 	);
@@ -665,22 +674,41 @@ class Scratch extends React.Component {
 			places: [],
 			toggleModal: false
 		}
+		this.stripeRef = React.createRef();
+		this.wrapRef = React.createRef();
+
 		this.toggleModal = this.toggleModal.bind(this);
+		this.scrollStripeIntoView = this.scrollStripeIntoView.bind(this);
 	}
 
 	componentDidMount(){
-		getCovidData().then(data => {
-			this.setState({places: data});
-		})
+		fetch('http://localhost:3000/api/coviddata')
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				this.setState({places: data})
+			});
 	}
 
 	toggleModal() {
 		this.setState({modalVisible: !this.state.modalVisible})
 	}
 
+	scrollStripeIntoView(){
+		requestAnimationFrame(() => {
+			if (this.stripeRef && this.wrapRef) {
+			 this.stripeRef.current.measureLayout(
+				findNodeHandle(this.wrapRef.current),(x, y) => {
+					window.scrollTo(0, y-10);
+			 });
+			}
+		});
+	}
+
 	render() {
 
 		const tempPlaces = this.state.places;
+		const media = this.props.media;
 
 		const places = tempPlaces.filter(place => {
 			if(!this.state.searchPlaces){
@@ -692,17 +720,20 @@ class Scratch extends React.Component {
 		})
 
 		return (
-			<Fragment>
+			<View ref={this.wrapRef}>
 				<Flex noGutters direction="column" switchDirection="xlarge" style={{minHeight: '100%'}}>
 					<FlexItem growFactor={3}>
-						<Stripe style={{backgroundColor: '#080f5b', position: 'fixed', top: 0, bottom: 0, right: `${5/8*100}vw`, justifyContent: 'center'}}>
+						<Stripe style={[
+							{backgroundColor: '#080f5b'},
+							media.xlarge ? {position: 'fixed', top: 0, bottom: 0, right: `${5/8*100}vw`, justifyContent: 'center'} : {}
+						]}>
 							<Bounds>
 								<Section>
 									<Chunk>
 										<Text type="hero" inverted>How fast is COVID-19 doubling?</Text>
 									</Chunk>
 									<Chunk>
-										<Text inverted>Each person infected with COVID-19 can spread it to many other people. The infection numbers grow more quickly with time, like a forest fire expanding out from a single spark. A good way to see how fast something is spreading in a situation like this is to look at the rate of doubling.</Text>
+										<Text inverted>Each person infected with COVID-19 can spread it to many other people. The numbers grow more quickly with time, like a forest fire expanding out from a single spark. A good way to to check how fast something like this is spreading is to look at the doubling rate.</Text>
 									</Chunk>
 									<Chunk>
 										<Touch onPress={this.toggleModal}>
@@ -714,10 +745,9 @@ class Scratch extends React.Component {
 						</Stripe>
 					</FlexItem>
 					<FlexItem growFactor={5}>
-						<Stripe>
+						<Stripe style={{minHeight: '100vh'}} ref={this.stripeRef}>
 							<Bounds>
 								<Section>
-
 									<SearchForm
 										onSubmit={(fields) => {
 											alert(`in theory we are submitting... ${JSON.stringify(fields)}`);
@@ -725,6 +755,7 @@ class Scratch extends React.Component {
 										onChange={(fields) => {
 											this.setState({searchPlaces: fields.searchPlaces});
 										}}
+										onFocus={this.scrollStripeIntoView}
 										/>
 									{/*
 									<Chunk>
@@ -735,11 +766,15 @@ class Scratch extends React.Component {
 									</Chunk>									
 									*/}
 
-									{ !places.length && 
+									{ !places.length && this.state.searchPlaces && 
 										<Chunk>
-											<Text>No places match</Text>
+											<Text>No places match {this.state.searchPlaces}</Text>
 										</Chunk>
 									}
+
+									{ places.length && places.length > 0 && 
+										<Text type="small" color="hint" >Last updated {dayjs(places[0].dateModified).fromNow()}</Text>
+									}			
 
 									{ places.map((place,i)=>{
 										return(
@@ -771,10 +806,8 @@ class Scratch extends React.Component {
 				</Stripe>
 			</Modal>
 
-		</Fragment>
+		</View>
 		);
-
-
 	}
 }
 
@@ -790,4 +823,4 @@ const actionCreators = {};
 export default connect(
 	mapStateToProps,
 	actionCreators
-)(Scratch);
+)(WithMatchMedia(Scratch));
