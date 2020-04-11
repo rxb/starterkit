@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import {findNodeHandle} from 'react-native';
 import { connect } from 'react-redux';
 const fetch = require('isomorphic-unfetch');
 
@@ -757,26 +758,18 @@ class Scratch extends React.Component {
 										}}
 										onFocus={this.scrollStripeIntoView}
 										/>
-									{/*
-									<Chunk>
-										<Tabs>
-											<Tabs.Item label="World" value="one" />
-											<Tabs.Item label="United States" value="two" />
-										</Tabs>
-									</Chunk>									
-									*/}
 
-									{ !places.length && this.state.searchPlaces && 
+									{ places.length == 0 && this.state.searchPlaces && 
 										<Chunk>
 											<Text>No places match {this.state.searchPlaces}</Text>
 										</Chunk>
 									}
 
-									{ places.length && places.length > 0 && 
+									{ places.length > 0 && 
 										<Text type="small" color="hint" >Last updated {dayjs(places[0].dateModified).fromNow()}</Text>
 									}			
 
-									{ places.map((place,i)=>{
+									{ places.length > 0 && places.map((place,i)=>{
 										return(
 											<Card7 place={place} key={i} />
 										);
