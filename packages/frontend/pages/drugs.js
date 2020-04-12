@@ -46,139 +46,7 @@ import {METRICS} from '../components/cinderblock/designConstants';
 import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedia';
 
 
-const DRUGS = [
-	{
-	  "genericName": "Bendamustine Hydrochloride",
-	  "brandName": "Bendeka",
-	  "drugId": 1
-	},
-	{
-	  "genericName": "Methylnaltrexone Bromide",
-	  "brandName": "RELISTOR",
-	  "drugId": 2
-	},
-	{
-	  "genericName": "Gadoxetate Disodium",
-	  "brandName": "Eovist",
-	  "drugId": 3
-	},
-	{
-	  "genericName": "Lobenguane Sulfate",
-	  "brandName": "",
-	  "drugId": 4
-	},
-	{
-	  "genericName": "Lacosamide",
-	  "brandName": "Vimpat",
-	  "drugId": 5
-	},
-	{
-	  "genericName": "Plerixafor",
-	  "brandName": "Mozobil",
-	  "drugId": 6
-	},
-	{
-	  "genericName": "Gadofosveset Trisodium",
-	  "brandName": "Vasovist",
-	  "drugId": 7
-	},
-	{
-	  "genericName": "Artemether, lumefantrine",
-	  "brandName": "Coartem",
-	  "drugId": 8
-	},
-	{
-	  "genericName": "Pralatrexate",
-	  "brandName": "Folotyn",
-	  "drugId": 9
-	},
-	{
-	  "genericName": "Romidepsin",
-	  "brandName": "Istodax",
-	  "drugId": 10
-	},
-	{
-	  "genericName": "Capsaicin",
-	  "brandName": "",
-	  "drugId": 11
-	},
-	{
-	  "genericName": "Fampridine",
-	  "brandName": "Ampyra",
-	  "drugId": 12
-	},
-	{
-	  "genericName": "Ulipristal Acetate",
-	  "brandName": "Ella",
-	  "drugId": 13
-	},
-	{
-	  "genericName": "Eribulin Mesylate",
-	  "brandName": "Halaven",
-	  "drugId": 14
-	},
-	{
-	  "genericName": "Abiraterone Acetate",
-	  "brandName": "Zytiga",
-	  "drugId": 15
-	},
-	{
-	  "genericName": "Linagliptin",
-	  "brandName": "Tradjenta",
-	  "drugId": 16
-	},
-	{
-	  "genericName": "Deferiprone",
-	  "brandName": "Ferriprox",
-	  "drugId": 17
-	},
-	{
-	  "genericName": "Ingenol Mebutate",
-	  "brandName": "Picato",
-	  "drugId": 18
-	},
-	{
-	  "genericName": "Ivacaftor",
-	  "brandName": "Kalydeco",
-	  "drugId": 19
-	},
-	{
-	  "genericName": "Lucinactant",
-	  "brandName": "SURFAXIN",
-	  "drugId": 20
-	},
-	{
-	  "genericName": "Florbetapir",
-	  "brandName": "Amyvid",
-	  "drugId": 21
-	},
-	{
-	  "genericName": "Cobicistat, elvitegravir, emtricitabine, tenofovier, disoproxil fumarate",
-	  "brandName": "Tybost",
-	  "drugId": 22
-	},
-	{
-	  "genericName": "Enzalutamide",
-	  "brandName": "Xtandi",
-	  "drugId": 23
-	},
-	{
-	  "genericName": "Choline",
-	  "brandName": "",
-	  "drugId": 24
-	},
-	{
-	  "genericName": "Teduglutide Recombinant ",
-	  "brandName": "Juxtapid",
-	  "drugId": 25
-	},
-	{
-	  "genericName": "Lomatapide Mesylate",
-	  "brandName": "Juxtapid",
-	  "drugId": 26
-	}
-];
-
+import DRUGS from './drugsdata';
 const DRUGSBYID = Object.assign({}, ...DRUGS.map((s,i) => ({[s.drugId]: {...s, 'index': i}})));
 
 
@@ -207,21 +75,26 @@ const SearchForm = withFormState((props) => {
 	return(
 		<form>
 			<Chunk>
-				<TextInput
-					id="searchString"
-					placeholder="Curious about a drug you take?"
-					value={props.getFieldValue('searchString')}
-					onChangeText={text => props.setFieldValue('searchString', text)}
-					onFocus={onFocus}
-					autoComplete="off"
-					style={{borderRadius: 4000, WebKitAppearance: 'searchfield',}}
-					keyboardType="search"
-					/>
+				<View style={{position: 'relative'}}>
+					<TextInput
+						id="searchString"
+						placeholder="Curious about a drug you take?"
+						value={props.getFieldValue('searchString')}
+						onChangeText={text => props.setFieldValue('searchString', text)}
+						onFocus={onFocus}
+						autoComplete="off"
+						style={{borderRadius: 4000, WebKitAppearance: 'searchfield', paddingLeft: 48}}
+						keyboardType="search"
+						/>
+					<View style={{position: 'absolute', top: 0, left: 16, height: '100%', justifyContent: 'center'}}> 
+						<Icon shape="Search"  />
+					</View>
+				</View>
 			</Chunk>
 
 			{ searchDrugs.length == 0 && searchString && 
 				<Chunk>
-					<Text >No drugs match <strong>{searchString}</strong></Text>
+					<Text>No drugs in our list match <strong>{searchString}</strong></Text>
 				</Chunk>
 			}
 
@@ -231,7 +104,9 @@ const SearchForm = withFormState((props) => {
 						resetFields();
 						setDrugId(drug.drugId)
 					}}>
-						<Chunk>
+						<Chunk style={
+								(i > 0) ? { borderTopWidth: 1, borderTopColor: swatches.border, paddingTop: 16 } : {}
+							}>
 							<Text  type="big">{drug.genericName}</Text>
 							<Text >{drug.brandName}</Text>
 						</Chunk>
@@ -309,18 +184,35 @@ class Scratch extends React.Component {
 		const media = this.props.media;
 
 		const thisDrug = this.state.drugsById[this.state.drugId];
+		if(thisDrug){
+			thisDrug.priceNum = Math.round(Number(thisDrug.price.replace(/[^0-9\.-]+/g,"")));
+		}
 
 		return (
 			<View ref={this.wrapRef}>
 						<Stripe style={[
 							{backgroundColor: swatches.notwhite, minHeight: '100vh'},
 							]}>
-								
+
 							<Bounds style={{maxWidth: 700}}>
 								<Section>
-									<Chunk>
-										<Text type="sectionHead">SITE NAME</Text>
-									</Chunk>
+									<Flex direction="row">
+										<FlexItem>
+											<Chunk>
+												<Text type="sectionHead">SITE NAME</Text>
+											</Chunk>
+										</FlexItem>
+										<FlexItem shrink>
+											<Chunk>
+												<Touch onPress={()=>{
+													alert('TODO: like, a menu or something');
+												}}>
+													<Icon shape="Menu" />
+												</Touch>
+											</Chunk>
+										</FlexItem>
+									</Flex>
+									
 							
 									<SearchForm
 										onSubmit={(fields) => {
@@ -350,9 +242,9 @@ class Scratch extends React.Component {
 											<Section>
 
 												<Chunk>
-													<Text type="small" color="tint" weight="strong" style={{lineHeight: 12}}>PRESCRIPTION DRUG</Text>
+													{/* <Text type="small" color="tint" weight="strong" style={{lineHeight: 12}}>PRESCRIPTION DRUG</Text> */}
 													<Text type="pageHead">{thisDrug.brandName || '{missing brand name}'}</Text>
-													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic'}}>{thisDrug.genericName}</Text>
+													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic', lineHeight: 26, fontWeight: 400}}>{thisDrug.genericName}</Text>
 												</Chunk>
 
 											</Section>
@@ -368,25 +260,30 @@ class Scratch extends React.Component {
 													<FlexItem>
 														<Chunk>
 															<Text weight="strong">Price in United States</Text>
-															<Text>$12,092/mo</Text>
+															<Text style={{fontSize: 32, lineHeight: 42, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum, '$', 0)}/mo</Text>
 														</Chunk>	
 													</FlexItem>	
 													<FlexItem>																						
 														<Chunk>
 															<Text weight="strong">Price in Australia</Text>
-															<Text>$5,239/mo</Text>
+															<Text style={{fontSize: 32, lineHeight: 42, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum/2, '$', 0)}/mo</Text>
 														</Chunk>
 													</FlexItem>	
 												</Flex>
+											
+											</Section>
+											<Section>
 
 												<Chunk>
-													<Text>Lorem ipsum dolor sit amet, eu sed ubique ornatus invenire, qui ei aeque timeam. Sed id solet pertinax. In sea idque mediocrem. An nusquam ocurreret his, te putent aperiam iudicabit ius. Sensibus eleifend at ius, mazim dolor ius eu, dicam ridens nam in.</Text>
+													<Text weight="strong">What's the story?</Text>
+													<Text>Drug manufacturer {thisDrug.companyName} was able bring {thisDrug.brandName} to market thanks to taxpayer-funded {thisDrug.indication.toLowerCase().trim() || ''} reseach by Dr. Sally Scientist at {thisDrug.publicInstitution.trim()}. In 2018 alone, the United States spent {thisDrug.federal} on this drug, but is legally banned from negotating lower prices, thanks to pharmaceutical industry lobbying.</Text>
 												</Chunk>
-								
+											</Section>
+											<Section>
 												<Chunk>
 													<Button 
 														style={{alignSelf: 'center'}}
-														label="Show me another one" 
+														label="What?! Show me another one" 
 														variant={{
 															small: 'grow',
 															medium: 'shrink'
