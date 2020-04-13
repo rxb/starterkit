@@ -11,6 +11,7 @@ import {
 	Chunk,
 	Flex,
 	FlexItem,
+	Header,
 	Icon,
 	Inline,
 	Image,
@@ -190,28 +191,28 @@ class Scratch extends React.Component {
 
 		return (
 			<View ref={this.wrapRef}>
+						<Header>
+									<Flex direction="row">
+										<FlexItem>
+												<Text type="sectionHead">SITE NAME</Text>
+										</FlexItem>
+										<FlexItem shrink>
+												<Touch onPress={()=>{
+													alert('TODO: like, a menu or something');
+												}}>
+													<Icon shape="Menu" />
+												</Touch>
+										</FlexItem>
+									</Flex>
+						</Header>
+
 						<Stripe style={[
 							{backgroundColor: swatches.notwhite, minHeight: '100vh'},
 							]}>
 
 							<Bounds style={{maxWidth: 700}}>
 								<Section>
-									<Flex direction="row">
-										<FlexItem>
-											<Chunk>
-												<Text type="sectionHead">SITE NAME</Text>
-											</Chunk>
-										</FlexItem>
-										<FlexItem shrink>
-											<Chunk>
-												<Touch onPress={()=>{
-													alert('TODO: like, a menu or something');
-												}}>
-													<Icon shape="Menu" />
-												</Touch>
-											</Chunk>
-										</FlexItem>
-									</Flex>
+									
 									
 							
 									<SearchForm
