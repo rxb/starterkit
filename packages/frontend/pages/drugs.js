@@ -251,12 +251,14 @@ class Scratch extends React.Component {
 											<Section>
 
 												<Flex direction="row">
+													{/*
 													<FlexItem>
 														<Chunk>
 															<Text weight="strong">US Taxpayers funded</Text>
 															<Text>Research, Development, Basic Science</Text>
 														</Chunk>
 													</FlexItem>	
+													*/}
 													<FlexItem>
 														<Chunk>
 															<Text weight="strong">Price in United States</Text>

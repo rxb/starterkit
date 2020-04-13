@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom'
 import { StyleSheet } from '../primitives';
 import { View, TextInput as TextInputWeb } from 'react-native-web';
+import {findNodeHandle} from 'react-native';
 import Text from './Text';
 import styles from '../styles/styles';
 import swatches from '../styles/swatches';
@@ -38,11 +39,12 @@ class TextInput extends React.Component{
 			countColor: 'secondary'
 		}
 		this.onChange = this.onChange.bind(this);
-		this.updateTextInput = this.updateTextInput.bind(this);
+		this.onContentSizeChange = this.onContentSizeChange.bind(this);
+		this.updateCounter = this.updateCounter.bind(this);
 	}
 
 	componentDidMount(){
-		this.updateTextInput(this.props.value);
+		this.updateCounter(this.props.value);
 	}
 
 	shouldComponentUpdate(nextProps, nextState){
@@ -55,38 +57,32 @@ class TextInput extends React.Component{
 		return false;
 	}
 
-	updateTextInput(text){
-		let dirty = false;
+	updateCounter(text){
 		let newState = {};
-
-		this._node = this.textinput._node;
-		const height = this._node.scrollHeight;
 
 		// counter
 		if(this.props.showCounter && this.props.maxLength){
-			dirty = true;
 			newState.count = text.length;
 			newState.countColor = 'secondary';
 			const diff = this.props.maxLength - newState.count;
 			if(diff < 10){
 				newState.countColor = 'tint';
 			}
-		}
-
-		// autoexpand
-		if(this.props.multiline && this.props.autoExpand && this.state.height != height){
-			dirty = true;
-			newState.height = height;
-		}
-
-		if(dirty){
 			this.setState(newState);
+		}
+	}
+
+	onContentSizeChange(event){
+		// autoexpand
+		const height = event.nativeEvent.contentSize.height;
+		if(this.props.multiline && this.props.autoExpand && this.state.height != height){
+			this.setState({height: height});
 		}
 	}
 
 	onChange(event){
 		const text = event.target.value;
-		debounce(this.updateTextInput, 100)(text);
+		debounce(this.updateCounter, 100)(text);
 		this.props.onChange(event);
 	}
 
@@ -113,6 +109,7 @@ class TextInput extends React.Component{
 					multiline={multiline}
 					maxLength={maxLength}
 					onChange={this.onChange}
+					onContentSizeChange={this.onContentSizeChange}
 					className='input'
 					style={[
 						styles.input,
