@@ -500,15 +500,20 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 		top: 0,
 		backgroundColor: 'white',
-		paddingHorizontal: METRICS.spaceSection,
-		paddingVertical: METRICS.space,
 		borderBottomColor: swatches.border,
 		borderBottomWidth: 1,
 		shadowRadius: 3,
 		shadowColor: 'rgba(0,0,0,.15)',
 	},
 	'header--atMedium': {
-		paddingHorizontal: METRICS.spaceSection + (METRICS.space * .66),
+		paddingHorizontal: space*.75
+	},
+	'header-section': {
+		paddingHorizontal: METRICS.spaceSection,
+		paddingVertical: METRICS.space,
+	},
+	'header-section--atMedium': {
+		paddingHorizontal: METRICS.spaceSection,
 	},
 
 	// TOASTER

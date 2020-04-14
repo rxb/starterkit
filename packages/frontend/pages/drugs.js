@@ -191,30 +191,26 @@ class Scratch extends React.Component {
 
 		return (
 			<View ref={this.wrapRef}>
-						<Header>
-									<Flex direction="row">
-										<FlexItem>
-												<Text type="sectionHead">SITE NAME</Text>
-										</FlexItem>
-										<FlexItem shrink>
-												<Touch onPress={()=>{
-													alert('TODO: like, a menu or something');
-												}}>
-													<Icon shape="Menu" />
-												</Touch>
-										</FlexItem>
-									</Flex>
+						<Header maxWidth={700} position="sticky">
+							<Flex direction="row">
+								<FlexItem>
+										<Text type="sectionHead">SITE NAME</Text>
+								</FlexItem>
+								<FlexItem shrink>
+										<Touch onPress={()=>{
+											alert('TODO: like, a menu or something');
+										}}>
+											<Icon shape="Menu" />
+										</Touch>
+								</FlexItem>
+							</Flex>
 						</Header>
 
-						<Stripe style={[
-							{backgroundColor: swatches.notwhite, minHeight: '100vh'},
-							]}>
+						<Stripe style={[{backgroundColor: swatches.notwhite, minHeight: '100vh', paddingTop: 8}]}>
 
 							<Bounds style={{maxWidth: 700}}>
 								<Section>
-									
-									
-							
+
 									<SearchForm
 										onSubmit={(fields) => {
 											alert(`in theory we are submitting... ${JSON.stringify(fields)}`);
@@ -230,6 +226,7 @@ class Scratch extends React.Component {
 						
 
 									{ thisDrug && !this.state.searchString && 
+										<Chunk>
 										<Card 
 											style={{
 												borderRadius: 10, 
@@ -245,37 +242,35 @@ class Scratch extends React.Component {
 												<Chunk>
 													{/* <Text type="small" color="tint" weight="strong" style={{lineHeight: 12}}>PRESCRIPTION DRUG</Text> */}
 													<Text type="pageHead">{thisDrug.brandName || '{missing brand name}'}</Text>
-													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic', lineHeight: 26, fontWeight: 400}}>{thisDrug.genericName}</Text>
+													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic', lineHeight: 26, fontWeight: 300}}>{thisDrug.genericName}</Text>
 												</Chunk>
 
 											</Section>
 											<Section>
 
 												<Flex direction="row">
-													{/*
+
+													<FlexItem>
+														<Chunk>
+															<Text weight="strong">Price in United States</Text>
+															<Text style={{fontSize: 26, lineHeight: 32, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum, '$', 0)}/mo</Text>
+														</Chunk>	
+													</FlexItem>	
+													<FlexItem>																						
+														<Chunk>
+															<Text weight="strong">Price outside US</Text>
+															<Text style={{fontSize: 26, lineHeight: 32, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum/2, '$', 0)}/mo</Text>
+														</Chunk>
+													</FlexItem>	
 													<FlexItem>
 														<Chunk>
 															<Text weight="strong">US Taxpayers funded</Text>
 															<Text>Research, Development, Basic Science</Text>
 														</Chunk>
-													</FlexItem>	
-													*/}
-													<FlexItem>
-														<Chunk>
-															<Text weight="strong">Price in United States</Text>
-															<Text style={{fontSize: 32, lineHeight: 42, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum, '$', 0)}/mo</Text>
-														</Chunk>	
-													</FlexItem>	
-													<FlexItem>																						
-														<Chunk>
-															<Text weight="strong">Price in Australia</Text>
-															<Text style={{fontSize: 32, lineHeight: 42, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum/2, '$', 0)}/mo</Text>
-														</Chunk>
-													</FlexItem>	
+													</FlexItem>														
 												</Flex>
 											
-											</Section>
-											<Section>
+										
 
 												<Chunk>
 													<Text weight="strong">What's the story?</Text>
@@ -298,6 +293,7 @@ class Scratch extends React.Component {
 											</Section>
 											</Stripe>
 										</Card>
+										</Chunk>
 									}
 								</Section>
 								

@@ -9,11 +9,14 @@ const Header = (props) => {
 		children,
 		style,
 		media,
+		maxWidth = 'auto',
+		position = 'sticky'
 	} = props
 
 
 	// media query
 	// this could be packaged up
+	
 	const styleKeys = [
 		'header',
 		...[ (media && media.medium) ? 'header--atMedium' : undefined]
@@ -22,10 +25,22 @@ const Header = (props) => {
 		return styles[key];
 	});
 
+	const sectionStyleKeys = [
+		'header-section',
+		...[ (media && media.medium) ? 'header-section--atMedium' : undefined]
+	];
+	const sectionCombinedStyles = sectionStyleKeys.map((key, i)=>{
+		return styles[key];
+	});
+
 
 	return(
-		<View style={[combinedStyles, style]}>
-			{children}
+		<View style={[combinedStyles, style, (position == 'sticky') ? {position: 'sticky'} : {position: 'static'}]}>
+			<View style={{maxWidth: maxWidth, alignSelf: 'center', width: '100%'}}>
+				<View style={sectionCombinedStyles}>
+					{children}
+				</View>
+			</View>
 		</View>
 	);
 
