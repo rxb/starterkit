@@ -496,14 +496,17 @@ const styles = StyleSheet.create({
 
 	// HEADER
 	header: {
-		position: 'sticky',
 		zIndex: 1,
 		top: 0,
+		/*
 		backgroundColor: 'white',
 		borderBottomColor: swatches.border,
 		borderBottomWidth: 1,
 		shadowRadius: 3,
 		shadowColor: 'rgba(0,0,0,.15)',
+		*/
+		backgroundColor: swatches.notwhite,
+		marginBottom: -1 * METRICS.spaceSection
 	},
 	'header--atMedium': {
 		paddingHorizontal: space*.75

@@ -10,13 +10,14 @@ const Header = (props) => {
 		style,
 		media,
 		maxWidth = 'auto',
-		position = 'sticky'
+		position = 'sticky',
+		type = 'opaque'
 	} = props
 
 
 	// media query
 	// this could be packaged up
-	
+
 	const styleKeys = [
 		'header',
 		...[ (media && media.medium) ? 'header--atMedium' : undefined]

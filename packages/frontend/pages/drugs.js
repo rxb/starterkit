@@ -190,43 +190,44 @@ class Scratch extends React.Component {
 		}
 
 		return (
-			<View ref={this.wrapRef}>
-						<Header maxWidth={700} position="sticky">
-							<Flex direction="row">
-								<FlexItem>
-										<Text type="sectionHead">SITE NAME</Text>
-								</FlexItem>
-								<FlexItem shrink>
-										<Touch onPress={()=>{
-											alert('TODO: like, a menu or something');
-										}}>
-											<Icon shape="Menu" />
-										</Touch>
-								</FlexItem>
-							</Flex>
-						</Header>
+				<View ref={this.wrapRef}>
 
-						<Stripe style={[{backgroundColor: swatches.notwhite, minHeight: '100vh', paddingTop: 8}]}>
+					<Header maxWidth={800} position="fixed">
+						<Flex direction="row">
+							<FlexItem>
+									<Text type="sectionHead" color="secondary">SITE NAME</Text>
+							</FlexItem>
+							<FlexItem shrink>
+									<Touch onPress={()=>{
+										alert('TODO: like, a menu or something');
+									}}>
+										<Icon shape="Menu" />
+									</Touch>
+							</FlexItem>
+						</Flex>
+					</Header>
 
-							<Bounds style={{maxWidth: 700}}>
-								<Section>
+					<Stripe style={[{backgroundColor: swatches.notwhite, minHeight: '100vh', paddingTop: 0}]}>
 
-									<SearchForm
-										onSubmit={(fields) => {
-											alert(`in theory we are submitting... ${JSON.stringify(fields)}`);
-										}}
-										onChange={(fields) => {
-											this.setState({searchString: fields.searchString});
-										}}
-										onFocus={this.scrollStripeIntoView}
-										searchString = {this.state.searchString}
-										drugs = {this.state.drugs}
-										setDrugId = {this.setDrugId}
-										/>	
-						
+						<Bounds style={{maxWidth: 800}}>
+							<Section>
 
-									{ thisDrug && !this.state.searchString && 
-										<Chunk>
+								<SearchForm
+									onSubmit={(fields) => {
+										alert(`in theory we are submitting... ${JSON.stringify(fields)}`);
+									}}
+									onChange={(fields) => {
+										this.setState({searchString: fields.searchString});
+									}}
+									onFocus={this.scrollStripeIntoView}
+									searchString = {this.state.searchString}
+									drugs = {this.state.drugs}
+									setDrugId = {this.setDrugId}
+									/>	
+					
+
+								{ thisDrug && !this.state.searchString && 
+									<Chunk>
 										<Card 
 											style={{
 												borderRadius: 10, 
@@ -242,63 +243,64 @@ class Scratch extends React.Component {
 												<Chunk>
 													{/* <Text type="small" color="tint" weight="strong" style={{lineHeight: 12}}>PRESCRIPTION DRUG</Text> */}
 													<Text type="pageHead">{thisDrug.brandName || '{missing brand name}'}</Text>
-													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic', lineHeight: 26, fontWeight: 300}}>{thisDrug.genericName}</Text>
+													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic', lineHeight: 26, fontWeight: 300, marginBottom: 8}}>{thisDrug.genericName}</Text>
 												</Chunk>
 
-											</Section>
-											<Section>
-
-												<Flex direction="row">
-
-													<FlexItem>
-														<Chunk>
-															<Text weight="strong">Price in United States</Text>
-															<Text style={{fontSize: 26, lineHeight: 32, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum, '$', 0)}/mo</Text>
-														</Chunk>	
-													</FlexItem>	
-													<FlexItem>																						
-														<Chunk>
-															<Text weight="strong">Price outside US</Text>
-															<Text style={{fontSize: 26, lineHeight: 32, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum/2, '$', 0)}/mo</Text>
-														</Chunk>
-													</FlexItem>	
-													<FlexItem>
-														<Chunk>
-															<Text weight="strong">US Taxpayers funded</Text>
-															<Text>Research, Development, Basic Science</Text>
-														</Chunk>
-													</FlexItem>														
-												</Flex>
 											
-										
+											<Flex direction="column" switchDirection="large">
+												<FlexItem growFactor={2}>
+													<Flex direction="row">
+														<FlexItem>
+															<Chunk>
+																<Text weight="strong">Price in United States</Text>
+																<Text style={{fontSize: 26, lineHeight: 32, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum, '$', 0)}/mo</Text>
+															</Chunk>	
+														</FlexItem>	
+														<FlexItem>
+															<Chunk>
+																<Text weight="strong">Outside United States</Text>
+																<Text style={{fontSize: 26, lineHeight: 32, fontWeight: 300}}>{acct.formatMoney(thisDrug.priceNum/2, '$', 0)}/mo</Text>
+															</Chunk>
+														</FlexItem>	
+													</Flex>
+												</FlexItem>
+												
+												<FlexItem  growFactor={1}>
+													<Chunk>
+														<Text weight="strong">US Taxpayers funded</Text>
+														<Text>Research, Development, Basic Science</Text>
+													</Chunk>
+												</FlexItem>
 
-												<Chunk>
-													<Text weight="strong">What's the story?</Text>
-													<Text>Drug manufacturer {thisDrug.companyName} was able bring {thisDrug.brandName} to market thanks to taxpayer-funded {thisDrug.indication.toLowerCase().trim() || ''} reseach by Dr. Sally Scientist at {thisDrug.publicInstitution.trim()}. In 2018 alone, the United States spent {thisDrug.federal} on this drug, but is legally banned from negotating lower prices, thanks to pharmaceutical industry lobbying.</Text>
-												</Chunk>
-											</Section>
-											<Section>
-												<Chunk>
-													<Button 
-														style={{alignSelf: 'center'}}
-														label="What?! Show me another one" 
-														variant={{
-															small: 'grow',
-															medium: 'shrink'
-														}}
-														onPress={()=>{
-															this.setNextDrugId(thisDrug.drugId)
-														}} />
-												</Chunk>
-											</Section>
-											</Stripe>
-										</Card>
-										</Chunk>
-									}
-								</Section>
-								
-							</Bounds>
-						</Stripe>						
+											</Flex>
+											
+											<Chunk>
+												<Text weight="strong">What's the story?</Text>
+												<Text>Drug manufacturer {thisDrug.companyName} was able bring {thisDrug.brandName} to market thanks to taxpayer-funded {thisDrug.indication.toLowerCase().trim() || ''} reseach by Dr. Sally Scientist at {thisDrug.publicInstitution.trim()}. In 2018 alone, the United States spent {thisDrug.federal} on this drug, but is legally banned from negotating lower prices, thanks to pharmaceutical industry lobbying.</Text>
+											</Chunk>
+										</Section>
+										<Section>
+											<Chunk>
+												<Button 
+													style={{alignSelf: 'center'}}
+													label="What?! Show me another one" 
+													variant={{
+														small: 'grow',
+														medium: 'shrink'
+													}}
+													onPress={()=>{
+														this.setNextDrugId(thisDrug.drugId)
+													}} />
+											</Chunk>
+										</Section>
+										</Stripe>
+									</Card>
+								</Chunk>
+							}
+						</Section>
+						
+					</Bounds>
+				</Stripe>						
 			
 
 				<Modal
