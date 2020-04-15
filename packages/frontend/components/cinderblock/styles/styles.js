@@ -498,26 +498,48 @@ const styles = StyleSheet.create({
 	header: {
 		zIndex: 1,
 		top: 0,
-		/*
+		left: 0,
+		right: 0,
+		height: 56,
+		justifyContent: 'center'
+		//marginBottom: -1 * METRICS.spaceSection
+	},
+	'header--atMedium': {
+		paddingHorizontal: space*.75,
+		height: 64,
+	},
+
+	// HEADER TYPES
+	'headerTransparent': {
+		backgroundColor: 'transparent',
+	},
+	'headerFlush': {
+		backgroundColor: swatches.notwhite,
+		justifyContent: 'flex-end',
+		height: 56 - METRICS.spaceSection
+	},
+	'headerSeparated': {
 		backgroundColor: 'white',
 		borderBottomColor: swatches.border,
 		borderBottomWidth: 1,
-		shadowRadius: 3,
-		shadowColor: 'rgba(0,0,0,.15)',
-		*/
-		backgroundColor: swatches.notwhite,
-		marginBottom: -1 * METRICS.spaceSection
 	},
-	'header--atMedium': {
-		paddingHorizontal: space*.75
+	'headerTransparent--atMedium': {
 	},
+	'headerFlush--atMedium': {
+		height: 64 - METRICS.spaceSection,
+		backgroundColor: swatches.notwhite
+	},
+	'headerSeparated--atMedium': {
+	},
+
+	// HEADER SECTION
 	'header-section': {
 		paddingHorizontal: METRICS.spaceSection,
-		paddingVertical: METRICS.space,
 	},
 	'header-section--atMedium': {
 		paddingHorizontal: METRICS.spaceSection,
 	},
+
 
 	// TOASTER
 	toaster: {

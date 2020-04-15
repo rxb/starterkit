@@ -192,12 +192,12 @@ class Scratch extends React.Component {
 		return (
 				<View ref={this.wrapRef}>
 
-					<Header maxWidth={800} position="fixed">
+					<Header maxWidth={800} position="static" >
 						<Flex direction="row">
 							<FlexItem>
 									<Text type="sectionHead" color="secondary">SITE NAME</Text>
 							</FlexItem>
-							<FlexItem shrink>
+							<FlexItem shrink justify="center">
 									<Touch onPress={()=>{
 										alert('TODO: like, a menu or something');
 									}}>
@@ -235,10 +235,11 @@ class Scratch extends React.Component {
 												borderWidth: 0,
 												shadowRadius: 16,
 												shadowColor: 'rgba(0,0,0,.15)',
-												borderRadius: 12
+												borderRadius: 12,
+												//marginHorizontal: -10,
 											}}>
-											<Stripe>
-											<Section>
+									
+											<Sectionless>
 
 												<Chunk>
 													{/* <Text type="small" color="tint" weight="strong" style={{lineHeight: 12}}>PRESCRIPTION DRUG</Text> */}
@@ -278,8 +279,7 @@ class Scratch extends React.Component {
 												<Text weight="strong">What's the story?</Text>
 												<Text>Drug manufacturer {thisDrug.companyName} was able bring {thisDrug.brandName} to market thanks to taxpayer-funded {thisDrug.indication.toLowerCase().trim() || ''} reseach by Dr. Sally Scientist at {thisDrug.publicInstitution.trim()}. In 2018 alone, the United States spent {thisDrug.federal} on this drug, but is legally banned from negotating lower prices, thanks to pharmaceutical industry lobbying.</Text>
 											</Chunk>
-										</Section>
-										<Section>
+							
 											<Chunk>
 												<Button 
 													style={{alignSelf: 'center'}}
@@ -292,8 +292,7 @@ class Scratch extends React.Component {
 														this.setNextDrugId(thisDrug.drugId)
 													}} />
 											</Chunk>
-										</Section>
-										</Stripe>
+										</Sectionless>
 									</Card>
 								</Chunk>
 							}

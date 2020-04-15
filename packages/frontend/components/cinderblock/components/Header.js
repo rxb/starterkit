@@ -3,6 +3,19 @@ import { View, Image } from '../primitives';
 import styles from '../styles/styles';
 import {WithMatchMedia} from './WithMatchMedia';
 
+const VALID_TYPES = {
+	separated: "Separated", 
+	flush: "Flush",
+	transparent: "Transparent"
+}
+
+const VALID_POSITIONS = {
+	static: "static",			// moves with scroll, takes up space
+	absolute: "absolute", 	// moves with scroll, doesn't take up space (almost always transparent)
+	sticky: "sticky", 		// does not move with scroll, but initially takes up space
+	fixed: "fixed"				// does not move with scroll, doesn't take up space
+}
+
 const Header = (props) => {
 
 	const {
@@ -11,7 +24,7 @@ const Header = (props) => {
 		media,
 		maxWidth = 'auto',
 		position = 'sticky',
-		type = 'opaque'
+		type = 'separated'
 	} = props
 
 
@@ -20,7 +33,9 @@ const Header = (props) => {
 
 	const styleKeys = [
 		'header',
-		...[ (media && media.medium) ? 'header--atMedium' : undefined]
+		...[ (media && media.medium) ? 'header--atMedium' : undefined],
+		...[type ? `header${VALID_TYPES[type]}` : undefined ],
+		...[ (media && media.medium) ? `header${VALID_TYPES[type]}--atMedium` : undefined ],
 	];
 	const combinedStyles = styleKeys.map((key, i)=>{
 		return styles[key];
@@ -36,7 +51,7 @@ const Header = (props) => {
 
 
 	return(
-		<View style={[combinedStyles, style, (position == 'sticky') ? {position: 'sticky'} : {position: 'static'}]}>
+		<View style={[ combinedStyles, style, {position: VALID_POSITIONS[position]} ]}>
 			<View style={{maxWidth: maxWidth, alignSelf: 'center', width: '100%'}}>
 				<View style={sectionCombinedStyles}>
 					{children}
