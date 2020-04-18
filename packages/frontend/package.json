@@ -17,6 +17,7 @@
     "babel-plugin-react-native-web": "^0.12.2",
     "body-scroll-lock": "^3.0.1",
     "dayjs": "^1.8.23",
+    "fuse.js": "^5.1.0",
     "isomorphic-unfetch": "^3.0.0",
     "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.4.1",

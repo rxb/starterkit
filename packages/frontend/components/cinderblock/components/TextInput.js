@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom'
 import { StyleSheet } from '../primitives';
 import { View, TextInput as TextInputWeb } from 'react-native-web';
-import {findNodeHandle} from 'react-native';
 import Text from './Text';
 import styles from '../styles/styles';
 import swatches from '../styles/swatches';
