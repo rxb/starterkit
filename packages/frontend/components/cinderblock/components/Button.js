@@ -22,6 +22,7 @@ const Button = (props) => {
 			media,
 			isLoading = false,
 			width,
+			textType = "",
 			style,
 			...other
 		} = props;
@@ -32,7 +33,6 @@ const Button = (props) => {
 		// TODO: deprecate and remove
 		// supporting deprecated width props, for now
 		/*
-		const variantStyle = (width == 'full' || media && !media.medium && width == 'snap') ? styles['button--fullWidth'] : undefined;
 		*/
 		if (width == 'snap'){
 			variant = {small: 'grow', medium: 'shrink'};
@@ -79,7 +79,7 @@ const Button = (props) => {
 							<Icon shape={shape} color={swatches[inkColor]} style={{marginLeft: 3, marginRight: 3}} />
 						}
 						{ label && currentVariant != 'iconOnly' &&
-							<Text style={[styles.text, styles.buttonText, styles[`buttonText--${color}`]]}>{label}</Text>
+							<Text style={[styles.text, styles[`text${VALID_TEXT_TYPES[textType]}`], styles.buttonText, styles[`buttonText--${color}`]]}>{label}</Text>
 						}
 					</View>
 				</View>
@@ -95,6 +95,15 @@ const Button = (props) => {
 
 			</ActionComponent>
 		);
+}
+
+const VALID_TEXT_TYPES = {
+	micro: 'Micro',
+	small: 'Small',
+	big: 'Big',
+	sectionHead: 'SectionHead',
+	pageHead: 'PageHead',
+	hero: 'Hero'
 }
 
 Button.propTypes = {

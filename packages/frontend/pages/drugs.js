@@ -47,56 +47,30 @@ import {METRICS} from '../components/cinderblock/designConstants';
 import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedia';
 
 /*
-//  ATTEMPT GOOGLE SHEET DATA
-const fetch = require('isomorphic-unfetch');
-const SHEETCODE = '17RAGBz0ckLc1kqDIf62U_m-mNw0ZYnDomKDnH8VuSz8';
-const SHEETPAGE = '1';
-const SHEETURL = `https://spreadsheets.google.com/feeds/list/${SHEETCODE}/${SHEETPAGE}/public/values?alt=json`;
-fetch(SHEETURL, {cors: true})
-	.then(response => response.json())
-	.then(body => {
-		let parsed = body.feed.entry.map( (entry) => {
-			let columns = {
-			  "updated": entry.updated["$t"]
-			}
-			// Dynamically add all relevant columns from the Sheets to the response
-			Object.keys( entry ).forEach( (key) => {
-			  if ( /gsx\$/.test(key) ) {
-				 let newKey = key.replace("gsx$", "");
-				 columns[newKey] = entry[key]["$t"];
-			  }
-			});
-
-			return columns;
-		 })
-		 return parsed;
-	})
-	.then(data => console.log(data));
-*/
-
 import TEMPDRUGS from './drugsdata';
-const DRUGS = TEMPDRUGS.filter( d => d.price && d.brandName );
-const DRUGSBYID = Object.assign({}, ...DRUGS.map((s,i) => ({[s.drugId]: {...s, 'index': i}})));
+const DRUGS = TEMPDRUGS.filter( d => d.price && d.brandname );
+const DRUGSBYID = Object.assign({}, ...DRUGS.map((s,i) => ({[s.drugid]: {...s, 'index': i}})));
 const drugsFuse = new Fuse(DRUGS, {
 	includeScore: true,
 	includeMatches: true,
-	keys: ['brandName', 'genericName'],
+	keys: ['brandname', 'genericname'],
 	threshold: .5
 });
-
+*/
 
 class SearchFormComponent extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.setFirstDrugId = this.setFirstDrugId.bind(this);
+		this.setFirstdrugid = this.setFirstdrugid.bind(this);
 	}
 
-	setFirstDrugId(){
-		this.props.setDrugId(this.props.searchDrugs[0].item.drugId);
+	setFirstdrugid(){
+		this.props.setDrugId(this.props.searchDrugs[0].item.drugid);
 	}
 
 	render(){
+
 		const { 
 			onFocus = ()=>{},
 			searchString,
@@ -106,7 +80,6 @@ class SearchFormComponent extends React.Component {
 			getFieldValue,
 			setFieldValue
 		} = this.props;
-
 
 		return(
 
@@ -124,7 +97,7 @@ class SearchFormComponent extends React.Component {
 							keyboardType="web-search"
 							onKeyPress={(event)=>{
 								if(event.keyCode === 13) {
-									this.setFirstDrugId();
+									this.setFirstdrugid();
 									resetFields();
 								}
 							}}
@@ -146,12 +119,12 @@ class SearchFormComponent extends React.Component {
 					return(
 						<Touch key={i} onPress={()=>{
 							resetFields();
-							setDrugId(drug.drugId)
+							setDrugId(drug.drugid)
 						}}>
 							<Chunk style={
 									(i > 0) ? { borderTopWidth: 1, borderTopColor: swatches.border, paddingTop: 16 } : {}
 								}>
-								<Text type="big">{drug.brandName} ({drug.genericName})</Text>
+								<Text type="big">{drug.brandname} ({drug.genericname})</Text>
 							</Chunk>
 						</Touch>
 					);
@@ -168,10 +141,12 @@ class Scratch extends React.Component {
 		super(props);
 		this.state = {
 			searchString: "",
-			drugs: DRUGS,
-			drugsById: DRUGSBYID,
+			searchDrugs: [],
+			drugs: [],
+			drugsById: {},
 			toggleModal: false,
-			drugId: null,
+			drugid: null,
+			drugsFuse: new Fuse([])
 		}
 		this.stripeRef = React.createRef();
 		this.wrapRef = React.createRef();
@@ -182,24 +157,81 @@ class Scratch extends React.Component {
 	}
 
 	componentDidMount(){
-		//TODO: get hash data
-		this.setDrugId();
+			
+		this.fetchDrugsFromGoogleSheet()
+			.then( data => {
+
+				const DRUGS = data;
+				const DRUGSBYID = Object.assign({}, ...DRUGS.map((s,i) => ({[s.drugid]: {...s, 'index': i}})));
+				const drugsFuse = new Fuse(DRUGS, {
+					includeScore: true,
+					includeMatches: true,
+					keys: ['brandname', 'genericname'],
+					threshold: .5
+				}); 
+
+				this.setState({
+					drugs: DRUGS,
+					drugsById: DRUGSBYID,
+					drugsFuse: drugsFuse
+				}, () => {
+					//TODO: get hash data
+					this.setDrugId();
+				});
+			});
+		
 	}
 
-	setDrugId(drugId){
-		if(!this.state.drugsById[drugId]){
-			drugId = this.state.drugs[0].drugId;
+	fetchDrugsFromGoogleSheet(){
+		
+		// TODO: move to server side api, cache results in memory to avoid google api hit 
+		const fetch = require('isomorphic-unfetch');
+		const SHEETCODE = '17RAGBz0ckLc1kqDIf62U_m-mNw0ZYnDomKDnH8VuSz8';
+		const SHEETPAGE = '1';
+		const SHEETURL = `https://spreadsheets.google.com/feeds/list/${SHEETCODE}/${SHEETPAGE}/public/values?alt=json`;
+		return fetch(SHEETURL, {cors: true})
+			.then(response => response.json())
+			.then(body => {
+				let parsed = body.feed.entry.map( (entry) => {
+					let columns = {
+					"updated": entry.updated["$t"]
+					}
+					// Dynamically add all relevant columns from the Sheets to the response
+					Object.keys( entry ).forEach( (key) => {
+					if ( /gsx\$/.test(key) ) {
+						let newKey = key.replace("gsx$", "");
+						columns[newKey] = entry[key]["$t"];
+					}
+					});
+
+					return columns;
+				})
+				return parsed;
+			});
+	}
+
+	setSearchString(searchString = ""){
+		this.setState({
+			searchString: searchString,
+			searchDrugs: this.state.drugsFuse.search(searchString) || []
+		});
+			
+	}
+
+	setDrugId(drugid){
+		if(!this.state.drugsById[drugid]){
+			drugid = this.state.drugs[0].drugid;
 		}
 		this.setState({
-			drugId: drugId
+			drugid: drugid
 		});
 	}
 
-	setNextDrugId(currentDrugId){
-		const currentIndex = this.state.drugsById[currentDrugId].index;
+	setNextdrugId(currentdrugid){
+		const currentIndex = this.state.drugsById[currentdrugid].index;
 		const nextIndex = (currentIndex + 1 >= this.state.drugs.length) ? 0 : currentIndex + 1;
-		const drugId = this.state.drugs[nextIndex].drugId;
-		this.setDrugId(drugId);
+		const drugid = this.state.drugs[nextIndex].drugid;
+		this.setDrugId(drugid);
 	}
 
 	toggleModal() {
@@ -214,10 +246,13 @@ class Scratch extends React.Component {
 
 	render() {
 
-		const drugs = this.state.drugs;
-		const media = this.props.media;
+		const {
+			media
+		} = this.props;
 
-		const thisDrug = this.state.drugsById[this.state.drugId];
+		const thisDrug = this.state.drugsById[this.state.drugid];
+
+		// TODO: get numeric data from the sheet
 		if(thisDrug){
 			thisDrug.priceNum = Math.round(Number(thisDrug.price.replace(/[^0-9\.-]+/g,"")));
 		}
@@ -250,12 +285,12 @@ class Scratch extends React.Component {
 										console.log('submitting?'); 
 									}}
 									onChange={(fields) => {
-										this.setState({searchString: fields.searchString});
+										this.setSearchString(fields.searchString);
 									}}
 									onFocus={this.scrollStripeIntoView}
 									searchString = {this.state.searchString}
 									drugs = {this.state.drugs}
-									searchDrugs = {drugsFuse.search(this.state.searchString || "")}
+									searchDrugs = {this.state.searchDrugs}
 									setDrugId = {this.setDrugId}
 									/>	
 					
@@ -276,8 +311,8 @@ class Scratch extends React.Component {
 
 												<Chunk>
 													{/* <Text type="small" color="tint" weight="strong" style={{lineHeight: 12}}>PRESCRIPTION DRUG</Text> */}
-													<Text type="pageHead">{thisDrug.brandName || '{missing brand name}'}</Text>
-													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic', lineHeight: 26, fontWeight: 300, marginBottom: 6}}>{thisDrug.genericName}</Text>
+													<Text type="pageHead">{thisDrug.brandname || '{missing brand name}'}</Text>
+													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic', lineHeight: 26, fontWeight: 300, marginBottom: 6}}>{thisDrug.genericname}</Text>
 												</Chunk>
 
 												<Flex direction="column" switchDirection="large">
@@ -307,19 +342,21 @@ class Scratch extends React.Component {
 												
 												<Chunk>
 													<Text weight="strong">What's the story?</Text>
-													<Text>Drug manufacturer {thisDrug.companyName} was able bring {thisDrug.brandName} to market thanks to taxpayer-funded {thisDrug.indication.toLowerCase().trim() || ''} reseach by Dr. Sally Scientist at {thisDrug.publicInstitution.trim()}. In 2018 alone, the United States spent {thisDrug.federal} on this drug, but is legally banned from negotating lower prices, thanks to pharmaceutical industry lobbying.</Text>
+													<Text>Drug manufacturer {thisDrug.companyName} was able bring {thisDrug.brandname} to market thanks to taxpayer-funded {thisDrug.indication.toLowerCase().trim() || ''} reseach by Dr. Sally Scientist at {thisDrug.publicinstitution.trim()}. In 2018 alone, the United States spent {thisDrug.federal} on this drug, but is legally banned from negotating lower prices, thanks to pharmaceutical industry lobbying.</Text>
 												</Chunk>
 								
-												<Chunk>
+												<Chunk style={{
+													alignItems: 'center', 
+												}}>
 													<Button 
-														style={{alignSelf: 'center'}}
 														label="What?! Show me another one" 
 														variant={{
 															small: 'grow',
 															medium: 'shrink'
 														}}
+														
 														onPress={()=>{
-															this.setNextDrugId(thisDrug.drugId)
+															this.setNextdrugId(thisDrug.drugid)
 														}} />
 												</Chunk>
 											</Sectionless>

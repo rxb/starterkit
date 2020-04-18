@@ -212,14 +212,16 @@ const styles = StyleSheet.create({
 		borderRadius: 500,
 		userSelect: 'none',
 		marginVertical: METRICS.pseudoLineHeight,
-		alignSelf: 'flex-start',
+		//alignSelf: 'flex-start',
 		flexDirection: 'row',
 		justifyContent: 'center',
+		flex: 0
 	},
 	'button--shrink': {},
 	'button--iconOnly': {},
 	'button--grow': {
-		alignSelf: 'stretch'
+		alignSelf: 'stretch',
+		flex: 1
 	},
 	'button--primary': {
 		backgroundColor: swatches.tint,
