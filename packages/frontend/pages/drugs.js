@@ -184,7 +184,7 @@ class Scratch extends React.Component {
 
 	fetchDrugsFromGoogleSheet(){
 		
-		// TODO: move to server side api, cache results in memory to avoid google api hit 
+		// TODO: move to server-side script, cache results in memory to avoid google api hit 
 		const fetch = require('isomorphic-unfetch');
 		const SHEETCODE = '17RAGBz0ckLc1kqDIf62U_m-mNw0ZYnDomKDnH8VuSz8';
 		const SHEETPAGE = '1';
@@ -194,20 +194,21 @@ class Scratch extends React.Component {
 			.then(body => {
 				let parsed = body.feed.entry.map( (entry) => {
 					let columns = {
-					"updated": entry.updated["$t"]
+						"updated": entry.updated["$t"]
 					}
 					// Dynamically add all relevant columns from the Sheets to the response
 					Object.keys( entry ).forEach( (key) => {
-					if ( /gsx\$/.test(key) ) {
-						let newKey = key.replace("gsx$", "");
-						columns[newKey] = entry[key]["$t"];
-					}
+						if ( /gsx\$/.test(key) ) {
+							let newKey = key.replace("gsx$", "");
+							columns[newKey] = entry[key]["$t"];
+						} 
 					});
 
 					return columns;
 				})
 				return parsed;
-			});
+			})
+			.then( data => data.filter( d => d.price && d.brandname ) ) // filter bad records
 	}
 
 	setSearchString(searchString = ""){
@@ -295,14 +296,15 @@ class Scratch extends React.Component {
 									/>	
 					
 
-								{ thisDrug && !this.state.searchString && 
+								{ thisDrug && !this.state.searchString &&
+								<Fragment> 
 									<Chunk>
 										<Card 
 											style={{
 												borderRadius: 10, 
 												minHeight: '50vh', 
 												borderWidth: 0,
-												shadowRadius: 16,
+												shadowRadius: 8,
 												shadowColor: 'rgba(0,0,0,.15)',
 												borderRadius: 12,
 											}}>
@@ -312,7 +314,7 @@ class Scratch extends React.Component {
 												<Chunk>
 													{/* <Text type="small" color="tint" weight="strong" style={{lineHeight: 12}}>PRESCRIPTION DRUG</Text> */}
 													<Text type="pageHead">{thisDrug.brandname || '{missing brand name}'}</Text>
-													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic', lineHeight: 26, fontWeight: 300, marginBottom: 6}}>{thisDrug.genericname}</Text>
+													<Text type="sectionHead" color="hint" style={{fontStyle: 'italic', lineHeight: 26, fontWeight: 300}}>{thisDrug.genericname}</Text>
 												</Chunk>
 
 												<Flex direction="column" switchDirection="large">
@@ -344,24 +346,27 @@ class Scratch extends React.Component {
 													<Text weight="strong">What's the story?</Text>
 													<Text>Drug manufacturer {thisDrug.companyName} was able bring {thisDrug.brandname} to market thanks to taxpayer-funded {thisDrug.indication.toLowerCase().trim() || ''} reseach by Dr. Sally Scientist at {thisDrug.publicinstitution.trim()}. In 2018 alone, the United States spent {thisDrug.federal} on this drug, but is legally banned from negotating lower prices, thanks to pharmaceutical industry lobbying.</Text>
 												</Chunk>
-								
 												<Chunk style={{
 													alignItems: 'center', 
 												}}>
+													
 													<Button 
 														label="What?! Show me another one" 
 														variant={{
 															small: 'grow',
 															medium: 'shrink'
 														}}
-														
+														textType="big"
 														onPress={()=>{
 															this.setNextdrugId(thisDrug.drugid)
 														}} />
+														
 												</Chunk>
 											</Sectionless>
 										</Card>
 								</Chunk>
+								
+								</Fragment>
 							}
 						</Section>
 						
