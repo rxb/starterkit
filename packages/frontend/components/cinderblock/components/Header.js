@@ -4,8 +4,6 @@ import styles from '../styles/styles';
 import {WithMatchMedia} from './WithMatchMedia';
 
 const VALID_TYPES = {
-	separated: "Separated", 
-	flush: "Flush",
 	transparent: "Transparent"
 }
 
@@ -33,9 +31,9 @@ const Header = (props) => {
 
 	const styleKeys = [
 		'header',
-		...[ (media && media.medium) ? 'header--atMedium' : undefined],
 		...[type ? `header${VALID_TYPES[type]}` : undefined ],
-		...[ (media && media.medium) ? `header${VALID_TYPES[type]}--atMedium` : undefined ],
+		...[ (media && media.medium) ? 'header--atMedium' : undefined],
+		...[ (type && media && media.medium) ? `header${VALID_TYPES[type]}--atMedium` : undefined],
 	];
 	const combinedStyles = styleKeys.map((key, i)=>{
 		return styles[key];

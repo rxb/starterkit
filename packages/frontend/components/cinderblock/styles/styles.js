@@ -501,46 +501,39 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 		top: 0,
 		left: 0,
-		right: 0,
-		height: 56,
-		justifyContent: 'center'
-		//marginBottom: -1 * METRICS.spaceSection
+		right: 0,	
+		backgroundColor: 'white',
+		borderBottomColor: swatches.border,
+		borderBottomWidth: 1	
 	},
 	'header--atMedium': {
 		paddingHorizontal: space*.75,
-		height: 64,
-	},
-
-	// HEADER TYPES
-	'headerTransparent': {
-		backgroundColor: 'transparent',
-	},
-	'headerFlush': {
-		backgroundColor: swatches.notwhite,
-		justifyContent: 'flex-end',
-		height: 56 - METRICS.spaceSection
-	},
-	'headerSeparated': {
-		backgroundColor: 'white',
-		borderBottomColor: swatches.border,
-		borderBottomWidth: 1,
-	},
-	'headerTransparent--atMedium': {
-	},
-	'headerFlush--atMedium': {
-		height: 64 - METRICS.spaceSection,
-		backgroundColor: swatches.notwhite
-	},
-	'headerSeparated--atMedium': {
 	},
 
 	// HEADER SECTION
 	'header-section': {
+		justifyContent: 'center',
 		paddingHorizontal: METRICS.spaceSection,
+		height: 56
 	},
 	'header-section--atMedium': {
 		paddingHorizontal: METRICS.spaceSection,
+		height: 64,
 	},
+
+	// HEADER TYPES
+	// headerTransparent must be placed inside the first stripe
+	// paddingTop on first stripe needs to be 0
+	// if a pagewrap is used for other pages, might need to hide the standard header
+	'headerTransparent': {
+		backgroundColor: 'transparent',
+		borderBottomWidth: 0,
+	},
+	'headerTransparent--atMedium': {
+		paddingHorizontal: 0,
+	},
+
+
 
 
 	// TOASTER

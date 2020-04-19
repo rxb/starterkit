@@ -261,10 +261,16 @@ class Scratch extends React.Component {
 		return (
 				<View ref={this.wrapRef}>
 
-					<Header maxWidth={800} position="static" >
+
+
+					<Stripe style={[{minHeight: '100vh', paddingTop: 0}]}>
+
+					<Header maxWidth={800} position="static" type="transparent">
 						<Flex direction="row">
 							<FlexItem>
-									<Link href="/drugs"><Text type="big" color="tint">SITE NAME</Text></Link>
+									<Link href="/drugs">
+										<Text type={ media.medium ? 'sectionHead' : 'big'} color="tint" style={{fontWeight: 700}}>SITE NAME</Text>
+									</Link>
 							</FlexItem>
 							<FlexItem shrink justify="center">
 									<Touch onPress={()=>{
@@ -276,10 +282,8 @@ class Scratch extends React.Component {
 						</Flex>
 					</Header>
 
-					<Stripe style={[{backgroundColor: swatches.notwhite, minHeight: '100vh', paddingTop: 0}]}>
-
 						<Bounds style={{maxWidth: 800}}>
-							<Section>
+							<Section style={{marginTop: -1 * METRICS.space}}>
 
 								<SearchForm
 									onSubmit={(fields) => {
@@ -304,12 +308,12 @@ class Scratch extends React.Component {
 												borderRadius: 10, 
 												minHeight: '50vh', 
 												borderWidth: 0,
-												shadowRadius: 8,
+												shadowRadius: 16,
 												shadowColor: 'rgba(0,0,0,.15)',
 												borderRadius: 12,
 											}}>
 									
-											<Sectionless>
+											<Sectionless style={[(media.medium) ? {paddingHorizontal: 30, paddingTop: 20, paddingBottom: 5} : {}]}>
 
 												<Chunk>
 													{/* <Text type="small" color="tint" weight="strong" style={{lineHeight: 12}}>PRESCRIPTION DRUG</Text> */}
@@ -351,7 +355,7 @@ class Scratch extends React.Component {
 												}}>
 													
 													<Button 
-														label="What?! Show me another one" 
+														label="Show me another one" 
 														variant={{
 															small: 'grow',
 															medium: 'shrink'
