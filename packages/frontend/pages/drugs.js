@@ -94,6 +94,7 @@ class SearchFormComponent extends React.Component {
 							onFocus={onFocus}
 							autoComplete="off"
 							style={{borderRadius: 4000, paddingLeft: 48}}
+							keyboardType="web-search"
 							onKeyPress={(event)=>{
 								if(event.keyCode === 13) {
 									this.setFirstdrugid();
