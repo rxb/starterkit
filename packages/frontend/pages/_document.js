@@ -49,9 +49,9 @@ export default class MyDocument extends Document {
           }
           input:focus, textarea:focus, select:focus, .focus{
             outline: none;
-            border-color: ${swatches.textHint};
+            border-color: ${swatches.tint};
             background-color: transparent;
-            box-shadow: 0 0 0 3px ${swatches.focus};
+            //box-shadow: 0 0 0 3px ${swatches.focus};
           }
 
 

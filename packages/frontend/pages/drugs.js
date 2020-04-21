@@ -94,7 +94,6 @@ class SearchFormComponent extends React.Component {
 							onFocus={onFocus}
 							autoComplete="off"
 							style={{borderRadius: 4000, paddingLeft: 48}}
-							keyboardType="web-search"
 							onKeyPress={(event)=>{
 								if(event.keyCode === 13) {
 									this.setFirstdrugid();
@@ -283,7 +282,7 @@ class Scratch extends React.Component {
 					</Header>
 
 						<Bounds style={{maxWidth: 800}}>
-							<Section style={{marginTop: -1 * METRICS.space}}>
+							<Section style={{marginTop: -15}}>
 
 								<SearchForm
 									onSubmit={(fields) => {
@@ -309,7 +308,7 @@ class Scratch extends React.Component {
 												minHeight: '50vh', 
 												borderWidth: 0,
 												shadowRadius: 16,
-												shadowColor: 'rgba(0,0,0,.15)',
+												shadowColor: 'rgba(0,0,0,.1)',
 												borderRadius: 12,
 											}}>
 									
