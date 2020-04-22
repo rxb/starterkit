@@ -313,7 +313,9 @@ class Scratch extends React.Component {
 												borderRadius: 12,
 											}}>
 									
-											<Sectionless style={[(media.medium) ? {paddingHorizontal: 30, paddingTop: 20, paddingBottom: 5} : {}]}>
+											<Sectionless style={[
+													(media.medium) ? {paddingHorizontal: 30, paddingTop: 20, paddingBottom: 5} : {}
+												]}>
 
 												<Chunk>
 													{/* <Text type="small" color="tint" weight="strong" style={{lineHeight: 12}}>PRESCRIPTION DRUG</Text> */}

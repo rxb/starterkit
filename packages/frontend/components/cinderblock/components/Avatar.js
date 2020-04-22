@@ -6,13 +6,14 @@ import styles from '../styles/styles';
 const Avatar = (props) => {
 	const {
 		size,
-		source
+		source,
+		style
 	} = props;
 
 	return(
 		<Image
 			source={source}
-			style={[styles['avatar'], styles[`avatar--${size}`]]}
+			style={[styles['avatar'], styles[`avatar--${size}`], style]}
 			/>
 	);
 }

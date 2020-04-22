@@ -1,4 +1,4 @@
-	import React, {Fragment} from 'react';
+import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -26,11 +26,14 @@ import {
 	TextInput,
 	Touch,
 	View,
-	withFormState
+	withFormState,
+	
 } from '../components/cinderblock';
 
 import styles from '../components/cinderblock/styles/styles';
 import swatches from '../components/cinderblock/styles/swatches';
+import {METRICS} from '../components/cinderblock/designConstants';
+import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedia';
 import Page from '../components/Page';
 
 
@@ -38,6 +41,129 @@ import Page from '../components/Page';
 
 import Markdown from 'markdown-to-jsx';
 
+
+const Card1 = (props) => {
+	return (
+		<Card style={{
+				/*
+				borderTopWidth: 12,
+				borderTopColor: 'blue',
+				borderTopStyle: 'solid',
+				*/
+				borderWidth: 0,
+				shadowRadius: 16,
+				shadowColor: 'rgba(0,0,0,.15)',
+				borderRadius: 12
+			}}>
+			<Stripe style={{backgroundColor: swatches.tint}}>
+				<Section>
+					<Chunk>
+						<Text type="pageHead" inverted>Buster Bluth</Text>
+						<Text inverted>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Text>
+					</Chunk>
+				</Section>
+			</Stripe>
+			<Stripe>
+
+				<Section>
+
+					<Markdown
+						options={{
+								overrides: {
+									h1: {
+										component: (props) => (<Chunk>
+											<Text type="pageHead">{props.children}</Text>
+										</Chunk>)
+									},
+									h2: {
+										component: (props) => (<Chunk>
+											<Text type="sectionHead">{props.children}</Text>
+										</Chunk>)
+									},
+									h3: {
+										component: (props) => (<Chunk>
+											<Text type="big">{props.children}</Text>
+										</Chunk>)
+									},
+										p: {
+											component: (props) => (<Chunk>
+											<Text>{props.children}</Text>
+										</Chunk>),
+										},
+										ul: {
+										component: (props) => (<Chunk><ul style={{margin: 0, paddingLeft: 18}}>{props.children}</ul></Chunk>)
+										},
+										li: {
+										component: (props) => (<li>{props.children}</li>)
+										}
+								},
+							}}
+						>{props.markdownContent}</Markdown>
+				</Section>
+				</Stripe>
+			</Card>
+
+	);
+}
+
+const Card2 = WithMatchMedia((props) => {
+
+	const {
+		media,
+		tldr
+	} = props;
+
+	return (
+		<Card style={{
+				/*
+				borderTopWidth: 12,
+				borderTopColor: 'blue',
+				borderTopStyle: 'solid',
+				*/
+				borderWidth: 0,
+				shadowRadius: 16,
+				shadowColor: 'rgba(0,0,0,.15)',
+				borderRadius: 12
+			}}>
+			<Sectionless style={[
+					{backgroundColor: swatches.tint},
+					(media.medium) ? {paddingHorizontal: 30, paddingTop: 20, paddingBottom: 5} : {}
+				]}>
+					<Chunk style={{paddingBottom: METRICS.space / 4}}>
+						<Inline>
+						<Avatar style={{height: 14, width: 14}} source={{uri: 'https://randomuser.me/api/portraits/women/79.jpg'}} />
+						<Text type="small" inverted color="secondary">
+							rxb/buster-bluth  v1.2
+						</Text>
+						</Inline>
+					</Chunk>
+					<Chunk>
+						<Text type="pageHead" inverted>{tldr.title}</Text>
+						<Text inverted style={{fontStyle: 'italic'}}>{tldr.blurb}</Text>
+					</Chunk>
+			</Sectionless>
+			<Sectionless style={[
+					(media.medium) ? {paddingHorizontal: 30, paddingTop: 20, paddingBottom: 5} : {}
+				]}>
+					<View>
+					{tldr.steps.map((step, i)=>(
+						<Chunk style={{
+							borderLeftWidth: 3,
+							borderLeftColor: `${swatches.tint}44`,
+							paddingBottom: 0,
+							marginBottom: METRICS.space,
+							paddingLeft: METRICS.space * .66
+							}}>
+							<Text weight="strong"><Markdown>{step.head}</Markdown></Text>
+							<Text>{step.body}</Text>
+						</Chunk>
+					))}
+					</View>
+				</Sectionless>
+			</Card>
+
+	);
+});
 
 
 class Tldr extends React.Component {
@@ -47,26 +173,12 @@ class Tldr extends React.Component {
 	render() {
 
 		const {
+			markdownContent,
 			user
 		} = this.props;
 
 
-		const  markdownContent = `
-
-
-* **Excepteur sint occaecat cupidatat**
-Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-* **Lorem ipsum dolor sit amet, consectetur adipiscing elit**
-sed do eiusmod tempor incididunt ut labore Okay lets go
-
-* **Excepteur sint occaecat cupidatat**
-Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-* **Lorem ipsum dolor sit amet, consectetur adipiscing elit**
-sed do eiusmod tempor incididunt ut labore Okay lets go
-		`;
-
+		
 		return (
 			<Page>
 				<Stripe >
@@ -80,70 +192,12 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 									<Section>
 
 										<Chunk>
-											<Card style={{
-												/*
-												borderTopWidth: 12,
-												borderTopColor: 'blue',
-												borderTopStyle: 'solid',
-												*/
-												borderWidth: 0,
-												shadowRadius: 16,
-												shadowColor: 'rgba(0,0,0,.15)',
-												borderRadius: 12
-											}}>
-											<Stripe style={{backgroundColor: swatches.tint}}>
-												<Section>
-													<Chunk>
-														<Text type="pageHead" inverted>Buster Bluth</Text>
-														<Text inverted>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Text>
-													</Chunk>
-												</Section>
-											</Stripe>
-											<Stripe>
-
-												<Section>
-
-													<Markdown
-														options={{
-												            overrides: {
-												            	h1: {
-												            		component: (props) => (<Chunk>
-												            			<Text type="pageHead">{props.children}</Text>
-												            		</Chunk>)
-												            	},
-												            	h2: {
-												            		component: (props) => (<Chunk>
-												            			<Text type="sectionHead">{props.children}</Text>
-												            		</Chunk>)
-												            	},
-												            	h3: {
-												            		component: (props) => (<Chunk>
-												            			<Text type="big">{props.children}</Text>
-												            		</Chunk>)
-												            	},
-												                p: {
-												                    component: (props) => (<Chunk>
-												            			<Text>{props.children}</Text>
-												            		</Chunk>),
-												                },
-												                ul: {
-												                	component: (props) => (<Chunk><ul style={{margin: 0, paddingLeft: 18}}>{props.children}</ul></Chunk>)
-												                },
-												                li: {
-												                	component: (props) => (<li>{props.children}</li>)
-												                }
-												            },
-												        }}
-														>{markdownContent}</Markdown>
-												</Section>
-												</Stripe>
-											</Card>
-
+											<Card2 markdownContent={markdownContent} {...this.props} />
 										</Chunk>
 									</Section>
 
 								</FlexItem>
-								<FlexItem growFactor={0} style={{flexBasis: 360}}>
+								<FlexItem growFactor={0} style={{flexBasis: 360, flex: 0}}>
 									<Section>
 										<Chunk>
 											<Flex>
@@ -266,10 +320,53 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 	}
 }
 
+const  markdownContent = `
+* **Excepteur sint occaecat cupidatat**
+Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-const mapStateToProps = (state, ownProps) => {
+* **Lorem ipsum dolor sit amet, consectetur adipiscing elit**
+sed do eiusmod tempor incididunt ut labore Okay lets go
+
+* **Excepteur sint occaecat cupidatat**
+Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+* **Lorem ipsum dolor sit amet, consectetur adipiscing elit**
+sed do eiusmod tempor incididunt ut labore Okay lets go
+		`;
+
+const tldr = {
+	title: "Buster Bluth",
+	blurb: "Free juice? This Party Is Going To Be Off The Hook!",
+	steps: [
+		{ 
+			head: "Excepteur sint occaecat cupidatat",
+			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+		},
+		{ 
+			head: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+			body: "sed do eiusmod tempor incididunt ut labore Okay lets go"
+		},
+		{ 
+			head: "Excepteur sint occaecat cupidatat",
+			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed do eiusmod tempor incididunt ut labore Okay lets go"
+		},
+		{ 
+			head: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+			body: "sed do eiusmod tempor incididunt ut labore Okay lets go"
+		},		
+		{ 
+			head: "Excepteur sint occaecat cupidatat",
+			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+		},
+	]
+}
+
+
+const mapStateToProps = (state, ownProps) => {	
 	return ({
 		user: state.user,
+		markdownContent,
+		tldr
 	});
 }
 

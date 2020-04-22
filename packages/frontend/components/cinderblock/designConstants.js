@@ -55,13 +55,13 @@ export const METRICS = {
 		return this.sectionHeadSize * 1.25
 	},
 	get pageHeadSize() {
-		return this.base * 3
+		return this.base * 2.25 
 	},
 	get pageHeadLineHeight() {
 		return this.pageHeadSize * 1.15
 	},
 	get heroSize() {
-		return this.base * 4
+		return this.base * 3.75
 	},
 	get heroLineHeight() {
 		return this.heroSize * 1.05
