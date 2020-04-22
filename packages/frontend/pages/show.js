@@ -240,8 +240,7 @@ class Show extends React.Component {
 										</FlexItem>
 									</Flex>
 								</View>
-							</Section>
-							<Section>
+						
 
 								<Chunk>
 									<Text>{show.description}</Text>

@@ -130,12 +130,21 @@ const Card2 = WithMatchMedia((props) => {
 					(media.medium) ? {paddingHorizontal: 30, paddingTop: 20, paddingBottom: 5} : {}
 				]}>
 					<Chunk style={{paddingBottom: METRICS.space / 4}}>
-						<Inline>
-						<Avatar style={{height: 14, width: 14}} source={{uri: 'https://randomuser.me/api/portraits/women/79.jpg'}} />
-						<Text type="small" inverted color="secondary">
-							rxb/buster-bluth  v1.2
-						</Text>
-						</Inline>
+						<Flex>
+							<FlexItem>
+								<Inline>
+									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
+									<Text type="small" inverted color="secondary">
+										rxb/buster-bluth
+									</Text>
+								</Inline>
+							</FlexItem>
+							<FlexItem style={{alignItems: 'flex-end'}}>
+								<Text type="small" inverted color="secondary">
+									v1.2
+								</Text>
+							</FlexItem>
+						</Flex>
 					</Chunk>
 					<Chunk>
 						<Text type="pageHead" inverted>{tldr.title}</Text>

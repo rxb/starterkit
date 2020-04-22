@@ -10,7 +10,7 @@ xlarge...
 
 const base = 16;
 const space = base * .75;
-const spaceSection = base * 1.5;
+const space = base * 1.5;
 
 */
 
@@ -22,7 +22,7 @@ export const METRICS = {
 		return this.base * 1.25
 	},
 	get spaceSection() {
-		return this.base * 1.25
+		return this.space * 2
 	},
 	get bodySize() {
 		return this.base
@@ -43,7 +43,7 @@ export const METRICS = {
 		return this.microSize * 2
 	},
 	get bigSize() {
-		return this.base * 1.15
+		return this.base * 1.2
 	},
 	get bigLineHeight() {
 		return this.bigSize * 1.4

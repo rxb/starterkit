@@ -164,15 +164,14 @@ class Hello extends React.Component {
 						<Stripe>
 							<Bounds>
 								<Sections>
-									<Section type="pageHead">
+									<Section>
 										<Chunk>
 											<Text type="hero">Hey hello!</Text>
 										</Chunk>
-									</Section>
-									<Section>
 										<Chunk>
-											<Text type="sectionHead">What is this, a crossover episode?</Text>
+											<Text type="big">What is this, a crossover episode?</Text>
 										</Chunk>
+									
 										<Chunk>
 											<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <Link style={styles.textTint} href={{pathname:'/other', query:{what: 'yeah'}}}>Check out this test form</Link> nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</Text>
 										</Chunk>

@@ -99,7 +99,7 @@ const TextAreaForm = withFormState( (props) => (
 					marginVertical: 0,
 					overflow: 'hidden',
 					borderWidth: 0,
-					paddingHorizontal: METRICS.spaceSection
+					paddingHorizontal: METRICS.space
 				}}
 				/>
 

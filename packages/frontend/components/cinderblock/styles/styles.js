@@ -7,7 +7,6 @@ import { METRICS, BREAKPOINT_SIZES} from '../designConstants';
 const {
 	base,
 	space,
-	spaceSection,
 	borderRadius,
 	cardBorderRadius
 } = METRICS;
@@ -17,11 +16,12 @@ const styles = StyleSheet.create({
 
 	// LAYOUT
 	stripe: {
-		paddingVertical: spaceSection,
+		paddingVertical: space,
 		flex: 1,
 	},
 	'stripe--atMedium': {
-		paddingHorizontal: space*.75,
+		paddingVertical: space,
+		paddingHorizontal: space,
 	},
 	/*
 	'stripe--atLarge': {
@@ -35,16 +35,16 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	section: {
-		paddingTop: spaceSection,
-		marginHorizontal: spaceSection,
-		paddingBottom: spaceSection - space,
+		paddingTop: space,
+		marginHorizontal: space,
+		paddingBottom: 0,
 		//borderTopWidth: 1,
 		//borderTopColor: swatches.border
 	},
 
 	/*
 	'section--pageHead': {
-		paddingTop: spaceSection + (space * .33),
+		paddingTop: space + (space * .33),
 		paddingBottom: 0
 	},
 	*/
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 
 /*
 	imageSnap: {
-		marginHorizontal: spaceSection * -1,
+		marginHorizontal: space * -1,
 		resizeMode: 'cover',
 		borderRadius: 0,
 	},
@@ -75,8 +75,7 @@ const styles = StyleSheet.create({
 
 	'imageSnap': {
 		marginTop: space,
-		marginHorizontal: spaceSection,
-		marginBottom: spaceSection - space,
+		marginHorizontal: space,
 		borderRadius: 6
 	},
 
@@ -152,8 +151,8 @@ const styles = StyleSheet.create({
 		flexWrap: 'nowrap',
 		overflowX: 'scroll',
 		WebkitOverflowScrolling: 'touch',
-		paddingLeft: spaceSection - space,
-		paddingRight: spaceSection,
+		paddingLeft: space - space,
+		paddingRight: space,
 		paddingBottom: 30,
 		marginBottom: -30,
 		overflow: 'hidden',
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
 	},
 	'list--scroll-wrap': {
 		overflow: 'hidden',
-		marginHorizontal: -1 * spaceSection,
+		marginHorizontal: -1 * space,
 	},
 
 	// INPUT
@@ -513,11 +512,11 @@ const styles = StyleSheet.create({
 	// HEADER SECTION
 	'header-section': {
 		justifyContent: 'center',
-		paddingHorizontal: METRICS.spaceSection,
+		paddingHorizontal: METRICS.space,
 		height: 56
 	},
 	'header-section--atMedium': {
-		paddingHorizontal: METRICS.spaceSection,
+		paddingHorizontal: METRICS.space,
 		height: 64,
 	},
 
