@@ -475,7 +475,11 @@ const styles = StyleSheet.create({
 		lineHeight: METRICS.pageHeadLineHeight,
 		fontWeight: '700',
 		letterSpacing: '-.001em',
-		marginVertical: METRICS.pseudoLineHeight
+		//marginVertical: METRICS.pseudoLineHeight
+	},
+	'textPageHead--atLarge': {
+		fontSize: METRICS.pageHeadAtLargeSize,
+		lineHeight: METRICS.pageHeadAtLargeLineHeight,
 	},
 	textHero: {
 		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
@@ -483,7 +487,11 @@ const styles = StyleSheet.create({
 		lineHeight: METRICS.heroLineHeight,
 		fontWeight: '700',
 		letterSpacing: '-.001em',
-		marginVertical: METRICS.pseudoLineHeight
+		//marginVertical: METRICS.pseudoLineHeight
+	},
+	'textHero--atLarge': {
+		fontSize: METRICS.heroAtLargeSize,
+		lineHeight: METRICS.heroAtLargeLineHeight,
 	},
 	textLabel: {
 		marginTop: 4,

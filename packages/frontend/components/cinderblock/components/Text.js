@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text as ReactText } from '../primitives';
 import styles from '../styles/styles';
+import {WithMatchMedia} from './WithMatchMedia';
 
 const VALID_TYPES = {
 	micro: 'Micro',
@@ -28,6 +29,7 @@ const Text = (props) => {
 		children,
 		inverted,
 		type,
+		media,
 		color = "primary",
 		style,
 		weight,
@@ -40,7 +42,8 @@ const Text = (props) => {
 		'text',
 		...[type ? `text${VALID_TYPES[type]}` : undefined ],
 		...[color ? `text${VALID_COLORS[color]}${invertedModifier}` : undefined ],
-		...[weight ? `text${VALID_WEIGHTS[weight]}` : undefined ]
+		...[weight ? `text${VALID_WEIGHTS[weight]}` : undefined ],
+		...[media.large ? `text${VALID_TYPES[type]}--atLarge` : undefined],
 	];
 
 	const combinedStyles = styleKeys.map((key, i)=>{
@@ -58,4 +61,4 @@ const Text = (props) => {
 }
 
 
-export default Text;
+export default WithMatchMedia(Text);

@@ -20,7 +20,7 @@ const Header = (props) => {
 		children,
 		style,
 		media,
-		maxWidth = 'auto',
+		maxWidth = 1100,
 		position = 'sticky',
 		type = 'separated'
 	} = props

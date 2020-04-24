@@ -10,6 +10,7 @@ import {
 	Chunk,
 	Flex,
 	FlexItem,
+	Header,
 	Icon,
 	Inline,
 	Image,
@@ -41,6 +42,32 @@ import Page from '../components/Page';
 
 import Markdown from 'markdown-to-jsx';
 
+
+const ConnectedHeader = WithMatchMedia((props) => {
+
+	const {
+		media
+	} = props;
+
+	return(
+		<Header position="static" type="">
+			<Flex direction="row">
+				<FlexItem>
+						<Link href="/tldr">
+							<Text type={ media.medium ? 'sectionHead' : 'big'} color="tint" style={{fontWeight: 700}}>tldr</Text>
+						</Link>
+				</FlexItem>
+				<FlexItem shrink justify="center">
+						<Touch onPress={()=>{
+							alert('TODO: like, a menu or something');
+						}}>
+							<Icon shape="Menu" color={swatches.tint} />
+						</Touch>
+				</FlexItem>
+			</Flex>
+		</Header>
+	);
+});
 
 const Card1 = (props) => {
 	return (
@@ -127,9 +154,9 @@ const Card2 = WithMatchMedia((props) => {
 			}}>
 			<Sectionless style={[
 					{backgroundColor: swatches.tint},
-					(media.medium) ? {paddingHorizontal: 30, paddingTop: 20, paddingBottom: 5} : {}
+					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {}
 				]}>
-					<Chunk style={{paddingBottom: METRICS.space / 4}}>
+					<Chunk style={{paddingBottom: 4}}>
 						<Flex>
 							<FlexItem>
 								<Inline>
@@ -189,17 +216,18 @@ class Tldr extends React.Component {
 
 		
 		return (
-			<Page>
-				<Stripe >
+			<View style={{minHeight: '100vh'}}>
+				<ConnectedHeader />
+
+				<Stripe style={{paddingTop: 0}}>
+
 					<Bounds>
 						<Sections>
 
 							<Flex direction="column" switchDirection="large">
 
 								<FlexItem growFactor={1}>
-
 									<Section>
-
 										<Chunk>
 											<Card2 markdownContent={markdownContent} {...this.props} />
 										</Chunk>
@@ -209,7 +237,7 @@ class Tldr extends React.Component {
 								<FlexItem growFactor={0} style={{flexBasis: 360, flex: 0}}>
 									<Section>
 										<Chunk>
-											<Flex>
+											<Flex direction="column">
 												<FlexItem>
 													<Inline style={{flexWrap: 'noWrap', flex: 1}}>
 														<Button
@@ -292,7 +320,12 @@ class Tldr extends React.Component {
 										small: 'scroll',
 										large: 'grid'
 									}}
-									itemsInRow={4}
+									itemsInRow={{
+										small: 1,
+										medium: 2,
+										large: 4
+									}}
+									scrollItemWidth={300}
 									items={[
 										{title: 'Something is cool', blurb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'},
 										{title: 'Something is cool', blurb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'},
@@ -306,8 +339,6 @@ class Tldr extends React.Component {
 													<Section>
 														<Chunk>
 															<Text type="big">{item.title}</Text>
-														</Chunk>
-														<Chunk>
 															<Text>{item.blurb}</Text>
 														</Chunk>
 													</Section>
@@ -322,7 +353,7 @@ class Tldr extends React.Component {
 						</Sections>
 					</Bounds>
 				</Stripe>
-			</Page>
+			</View>
 		);
 
 

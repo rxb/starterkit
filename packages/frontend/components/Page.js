@@ -124,7 +124,7 @@ class Page extends React.Component {
 			<View style={{minHeight: '100vh'}}>
 
 
-				<Header>
+				<Header maxWidth="auto">
 					<Flex direction="row">
 						<FlexItem>
 							<Link href="/">
