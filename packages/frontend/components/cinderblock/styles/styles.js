@@ -42,42 +42,21 @@ const styles = StyleSheet.create({
 		//borderTopColor: swatches.border
 	},
 
-	/*
-	'section--pageHead': {
-		paddingTop: space + (space * .33),
-		paddingBottom: 0
-	},
-	*/
 
-	/*
-	'section--firstChild': {
-		borderTopWidth: 0
-	},
-	*/
-
-	/*
-	// removing the border between two sections
-	// often because one of the sections already has a very horizontally-dividing object
-	// not for the first child, use section--firstChild for that
-	'section--noBorder': {
-		borderTopWidth: 0,
-		paddingTop: 0
-	},
-	*/
-
-/*
 	imageSnap: {
-		marginHorizontal: space * -1,
+		marginHorizontal: 0,
+		marginTop: -1 * space,
 		resizeMode: 'cover',
 		borderRadius: 0,
 	},
-*/
 
-	'imageSnap': {
-		marginTop: space,
+	
+	'imageSnap--atMedium': {
+		marginTop: space / 2,
 		marginHorizontal: space,
 		borderRadius: 6
 	},
+	
 
 	// for sets of chunks with no possibility of sections
 	// basically, inside simple, small cards
