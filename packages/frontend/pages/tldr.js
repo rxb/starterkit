@@ -237,28 +237,36 @@ class Tldr extends React.Component {
 								<FlexItem growFactor={0} style={{flexBasis: 360, flex: 0}}>
 									<Section>
 										<Chunk>
-											<Flex direction="column">
+											<Flex >
 												<FlexItem>
-													<Inline style={{flexWrap: 'noWrap', flex: 1}}>
 														<Button
 															width="full"
 															color="secondary"
 															shape="ArrowUp"
 															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1}}
 															/>
+												</FlexItem>
+												<FlexItem justify="center" align="center">
+													<Text type="big" style={{textAlign: 'center'}}>234</Text>
+												</FlexItem>
+												<FlexItem>
 														<Button
 															width="full"
 															color="secondary"
 															shape="ArrowDown"
 															style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
 															/>
-													</Inline>
 												</FlexItem>
+												
+											</Flex>
+										</Chunk>
+										<Chunk>
+											<Flex>
 												<FlexItem shrink>
 													<Inline style={{flexWrap: 'noWrap'}}>
-														<Button shape="Edit3" color="secondary" />
-														<Button shape="GitPullRequest" color="secondary" />
-														<Button shape="Bookmark" color="secondary" />
+														<Button shape="Edit3" color="secondary" label="Edit" />
+														<Button shape="GitPullRequest" color="secondary" label="Fork" />
+														<Button shape="Bookmark" color="secondary" label="Save" />
 													</Inline>
 												</FlexItem>
 											</Flex>

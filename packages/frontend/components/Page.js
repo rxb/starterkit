@@ -129,8 +129,8 @@ class Page extends React.Component {
 						<FlexItem>
 							<Link href="/">
 								<Inline>
-									<Icon shape="FileText" color={swatches.textSecondary} />
-									<Text weight="strong" color="secondary">CINDERBLOCK</Text>
+									<Icon shape="FileText" color={swatches.tint} />
+									<Text weight="strong" color="tint">CINDERBLOCK</Text>
 								</Inline>
 							</Link>
 						</FlexItem>
