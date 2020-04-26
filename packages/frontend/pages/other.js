@@ -112,6 +112,7 @@ const OtherForm = withFormState((props) => {
 						<Button
 							onPress={props.handleSubmit}
 							label="Submit"
+							width="snap"
 							/>
 					</Chunk>
 				</Section>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image } from '../primitives';
+import { View, Image, ImageBackground } from '../primitives';
 import styles from '../styles/styles';
 import {WithMatchMedia} from './WithMatchMedia';
 import { BREAKPOINTS } from '../designConstants';
@@ -35,7 +35,6 @@ const Stripe = WithMatchMedia((props) => {
 	const styleKeys = [
 		'stripe',
 		...[ (media && media.medium) ? 'stripe--atMedium' : undefined],
-		/*...[ (media && media.large) ? 'stripe--atLarge' : undefined]*/
 	];
 	const combinedStyles = styleKeys.map((key, i)=>{
 		return styles[key];
@@ -44,14 +43,14 @@ const Stripe = WithMatchMedia((props) => {
 
 	if(image){
 		return(
-			<Image
+			<ImageBackground
 				ref={forwardedRef}
 				source={{uri: image}}
-				style={[combinedStyles, {resizeMode: 'cover'}, style, imageHeightStyle]}
+				style={[combinedStyles, {resizeMode: 'cover', flex: 0}, style, imageHeightStyle]}
 				{...other}
 				>
 				{children}
-			</Image>
+			</ImageBackground>
 		);
 	}
 	else{

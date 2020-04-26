@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	// LAYOUT
 	stripe: {
 		paddingVertical: space,
-		flex: 1,
+		//flex: 1,
 	},
 	'stripe--atMedium': {
 		paddingVertical: space,
@@ -190,10 +190,9 @@ const styles = StyleSheet.create({
 		borderRadius: 500,
 		userSelect: 'none',
 		marginVertical: METRICS.pseudoLineHeight,
-		//alignSelf: 'flex-start',
 		flexDirection: 'row',
 		justifyContent: 'center',
-		flex: 0
+		alignSelf: 'flex-start'
 	},
 	'button--shrink': {},
 	'button--iconOnly': {},
@@ -490,7 +489,7 @@ const styles = StyleSheet.create({
 		right: 0,	
 		backgroundColor: 'white',
 		borderBottomColor: swatches.border,
-		borderBottomWidth: 1	
+		borderBottomWidth: 1,
 	},
 	'header--atMedium': {
 		paddingHorizontal: space*.75,

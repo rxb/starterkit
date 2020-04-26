@@ -357,6 +357,7 @@ class Scratch extends React.Component {
 												}}>
 													
 													<Button 
+														style={{alignSelf: 'center'}}
 														label="Show me another one" 
 														variant={{
 															small: 'grow',

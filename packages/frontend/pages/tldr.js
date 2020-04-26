@@ -237,7 +237,7 @@ class Tldr extends React.Component {
 								<FlexItem growFactor={0} style={{flexBasis: 360, flex: 0}}>
 									<Section>
 										<Chunk>
-											<Flex >
+											<Flex noGutters>
 												<FlexItem>
 														<Button
 															width="full"
@@ -246,8 +246,10 @@ class Tldr extends React.Component {
 															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1}}
 															/>
 												</FlexItem>
-												<FlexItem justify="center" align="center">
-													<Text type="big" style={{textAlign: 'center'}}>234</Text>
+												<FlexItem>
+													<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', marginHorizontal: 1}}>
+														<Text weight="strong" style={{textAlign: 'center'}}>234</Text>
+													</View>
 												</FlexItem>
 												<FlexItem>
 														<Button
@@ -262,12 +264,14 @@ class Tldr extends React.Component {
 										</Chunk>
 										<Chunk>
 											<Flex>
-												<FlexItem shrink>
-													<Inline style={{flexWrap: 'noWrap'}}>
+												<FlexItem>
 														<Button shape="Edit3" color="secondary" label="Edit" />
+												</FlexItem>
+												<FlexItem>
 														<Button shape="GitPullRequest" color="secondary" label="Fork" />
+												</FlexItem>
+												<FlexItem>
 														<Button shape="Bookmark" color="secondary" label="Save" />
-													</Inline>
 												</FlexItem>
 											</Flex>
 										</Chunk>

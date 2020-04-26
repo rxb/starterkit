@@ -193,13 +193,13 @@ class Events extends React.Component {
 					<meta property='og:title' content='Scratch' />
 					<title>Events</title>
 				</Head>
-				<Stripe style={{backgroundColor: '#F9D5D3'}}>
+				<Stripe style={{backgroundColor: swatches.tint}}>
 					<Bounds>
 						<Sections>
 							<Section type="pageHead">
 								<Chunk>
-									<Text type="pageHead">/r/leanfire</Text>
-									<Text>New York, NY (Change location)</Text>
+									<Text type="pageHead" inverted>/r/leanfire</Text>
+									<Text inverted>New York, NY (Change location)</Text>
 								</Chunk>
 
 							</Section>
