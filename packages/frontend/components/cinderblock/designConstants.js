@@ -34,7 +34,7 @@ export const METRICS = {
 		return this.base * 0.875
 	},
 	get smallLineHeight() {
-		return this.smallSize * 1.75
+		return this.smallSize * 1.65
 	},
 	get microSize() {
 		return this.base * 0.6
@@ -46,7 +46,7 @@ export const METRICS = {
 		return this.base * 1.2
 	},
 	get bigLineHeight() {
-		return this.bigSize * 1.4
+		return this.bigSize * 1.5
 	},
 	get sectionHeadSize() {
 		return this.base * 1.5
@@ -82,7 +82,7 @@ export const METRICS = {
 		return 6
 	},
 	borderRadius: 4,
-	cardBorderRadius: 8,
+	cardBorderRadius: 10,
 	fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
 }
 

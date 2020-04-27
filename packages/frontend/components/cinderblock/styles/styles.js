@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
 
 	// CARD
 	card: {
-		borderRadius: borderRadius,
+		borderRadius: cardBorderRadius,
 		//shadowRadius: 12,
 		//shadowColor: 'rgba(0,0,0,.25)',
 		backgroundColor: 'white',
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
 		fontSize: METRICS.sectionHeadSize,
 		lineHeight: METRICS.sectionHeadLineHeight,
 		fontWeight: '600',
-		letterSpacing: '.015em'
+		letterSpacing: '-.001em',
 	},
 	textPageHead: {
 		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
@@ -453,7 +453,6 @@ const styles = StyleSheet.create({
 		lineHeight: METRICS.pageHeadLineHeight,
 		fontWeight: '700',
 		letterSpacing: '-.001em',
-		//marginVertical: METRICS.pseudoLineHeight
 	},
 	'textPageHead--atLarge': {
 		fontSize: METRICS.pageHeadAtLargeSize,
@@ -465,7 +464,6 @@ const styles = StyleSheet.create({
 		lineHeight: METRICS.heroLineHeight,
 		fontWeight: '700',
 		letterSpacing: '-.001em',
-		//marginVertical: METRICS.pseudoLineHeight
 	},
 	'textHero--atLarge': {
 		fontSize: METRICS.heroAtLargeSize,
