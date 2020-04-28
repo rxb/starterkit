@@ -36,116 +36,14 @@ import swatches from '../components/cinderblock/styles/swatches';
 import {METRICS} from '../components/cinderblock/designConstants';
 import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedia';
 import Page from '../components/Page';
-
+import OutpostHeader from '../components/OutpostHeader';
 
 
 
 import Markdown from 'markdown-to-jsx';
 
 
-const ConnectedHeader = WithMatchMedia((props) => {
 
-	const {
-		media
-	} = props;
-
-	return(
-		<Header position="static" type="transparent">
-			<Flex direction="row">
-				<FlexItem>
-						<Link href="/splash">
-							<Text type={ media.medium ? 'sectionHead' : 'big'} inverted style={{fontWeight: 700}}>outpost</Text>
-						</Link>
-				</FlexItem>
-				<FlexItem shrink justify="center">
-						<Touch onPress={()=>{
-							alert('TODO: like, a menu or something');
-						}}>
-							<Icon shape="Menu" color="white" />
-						</Touch>
-				</FlexItem>
-			</Flex>
-		</Header>
-	);
-});
-
-
-class SearchFormComponent extends React.Component {
-
-	constructor(props){
-		super(props);
-		this.setFirstdrugid = this.setFirstdrugid.bind(this);
-	}
-
-	setFirstdrugid(){
-		this.props.setDrugId(this.props.searchDrugs[0].item.drugid);
-	}
-
-	render(){
-
-		const { 
-			onFocus = ()=>{},
-			searchString,
-			searchItems = [],
-			setDrugId,
-			resetFields,
-			getFieldValue,
-			setFieldValue
-		} = this.props;
-
-		return(
-
-			<form>
-				<Chunk>
-					<View style={{position: 'relative'}}>
-						<TextInput
-							id="searchString"
-							placeholder="Curious about a drug you take?"
-							value={getFieldValue('searchString')}
-							onChangeText={text => setFieldValue('searchString', text)}
-							onFocus={onFocus}
-							autoComplete="off"
-							style={{borderRadius: 4000, paddingLeft: 48}}
-							keyboardType="web-search"
-							onKeyPress={(event)=>{
-								if(event.keyCode === 13) {
-									this.setFirstdrugid();
-									resetFields();
-								}
-							}}
-							/>
-						<View style={{position: 'absolute', top: 0, left: 16, height: '100%', justifyContent: 'center'}}> 
-							<Icon shape="Search"  />
-						</View>
-					</View>
-				</Chunk>
-
-				{ searchItems.length == 0 && searchString && 
-					<Chunk>
-						<Text>No drugs in our list match <strong>{searchString}</strong></Text>
-					</Chunk>
-				}
-
-				{ searchItems.length > 0 && searchString && searchDrugs.map((hit,i)=>{
-					const drug = hit.item;
-					return(
-						<Touch key={i} onPress={()=>{
-							resetFields();
-							setDrugId(drug.drugid)
-						}}>
-							<Chunk style={
-									(i > 0) ? { borderTopWidth: 1, borderTopColor: swatches.border, paddingTop: 16 } : {}
-								}>
-								<Text type="big">{drug.brandname} ({drug.genericname})</Text>
-							</Chunk>
-						</Touch>
-					);
-				})}
-			</form>
-		)
-	}
-};
-const SearchForm = withFormState(SearchFormComponent);
 
 class HeaderBlurb extends React.Component {
 	
@@ -182,31 +80,62 @@ class HeaderBlurb extends React.Component {
 	}
 }
 
+const OutpostRow = (props) => {
+
+	const {
+		outposts = [],
+		headline,
+		who
+	} = props;
+
+	return(
+		<Section>
+			<Chunk>
+				<Text type="sectionHead">{headline}</Text>
+			</Chunk>
+			
+			<List
+				scrollItemWidth={300}
+				items={outposts}
+				variant={{
+					small: "linear",
+					medium: "grid"
+				}}
+				itemsInRow={{
+					small: 1,
+					medium: 2,
+					large: 4
+				}}
+				renderItem={(outpost, i) => {
+					return(
+						<Chunk>
+							<Link href="/events">
+								<Card>
+									<Sectionless style={{/*backgroundColor: swatches.tint*/}}>
+											<Chunk>
+												<View style={{marginBottom: METRICS.space / 2}}>
+													<Text type="big" color="tint">{outpost.name}</Text>
+													<Text type="small" color="primary" >2l,293 {who}</Text>
+												</View>
+												<Text type="small" color="secondary" >Tokyo</Text>
+												<Text type="small" color="secondary" >Los Angeles</Text>
+												<Text type="small" color="secondary" >Monterrey</Text>
+												<Text type="small" color="secondary" ><u>See all cities</u></Text>
+											</Chunk>
+									</Sectionless>
+								</Card>
+							</Link>
+						</Chunk>
+					);
+				}}
+				/>
+		</Section>
+	);
+}
+
+
 class Splash extends React.Component {
 
-
-	_renderItemCard(outpost, i) {
-		return(
-			<Chunk>
-			<Link href="/events">
-			<Card>
-				<Sectionless style={{/*backgroundColor: swatches.tint*/}}>
-						<Chunk>
-							<View style={{marginBottom: METRICS.space / 2}}>
-								<Text type="big" color="tint">{outpost.name}</Text>
-								<Text type="small" color="primary" >2l,293 followers</Text>
-							</View>
-							<Text type="small" color="secondary" >Tokyo</Text>
-							<Text type="small" color="secondary" >Los Angeles</Text>
-							<Text type="small" color="secondary" >Monterrey</Text>
-							<Text type="small" color="secondary" ><u>See all cities</u></Text>
-						</Chunk>
-				</Sectionless>
-			</Card>
-			</Link>
-			</Chunk>
-		);
-	}
 
 	render() {
 
@@ -270,7 +199,7 @@ class Splash extends React.Component {
 		}
 
 		return (
-			<View style={{minHeight: '100vh'}}>
+			<Page hideHeader>
 				
 
 				<Stripe 
@@ -278,7 +207,7 @@ class Splash extends React.Component {
 					image="https://images.unsplash.com/photo-1502581827181-9cf3c3ee0106?ixlib=rb-1.2.1&auto=format&fit=crop&w=2642&q=80"
 					imageHeight={{small: 300, medium: 400, large: 400, xlarge: 475}}
 					>
-					<ConnectedHeader />
+					<OutpostHeader type="transparent" inverted={true} />
 					<View style={{justifyContent: 'center', flex: 1}}>
 						<Bounds>
 							<Section>
@@ -295,60 +224,22 @@ class Splash extends React.Component {
 				</Stripe>
 				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 					<Bounds>
-							<Section>
-								<Chunk>
-									<Text type="sectionHead">Outposts for members of</Text>
-								</Chunk>
-								
-								{outposts.subreddit &&
-									<List
-										variant={{
-											small: "linear",
-											medium: "grid"
-										}}
-										itemsInRow={{
-											small: 1,
-											medium: 2,
-											large: 4
-										}}
-										renderItem={{
-											small: this._renderItemCard,
-										}}
-										scrollItemWidth={300}
-										items={outposts.subreddit}
-										/>
-									}
-							</Section>
-				
-							<Section>
-								<Chunk>
-									<Text type="sectionHead">Outposts for followers of</Text>
-								</Chunk>
-								
-								{outposts.twitter &&
-									<List
-										variant={{
-											small: "linear",
-											medium: "grid"
-										}}
-										itemsInRow={{
-											small: 1,
-											medium: 2,
-											large: 4
-										}}
-										renderItem={{
-											small: this._renderItemCard,
-										}}
-										scrollItemWidth={300}
-										items={outposts.twitter}
-										/>
-									}
-							</Section>
 
+							<OutpostRow 
+								outposts={outposts.subreddit}
+								headline="Subreddit stuff"
+								who="members"
+								/>
+
+							<OutpostRow 
+								outposts={outposts.twitter}
+								headline="Twitter stuff"
+								who="followers"
+								/>
 	
 					</Bounds>
 				</Stripe>				
-			</View>
+			</Page>
 		);
 
 

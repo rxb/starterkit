@@ -10,6 +10,7 @@ const Icon = (props) => {
 			color,
 			size,
 			shape,
+			style,
 			...other
 		} = props;
 

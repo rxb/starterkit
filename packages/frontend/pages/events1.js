@@ -189,63 +189,39 @@ class Events extends React.Component {
 
 		return (
 
-		<Fragment>
-			<OutpostHeader />
-			<Page hideHeader={true}>
+			<Fragment>
+
+			<Page hideHeader>
 				<Head>
 					<meta property='og:title' content='Scratch' />
 					<title>Events</title>
 				</Head>
-				<Stripe >
-					
+				<Stripe style={{backgroundColor: swatches.tint, paddingTop: 0}}>
+					<OutpostHeader />
 					<Bounds>
+							<Section style={{marginTop: METRICS.space / 2}}>
+								<Chunk>
+									<Text type="pageHead" inverted>/r/leanfire</Text>
+									<Text inverted>New York, NY (Change location)</Text>
+								</Chunk>
 
+							</Section>
+					</Bounds>
+				</Stripe>
+				<Stripe>
+					<Bounds>
+						
 
 
 							<Flex direction="column" switchDirection="large">
-
-							<FlexItem growFactor={3}>
-								<Section >
-									<Chunk>
-										<Text type="pageHead" >/r/leanfire</Text>
-										
-									</Chunk>
-									
-					
-										<Chunk>
-											<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory.</Text>
-										</Chunk>
-
-										<Chunk>
-										<Button 
-											label="Post new event"
-											onPress={this.toggleModal}
-											width="full"
-											/>
-										<Button 
-											label="Follow this outpost"
-											onPress={this.toggleModal}
-											width="full"
-											/>
-	
-									</Chunk>
-									</Section>
-
-									
-								</FlexItem>
-
 								<FlexItem growFactor={5}>
-
-
-
 									<Section>
 
-									<Chunk>
 
-										{/* all events near you + a planning thread */}
-												<Text type="sectionHead">Upcoming events New York, NY</Text>
-											
-											
+
+										<Chunk>
+											<Text type="sectionHead">Upcoming events</Text>
+											{/* all events near you + a planning thread */}
 										</Chunk>
 
 										<List
@@ -308,16 +284,20 @@ class Events extends React.Component {
 											  	return (
 														<Chunk>
 															<Card>
-																<Sectionless style={{backgroundColor: swatches.tint}}>
+																<Stripe style={{backgroundColor: swatches.tint}}>
+																<Section>
 																	<Chunk>
 																		<Text type="big" inverted>{area.hostname}</Text>
 																	</Chunk>
-																</Sectionless>
-																<Sectionless>
+																</Section>
+																</Stripe>
+															<Stripe>
+																<Section>
 																	<Chunk>
 																		<Text type="small">in 2 days: Let's hike to Mt Awesome</Text>
 																	</Chunk>
-																</Sectionless>
+																</Section>
+															</Stripe>
 																
 															</Card>
 														</Chunk>
@@ -328,7 +308,41 @@ class Events extends React.Component {
 
 									</Section>
 								</FlexItem>
-								
+								<FlexItem growFactor={3}>
+									<Section>
+										<Chunk>
+											<Button 
+												label="Post new event"
+												onPress={this.toggleModal}
+												width="full"
+												/>
+										</Chunk>
+										<Chunk>
+											<Text>About this subreddit</Text>
+										</Chunk>
+										<Chunk>
+											<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory.</Text>
+										</Chunk>
+									</Section>
+
+									<Section>
+										<Chunk>
+											<Card>
+
+												<Map
+													cluster={false}
+													fitBounds={true}
+													style={{height: 300}}
+													markers={localEvents.items.map((event, i)=>{
+														return {lat: event.latitude, lon: event.longitude}
+													})}
+													/>
+
+											</Card>
+											<Text color="hint">{JSON.stringify(this.state.coords)}</Text>
+										</Chunk>
+									</Section>
+								</FlexItem>
 							</Flex>
 
 

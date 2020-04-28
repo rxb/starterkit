@@ -113,6 +113,7 @@ class Page extends React.Component {
 		const {
 			authentication = {},
 			children,
+			hideHeader,
 			logIn,
 			logInFailure,
 			logOut,
@@ -123,7 +124,7 @@ class Page extends React.Component {
 
 			<View style={{minHeight: '100vh'}}>
 
-
+				{ !hideHeader &&
 				<Header maxWidth="auto">
 					<Flex direction="row">
 						<FlexItem>
@@ -193,6 +194,7 @@ class Page extends React.Component {
 							</FlexItem>
 					</Flex>
 				</Header>
+				}
 
 				<View style={{flex: 1}}>
 					{children}
