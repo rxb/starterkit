@@ -177,7 +177,7 @@ class HeaderBlurb extends React.Component {
 	}
 	render() {
 		return (
-			<Text type="sectionHead" inverted style={{textAlign: 'center'}}>Local outposts for <u>{this.state.blurbExampleUses[this.state.blurbExampleUse]}</u></Text>
+			<Text type="sectionHead" inverted style={{textAlign: 'center'}}>Local outposts for {this.state.blurbExampleUses[this.state.blurbExampleUse]}</Text>
 		);
 	}
 }
@@ -188,18 +188,22 @@ class Splash extends React.Component {
 	_renderItemCard(outpost, i) {
 		return(
 			<Chunk>
+			<Link href="/events">
 			<Card>
-				<Sectionless style={{backgroundColor: swatches.tint}}>
+				<Sectionless style={{/*backgroundColor: swatches.tint*/}}>
 						<Chunk>
-							<Text type="big" inverted>{outpost.name}</Text>
-							<Text type="small" color="primary" inverted>2l,293 members</Text>
-							<Text type="small" color="secondary" inverted>Tokyo</Text>
-							<Text type="small" color="secondary" inverted>Los Angeles</Text>
-							<Text type="small" color="secondary" inverted>Monterrey</Text>
-							<Text type="small" color="secondary" inverted><u>See all...</u></Text>
+							<View style={{marginBottom: METRICS.space / 2}}>
+								<Text type="big" color="tint">{outpost.name}</Text>
+								<Text type="small" color="primary" >2l,293 followers</Text>
+							</View>
+							<Text type="small" color="secondary" >Tokyo</Text>
+							<Text type="small" color="secondary" >Los Angeles</Text>
+							<Text type="small" color="secondary" >Monterrey</Text>
+							<Text type="small" color="secondary" ><u>See all cities</u></Text>
 						</Chunk>
 				</Sectionless>
 			</Card>
+			</Link>
 			</Chunk>
 		);
 	}
@@ -236,6 +240,32 @@ class Splash extends React.Component {
 				{
 					name: '/r/politics'
 				},				
+			],
+			twitter: [
+				{
+					name: '@tferriss'
+				},
+				{
+					name: '@a16z'
+				},
+				{
+					name: '@ycombinator'
+				},
+				{
+					name: '@davidasinclair'
+				},
+				{
+					name: '@tferriss'
+				},
+				{
+					name: '@a16z'
+				},
+				{
+					name: '@ycombinator'
+				},
+				{
+					name: '@davidasinclair'
+				},		
 			]
 		}
 
@@ -244,8 +274,8 @@ class Splash extends React.Component {
 				
 
 				<Stripe 
-					style={{paddingTop: 0, backgroundColor: '#0000ff22'}} 
-					image="https://images.unsplash.com/photo-1562571046-d34f606e7693?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80"
+					style={{paddingTop: 0}} 
+					image="https://images.unsplash.com/photo-1502581827181-9cf3c3ee0106?ixlib=rb-1.2.1&auto=format&fit=crop&w=2642&q=80"
 					imageHeight={{small: 300, medium: 400, large: 400, xlarge: 475}}
 					>
 					<ConnectedHeader />
@@ -256,7 +286,8 @@ class Splash extends React.Component {
 									<Text type="hero" inverted style={{textAlign: 'center'}}>Find the others</Text>
 								</Chunk>
 								<Chunk>
-									<HeaderBlurb cycle={false} />
+									<Text type="sectionHead" inverted style={{textAlign: 'center'}}>People near you are getting together about things you like</Text>
+									{/* <HeaderBlurb cycle={false} /> */}
 								</Chunk>
 							</Section>
 						</Bounds>
@@ -264,10 +295,9 @@ class Splash extends React.Component {
 				</Stripe>
 				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 					<Bounds>
-
 							<Section>
 								<Chunk>
-									<Text type="sectionHead">Top subreddit outposts</Text>
+									<Text type="sectionHead">Outposts for members of</Text>
 								</Chunk>
 								
 								{outposts.subreddit &&
@@ -283,17 +313,41 @@ class Splash extends React.Component {
 										}}
 										renderItem={{
 											small: this._renderItemCard,
-											medium: this._renderItemCard
 										}}
 										scrollItemWidth={300}
 										items={outposts.subreddit}
 										/>
-								}
-
+									}
+							</Section>
+				
+							<Section>
+								<Chunk>
+									<Text type="sectionHead">Outposts for followers of</Text>
+								</Chunk>
+								
+								{outposts.twitter &&
+									<List
+										variant={{
+											small: "linear",
+											medium: "grid"
+										}}
+										itemsInRow={{
+											small: 1,
+											medium: 2,
+											large: 4
+										}}
+										renderItem={{
+											small: this._renderItemCard,
+										}}
+										scrollItemWidth={300}
+										items={outposts.twitter}
+										/>
+									}
 							</Section>
 
+	
 					</Bounds>
-				</Stripe>
+				</Stripe>				
 			</View>
 		);
 

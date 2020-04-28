@@ -277,7 +277,7 @@ class Tldr extends React.Component {
 										</Chunk>
 										<List
 											items={[
-												<Text>References & rationale</Text>,
+												/* <Text>References & rationale</Text>, */
 												<Text>Issues</Text>,
 												<Text>Contributors & forks</Text>,
 												<Flex>
