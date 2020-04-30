@@ -4,7 +4,9 @@ import Head from 'next/head'
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 dayjs.extend(relativeTime)
+dayjs.extend(localizedFormat)
 
 
 //import { Map, Marker, Popup, TileLayer } from 'react-leaflet-universal'
@@ -90,7 +92,6 @@ const EventForm = withFormState((props) => {
 		<form autocomplete="off">
 			<LoadingBlock isLoading={props.isLoading}>
 				<Chunk>
-					<Text type="sectionHead">Import event</Text>
 
 					<TextInput
 						id="url"
@@ -99,23 +100,15 @@ const EventForm = withFormState((props) => {
 						placeholder="Event URL"
 						autoComplete="whatever"
 						/>
-					<Text type="small" color="hint">Eventbrite, Facebook, Splashthat, Meetup, or many other event hosting sites</Text>
 
 					<FieldError error={fieldErrors.url} />
 					<Button
 						onPress={handleSubmit}
-						label="Import event info"
+						label="Import"
 						isLoading={props.isLoading}
 						/>
 				</Chunk>
-				<Chunk>
-					<Text type="sectionHead">Start fresh</Text>
-					<Button	
-						label="I'm starting from scratch"
-						/>
-				</Chunk>
-				<Chunk>
-				</Chunk>
+				
 			</LoadingBlock>
 		</form>
 	);
@@ -239,23 +232,26 @@ class Events extends React.Component {
 										<Chunk>
 											<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on reddit.com &#8599;</Text></a></Text>
 										</Chunk>
-
+									</Section>
+									<Section>
 										<Chunk>
 											
 											<Button 
-												label="Suggest an event"
-												onPress={this.toggleModal}
+												label="Suggest a get-together"
+												onPress={()=>{ alert('suggest event'); }}
 												width="full"
 												/>	
-											<Button 
+											<Button
+												color="secondary"
 												label="Import an event from..."
 												onPress={this.toggleModal}
 												width="full"
 												/>											
 											<Button 
 												color="secondary"
-												label="Follow & get updates"
-												onPress={this.toggleModal}
+												label="Get notified about events"
+												onPress={()=>{ alert('get notified'); }}
+												shape="Bell"
 												width="full"
 												/>
 										</Chunk>
@@ -274,7 +270,7 @@ class Events extends React.Component {
 									<Chunk>
 
 										{/* all events near you + a planning thread */}
-												<Text type="sectionHead">What's happening in New York?</Text>
+												<Text type="sectionHead">What's happening in New York</Text>
 											
 											
 										</Chunk>
@@ -292,11 +288,11 @@ class Events extends React.Component {
 											  				target="_blank"
 											  				href={event.url}
 											  				>
-														  <Card>
+														  <Card style={{marginVertical: 0}}> 
 															  <Sectionless>
 																<Chunk>
 
-													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')}</Text>
+													  		<Text type="small">{dayjs(event.startDate).format('dddd, MMM D LT')}</Text>
 													  		<Text type="big" weight="strong">{event.title}</Text>
 													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
 
@@ -347,14 +343,8 @@ class Events extends React.Component {
 														<Chunk>
 															<Flex>
 																<FlexItem shrink>
-																	<View style={{
-																		backgroundColor: swatches.tint,
-																		paddingHorizontal: 8,
-																		paddingVertical: 4,
-																		borderRadius: 6,
-																		width: 100
-																	}}>
-																		<Text type="small" inverted style={{textAlign: 'center'}}>{area.hostname.toUpperCase()}</Text>
+																	<View style={{width: 100}}>
+																		<Text color="tint" type="small" weight="strong" numberOfLines={1}>{area.hostname.toUpperCase()}</Text>
 																	</View>
 																</FlexItem>
 																<FlexItem>
@@ -384,7 +374,13 @@ class Events extends React.Component {
 					onRequestClose={this.toggleModal}
 					>
 					<Stripe>
-						<Section type="pageHead">
+						<Section>
+							<Chunk>
+								<Text type="pageHead">Import an event</Text>
+							</Chunk>
+							<Chunk>
+								<Text>Eventbrite, Facebook, Splashthat, Meetup, or many other event hosting sites</Text>
+							</Chunk>
 
 							<EventForm
 								initialFields={{
@@ -421,7 +417,7 @@ const mapStateToProps = (state, ownProps) => {
 			items: state.events.localItemIds.map( id => state.events.itemsById[id] ),
 			loading: state.events.loading
 		},
-		areas: AREAS.slice(0,20)
+		areas: AREAS.slice(0,12)
 	});
 }
 
