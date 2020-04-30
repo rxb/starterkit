@@ -58,6 +58,7 @@ import OutpostHeader from '../components/OutpostHeader';
 import AREAS from './areas';
 import swatches from '../components/cinderblock/styles/swatches';
 import { METRICS } from '../components/cinderblock/designConstants';
+import { Check } from 'react-feather';
 
 
 const EventForm = withFormState((props) => {
@@ -89,6 +90,8 @@ const EventForm = withFormState((props) => {
 		<form autocomplete="off">
 			<LoadingBlock isLoading={props.isLoading}>
 				<Chunk>
+					<Text type="sectionHead">Import event</Text>
+
 					<TextInput
 						id="url"
 						value={getFieldValue('url')}
@@ -96,14 +99,22 @@ const EventForm = withFormState((props) => {
 						placeholder="Event URL"
 						autoComplete="whatever"
 						/>
+					<Text type="small" color="hint">Eventbrite, Facebook, Splashthat, Meetup, or many other event hosting sites</Text>
+
 					<FieldError error={fieldErrors.url} />
-				</Chunk>
-				<Chunk>
 					<Button
 						onPress={handleSubmit}
 						label="Import event info"
 						isLoading={props.isLoading}
 						/>
+				</Chunk>
+				<Chunk>
+					<Text type="sectionHead">Start fresh</Text>
+					<Button	
+						label="I'm starting from scratch"
+						/>
+				</Chunk>
+				<Chunk>
 				</Chunk>
 			</LoadingBlock>
 		</form>
@@ -204,37 +215,57 @@ class Events extends React.Component {
 
 							<Flex direction="column" switchDirection="large">
 
-							<FlexItem growFactor={3}>
-								<Section >
-									<Chunk>
-										<Text type="pageHead" >/r/leanfire</Text>
-										
-									</Chunk>
-									
-					
+							<FlexItem growFactor={2}>
+								<Section>
+								
+
 										<Chunk>
-											<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory.</Text>
+											<Text type="sectionHead" color="secondary" style={{marginBottom: 8}}>
+												<Image 
+													source="https://api.faviconkit.com/reddit.com/32"
+													style={{
+														width: 24,
+														height: 24,
+														resizeMode: 'contain',
+														flex: 1,
+														marginRight: 6,
+														marginBottom: -4
+													}}
+													/>
+												/r/financialindependence</Text>
+											<Text type="pageHead" >Financial independence</Text>
+										</Chunk>
+									
+										<Chunk>
+											<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on reddit.com &#8599;</Text></a></Text>
 										</Chunk>
 
 										<Chunk>
-										<Button 
-											label="Post new event"
-											onPress={this.toggleModal}
-											width="full"
-											/>
-										<Button 
-											label="Follow this outpost"
-											onPress={this.toggleModal}
-											width="full"
-											/>
-	
-									</Chunk>
-									</Section>
+											
+											<Button 
+												label="Suggest an event"
+												onPress={this.toggleModal}
+												width="full"
+												/>	
+											<Button 
+												label="Import an event from..."
+												onPress={this.toggleModal}
+												width="full"
+												/>											
+											<Button 
+												color="secondary"
+												label="Follow & get updates"
+												onPress={this.toggleModal}
+												width="full"
+												/>
+										</Chunk>
 
-									
+								
+
+									</Section>
 								</FlexItem>
 
-								<FlexItem growFactor={5}>
+								<FlexItem growFactor={3}>
 
 
 
@@ -243,12 +274,17 @@ class Events extends React.Component {
 									<Chunk>
 
 										{/* all events near you + a planning thread */}
-												<Text type="sectionHead">Upcoming events New York, NY</Text>
+												<Text type="sectionHead">What's happening in New York?</Text>
 											
 											
 										</Chunk>
 
 										<List
+											items={localEvents.items}
+											variant="grid"
+											itemsInRow={{
+												small: 1
+											}}
 											renderItem={(event, i)=>{
 											  	return (
 											  		<Chunk key={i}>
@@ -256,11 +292,15 @@ class Events extends React.Component {
 											  				target="_blank"
 											  				href={event.url}
 											  				>
+														  <Card>
+															  <Sectionless>
+																<Chunk>
+
 													  		<Text type="small">{dayjs(event.startDate).format('dddd, MM/DD/YYYY h:mm a')}</Text>
 													  		<Text type="big" weight="strong">{event.title}</Text>
 													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
 
-													  		{/* apparently you can inline images in text now woo */}
+													  		{/* apparently you can inline images in text now woo  */} 
 													  		<Text
 													  			type="small"
 													  			color="hint"
@@ -279,48 +319,49 @@ class Events extends React.Component {
 
 														  			/>
 															  		{event.url}
-													  		</Text>
+															  </Text>
+															 
+															  </Chunk>
+															  </Sectionless>
+															  </Card>
 													  	</Link>
 												  	</Chunk>
 											  	);
 											}}
-											items={localEvents.items}
+				
 											/>
 
 									</Section>
 									<Section>
 										<Chunk>
-											<Text type="sectionHead">More /r/leanfire outposts</Text>
+											<Text type="sectionHead">What's happening other places</Text>
 											{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
 										</Chunk>
 											<List
 											variant={{
-												small: "scroll",
-												//small: "linear",
-												medium: "grid"
+												small: "linear",
 											}}
-											itemsInRow={{
-												small: 1,
-												medium: 2,
-												large: 3
-											}}
+											
 											renderItem={(area, i)=>{
 											  	return (
 														<Chunk>
-															<Card>
-																<Sectionless style={{backgroundColor: swatches.tint}}>
-																	<Chunk>
-																		<Text type="big" inverted>{area.hostname}</Text>
-																	</Chunk>
-																</Sectionless>
-																<Sectionless>
-																	<Chunk>
-																		<Text type="small">in 2 days: Let's hike to Mt Awesome</Text>
-																	</Chunk>
-																</Sectionless>
-																
-															</Card>
-														</Chunk>
+															<Flex>
+																<FlexItem shrink>
+																	<View style={{
+																		backgroundColor: swatches.tint,
+																		paddingHorizontal: 8,
+																		paddingVertical: 4,
+																		borderRadius: 6,
+																		width: 100
+																	}}>
+																		<Text type="small" inverted style={{textAlign: 'center'}}>{area.hostname.toUpperCase()}</Text>
+																	</View>
+																</FlexItem>
+																<FlexItem>
+																	<Text>in 2 days: Let's hike to Mt Awesome</Text>
+																</FlexItem>
+															</Flex>
+																													</Chunk>
 											  	);
 											}}
 											items={areas}
@@ -344,10 +385,7 @@ class Events extends React.Component {
 					>
 					<Stripe>
 						<Section type="pageHead">
-							<Chunk>
-								<Text type="pageHead">Post new event</Text>
-								<Text>Import event info from Eventbrite, Facebook, Splashthat, Meetup, or many other event hosting sites</Text>
-							</Chunk>
+
 							<EventForm
 								initialFields={{
 									url: ''
@@ -383,7 +421,7 @@ const mapStateToProps = (state, ownProps) => {
 			items: state.events.localItemIds.map( id => state.events.itemsById[id] ),
 			loading: state.events.loading
 		},
-		areas: AREAS.slice(0,32)
+		areas: AREAS.slice(0,20)
 	});
 }
 
