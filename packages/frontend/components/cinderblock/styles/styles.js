@@ -38,8 +38,6 @@ const styles = StyleSheet.create({
 		paddingTop: space,
 		marginHorizontal: space,
 		paddingBottom: 0,
-		//borderTopWidth: 1,
-		//borderTopColor: swatches.border
 	},
 
 

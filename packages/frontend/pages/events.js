@@ -200,169 +200,219 @@ class Events extends React.Component {
 					<meta property='og:title' content='Scratch' />
 					<title>Events</title>
 				</Head>
-				<Stripe >
+				<Stripe>
 					
 					<Bounds>
 
-
-
-							<Flex direction="column" switchDirection="large">
+						<Flex direction="column" switchDirection="large">
 
 							<FlexItem growFactor={2}>
 								<Section>
-								
-
-										<Chunk>
-											<Text type="sectionHead" color="secondary" style={{marginBottom: 8}}>
-												<Image 
-													source="https://api.faviconkit.com/reddit.com/32"
-													style={{
-														width: 24,
-														height: 24,
-														resizeMode: 'contain',
-														flex: 1,
-														marginRight: 6,
-														marginBottom: -4
-													}}
-													/>
-												/r/financialindependence</Text>
-											<Text type="pageHead" >Financial independence</Text>
-										</Chunk>
-									
-										<Chunk>
-											<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on reddit.com &#8599;</Text></a></Text>
-										</Chunk>
-									</Section>
-									<Section>
-										<Chunk>
-											
-											<Button 
-												label="Suggest a get-together"
-												onPress={()=>{ alert('suggest event'); }}
-												width="full"
-												/>	
-											<Button
-												color="secondary"
-												label="Import an event from..."
-												onPress={this.toggleModal}
-												width="full"
-												/>											
-											<Button 
-												color="secondary"
-												label="Get notified about events"
-												onPress={()=>{ alert('get notified'); }}
-												shape="Bell"
-												width="full"
-												/>
-										</Chunk>
-
-								
-
-									</Section>
-								</FlexItem>
-
-								<FlexItem growFactor={3}>
-
-
-
-									<Section>
-
 									<Chunk>
-
-										{/* all events near you + a planning thread */}
-												<Text type="sectionHead">What's happening in New York</Text>
-											
-											
-										</Chunk>
-
-										<List
-											items={localEvents.items}
-											variant="grid"
-											itemsInRow={{
-												small: 1
-											}}
-											renderItem={(event, i)=>{
-											  	return (
-											  		<Chunk key={i}>
-											  			<Link
-											  				target="_blank"
-											  				href={event.url}
-											  				>
-														  <Card style={{marginVertical: 0}}> 
-															  <Sectionless>
-																<Chunk>
-
-													  		<Text type="small">{dayjs(event.startDate).format('dddd, MMM D LT')}</Text>
-													  		<Text type="big" weight="strong">{event.title}</Text>
-													  		<Text type="small">{event.locationName} &middot; {event.city}</Text>
-
-													  		{/* apparently you can inline images in text now woo  */} 
-													  		<Text
-													  			type="small"
-													  			color="hint"
-													  			numberOfLines={1}
-													  			ellipsizeMode="tail"
-													  			>
-														  		<Image
-														  			source={`https://www.google.com/s2/favicons?domain=${event.url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)[1]}`}
-														  			style={{
-														  				width: 13,
-														  				height: 13,
-														  				resizeMode: 'contain',
-														  				flex: 1,
-														  				marginRight: 4,
-														  			}}
-
-														  			/>
-															  		{event.url}
-															  </Text>
-															 
-															  </Chunk>
-															  </Sectionless>
-															  </Card>
-													  	</Link>
-												  	</Chunk>
-											  	);
-											}}
-				
-											/>
-
-									</Section>
-									<Section>
-										<Chunk>
-											<Text type="sectionHead">What's happening other places</Text>
-											{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
-										</Chunk>
-											<List
-											variant={{
-												small: "linear",
-											}}
-											
-											renderItem={(area, i)=>{
-											  	return (
-														<Chunk>
-															<Flex>
-																<FlexItem shrink>
-																	<View style={{width: 100}}>
-																		<Text color="tint" type="small" weight="strong" numberOfLines={1}>{area.hostname.toUpperCase()}</Text>
-																	</View>
-																</FlexItem>
-																<FlexItem>
-																	<Text>in 2 days: Let's hike to Mt Awesome</Text>
-																</FlexItem>
-															</Flex>
-																													</Chunk>
-											  	);
-											}}
-											items={areas}
-											/>
-
-									</Section>
-								</FlexItem>
+										<Text type="sectionHead" color="secondary" style={{marginBottom: 8}}>
+											<Image 
+												source="https://api.faviconkit.com/reddit.com/32"
+												style={{
+													width: 24,
+													height: 24,
+													resizeMode: 'contain',
+													flex: 1,
+													marginRight: 6,
+													marginBottom: -4
+												}}
+												/>
+											/r/financialindependence</Text>
+										<Text type="pageHead" >Financial independence</Text>
+									</Chunk>
 								
-							</Flex>
+									<Chunk>
+										<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on reddit.com &#8599;</Text></a></Text>
+									</Chunk>
+								</Section>
+								<Section>
+									<Chunk>
+										
+										<Button 
+											label="Suggest a get-together"
+											onPress={()=>{ alert('suggest event'); }}
+											width="full"
+											/>	
+										<Button
+											color="secondary"
+											label="Import an event from..."
+											onPress={this.toggleModal}
+											width="full"
+											/>											
+										<Button 
+											color="secondary"
+											label="Get notified about events"
+											onPress={()=>{ alert('get notified'); }}
+											shape="Bell"
+											width="full"
+											/>
+									</Chunk>
+								</Section>
+							</FlexItem>
 
+							<FlexItem growFactor={3}>
+								<Section>
+									<Chunk>
+										{/* all events near you + a planning thread */}
+										
+										<Text type="sectionHead">What's happening in New York</Text>
+									</Chunk>
+									<List
+										items={localEvents.items}
+										variant="grid"
+										itemsInRow={{
+											small: 1
+										}}
+										renderItem={(event, i)=>{
+											const hostname = event.url.match(/^https?\:\/\/(www\.)?([^\/?#]+)(?:[\/?#]|$)/i)[2];
+											return (
+												<Chunk key={i}>
+													<Link
+														target="_blank"
+														href={event.url}
+														>
+														<Card style={{marginVertical: 0}}> 
+															<Sectionless>
+																<Chunk>
+																	<Text type="small" color="tint" weight="strong">{dayjs(event.startDate).format('dddd, MMM D LT')}</Text>
+																	<Text type="big" weight="strong">{event.title}</Text>
+																	
+																	<Text type="small" color="secondary">{event.locationName} &middot; {event.city}</Text>
 
+														
+																</Chunk>
+																<Chunk>
+																<Flex>
+																	<FlexItem>
+																	<Inline>
+																<Avatar
+																	source={{uri: `https://randomuser.me/api/portraits/women/${i%50}.jpg`}}
+																	size="small"
+																	/>
+																	<Text type="small" color="hint">
+																		posted by /u/sallyposter
+																	</Text>
+																</Inline>
+																	</FlexItem>
+																	<FlexItem justify="center">
+																	<View style={{
+																		backgroundColor: swatches.shade,
+																		paddingHorizontal: 6,
+																		borderRadius: 4,
+																		alignSelf: 'flex-end'
+																	}}>
+																	<Text
+																		type="micro"
+																		color="hint"
+																		numberOfLines={1}
+																		ellipsizeMode="tail"
+																		>
+																		{/*
+																		<Image
+																			source={`https://www.google.com/s2/favicons?domain=${hostname}`}
+																			style={{
+																				width: 13,
+																				height: 13,
+																				resizeMode: 'contain',
+																				flex: 1,
+																				marginRight: 4,
+																			}}
+																			/>
+																		*/}
+																			{hostname.toUpperCase()} &#8599;
+																	</Text>
+																	</View>
+																	</FlexItem>
+																</Flex>
+																
+																</Chunk>
+															</Sectionless>
+														</Card>
+													</Link>
+												</Chunk>
+											);
+										}}
+			
+										/>
+
+										{/* suggest next */}
+										<Chunk >
+													<Link
+														target="_blank"
+														>
+														<Card style={{marginVertical: 0}}> 
+															<Sectionless>
+																<Chunk>
+																	<Text type="small" color="tint" weight="strong">PLANNING: Sometime this weekend</Text>
+																	<Text type="big" weight="strong">Let's get together</Text>
+																	
+																	<Text type="small" color="secondary">Somewhere in Greenpoint</Text>
+
+														
+																</Chunk>
+																<Chunk>
+																<Flex>
+																	<FlexItem>
+																	<Inline>
+																<Avatar
+																	source={{uri: `https://randomuser.me/api/portraits/women/${51}.jpg`}}
+																	size="small"
+																	/>
+																	<Text type="small" color="hint">
+																		posted by /u/sallyposter
+																	</Text>
+																</Inline>
+																	</FlexItem>
+																	<FlexItem justify="center">
+																	
+																	</FlexItem>
+																</Flex>
+																
+																</Chunk>
+															</Sectionless>
+														</Card>
+													</Link>
+												</Chunk>
+											
+
+								</Section>
+								<Section>
+									<Chunk>
+										<Text type="sectionHead">What's happening other places</Text>
+										{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
+									</Chunk>
+									
+									<List
+										items={areas}
+										variant={{
+											small: "linear",
+										}}
+										renderItem={(area, i)=>{
+											return (
+												<Chunk>
+													<Flex>
+														<FlexItem shrink justify="center">
+															<View style={{width: 100}}>
+																<Text color="tint" weight="strong" numberOfLines={1}>{area.hostname.toUpperCase()}</Text>
+															</View>
+														</FlexItem>
+														<FlexItem>
+															<Text color="hint">In 3 days: </Text>
+															<Text>Let's hike to Mt Awesome</Text>
+														</FlexItem>
+													</Flex>
+												</Chunk>
+											);
+										}}
+										/>
+								</Section>
+							</FlexItem>
+							
+						</Flex>
 
 					</Bounds>
 				</Stripe>
