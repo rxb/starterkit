@@ -209,16 +209,16 @@ class Events extends React.Component {
 							<FlexItem growFactor={2}>
 								<Section>
 									<Chunk>
-										<Text type="sectionHead" color="secondary" style={{marginBottom: 8}}>
+										<Text type="big" color="secondary" style={{marginBottom: 8}}>
 											<Image 
 												source="https://api.faviconkit.com/reddit.com/32"
 												style={{
-													width: 24,
-													height: 24,
+													width: 20,
+													height: 20,
 													resizeMode: 'contain',
 													flex: 1,
 													marginRight: 6,
-													marginBottom: -4
+													marginBottom: -3
 												}}
 												/>
 											/r/financialindependence</Text>
@@ -233,7 +233,7 @@ class Events extends React.Component {
 									<Chunk>
 										
 										<Button 
-											label="Suggest a get-together"
+											label="Suggest a meetup"
 											onPress={()=>{ alert('suggest event'); }}
 											width="full"
 											/>	
@@ -259,7 +259,7 @@ class Events extends React.Component {
 									<Chunk>
 										{/* all events near you + a planning thread */}
 										
-										<Text type="sectionHead">What's happening in New York</Text>
+										<Text type="sectionHead">Happening in New York</Text>
 									</Chunk>
 									<List
 										items={localEvents.items}
@@ -275,7 +275,7 @@ class Events extends React.Component {
 														target="_blank"
 														href={event.url}
 														>
-														<Card style={{marginVertical: 0}}> 
+														<Card style={thisCardStyle}> 
 															<Sectionless>
 																<Chunk>
 																	<Text type="small" color="tint" weight="strong">{dayjs(event.startDate).format('dddd, MMM D LT')}</Text>
@@ -288,17 +288,21 @@ class Events extends React.Component {
 																<Chunk>
 																<Flex>
 																	<FlexItem>
-																	<Inline>
+																	<Inline style={{flexWrap: 'nowrap'}}>
 																<Avatar
 																	source={{uri: `https://randomuser.me/api/portraits/women/${i%50}.jpg`}}
 																	size="small"
+																	style={{
+																		width: 18,
+																		height: 18
+																	}}
 																	/>
 																	<Text type="small" color="hint">
-																		posted by /u/sallyposter
+																		/u/sallyposter
 																	</Text>
 																</Inline>
 																	</FlexItem>
-																	<FlexItem justify="center">
+																	<FlexItem justify="center" shrink>
 																	<View style={{
 																		backgroundColor: swatches.shade,
 																		paddingHorizontal: 6,
@@ -344,26 +348,30 @@ class Events extends React.Component {
 													<Link
 														target="_blank"
 														>
-														<Card style={{marginVertical: 0}}> 
+														<Card style={thisCardStyle}> 
 															<Sectionless>
 																<Chunk>
-																	<Text type="small" color="tint" weight="strong">PLANNING: Sometime this weekend</Text>
-																	<Text type="big" weight="strong">Let's get together</Text>
+																	<Text type="small" color="tint" weight="strong">Sometime this weekend</Text>
+																	<Text type="big" weight="strong">Let's get together for drinks</Text>
 																	
-																	<Text type="small" color="secondary">Somewhere in Greenpoint</Text>
+																	<Text type="small" color="secondary">TBD &middot; Greenpoint</Text>
 
 														
 																</Chunk>
 																<Chunk>
 																<Flex>
 																	<FlexItem>
-																	<Inline>
+																	<Inline style={{flexWrap: 'nowrap'}}>
 																<Avatar
-																	source={{uri: `https://randomuser.me/api/portraits/women/${51}.jpg`}}
+																	source={{uri: `https://randomuser.me/api/portraits/women/52.jpg`}}
 																	size="small"
+																	style={{
+																		width: 18,
+																		height: 18
+																	}}
 																	/>
 																	<Text type="small" color="hint">
-																		posted by /u/sallyposter
+																		/u/sallyposter
 																	</Text>
 																</Inline>
 																	</FlexItem>
@@ -382,7 +390,7 @@ class Events extends React.Component {
 								</Section>
 								<Section>
 									<Chunk>
-										<Text type="sectionHead">What's happening other places</Text>
+										<Text type="sectionHead">Happening other places</Text>
 										{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
 									</Chunk>
 									
@@ -397,11 +405,18 @@ class Events extends React.Component {
 													<Flex>
 														<FlexItem shrink justify="center">
 															<View style={{width: 100}}>
-																<Text color="tint" weight="strong" numberOfLines={1}>{area.hostname.toUpperCase()}</Text>
+																<Text color="tint" weight="strong" numberOfLines={1}>
+																	<Icon
+																		shape="MapPin"
+																		size="small"
+																		color={swatches.tint}
+																		/>
+																	{area.hostname.toUpperCase()}
+																</Text>
 															</View>
 														</FlexItem>
 														<FlexItem>
-															<Text color="hint">In 3 days: </Text>
+															<Text color="hint" type="small">In 3 days: </Text>
 															<Text>Let's hike to Mt Awesome</Text>
 														</FlexItem>
 													</Flex>
@@ -484,3 +499,9 @@ export default connect(
 	actionCreators
 )(Events);
 
+const thisCardStyle = {
+	borderWidth: 0,
+	shadowRadius: 16,
+	shadowColor: 'rgba(0,0,0,.15)',
+	marginVertical: 0
+}

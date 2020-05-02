@@ -61,7 +61,7 @@ export const METRICS = {
 		return this.pageHeadSize * 1.15
 	},
 	get heroSize() {
-		return this.base * 3.75
+		return this.base * 3.25
 	},
 	get heroLineHeight() {
 		return this.heroSize * 1.05
@@ -73,7 +73,7 @@ export const METRICS = {
 		return this.pageHeadAtLargeSize * 1.15
 	},
 	get heroAtLargeSize() {
-		return this.base * 4.25
+		return this.base * 3.85
 	},
 	get heroAtLargeLineHeight() {
 		return this.heroAtLargeSize * 1.05

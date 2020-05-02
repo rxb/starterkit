@@ -98,11 +98,10 @@ const OutpostRow = (props) => {
 				scrollItemWidth={300}
 				items={outposts}
 				variant={{
-					small: "linear",
-					medium: "grid"
+					small: "grid",
 				}}
 				itemsInRow={{
-					small: 1,
+					small: 2,
 					medium: 2,
 					large: 4
 				}}
@@ -205,17 +204,17 @@ class Splash extends React.Component {
 				<Stripe 
 					style={{paddingTop: 0}} 
 					image="https://images.unsplash.com/photo-1502581827181-9cf3c3ee0106?ixlib=rb-1.2.1&auto=format&fit=crop&w=2642&q=80"
-					imageHeight={{small: 300, medium: 400, large: 400, xlarge: 475}}
+					imageHeight={{small: 370, medium: 400, large: 400, xlarge: 475}}
 					>
 					<OutpostHeader type="transparent" inverted={true} />
-					<View style={{justifyContent: 'center', flex: 1}}>
+					<View style={{justifyContent: 'center', flex: 1, paddingHorizontal: METRICS.space}}>
 						<Bounds>
 							<Section>
 								<Chunk>
 									<Text type="hero" inverted style={{textAlign: 'center'}}>Find the others</Text>
 								</Chunk>
 								<Chunk>
-									<Text type="sectionHead" inverted style={{textAlign: 'center'}}>People near you are getting together about things you like</Text>
+									<Text type="big" inverted style={{textAlign: 'center'}}>People near you are getting together about things you like</Text>
 									{/* <HeaderBlurb cycle={false} /> */}
 								</Chunk>
 							</Section>
