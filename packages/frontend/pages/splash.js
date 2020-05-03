@@ -80,13 +80,81 @@ class HeaderBlurb extends React.Component {
 	}
 }
 
+const HeaderContent = WithMatchMedia((props) => {
+	const {
+		media
+	} = props;
+	return(
+		<Section>
+			
+
+			
+			<Chunk>
+				<Text type="hero" inverted style={{textAlign: 'center'}}>Find the others</Text>
+			</Chunk>
+			<Chunk>
+				<Text 
+					type="big" 
+					inverted 
+					style={[
+						{textAlign: 'center'},
+						media && media.large ? {fontSize: 24, lineHeight: 34} : {}
+					]}
+					>People near you are getting together about things you like</Text>
+			</Chunk>
+			{/*
+			<Chunk style={{alignItems: 'center', textAlign: 'center'}}>
+				<Text type="pageHead" style={{fontSize: 28}} inverted>People near you</Text>
+				<Text type="pageHead" style={{fontSize: 28}} inverted>are getting together</Text>
+				<Text type="pageHead" style={{fontSize: 28}} inverted>about things you like</Text>
+			</Chunk>
+			*/}
+		</Section>
+	);
+});
+
 const OutpostRow = (props) => {
 
 	const {
 		outposts = [],
 		headline,
-		who
+		site
 	} = props;
+
+	const gridItem = (outpost, i) => {
+		return(
+			<Chunk>
+				<Link href="/events">
+					<Card style={[thisCardStyle, ]}>
+						<Sectionless style={{/*backgroundColor: swatches.tint*/}}>
+								<Chunk>
+									<View style={{marginBottom: 4}}>
+										<Text type="small" color="secondary"  numberOfLines={1}>
+											<Image 
+												source={`https://api.faviconkit.com/${site}/32`}
+												style={{
+													width: 13,
+													height: 13,
+													resizeMode: 'contain',
+													flex: 1,
+													marginRight: 4,
+													marginBottom: -2
+												}}
+												/>
+											{outpost.name}
+										</Text>
+										<Text type="big" color="tint" numberOfLines={2}>{outpost.title}</Text>
+									</View>
+									
+									<Text type="small" color="hint" numberOfLines={4}>Meeting in: Tokyo, Los Angeles, Pittsburgh, Medellin...</Text>
+									
+								</Chunk>
+						</Sectionless>
+					</Card>
+				</Link>
+			</Chunk>
+		);
+	} 
 
 	return(
 		<Section>
@@ -95,37 +163,20 @@ const OutpostRow = (props) => {
 			</Chunk>
 			
 			<List
-				scrollItemWidth={300}
+				scrollItemWidth={240}
 				items={outposts}
 				variant={{
 					small: "grid",
+					medium: "grid"
 				}}
 				itemsInRow={{
 					small: 2,
 					medium: 2,
 					large: 4
 				}}
-				renderItem={(outpost, i) => {
-					return(
-						<Chunk>
-							<Link href="/events">
-								<Card>
-									<Sectionless style={{/*backgroundColor: swatches.tint*/}}>
-											<Chunk>
-												<View style={{marginBottom: METRICS.space / 2}}>
-													<Text type="big" color="tint">{outpost.name}</Text>
-													<Text type="small" color="primary" >2l,293 {who}</Text>
-												</View>
-												<Text type="small" color="secondary" >Tokyo</Text>
-												<Text type="small" color="secondary" >Los Angeles</Text>
-												<Text type="small" color="secondary" >Monterrey</Text>
-												<Text type="small" color="secondary" ><u>See all cities</u></Text>
-											</Chunk>
-									</Sectionless>
-								</Card>
-							</Link>
-						</Chunk>
-					);
+				renderItem={{
+					small: gridItem,
+					medium: gridItem
 				}}
 				/>
 		</Section>
@@ -145,95 +196,125 @@ class Splash extends React.Component {
 		const outposts = {
 			subreddit: [
 				{
-					name: '/r/AnimalCrossing'
+					name: '/r/AnimalCrossing',
+					title: 'Animal Crossing'
 				},
 				{
-					name: '/r/politics'
+					name: '/r/politics',
+					title: 'Politics'
 				},
 				{
-					name: '/r/apple'
+					name: '/r/apple',
+					title: 'Apple'
 				},
 				{
-					name: '/r/AnimalCrossing'
+					name: '/r/financialindependence',
+					title: 'Financial Independence'
 				},
 				{
-					name: '/r/politics'
+					name: '/r/QueerEye',
+					title: 'Queer Eye'
 				},
 				{
-					name: '/r/apple'
+					name: '/r/nonzerodays',
+					title: 'Non-Zero Days'
 				},
 				{
-					name: '/r/AnimalCrossing'
+					name: '/r/apple',
+					title: 'Apple'
 				},
 				{
-					name: '/r/politics'
-				},				
+					name: '/r/leanfire',
+					title: 'LeanFIRE'
+				},
+						
 			],
 			twitter: [
 				{
-					name: '@tferriss'
+					name: '@tferriss',
+					title: 'Tim Ferris'
 				},
 				{
-					name: '@a16z'
+					name: '@a16z',
+					title: 'Andreesen Horowitz'
 				},
 				{
-					name: '@ycombinator'
+					name: '@ycombinator',
+					title: 'Y Combinator'
 				},
 				{
-					name: '@davidasinclair'
+					name: '@davidasinclair',
+					title: 'David Sinclair PhD'
 				},
 				{
-					name: '@tferriss'
+					name: '@tferriss',
+					title: 'Tim Ferris'
 				},
 				{
-					name: '@a16z'
+					name: '@a16z',
+					title: 'Andreesen Horowitz'
 				},
 				{
-					name: '@ycombinator'
+					name: '@ycombinator',
+					title: 'Y Combinator'
 				},
 				{
-					name: '@davidasinclair'
+					name: '@davidasinclair',
+					title: 'David Sinclair PhD'
 				},		
 			]
 		}
 
 		return (
 			<Page hideHeader>
-				
+				{/* image="https://images.unsplash.com/photo-1502581827181-9cf3c3ee0106?ixlib=rb-1.2.1&auto=format&fit=crop&w=2642&q=80" */}
 
 				<Stripe 
-					style={{paddingTop: 0}} 
-					image="https://images.unsplash.com/photo-1502581827181-9cf3c3ee0106?ixlib=rb-1.2.1&auto=format&fit=crop&w=2642&q=80"
-					imageHeight={{small: 370, medium: 400, large: 400, xlarge: 475}}
+					style={{paddingTop: 0, backgroundColor: swatches.tint}} 
+					imageHeight={{small: 360, medium: 400, large: 400, xlarge: 475}}
+					image="true" 
 					>
 					<OutpostHeader type="transparent" inverted={true} />
 					<View style={{justifyContent: 'center', flex: 1, paddingHorizontal: METRICS.space}}>
 						<Bounds>
-							<Section>
-								<Chunk>
-									<Text type="hero" inverted style={{textAlign: 'center'}}>Find the others</Text>
-								</Chunk>
-								<Chunk>
-									<Text type="big" inverted style={{textAlign: 'center'}}>People near you are getting together about things you like</Text>
-									{/* <HeaderBlurb cycle={false} /> */}
-								</Chunk>
-							</Section>
+							<HeaderContent />
 						</Bounds>
 					</View>
 				</Stripe>
 				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 					<Bounds>
 
+							<Section style={{paddingTop: METRICS.space / 2, paddingBottom: METRICS.space / 4}}>
+								<View style={{position: 'relative'}}>
+									<TextInput
+										id="searchString"
+										placeholder="Search"
+										autoComplete="off"
+										style={{borderRadius: 4000, paddingLeft: 48}}
+										keyboardType="web-search"
+										/>
+										<View style={{position: 'absolute', top: 0, left: 16, height: '100%', justifyContent: 'center'}}> 
+											<Icon shape="Search"  />
+										</View>
+										<View style={{position: 'absolute', top: 0, right: 10, height: '100%', justifyContent: 'center'}}>
+											<View style={{backgroundColor: 'white', borderRadius: 4000, paddingHorizontal: 12, paddingVertical: 4}}>
+												<Text color="secondary">New York, NY</Text>
+											</View>
+										</View> 
+
+								</View>
+							</Section>
+
 							<OutpostRow 
 								outposts={outposts.subreddit}
-								headline="Subreddit stuff"
-								who="members"
+								headline="Subreddits are getting&nbsp;together"
+								site="reddit.com"
 								/>
 
 							<OutpostRow 
 								outposts={outposts.twitter}
-								headline="Twitter stuff"
-								who="followers"
+								headline="Twitter followers are getting&nbsp;together"
+								site="twitter.com"
 								/>
 	
 					</Bounds>
@@ -259,3 +340,10 @@ export default connect(
 	mapStateToProps,
 	actionCreators
 )(Splash);
+
+const thisCardStyle = {
+	borderWidth: 0,
+	shadowRadius: 16,
+	shadowColor: 'rgba(0,0,0,.15)',
+	marginVertical: 0
+}

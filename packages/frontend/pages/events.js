@@ -209,7 +209,7 @@ class Events extends React.Component {
 							<FlexItem growFactor={2}>
 								<Section>
 									<Chunk>
-										<Text type="big" color="secondary" style={{marginBottom: 8}}>
+										<Text type="big" color="secondary" style={{marginBottom: 8, marginTop: -3}}>
 											<Image 
 												source="https://api.faviconkit.com/reddit.com/32"
 												style={{
@@ -228,21 +228,22 @@ class Events extends React.Component {
 									<Chunk>
 										<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on reddit.com &#8599;</Text></a></Text>
 									</Chunk>
-								</Section>
-								<Section>
+							
 									<Chunk>
 										
 										<Button 
-											label="Suggest a meetup"
-											onPress={()=>{ alert('suggest event'); }}
+											label="Suggest a get-together"
+											onPress={this.toggleModal}
 											width="full"
 											/>	
+										{/*
 										<Button
 											color="secondary"
 											label="Import an event from..."
 											onPress={this.toggleModal}
 											width="full"
-											/>											
+											/>	
+										*/}										
 										<Button 
 											color="secondary"
 											label="Get notified about events"
@@ -351,7 +352,7 @@ class Events extends React.Component {
 														<Card style={thisCardStyle}> 
 															<Sectionless>
 																<Chunk>
-																	<Text type="small" color="tint" weight="strong">Sometime this weekend</Text>
+																	<Text type="small" color="tint" weight="strong">This weekend, TBD</Text>
 																	<Text type="big" weight="strong">Let's get together for drinks</Text>
 																	
 																	<Text type="small" color="secondary">TBD &middot; Greenpoint</Text>

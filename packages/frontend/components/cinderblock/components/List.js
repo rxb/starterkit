@@ -22,6 +22,7 @@ const List = (props) => {
 		renderItem = item => item,
 		media,
 		style,
+		itemStyle,
 		...other
 	} = props;
 
@@ -56,7 +57,7 @@ const List = (props) => {
 						<View
 							key={i}
 							accessibilityRole='listitem'
-							style={[ ...combinedItemStyles, scrollItemWidthStyle, firstChildStyle ]}
+							style={[ ...combinedItemStyles, scrollItemWidthStyle, itemStyle, firstChildStyle ]}
 							>
 							{ currentRenderItem(item, i) }
 						</View>
