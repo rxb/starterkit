@@ -84,23 +84,34 @@ const HeaderContent = WithMatchMedia((props) => {
 	const {
 		media
 	} = props;
+
+	const textShadowStyle = {
+      textShadowRadius: 20,
+      textShadowColor: 'rgba(0,0,0,.25)'
+	}
 	return(
 		<Section>
 			
 
 			
 			<Chunk>
-				<Text type="hero" inverted style={{textAlign: 'center'}}>Find the others</Text>
+				<Text type="hero" 
+					inverted 
+					style={[
+						{textAlign: 'center'},
+						textShadowStyle
+					]}>Find the others</Text>
 			</Chunk>
 			<Chunk>
 				<Text 
 					type="big" 
 					inverted 
 					style={[
+						textShadowStyle,
 						{textAlign: 'center'},
 						media && media.large ? {fontSize: 24, lineHeight: 34} : {}
 					]}
-					>People near you are getting together about things you like</Text>
+					>People are getting together about things you like</Text>
 			</Chunk>
 			{/*
 			<Chunk style={{alignItems: 'center', textAlign: 'center'}}>
@@ -265,14 +276,15 @@ class Splash extends React.Component {
 			]
 		}
 
+		const headerImageSource = `https://source.unsplash.com/Jztmx9yqjBw/1900x800`
+
 		return (
 			<Page hideHeader>
-				{/* image="https://images.unsplash.com/photo-1502581827181-9cf3c3ee0106?ixlib=rb-1.2.1&auto=format&fit=crop&w=2642&q=80" */}
 
 				<Stripe 
-					style={{paddingTop: 0, backgroundColor: swatches.tint}} 
+					style={{paddingTop: 0, backgroundColor: '#2E3894'}} 
 					imageHeight={{small: 360, medium: 400, large: 400, xlarge: 475}}
-					image="true" 
+					image={headerImageSource} 
 					>
 					<OutpostHeader type="transparent" inverted={true} />
 					<View style={{justifyContent: 'center', flex: 1, paddingHorizontal: METRICS.space}}>
@@ -290,15 +302,15 @@ class Splash extends React.Component {
 										id="searchString"
 										placeholder="Search"
 										autoComplete="off"
-										style={{borderRadius: 4000, paddingLeft: 48}}
+										style={{borderRadius: 4000, paddingLeft: 48, backgroundColor: 'white'}}
 										keyboardType="web-search"
 										/>
 										<View style={{position: 'absolute', top: 0, left: 16, height: '100%', justifyContent: 'center'}}> 
 											<Icon shape="Search"  />
 										</View>
 										<View style={{position: 'absolute', top: 0, right: 10, height: '100%', justifyContent: 'center'}}>
-											<View style={{backgroundColor: 'white', borderRadius: 4000, paddingHorizontal: 12, paddingVertical: 4}}>
-												<Text color="secondary">New York, NY</Text>
+											<View style={{backgroundColor: swatches.shade, borderRadius: 4000, paddingHorizontal: 12, paddingVertical: 4}}>
+												<Text type="small" color="secondary">New York, NY</Text>
 											</View>
 										</View> 
 
