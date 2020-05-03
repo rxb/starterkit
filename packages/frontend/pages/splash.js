@@ -318,6 +318,20 @@ class Splash extends React.Component {
 								/>
 	
 					</Bounds>
+				</Stripe>
+				<Stripe>
+					<Bounds>
+						<Section>
+							<Chunk>
+								<Text type="sectionHead">
+									How it works
+								</Text>
+							</Chunk>
+							<Chunk>
+
+							</Chunk>
+						</Section>
+					</Bounds>
 				</Stripe>				
 			</Page>
 		);
