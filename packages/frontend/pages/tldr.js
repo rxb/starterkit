@@ -240,6 +240,54 @@ class Tldr extends React.Component {
 								</FlexItem>
 								<FlexItem growFactor={0} style={{flexBasis: 360, flex: 0}}>
 									<Section>
+
+										{/* cumulative score */}
+										{/*
+										<Chunk>
+												
+												<Flex noGutters>
+														<FlexItem>
+															<Button
+																shape="ArrowUp"
+																color="secondary"
+																width="full"
+		
+																style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1}}
+																/>
+														</FlexItem>
+														<FlexItem shrink>
+															<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', paddingHorizontal: METRICS.space, marginHorizontal: 1}}>
+																		<Text 
+																			color="tint" 
+																			weight="strong"
+																			style={{lineHeight: 16, textAlign: 'center'}}
+																			>
+																			3,319
+																		</Text>
+																		<Text 
+																			type="micro"
+																			color="tint"
+																			style={{lineHeight: 15, textAlign: 'center'}}
+																			>
+																			usefulness
+																			</Text>
+															</View>
+														</FlexItem>
+														<FlexItem>
+																<Button
+																	shape="ArrowDown"
+																	color="secondary"
+																	width="full"
+		
+																	style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
+																	/>
+														</FlexItem>
+														
+													</Flex>
+												</Chunk>
+										*/}
+
+										{/* split scores with labels */}
 										<Chunk>
 											<Flex noGutters>
 												<FlexItem>
@@ -252,7 +300,7 @@ class Tldr extends React.Component {
 																	<Icon 
 																		shape="ArrowUp" 
 																		color={swatches.tint} 
-																		style={{marginLeft: 3, marginRight: 3}} 
+																		style={{marginLeft: 3, marginRight: 3, }} 
 																		/>
 																	<View style={{marginLeft: 3}}>
 																	<Text 
@@ -265,7 +313,7 @@ class Tldr extends React.Component {
 																	<Text 
 																		type="micro"
 																		color="tint"
-																		style={{lineHeight: 15}}
+																		style={{lineHeight: 11, marginTop: 3,}}
 																		>
 																		useful
 																		</Text>
@@ -273,13 +321,7 @@ class Tldr extends React.Component {
 															</View>
 														</Button>
 												</FlexItem>
-												{/*
-												<FlexItem shrink>
-													<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', paddingHorizontal: METRICS.space, marginHorizontal: 1}}>
-														<Text weight="strong" color="tint" style={{textAlign: 'center'}}>Useful</Text>
-													</View>
-												</FlexItem>
-												*/}
+					
 												<FlexItem>
 													<Button
 															color="secondary"
@@ -299,7 +341,7 @@ class Tldr extends React.Component {
 																	<Text 
 																		type="micro"
 																		color="tint"
-																		style={{lineHeight: 15, textAlign: 'right'}}
+																		style={{lineHeight: 11, marginTop: 3, textAlign: 'right'}}
 																		>
 																		not useful
 																		</Text>
@@ -316,73 +358,25 @@ class Tldr extends React.Component {
 											</Flex>
 										</Chunk>
 
-										<Chunk>
-											
-										<Flex noGutters>
-												<FlexItem>
-													<Button
-														shape="ArrowUp"
-														label="1,324"
-														color="secondary"
-														width="full"
-
-														style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
-														/>
-												</FlexItem>
-												{/*
-												<FlexItem shrink>
-													<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', paddingHorizontal: METRICS.space, marginHorizontal: 1}}>
-														<Text weight="strong" color="tint" style={{textAlign: 'center'}}>Useful</Text>
-													</View>
-												</FlexItem>
-												*/}
-												<FlexItem>
-														<Button
-															shape="ArrowDown"
-															label="123"
-															color="secondary"
-															width="full"
-
-															style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
-															/>
-												</FlexItem>
-												
-											</Flex>
-										</Chunk>
-										
-										<Chunk>
-											
+										{/* split scores without labels */}
+										{/*
+										<Chunk>									
 											<Flex noGutters>
 													<FlexItem>
 														<Button
 															shape="ArrowUp"
+															label="3,423"
 															color="secondary"
 															width="full"
 	
-															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1}}
+															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
 															/>
 													</FlexItem>
-													<FlexItem shrink>
-														<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', paddingHorizontal: METRICS.space, marginHorizontal: 1}}>
-																	<Text 
-																		color="tint" 
-																		weight="strong"
-																		style={{lineHeight: 16, textAlign: 'center'}}
-																		>
-																		3,104
-																	</Text>
-																	<Text 
-																		type="micro"
-																		color="tint"
-																		style={{lineHeight: 15, textAlign: 'center'}}
-																		>
-																		usefulness
-																		</Text>
-														</View>
-													</FlexItem>
+
 													<FlexItem>
 															<Button
 																shape="ArrowDown"
+																label="104"
 																color="secondary"
 																width="full"
 	
@@ -392,8 +386,8 @@ class Tldr extends React.Component {
 													
 												</Flex>
 											</Chunk>
-											
-
+										*/}
+										
 										{/*
 										<Chunk>
 											<Flex>
@@ -410,11 +404,61 @@ class Tldr extends React.Component {
 										</Chunk>
 										*/}
 
-										<List
-											items={[
-												/* <Text>References & rationale</Text>, */
-												<Text>Issues</Text>,
-												<Text>Contributors & forks</Text>,
+											<Chunk style={listItemStyle}>
+												<Flex>
+													<FlexItem >
+														<Text weight="strong">Issues (48)</Text>
+														<Text type="small" color="secondary">Improve this or whatever</Text>
+													</FlexItem>
+													<FlexItem shrink>
+														<Button
+															size="small"
+															color="secondary"
+															shape="MessageCircle"
+															iconOnly
+															/>
+														<Text type="micro" color="tint">improve</Text>
+													</FlexItem>
+												</Flex>
+											</Chunk>
+
+											<Chunk style={listItemStyle}>
+												<Flex>
+													<FlexItem >
+														<Text weight="strong">Forks (3)</Text>
+														<Text type="small" color="secondary">Use this as a starting point</Text>
+													</FlexItem>
+													<FlexItem shrink>
+														<Button
+															size="small"
+															color="secondary"
+															shape="GitPullRequest"
+															iconOnly
+															/>
+														<Text type="micro" color="tint">fork</Text>
+													</FlexItem>
+												</Flex>
+											</Chunk>
+
+											<Chunk style={listItemStyle}>
+												<Flex>
+													<FlexItem >
+														<Text weight="strong">Versions (2)</Text>
+														<Text type="small" color="secondary">This card is v1.2</Text>
+													</FlexItem>
+													<FlexItem shrink>
+														<Button
+															size="small"
+															color="secondary"
+															shape="GitPullRequest"
+															iconOnly
+															/>
+														<Text type="micro" color="tint">fork</Text>
+													</FlexItem>
+												</Flex>
+											</Chunk>
+
+											<Chunk style={listItemStyle}>
 												<Flex>
 													<FlexItem shrink>
 														<Avatar
@@ -427,25 +471,8 @@ class Tldr extends React.Component {
 														<Text type="small" color="secondary">Maintainer Info</Text>
 													</FlexItem>
 												</Flex>
-											]}
-											renderItem={(item, i)=>{
-												return(
-													<Chunk key={i}>
-														<Flex>
-															<FlexItem>
-																{item}
-															</FlexItem>
-															<FlexItem shrink>
-																<Icon
-																	shape="ChevronRight"
-																	color={swatches.textHint}
-																	/>
-															</FlexItem>
-														</Flex>
-													</Chunk>
-												);
-											}}
-											/>
+											</Chunk>
+											
 									</Section>
 
 								</FlexItem>
@@ -563,3 +590,9 @@ export default connect(
 	mapStateToProps,
 	actionCreators
 )(Tldr);
+
+const listItemStyle = {
+	borderTopColor: swatches.border,
+	borderTopWidth: 1,
+	paddingTop: METRICS.space
+}

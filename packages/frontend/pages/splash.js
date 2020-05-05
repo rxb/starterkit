@@ -70,12 +70,12 @@ const outposts = {
 			title: 'Non-Zero Days'
 		},
 		{
-			name: '/r/apple',
-			title: 'Apple'
+			name: '/r/reactjs',
+			title: 'ReactJS'
 		},
 		{
-			name: '/r/leanfire',
-			title: 'LeanFIRE'
+			name: '/r/sahm',
+			title: 'Stay at Home Parents'
 		},
 				
 	],
