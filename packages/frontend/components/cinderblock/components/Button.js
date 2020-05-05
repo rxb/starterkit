@@ -14,6 +14,7 @@ import Router from 'next/router'
 const Button = (props) => {
 
 		const {
+			children,
 			href,
 			onPress,
 			label,
@@ -82,6 +83,7 @@ const Button = (props) => {
 							<Text style={[styles.text, styles[`text${VALID_TEXT_TYPES[textType]}`], styles.buttonText, styles[`buttonText--${color}`]]}>{label}</Text>
 						}
 					</View>
+					{children}
 				</View>
 
 				{ isLoading &&

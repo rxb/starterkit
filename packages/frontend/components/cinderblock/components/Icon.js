@@ -26,7 +26,7 @@ const Icon = (props) => {
 
 
 
-		return <ThisIcon color={color} size={pixelSize} {...other} />;
+		return <ThisIcon color={color} size={pixelSize} style={style} {...other} />;
 
 		//return <View />;
 

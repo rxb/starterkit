@@ -72,11 +72,6 @@ const ConnectedHeader = WithMatchMedia((props) => {
 const Card1 = (props) => {
 	return (
 		<Card style={{
-				/*
-				borderTopWidth: 12,
-				borderTopColor: 'blue',
-				borderTopStyle: 'solid',
-				*/
 				borderWidth: 0,
 				shadowRadius: 16,
 				shadowColor: 'rgba(0,0,0,.15)',
@@ -142,11 +137,6 @@ const Card2 = WithMatchMedia((props) => {
 
 	return (
 		<Card style={{
-				/*
-				borderTopWidth: 12,
-				borderTopColor: 'blue',
-				borderTopStyle: 'solid',
-				*/
 				borderWidth: 0,
 				shadowRadius: 16,
 				shadowColor: 'rgba(0,0,0,.15)',
@@ -195,7 +185,21 @@ const Card2 = WithMatchMedia((props) => {
 						</Chunk>
 					))}
 					</View>
+					
+				
+					<Chunk>
+						<Text type="small" color="hint">
+							<Icon 
+								shape="ChevronDown"
+								size="small"
+								color={swatches.hint}
+								style={{marginBottom: -2, marginRight: 4}}
+								/>
+							References & rationale
+						</Text>
+					</Chunk>
 				</Sectionless>
+					
 			</Card>
 
 	);
@@ -240,28 +244,157 @@ class Tldr extends React.Component {
 											<Flex noGutters>
 												<FlexItem>
 														<Button
-															width="full"
 															color="secondary"
-															shape="ArrowUp"
-															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1}}
-															/>
+															width="full"
+															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
+															>
+															<View style={{flexDirection: 'row', justifyContent: 'center'}}>
+																	<Icon 
+																		shape="ArrowUp" 
+																		color={swatches.tint} 
+																		style={{marginLeft: 3, marginRight: 3}} 
+																		/>
+																	<View style={{marginLeft: 3}}>
+																	<Text 
+																		color="tint" 
+																		weight="strong"
+																		style={{lineHeight: 16}}
+																		>
+																		3,423
+																	</Text>
+																	<Text 
+																		type="micro"
+																		color="tint"
+																		style={{lineHeight: 15}}
+																		>
+																		useful
+																		</Text>
+																	</View>
+															</View>
+														</Button>
 												</FlexItem>
-												<FlexItem>
-													<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', marginHorizontal: 1}}>
-														<Text weight="strong" style={{textAlign: 'center'}}>234</Text>
+												{/*
+												<FlexItem shrink>
+													<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', paddingHorizontal: METRICS.space, marginHorizontal: 1}}>
+														<Text weight="strong" color="tint" style={{textAlign: 'center'}}>Useful</Text>
 													</View>
 												</FlexItem>
+												*/}
+												<FlexItem>
+													<Button
+															color="secondary"
+															width="full"
+															style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
+															>
+															<View style={{flexDirection: 'row', justifyContent: 'center'}}>
+																	
+																	<View style={{marginRight: 3}}>
+																	<Text 
+																		color="tint" 
+																		weight="strong"
+																		style={{lineHeight: 16, textAlign: 'right'}}
+																		>
+																		104
+																	</Text>
+																	<Text 
+																		type="micro"
+																		color="tint"
+																		style={{lineHeight: 15, textAlign: 'right'}}
+																		>
+																		not useful
+																		</Text>
+																	</View>
+																	<Icon 
+																		shape="ArrowDown" 
+																		color={swatches.tint} 
+																		style={{marginLeft: 3, marginRight: 3}} 
+																		/>
+															</View>
+														</Button>
+												</FlexItem>
+												
+											</Flex>
+										</Chunk>
+
+										<Chunk>
+											
+										<Flex noGutters>
+												<FlexItem>
+													<Button
+														shape="ArrowUp"
+														label="1,324"
+														color="secondary"
+														width="full"
+
+														style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
+														/>
+												</FlexItem>
+												{/*
+												<FlexItem shrink>
+													<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', paddingHorizontal: METRICS.space, marginHorizontal: 1}}>
+														<Text weight="strong" color="tint" style={{textAlign: 'center'}}>Useful</Text>
+													</View>
+												</FlexItem>
+												*/}
 												<FlexItem>
 														<Button
-															width="full"
-															color="secondary"
 															shape="ArrowDown"
+															label="123"
+															color="secondary"
+															width="full"
+
 															style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
 															/>
 												</FlexItem>
 												
 											</Flex>
 										</Chunk>
+										
+										<Chunk>
+											
+											<Flex noGutters>
+													<FlexItem>
+														<Button
+															shape="ArrowUp"
+															color="secondary"
+															width="full"
+	
+															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1}}
+															/>
+													</FlexItem>
+													<FlexItem shrink>
+														<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', paddingHorizontal: METRICS.space, marginHorizontal: 1}}>
+																	<Text 
+																		color="tint" 
+																		weight="strong"
+																		style={{lineHeight: 16, textAlign: 'center'}}
+																		>
+																		3,104
+																	</Text>
+																	<Text 
+																		type="micro"
+																		color="tint"
+																		style={{lineHeight: 15, textAlign: 'center'}}
+																		>
+																		usefulness
+																		</Text>
+														</View>
+													</FlexItem>
+													<FlexItem>
+															<Button
+																shape="ArrowDown"
+																color="secondary"
+																width="full"
+	
+																style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
+																/>
+													</FlexItem>
+													
+												</Flex>
+											</Chunk>
+											
+
+										{/*
 										<Chunk>
 											<Flex>
 												<FlexItem>
@@ -275,6 +408,8 @@ class Tldr extends React.Component {
 												</FlexItem>
 											</Flex>
 										</Chunk>
+										*/}
+
 										<List
 											items={[
 												/* <Text>References & rationale</Text>, */

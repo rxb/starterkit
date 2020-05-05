@@ -226,7 +226,7 @@ class Events extends React.Component {
 									</Chunk>
 								
 									<Chunk>
-										<Text>For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on reddit.com &#8599;</Text></a></Text>
+										<Text color="secondary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
 									</Chunk>
 							
 									<Chunk>
@@ -405,7 +405,7 @@ class Events extends React.Component {
 												<Chunk>
 													<Flex>
 														<FlexItem shrink justify="center">
-															<View style={{width: 100}}>
+															<View style={{width: 120}}>
 																<Text color="tint" weight="strong" numberOfLines={1}>
 																	<Icon
 																		shape="MapPin"
@@ -417,8 +417,8 @@ class Events extends React.Component {
 															</View>
 														</FlexItem>
 														<FlexItem>
-															<Text color="hint" type="small">In 3 days: </Text>
-															<Text>Let's hike to Mt Awesome</Text>
+																	<Text type="small" color="hint">Meeting in 3 days: </Text>
+																	<Text type="small"  >Let's hike to Mt Awesome</Text>
 														</FlexItem>
 													</Flex>
 												</Chunk>

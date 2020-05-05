@@ -43,7 +43,77 @@ import OutpostHeader from '../components/OutpostHeader';
 import Markdown from 'markdown-to-jsx';
 
 
-
+const outposts = {
+	subreddit: [
+		{
+			name: '/r/AnimalCrossing',
+			title: 'Animal Crossing'
+		},
+		{
+			name: '/r/politics',
+			title: 'Politics'
+		},
+		{
+			name: '/r/apple',
+			title: 'Apple'
+		},
+		{
+			name: '/r/financialindependence',
+			title: 'Financial Independence'
+		},
+		{
+			name: '/r/QueerEye',
+			title: 'Queer Eye'
+		},
+		{
+			name: '/r/nonzerodays',
+			title: 'Non-Zero Days'
+		},
+		{
+			name: '/r/apple',
+			title: 'Apple'
+		},
+		{
+			name: '/r/leanfire',
+			title: 'LeanFIRE'
+		},
+				
+	],
+	twitter: [
+		{
+			name: '@tferriss',
+			title: 'Tim Ferris'
+		},
+		{
+			name: '@a16z',
+			title: 'Andreesen Horowitz'
+		},
+		{
+			name: '@ycombinator',
+			title: 'Y Combinator'
+		},
+		{
+			name: '@davidasinclair',
+			title: 'David Sinclair PhD'
+		},
+		{
+			name: '@tferriss',
+			title: 'Tim Ferris'
+		},
+		{
+			name: '@a16z',
+			title: 'Andreesen Horowitz'
+		},
+		{
+			name: '@ycombinator',
+			title: 'Y Combinator'
+		},
+		{
+			name: '@davidasinclair',
+			title: 'David Sinclair PhD'
+		},		
+	]
+}
 
 class HeaderBlurb extends React.Component {
 	
@@ -113,23 +183,40 @@ const HeaderContent = WithMatchMedia((props) => {
 					]}
 					>People are getting together about things you like</Text>
 			</Chunk>
-			{/*
-			<Chunk style={{alignItems: 'center', textAlign: 'center'}}>
-				<Text type="pageHead" style={{fontSize: 28}} inverted>People near you</Text>
-				<Text type="pageHead" style={{fontSize: 28}} inverted>are getting together</Text>
-				<Text type="pageHead" style={{fontSize: 28}} inverted>about things you like</Text>
-			</Chunk>
-			*/}
 		</Section>
 	);
 });
+
+const SearchForm = (props) => {
+	return (
+		<View style={{position: 'relative'}}>
+			<TextInput
+				id="searchString"
+				placeholder="Search"
+				autoComplete="off"
+				style={{borderRadius: 4000, paddingLeft: 48, backgroundColor: 'white'}}
+				keyboardType="web-search"
+				/>
+				<View style={{position: 'absolute', top: 0, left: 16, height: '100%', justifyContent: 'center'}}> 
+					<Icon shape="Search"  />
+				</View>
+				<View style={{position: 'absolute', top: 0, right: 10, height: '100%', justifyContent: 'center'}}>
+					<View style={{backgroundColor: swatches.shade, borderRadius: 4000, paddingHorizontal: 12, paddingVertical: 4}}>
+						<Text type="small" color="secondary">New York, NY</Text>
+					</View>
+				</View> 
+
+		</View>
+	)
+}
 
 const OutpostRow = (props) => {
 
 	const {
 		outposts = [],
 		headline,
-		site
+		site,
+		toggleModal
 	} = props;
 
 	const gridItem = (outpost, i) => {
@@ -170,7 +257,9 @@ const OutpostRow = (props) => {
 	return(
 		<Section>
 			<Chunk>
-				<Text type="sectionHead">{headline}</Text>
+				<Touch onPress={toggleModal}>
+					<Text type="sectionHead">{headline}</Text>
+				</Touch>
 			</Chunk>
 			
 			<List
@@ -197,6 +286,18 @@ const OutpostRow = (props) => {
 
 class Splash extends React.Component {
 
+	constructor(props){
+		super(props);
+		this.state = {
+			modalVisible: false
+		}
+		this.toggleModal = this.toggleModal.bind(this);
+
+	}
+
+	toggleModal() {
+		this.setState({modalVisible: !this.state.modalVisible})
+	}
 
 	render() {
 
@@ -204,81 +305,12 @@ class Splash extends React.Component {
 			user
 		} = this.props;
 
-		const outposts = {
-			subreddit: [
-				{
-					name: '/r/AnimalCrossing',
-					title: 'Animal Crossing'
-				},
-				{
-					name: '/r/politics',
-					title: 'Politics'
-				},
-				{
-					name: '/r/apple',
-					title: 'Apple'
-				},
-				{
-					name: '/r/financialindependence',
-					title: 'Financial Independence'
-				},
-				{
-					name: '/r/QueerEye',
-					title: 'Queer Eye'
-				},
-				{
-					name: '/r/nonzerodays',
-					title: 'Non-Zero Days'
-				},
-				{
-					name: '/r/apple',
-					title: 'Apple'
-				},
-				{
-					name: '/r/leanfire',
-					title: 'LeanFIRE'
-				},
-						
-			],
-			twitter: [
-				{
-					name: '@tferriss',
-					title: 'Tim Ferris'
-				},
-				{
-					name: '@a16z',
-					title: 'Andreesen Horowitz'
-				},
-				{
-					name: '@ycombinator',
-					title: 'Y Combinator'
-				},
-				{
-					name: '@davidasinclair',
-					title: 'David Sinclair PhD'
-				},
-				{
-					name: '@tferriss',
-					title: 'Tim Ferris'
-				},
-				{
-					name: '@a16z',
-					title: 'Andreesen Horowitz'
-				},
-				{
-					name: '@ycombinator',
-					title: 'Y Combinator'
-				},
-				{
-					name: '@davidasinclair',
-					title: 'David Sinclair PhD'
-				},		
-			]
-		}
+		
 
 		const headerImageSource = `https://source.unsplash.com/Jztmx9yqjBw/1900x800`
 
 		return (
+			<Fragment>
 			<Page hideHeader>
 
 				<Stripe 
@@ -297,36 +329,21 @@ class Splash extends React.Component {
 					<Bounds>
 
 							<Section style={{paddingTop: METRICS.space / 2, paddingBottom: METRICS.space / 4}}>
-								<View style={{position: 'relative'}}>
-									<TextInput
-										id="searchString"
-										placeholder="Search"
-										autoComplete="off"
-										style={{borderRadius: 4000, paddingLeft: 48, backgroundColor: 'white'}}
-										keyboardType="web-search"
-										/>
-										<View style={{position: 'absolute', top: 0, left: 16, height: '100%', justifyContent: 'center'}}> 
-											<Icon shape="Search"  />
-										</View>
-										<View style={{position: 'absolute', top: 0, right: 10, height: '100%', justifyContent: 'center'}}>
-											<View style={{backgroundColor: swatches.shade, borderRadius: 4000, paddingHorizontal: 12, paddingVertical: 4}}>
-												<Text type="small" color="secondary">New York, NY</Text>
-											</View>
-										</View> 
-
-								</View>
+								<SearchForm />
 							</Section>
 
 							<OutpostRow 
 								outposts={outposts.subreddit}
 								headline="Subreddits are getting&nbsp;together"
 								site="reddit.com"
+								toggleModal={this.toggleModal}
 								/>
 
 							<OutpostRow 
 								outposts={outposts.twitter}
 								headline="Twitter followers are getting&nbsp;together"
 								site="twitter.com"
+								toggleModal={this.toggleModal}
 								/>
 	
 					</Bounds>
@@ -346,6 +363,26 @@ class Splash extends React.Component {
 					</Bounds>
 				</Stripe>				
 			</Page>
+
+			<Modal
+			visible={this.state.modalVisible}
+			onRequestClose={this.toggleModal}
+			>
+			<Stripe>
+				<Section>
+					<Chunk>
+						<Text type="pageHead">Find outposts</Text>
+					</Chunk>
+					<Chunk>
+						<Text>Search for interests, subreddits, or twitter accounts that you follow</Text>
+					</Chunk>
+					<SearchForm />
+					<Button label="Search" width="full" />
+
+				</Section>
+			</Stripe>
+			</Modal>
+		</Fragment>
 		);
 
 
