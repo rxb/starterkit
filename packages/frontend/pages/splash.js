@@ -75,7 +75,7 @@ const outposts = {
 		},
 		{
 			name: '/r/sahm',
-			title: 'Stay at Home Parents'
+			title: 'Stay at Home Parentss'
 		},
 				
 	],
@@ -334,7 +334,7 @@ class Splash extends React.Component {
 
 							<OutpostRow 
 								outposts={outposts.subreddit}
-								headline="Subreddits are getting&nbsp;together"
+								headline="Redditors are getting&nbsp;together"
 								site="reddit.com"
 								toggleModal={this.toggleModal}
 								/>

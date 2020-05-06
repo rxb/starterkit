@@ -69,7 +69,64 @@ const ConnectedHeader = WithMatchMedia((props) => {
 	);
 });
 
+const Card1 = (props) => {
+	return (
+		<Card style={[{
+	
+				borderRadius: 12
+			},
+			thisCardStyle
+			]}>
+			<Stripe style={{backgroundColor: swatches.tint}}>
+				<Section>
+					<Chunk>
+						<Text type="pageHead" inverted>Buster Bluth</Text>
+						<Text inverted>Lorem ipsum dolor sit amet, consectetur adipiscing elit</Text>
+					</Chunk>
+				</Section>
+			</Stripe>
+			<Stripe>
 
+				<Section>
+
+					<Markdown
+						options={{
+								overrides: {
+									h1: {
+										component: (props) => (<Chunk>
+											<Text type="pageHead">{props.children}</Text>
+										</Chunk>)
+									},
+									h2: {
+										component: (props) => (<Chunk>
+											<Text type="sectionHead">{props.children}</Text>
+										</Chunk>)
+									},
+									h3: {
+										component: (props) => (<Chunk>
+											<Text type="big">{props.children}</Text>
+										</Chunk>)
+									},
+										p: {
+											component: (props) => (<Chunk>
+											<Text>{props.children}</Text>
+										</Chunk>),
+										},
+										ul: {
+										component: (props) => (<Chunk><ul style={{margin: 0, paddingLeft: 18}}>{props.children}</ul></Chunk>)
+										},
+										li: {
+										component: (props) => (<li>{props.children}</li>)
+										}
+								},
+							}}
+						>{props.markdownContent}</Markdown>
+				</Section>
+				</Stripe>
+			</Card>
+
+	);
+}
 
 const Card2 = WithMatchMedia((props) => {
 
@@ -144,6 +201,7 @@ const Card2 = WithMatchMedia((props) => {
 				</Sectionless>
 					
 			</Card>
+
 	);
 });
 
@@ -168,6 +226,7 @@ class Tldr extends React.Component {
 				<Stripe style={{paddingTop: 0, backgroundColor: swatches.notwhite}}>
 
 					<Bounds>
+						<Sections>
 
 							<Flex direction="column" switchDirection="large">
 
@@ -177,28 +236,73 @@ class Tldr extends React.Component {
 											<Card2 markdownContent={markdownContent} {...this.props} />
 										</Chunk>
 									</Section>
-								</FlexItem>
 
+								</FlexItem>
 								<FlexItem growFactor={0} style={{flexBasis: 340, flex: 0}}>
 									<Section>
 
-									
+										{/* cumulative score */}
+										{/*
+										<Chunk>
+												
+												<Flex noGutters>
+														<FlexItem>
+															<Button
+																shape="ArrowUp"
+																color="secondary"
+																width="full"
+		
+																style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1}}
+																/>
+														</FlexItem>
+														<FlexItem shrink>
+															<View style={{backgroundColor: swatches.shade, flex: 1, marginVertical: METRICS.pseudoLineHeight, justifyContent: 'center', paddingHorizontal: METRICS.space, marginHorizontal: 1}}>
+																		<Text 
+																			color="tint" 
+																			weight="strong"
+																			style={{lineHeight: 16, textAlign: 'center'}}
+																			>
+																			3,319
+																		</Text>
+																		<Text 
+																			type="micro"
+																			color="tint"
+																			style={{lineHeight: 15, textAlign: 'center'}}
+																			>
+																			usefulness
+																			</Text>
+															</View>
+														</FlexItem>
+														<FlexItem>
+																<Button
+																	shape="ArrowDown"
+																	color="secondary"
+																	width="full"
+		
+																	style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
+																	/>
+														</FlexItem>
+														
+													</Flex>
+												</Chunk>
+										*/}
+
 										{/* split scores with labels */}
 										<Chunk>
 											<Flex noGutters>
 												<FlexItem>
-													<Button
-														color="secondary"
-														width="full"
-														style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
-														>
+														<Button
+															color="secondary"
+															width="full"
+															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
+															>
 															<View style={{flexDirection: 'row', justifyContent: 'center'}}>
-																<Icon 
-																	shape="ArrowUp" 
-																	color={swatches.tint} 
-																	style={{marginLeft: 3, marginRight: 3, }} 
-																	/>
-																<View style={{marginLeft: 3}}>
+																	<Icon 
+																		shape="ArrowUp" 
+																		color={swatches.tint} 
+																		style={{marginLeft: 3, marginRight: 3, }} 
+																		/>
+																	<View style={{marginLeft: 3}}>
 																	<Text 
 																		color="tint" 
 																		weight="strong"
@@ -212,44 +316,78 @@ class Tldr extends React.Component {
 																		style={{lineHeight: 11, marginTop: 3,}}
 																		>
 																		useful
-																	</Text>
-																</View>
+																		</Text>
+																	</View>
 															</View>
-													</Button>
+														</Button>
 												</FlexItem>
 					
 												<FlexItem>
 													<Button
-														color="secondary"
-														width="full"
-														style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
-														>
-														<View style={{flexDirection: 'row', justifyContent: 'center'}}>
-															<View style={{marginRight: 3}}>
-																<Text 
-																	color="tint" 
-																	weight="strong"
-																	style={{lineHeight: 16, textAlign: 'right'}}
-																	>
-																	104
-																</Text>
-																<Text 
-																	type="micro"
-																	color="tint"
-																	style={{lineHeight: 11, marginTop: 3, textAlign: 'right'}}
-																	>
-																	not useful
+															color="secondary"
+															width="full"
+															style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
+															>
+															<View style={{flexDirection: 'row', justifyContent: 'center'}}>
+																	
+																	<View style={{marginRight: 3}}>
+																	<Text 
+																		color="tint" 
+																		weight="strong"
+																		style={{lineHeight: 16, textAlign: 'right'}}
+																		>
+																		104
 																	</Text>
+																	<Text 
+																		type="micro"
+																		color="tint"
+																		style={{lineHeight: 11, marginTop: 3, textAlign: 'right'}}
+																		>
+																		not useful
+																		</Text>
+																	</View>
+																	<Icon 
+																		shape="ArrowDown" 
+																		color={swatches.tint} 
+																		style={{marginLeft: 3, marginRight: 3}} 
+																		/>
 															</View>
-															<Icon 
-																shape="ArrowDown" 
-																color={swatches.tint} 
-																style={{marginLeft: 3, marginRight: 3}} 
-																/>
-														</View>
-													</Button>
+														</Button>
 												</FlexItem>
+												
 											</Flex>
+										
+
+										{/* split scores without labels */}
+										{/*
+										<Chunk>									
+											<Flex noGutters>
+													<FlexItem>
+														<Button
+															shape="ArrowUp"
+															label="3,423"
+															color="secondary"
+															width="full"
+	
+															style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
+															/>
+													</FlexItem>
+
+													<FlexItem>
+															<Button
+																shape="ArrowDown"
+																label="104"
+																color="secondary"
+																width="full"
+	
+																style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
+																/>
+													</FlexItem>
+													
+												</Flex>
+											</Chunk>
+										*/}
+										
 										
 										
 											<Flex style={{marginTop: METRICS.space / 2}}>
@@ -275,6 +413,7 @@ class Tldr extends React.Component {
 
 											<Chunk style={listItemStyle}>
 												<Flex>
+													
 													<FlexItem>
 														<Text weight="strong">Improvements (48)</Text>
 														<Text type="small" color="secondary">Help improve this card</Text>
@@ -338,6 +477,7 @@ class Tldr extends React.Component {
 								</FlexItem>
 							</Flex>
 
+					</Sections>
 					</Bounds>
 				</Stripe>
 				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
@@ -401,6 +541,19 @@ class Tldr extends React.Component {
 	}
 }
 
+const  markdownContent = `
+* **Excepteur sint occaecat cupidatat**
+Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+* **Lorem ipsum dolor sit amet, consectetur adipiscing elit**
+sed do eiusmod tempor incididunt ut labore Okay lets go
+
+* **Excepteur sint occaecat cupidatat**
+Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+* **Lorem ipsum dolor sit amet, consectetur adipiscing elit**
+sed do eiusmod tempor incididunt ut labore Okay lets go
+		`;
 
 const tldr = {
 	title: "Buster Bluth",
@@ -433,6 +586,7 @@ const tldr = {
 const mapStateToProps = (state, ownProps) => {	
 	return ({
 		user: state.user,
+		markdownContent,
 		tldr
 	});
 }
