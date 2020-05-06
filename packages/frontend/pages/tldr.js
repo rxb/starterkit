@@ -243,7 +243,7 @@ const Card2 = WithMatchMedia((props) => {
 										background: swatches.shade,
 										borderRadius: METRICS.borderRadius
 									}}>
-										<Text type="small" color="secondary">Notes notes notes</Text>
+										<Text type="small" color="secondary">{step.note}</Text>
 								</View>
 							}
 						</View>
@@ -254,27 +254,30 @@ const Card2 = WithMatchMedia((props) => {
 					<Chunk>
 						<Touch onPress={()=>{
 							setReferences(!showReferences)
-							/*
-							if(!showReferences){
-								setTimeout( () => {
-									window.scrollTo({
-										top: 0,
-										left: 0,
-										behavior: 'smooth'
-									});
-								}, 300);
-							}
-							*/
 						}}>
-					
-							<Text color="hint">
-								<Icon 
-									shape="ChevronDown"
-									color={swatches.hint}
-									style={{marginBottom: -6, marginRight: 4}}
-									/>
-								References & rationale
-							</Text>
+
+							
+							{ !showReferences &&
+								<Text color="hint">
+									<Icon 
+										shape="ChevronDown"
+										color={swatches.hint}
+										style={{marginBottom: -6, marginRight: 4}}
+										/>
+									Show references & rationale
+								</Text>
+							}	
+
+							{ showReferences &&
+								<Text color="hint">
+									<Icon 
+										shape="ChevronUp"
+										color={swatches.hint}
+										style={{marginBottom: -6, marginRight: 4}}
+										/>
+									Hide references & rationale
+								</Text>
+							}							
 						</Touch>
 					</Chunk>
 				</Sectionless>
@@ -543,23 +546,28 @@ const tldr = {
 	steps: [
 		{ 
 			head: "Excepteur sint occaecat cupidatat",
-			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+			note: "Well here we are with a note"
 		},
 		{ 
 			head: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-			body: "sed do eiusmod tempor incididunt ut labore Okay lets go"
+			body: "sed do eiusmod tempor incididunt ut labore Okay lets go",
+			note: "Well here we are with a note"
 		},
 		{ 
 			head: "Excepteur sint occaecat cupidatat",
-			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed do eiusmod tempor incididunt ut labore Okay lets go"
+			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed do eiusmod tempor incididunt ut labore Okay lets go",
+			note: "Well here we are with a note"
 		},
 		{ 
 			head: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-			body: "sed do eiusmod tempor incididunt ut labore Okay lets go"
+			body: "sed do eiusmod tempor incididunt ut labore Okay lets go",
+			note: "Well here we are with a note"
 		},		
 		{ 
 			head: "Excepteur sint occaecat cupidatat",
-			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+			note: "Well here we are with a note"
 		},
 	]
 }
