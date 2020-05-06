@@ -71,12 +71,12 @@ const ConnectedHeader = WithMatchMedia((props) => {
 
 const Card1 = (props) => {
 	return (
-		<Card style={{
-				borderWidth: 0,
-				shadowRadius: 16,
-				shadowColor: 'rgba(0,0,0,.15)',
+		<Card style={[{
+	
 				borderRadius: 12
-			}}>
+			},
+			thisCardStyle
+			]}>
 			<Stripe style={{backgroundColor: swatches.tint}}>
 				<Section>
 					<Chunk>
@@ -136,12 +136,12 @@ const Card2 = WithMatchMedia((props) => {
 	} = props;
 
 	return (
-		<Card style={{
-				borderWidth: 0,
-				shadowRadius: 16,
-				shadowColor: 'rgba(0,0,0,.15)',
+		<Card style={[
+			thisCardStyle,
+			{
 				borderRadius: 12
-			}}>
+			}
+			]}>
 			<Sectionless style={[
 					{backgroundColor: swatches.tint},
 					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {}
@@ -223,7 +223,7 @@ class Tldr extends React.Component {
 			<View style={{minHeight: '100vh'}}>
 				<ConnectedHeader />
 
-				<Stripe style={{paddingTop: 0}}>
+				<Stripe style={{paddingTop: 0, backgroundColor: swatches.notwhite}}>
 
 					<Bounds>
 						<Sections>
@@ -482,7 +482,6 @@ class Tldr extends React.Component {
 				</Stripe>
 				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 					<Bounds>
-						<Sections>
 
 							<Section>
 								<Chunk>
@@ -491,7 +490,7 @@ class Tldr extends React.Component {
 								<List
 									variant={{
 										small: 'scroll',
-										large: 'grid'
+										medium: 'grid'
 									}}
 									itemsInRow={{
 										small: 1,
@@ -508,13 +507,23 @@ class Tldr extends React.Component {
 									renderItem={(item, i)=>{
 										return(
 											<Chunk key={i}>
-												<Card>
-													<Section>
+												<Card style={[
+													thisCardStyle,
+													{minHeight: 150} 
+													]}>
+													<Sectionless
+														style={{
+															borderTopWidth: 5,
+															borderTopColor: swatches.tint,
+															paddingTop: METRICS.space
+														}}
+														>
 														<Chunk>
+															<Text type="small" color="hint">rxb/buster-bluth</Text>
 															<Text type="big">{item.title}</Text>
-															<Text>{item.blurb}</Text>
+															<Text type="" color="secondary">{item.blurb}</Text>
 														</Chunk>
-													</Section>
+													</Sectionless>
 												</Card>
 											</Chunk>
 										);
@@ -523,7 +532,6 @@ class Tldr extends React.Component {
 
 							</Section>
 
-						</Sections>
 					</Bounds>
 				</Stripe>
 			</View>
@@ -594,4 +602,10 @@ const listItemStyle = {
 	borderTopColor: swatches.border,
 	borderTopWidth: 1,
 	paddingTop: METRICS.space
+}
+
+const thisCardStyle = {
+	borderWidth: 0,
+	shadowRadius: 16,
+	shadowColor: 'rgba(0,0,0,.15)',
 }
