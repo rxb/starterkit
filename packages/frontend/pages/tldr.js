@@ -356,7 +356,7 @@ class Tldr extends React.Component {
 												</FlexItem>
 												
 											</Flex>
-										</Chunk>
+										
 
 										{/* split scores without labels */}
 										{/*
@@ -388,36 +388,41 @@ class Tldr extends React.Component {
 											</Chunk>
 										*/}
 										
-										{/*
-										<Chunk>
-											<Flex>
+										
+										
+											<Flex style={{marginTop: METRICS.space / 2}}>
 												<FlexItem>
-														<Button shape="Edit3" color="secondary" label="Edit" />
+														<Button 
+															shape="Share2" 
+															color="secondary" 
+															label="Share" 
+															width="full"
+															/>
 												</FlexItem>
 												<FlexItem>
-														<Button shape="GitPullRequest" color="secondary" label="Fork" />
-												</FlexItem>
-												<FlexItem>
-														<Button shape="Bookmark" color="secondary" label="Save" />
+														<Button 
+															shape="Bookmark" 
+															color="secondary" 
+															label="Save" 
+															width="full"
+															/>
 												</FlexItem>
 											</Flex>
 										</Chunk>
-										*/}
+										
 
 											<Chunk style={listItemStyle}>
 												<Flex>
-													<FlexItem >
-														<Text weight="strong">Issues (48)</Text>
-														<Text type="small" color="secondary">Improve this or whatever</Text>
+													
+													<FlexItem>
+														<Text weight="strong">Improvements (48)</Text>
+														<Text type="small" color="secondary">Help improve this card</Text>
 													</FlexItem>
-													<FlexItem shrink>
-														<Button
-															size="small"
-															color="secondary"
-															shape="MessageCircle"
-															iconOnly
+													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
+														<Icon
+															color={swatches.textSecondary}
+															shape="Gift"
 															/>
-														<Text type="micro" color="tint">improve</Text>
 													</FlexItem>
 												</Flex>
 											</Chunk>
@@ -428,14 +433,11 @@ class Tldr extends React.Component {
 														<Text weight="strong">Forks (3)</Text>
 														<Text type="small" color="secondary">Use this as a starting point</Text>
 													</FlexItem>
-													<FlexItem shrink>
-														<Button
-															size="small"
-															color="secondary"
+													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
+														<Icon
+															color={swatches.textSecondary}
 															shape="GitPullRequest"
-															iconOnly
 															/>
-														<Text type="micro" color="tint">fork</Text>
 													</FlexItem>
 												</Flex>
 											</Chunk>
@@ -446,24 +448,21 @@ class Tldr extends React.Component {
 														<Text weight="strong">Versions (2)</Text>
 														<Text type="small" color="secondary">This card is v1.2</Text>
 													</FlexItem>
-													<FlexItem shrink>
-														<Button
-															size="small"
-															color="secondary"
-															shape="GitPullRequest"
-															iconOnly
+													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
+														<Icon
+															color={swatches.textSecondary}
+															shape="List"
 															/>
-														<Text type="micro" color="tint">fork</Text>
 													</FlexItem>
 												</Flex>
 											</Chunk>
 
 											<Chunk style={listItemStyle}>
 												<Flex>
-													<FlexItem shrink>
+													<FlexItem shrink justify="center">
 														<Avatar
 															size="medium"
-															source={{uri: 'https://randomuser.me/api/portraits/women/69.jpg'}}
+															source={{uri: 'https://randomuser.me/api/portraits/women/24.jpg'}}
 															/>
 													</FlexItem>
 													<FlexItem>

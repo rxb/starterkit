@@ -23,6 +23,7 @@ const Button = (props) => {
 			media,
 			isLoading = false,
 			width,
+			size,
 			textType = "",
 			style,
 			...other
@@ -45,6 +46,10 @@ const Button = (props) => {
 
 		// TODO: this is a janky way to set color?
 		const inkColor = `button${color.charAt(0).toUpperCase() + color.slice(1)}Ink`;
+
+		// TODO: support more sizes
+		const textKind = (size == 'small') ? "small" : "";
+		const iconSize = (size == 'small') ? "small" : "medium";
 
 		// render appropriate touchable component and semantics
 		let ActionComponent, actionComponentProps;
@@ -77,10 +82,18 @@ const Button = (props) => {
 				<View style={{visibility: (isLoading) ? 'hidden' : 'visible'}}>
 					<View style={{flexDirection: 'row', justifyContent: 'center'}}>
 						{ shape &&
-							<Icon shape={shape} color={swatches[inkColor]} style={{marginLeft: 3, marginRight: 3}} />
+							<Icon 
+								shape={shape} 
+								color={swatches[inkColor]} 
+								style={{marginLeft: 3, marginRight: 3}} 
+								size={iconSize}
+								/>
 						}
 						{ label && currentVariant != 'iconOnly' &&
-							<Text style={[styles.text, styles[`text${VALID_TEXT_TYPES[textType]}`], styles.buttonText, styles[`buttonText--${color}`]]}>{label}</Text>
+							<Text 
+								kind={textKind}
+								style={[styles.text, styles[`text${VALID_TEXT_TYPES[textType]}`], styles.buttonText, styles[`buttonText--${color}`]]}
+								>{label}</Text>
 						}
 					</View>
 					{children}
