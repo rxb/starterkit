@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -71,7 +71,9 @@ const ConnectedHeader = WithMatchMedia((props) => {
 
 
 
-const Card2 = WithMatchMedia((props) => {
+const Card1 = WithMatchMedia((props) => {
+
+	const [showReferences, setReferences] = useState(false);
 
 	const {
 		media,
@@ -116,30 +118,164 @@ const Card2 = WithMatchMedia((props) => {
 				]}>
 					<View>
 					{tldr.steps.map((step, i)=>(
-						<Chunk style={{
+						<View style={{
 							borderLeftWidth: 3,
 							borderLeftColor: `${swatches.tint}44`,
-							paddingBottom: 0,
 							marginBottom: METRICS.space,
 							paddingLeft: METRICS.space * .66
 							}}>
-							<Text weight="strong"><Markdown>{step.head}</Markdown></Text>
-							<Text>{step.body}</Text>
-						</Chunk>
+							<View>
+								<Text weight="strong"><Markdown>{step.head}</Markdown></Text>
+								<Text>{step.body}</Text>
+							</View>
+							{ showReferences &&
+								<View 
+									style={{
+										marginTop: METRICS.space /2,
+										padding: METRICS.space / 2,
+										background: swatches.shade,
+										borderRadius: METRICS.borderRadius
+									}}>
+										<Text type="small">Notes notes notes</Text>
+								</View>
+							}
+						</View>
 					))}
 					</View>
 					
 				
 					<Chunk>
-						<Text type="small" color="hint">
-							<Icon 
-								shape="ChevronDown"
-								size="small"
-								color={swatches.hint}
-								style={{marginBottom: -2, marginRight: 4}}
-								/>
-							References & rationale
-						</Text>
+						<Touch onPress={()=>{
+							setReferences(!showReferences)
+							/*
+							if(!showReferences){
+								setTimeout( () => {
+									window.scrollTo({
+										top: 0,
+										left: 0,
+										behavior: 'smooth'
+									});
+								}, 300);
+							}
+							*/
+						}}>
+					
+							<Text color="hint">
+								<Icon 
+									shape="ChevronDown"
+									color={swatches.hint}
+									style={{marginBottom: -6, marginRight: 4}}
+									/>
+								References & rationale
+							</Text>
+						</Touch>
+					</Chunk>
+				</Sectionless>
+					
+			</Card>
+	);
+});
+
+const Card2 = WithMatchMedia((props) => {
+
+	const [showReferences, setReferences] = useState(false);
+
+	const {
+		media,
+		tldr,
+		style
+	} = props;
+
+	return (
+		<Card style={[
+			thisCardStyle,
+			{
+				borderRadius: 12
+			},
+			style
+			]}>
+			<Sectionless style={[
+					{backgroundColor: swatches.tint},
+					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {}
+				]}>
+					<Chunk style={{paddingBottom: 4}}>
+						<Flex>
+							<FlexItem>
+								<Inline>
+									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
+									<Text type="small" inverted color="secondary">
+										rxb/buster-bluth
+									</Text>
+								</Inline>
+							</FlexItem>
+							<FlexItem style={{alignItems: 'flex-end'}}>
+								<Text type="small" inverted color="secondary">
+									v1.2
+								</Text>
+							</FlexItem>
+						</Flex>
+					</Chunk>
+					<Chunk>
+						<Text type="pageHead" inverted>{tldr.title}</Text>
+						<Text inverted style={{fontStyle: 'italic'}}>{tldr.blurb}</Text>
+					</Chunk>
+			</Sectionless>
+			<Sectionless style={[
+					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {}
+				]}>
+					<View>
+					{tldr.steps.map((step, i)=>(
+						<View style={{
+							borderLeftWidth: 2,
+							borderLeftColor: swatches.border,
+							marginBottom: METRICS.space,
+							paddingLeft: METRICS.space * .66
+							}}>
+							<View>
+								<Text weight="strong"><Markdown>{step.head}</Markdown></Text>
+								<Text color="secondary">{step.body}</Text>
+							</View>
+							{ showReferences &&
+								<View 
+									style={{
+										marginTop: METRICS.space /2,
+										padding: METRICS.space / 2,
+										background: swatches.shade,
+										borderRadius: METRICS.borderRadius
+									}}>
+										<Text type="small" color="secondary">Notes notes notes</Text>
+								</View>
+							}
+						</View>
+					))}
+					</View>
+					
+				
+					<Chunk>
+						<Touch onPress={()=>{
+							setReferences(!showReferences)
+							/*
+							if(!showReferences){
+								setTimeout( () => {
+									window.scrollTo({
+										top: 0,
+										left: 0,
+										behavior: 'smooth'
+									});
+								}, 300);
+							}
+							*/
+						}}>
+					
+							<Text color="hint">
+								<Icon 
+									shape="ChevronDown"
+									color={swatches.hint}
+									style={{marginBottom: -6, marginRight: 4}}
+									/>
+								References & rationale
+							</Text>
+						</Touch>
 					</Chunk>
 				</Sectionless>
 					
@@ -155,7 +291,6 @@ class Tldr extends React.Component {
 	render() {
 
 		const {
-			markdownContent,
 			user
 		} = this.props;
 
@@ -165,21 +300,21 @@ class Tldr extends React.Component {
 			<View style={{minHeight: '100vh'}}>
 				<ConnectedHeader />
 
-				<Stripe style={{paddingTop: 0, backgroundColor: swatches.notwhite}}>
+				<Stripe style={{/*paddingTop: 0,*/ backgroundColor: swatches.notwhite}}>
 
 					<Bounds>
 
 							<Flex direction="column" switchDirection="large">
 
 								<FlexItem growFactor={1}>
-									<Section>
+									<Section style={{paddingTop: 0, paddingBottom: 0}}>
 										<Chunk>
-											<Card2 markdownContent={markdownContent} {...this.props} />
+											<Card2 {...this.props} />
 										</Chunk>
 									</Section>
 								</FlexItem>
 
-								<FlexItem growFactor={0} style={{flexBasis: 340, flex: 0}}>
+								<FlexItem growFactor={0} style={{flexBasis: 350, flex: 0}}>
 									<Section>
 
 									
@@ -276,8 +411,8 @@ class Tldr extends React.Component {
 											<Chunk style={listItemStyle}>
 												<Flex>
 													<FlexItem>
-														<Text weight="strong">Improvements (48)</Text>
-														<Text type="small" color="secondary">Help improve this card</Text>
+														<Text weight="strong">Issues (48)</Text>
+														<Text type="small" color="secondary">Report problems and suggest improvements</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon
@@ -292,7 +427,7 @@ class Tldr extends React.Component {
 												<Flex>
 													<FlexItem >
 														<Text weight="strong">Forks (3)</Text>
-														<Text type="small" color="secondary">Use this as a starting point</Text>
+														<Text type="small" color="secondary">Use this card as a starting point for a new one</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon

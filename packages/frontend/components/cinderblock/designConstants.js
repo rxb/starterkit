@@ -28,13 +28,13 @@ export const METRICS = {
 		return this.base
 	},
 	get bodyLineHeight() {
-		return this.base * 1.5
+		return this.base * 1.55
 	},
 	get smallSize() {
 		return this.base * 0.875
 	},
 	get smallLineHeight() {
-		return this.smallSize * 1.65
+		return this.smallSize * 1.55
 	},
 	get microSize() {
 		return this.base * 0.6
@@ -46,7 +46,7 @@ export const METRICS = {
 		return this.base * 1.2
 	},
 	get bigLineHeight() {
-		return this.bigSize * 1.5
+		return this.bigSize * 1.55
 	},
 	get sectionHeadSize() {
 		return this.base * 1.5
@@ -70,7 +70,7 @@ export const METRICS = {
 		return this.base * 3 
 	},
 	get pageHeadAtLargeLineHeight() {
-		return this.pageHeadAtLargeSize * 1.15
+		return this.pageHeadAtLargeSize * 1.2
 	},
 	get heroAtLargeSize() {
 		return this.base * 3.85

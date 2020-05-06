@@ -75,7 +75,7 @@ const outposts = {
 		},
 		{
 			name: '/r/sahm',
-			title: 'Stay at Home Parentss'
+			title: 'Stay at Home Parents'
 		},
 				
 	],
