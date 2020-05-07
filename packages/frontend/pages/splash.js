@@ -189,6 +189,7 @@ const HeaderContent = WithMatchMedia((props) => {
 
 const SearchForm = (props) => {
 	return (
+		<Bounds style={{maxWidth: 800}}>
 		<View style={{position: 'relative'}}>
 			<TextInput
 				id="searchString"
@@ -207,6 +208,7 @@ const SearchForm = (props) => {
 				</View> 
 
 		</View>
+		</Bounds>
 	)
 }
 

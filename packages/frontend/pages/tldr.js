@@ -39,7 +39,7 @@ import Page from '../components/Page';
 
 
 
-
+import TLDRS from './tldrs.js';
 import Markdown from 'markdown-to-jsx';
 
 
@@ -71,111 +71,6 @@ const ConnectedHeader = WithMatchMedia((props) => {
 
 
 
-const Card1 = WithMatchMedia((props) => {
-
-	const [showReferences, setReferences] = useState(false);
-
-	const {
-		media,
-		tldr
-	} = props;
-
-	return (
-		<Card style={[
-			thisCardStyle,
-			{
-				borderRadius: 12
-			}
-			]}>
-			<Sectionless style={[
-					{backgroundColor: swatches.tint},
-					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {}
-				]}>
-					<Chunk style={{paddingBottom: 4}}>
-						<Flex>
-							<FlexItem>
-								<Inline>
-									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
-									<Text type="small" inverted color="secondary">
-										rxb/buster-bluth
-									</Text>
-								</Inline>
-							</FlexItem>
-							<FlexItem style={{alignItems: 'flex-end'}}>
-								<Text type="small" inverted color="secondary">
-									v1.2
-								</Text>
-							</FlexItem>
-						</Flex>
-					</Chunk>
-					<Chunk>
-						<Text type="pageHead" inverted>{tldr.title}</Text>
-						<Text inverted style={{fontStyle: 'italic'}}>{tldr.blurb}</Text>
-					</Chunk>
-			</Sectionless>
-			<Sectionless style={[
-					(media.medium) ? {paddingHorizontal: 30, paddingTop: 20, paddingBottom: 5} : {}
-				]}>
-					<View>
-					{tldr.steps.map((step, i)=>(
-						<View style={{
-							borderLeftWidth: 3,
-							borderLeftColor: `${swatches.tint}44`,
-							marginBottom: METRICS.space,
-							paddingLeft: METRICS.space * .66
-							}}>
-							<View>
-								<Text weight="strong"><Markdown>{step.head}</Markdown></Text>
-								<Text>{step.body}</Text>
-							</View>
-							{ showReferences &&
-								<View 
-									style={{
-										marginTop: METRICS.space /2,
-										padding: METRICS.space / 2,
-										background: swatches.shade,
-										borderRadius: METRICS.borderRadius
-									}}>
-										<Text type="small">Notes notes notes</Text>
-								</View>
-							}
-						</View>
-					))}
-					</View>
-					
-				
-					<Chunk>
-						<Touch onPress={()=>{
-							setReferences(!showReferences)
-							/*
-							if(!showReferences){
-								setTimeout( () => {
-									window.scrollTo({
-										top: 0,
-										left: 0,
-										behavior: 'smooth'
-									});
-								}, 300);
-							}
-							*/
-						}}>
-					
-							<Text color="hint">
-								<Icon 
-									shape="ChevronDown"
-									color={swatches.hint}
-									style={{marginBottom: -6, marginRight: 4}}
-									/>
-								References & rationale
-							</Text>
-						</Touch>
-					</Chunk>
-				</Sectionless>
-					
-			</Card>
-	);
-});
-
 const Card2 = WithMatchMedia((props) => {
 
 	const [showReferences, setReferences] = useState(false);
@@ -204,7 +99,7 @@ const Card2 = WithMatchMedia((props) => {
 								<Inline>
 									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
 									<Text type="small" inverted color="secondary">
-										rxb/buster-bluth
+										{tldr.userid}/{tldr.id}
 									</Text>
 								</Inline>
 							</FlexItem>
@@ -294,7 +189,8 @@ class Tldr extends React.Component {
 	render() {
 
 		const {
-			user
+			user,
+			tldr
 		} = this.props;
 
 
@@ -312,7 +208,7 @@ class Tldr extends React.Component {
 								<FlexItem growFactor={1}>
 									<Section style={{paddingTop: 0, paddingBottom: 0}}>
 										<Chunk>
-											<Card2 {...this.props} />
+											<Card2 tldr={tldr} {...this.props} />
 										</Chunk>
 									</Section>
 								</FlexItem>
@@ -320,7 +216,6 @@ class Tldr extends React.Component {
 								<FlexItem growFactor={0} style={{flexBasis: 350, flex: 0}}>
 									<Section>
 
-									
 										{/* split scores with labels */}
 										<Chunk>
 											<Flex noGutters>
@@ -497,17 +392,17 @@ class Tldr extends React.Component {
 									}}
 									scrollItemWidth={300}
 									items={[
-										{title: 'Something is cool', blurb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'},
-										{title: 'Something is cool', blurb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'},
-										{title: 'Something is cool', blurb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'},
-										{title: 'Something is cool', blurb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'},
+										tldr,
+										tldr,
+										tldr,
+										tldr
 									]}
 									renderItem={(item, i)=>{
 										return(
 											<Chunk key={i}>
 												<Card style={[
 													thisCardStyle,
-													{minHeight: 150} 
+													{minHeight: 180} 
 													]}>
 													<Sectionless
 														style={{
@@ -517,9 +412,9 @@ class Tldr extends React.Component {
 														}}
 														>
 														<Chunk>
-															<Text type="small" color="hint">rxb/buster-bluth</Text>
+															<Text type="small" color="hint">{item.userid}/{item.id}</Text>
 															<Text type="big">{item.title}</Text>
-															<Text type="" color="secondary">{item.blurb}</Text>
+															<Text color="secondary">{item.blurb}</Text>
 														</Chunk>
 													</Sectionless>
 												</Card>
@@ -540,43 +435,13 @@ class Tldr extends React.Component {
 }
 
 
-const tldr = {
-	title: "Buster Bluth",
-	blurb: "Free juice? This Party Is Going To Be Off The Hook!",
-	steps: [
-		{ 
-			head: "Excepteur sint occaecat cupidatat",
-			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-			note: "Well here we are with a note"
-		},
-		{ 
-			head: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-			body: "sed do eiusmod tempor incididunt ut labore Okay lets go",
-			note: "Well here we are with a note"
-		},
-		{ 
-			head: "Excepteur sint occaecat cupidatat",
-			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed do eiusmod tempor incididunt ut labore Okay lets go",
-			note: "Well here we are with a note"
-		},
-		{ 
-			head: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-			body: "sed do eiusmod tempor incididunt ut labore Okay lets go",
-			note: "Well here we are with a note"
-		},		
-		{ 
-			head: "Excepteur sint occaecat cupidatat",
-			body: "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-			note: "Well here we are with a note"
-		},
-	]
-}
+
 
 
 const mapStateToProps = (state, ownProps) => {	
 	return ({
 		user: state.user,
-		tldr
+		tldr: TLDRS[0]
 	});
 }
 
