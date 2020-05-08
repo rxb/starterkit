@@ -34,7 +34,7 @@ export const METRICS = {
 		return this.base * 0.875
 	},
 	get smallLineHeight() {
-		return this.smallSize * 1.55
+		return this.smallSize * 1.6
 	},
 	get microSize() {
 		return this.base * 0.6
@@ -43,10 +43,10 @@ export const METRICS = {
 		return this.microSize * 2
 	},
 	get bigSize() {
-		return this.base * 1.2
+		return this.base * 1.25
 	},
 	get bigLineHeight() {
-		return this.bigSize * 1.55
+		return this.bigSize * 1.4
 	},
 	get sectionHeadSize() {
 		return this.base * 1.5

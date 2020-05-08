@@ -112,7 +112,7 @@ const Card2 = WithMatchMedia((props) => {
 					</Chunk>
 					<Chunk>
 						<Text type="pageHead" inverted>{tldr.title}</Text>
-						<Text inverted style={{fontStyle: 'italic'}}>{tldr.blurb}</Text>
+						<Text inverted style={{fontStyle: 'italic', marginTop: 8}}>{tldr.blurb}</Text>
 					</Chunk>
 			</Sectionless>
 			<Sectionless style={[
@@ -121,13 +121,22 @@ const Card2 = WithMatchMedia((props) => {
 					<View>
 					{tldr.steps.map((step, i)=>(
 						<View style={{
-							borderLeftWidth: 2,
-							borderLeftColor: swatches.border,
-							marginBottom: METRICS.space,
-							paddingLeft: METRICS.space * .66
+							marginTop: 0,
+							marginBottom: METRICS.space + 5,
+							paddingLeft: 16,
 							}}>
+							<View 
+								style={{
+									position: 'absolute',
+									top: 3,
+									bottom: 3,
+									left: 0,
+									width: 4,
+									backgroundColor: swatches.border,
+								}}
+								/>
 							<View>
-								<Text weight="strong"><Markdown>{step.head}</Markdown></Text>
+								<Text weight="strong" type="big"><Markdown>{step.head}</Markdown></Text>
 								<Text color="secondary">{step.body}</Text>
 							</View>
 							{ showReferences &&
@@ -157,7 +166,7 @@ const Card2 = WithMatchMedia((props) => {
 									<Icon 
 										shape="ChevronDown"
 										color={swatches.hint}
-										style={{marginBottom: -6, marginRight: 4}}
+										style={{marginBottom: -6, marginLeft: 0, paddingLeft: 0, marginRight: 4}}
 										/>
 									Show references & rationale
 								</Text>
