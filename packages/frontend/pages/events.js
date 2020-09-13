@@ -206,12 +206,12 @@ class Events extends React.Component {
 
 						<Section>
 							<Chunk>
-									<Text color="secondary" style={{marginBottom: 8, marginTop: -3}}>
+									<Text type="small" color="secondary" style={{marginBottom: 5, marginTop: -3}}>
 										<Image 
 											source="https://api.faviconkit.com/reddit.com/32"
 											style={{
-												width: 18,
-												height: 18,
+												width: 16,
+												height: 16,
 												resizeMode: 'contain',
 												flex: 1,
 												marginRight: 6,
