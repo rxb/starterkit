@@ -26,7 +26,6 @@ const FlexItem = (props) => {
 		} = props;
 
 		const styleKeys = [
-			FLEX_ITEM_CLASS,
 			shrink ? FLEX_ITEM_SHRINK_CLASS : undefined,
 			growFactor ? `${FLEX_ITEM_GROW_CLASS}${growFactor}` : undefined,
 			isFirstChild ? `${FLEX_ITEM_CLASS}--firstChild` : undefined,
@@ -34,7 +33,7 @@ const FlexItem = (props) => {
 			...[align ? `${FLEX_ALIGN_CLASS}${align}` : undefined],
 		];
 
-		const combinedStyles = [...descendantStyles, ...styleKeys.map((key, i)=>{
+		const combinedStyles = [styles[FLEX_ITEM_CLASS], ...descendantStyles, ...styleKeys.map((key, i)=>{
 			return styles[key];
 		})];
 

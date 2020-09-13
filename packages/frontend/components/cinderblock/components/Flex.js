@@ -50,6 +50,8 @@ const Flex = (props) => {
 			...[isColumn ? FLEX_COLUMN_CLASS : undefined],
 			...[isColumn && switchDirection && media[switchDirection] ? FLEX_ROW_CLASS : undefined],
 
+			// TODO: this concept doesn't really work with switchDirection, which assumes there are only two flex-directions, but there are actually 4
+			
 			// reverse breakpoint modifiers
 			...[rowReverse && media[rowReverse] ? 'flex--rowReverse' : undefined],
 			...[columnReverse && media[columnReverse] ? 'flex--columnReverse' : undefined],

@@ -224,17 +224,10 @@ class Events extends React.Component {
 						</Section>
 
 						<Flex direction="column" switchDirection="large" rowReverse="large">
-
-
-
 			
 							<FlexItem growFactor={1}>
 								<Section>
-									
-						
-
 									<Chunk>
-										
 										<Button 
 											shape="Plus"
 											label="Add event"

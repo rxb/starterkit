@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 	width: 'auto',
 	flex: 1,
 	flexBasis: 0,
-	minWidth: 0
+	minWidth: 0,
 },
 
 'flex-item--firstChild': {
