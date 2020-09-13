@@ -123,9 +123,14 @@ class ThisApp extends App {
               All the weird stuff that React Native will never care about
               */
 
+             html{
+               height: 100%; 
+               width: 100%;
+              }
+
               html, body, #__next{
                 width: 100%;
-                height: 'auto',
+                height: 'auto';
                 min-height: 100%;
                 padding: 0;
                 margin: 0;

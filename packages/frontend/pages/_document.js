@@ -7,7 +7,7 @@ export default class MyDocument extends Document {
 
   render () {
     return (
-      <Html style={{ height: '100%', width: '100%' }}>
+      <Html>
         <Head />
         <body>
 
