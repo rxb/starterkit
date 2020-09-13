@@ -1,6 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
 import querystring from 'querystring';
-import uuid from 'uuid/v1';
+import {v4 as uuid} from 'uuid';
 
 const apiHost = 'http://localhost:3030/';
 

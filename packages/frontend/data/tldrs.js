@@ -1,3 +1,12 @@
+/*
+
+seems like there is a 
+title: purpose
+subtitle: this technique/strategy name
+blurb: summary or other contextualization
+
+*/
+
 export default [
   {
     id: "make-tldr-card",

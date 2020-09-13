@@ -55,7 +55,7 @@ import Page from '../components/Page';
 
 import OutpostHeader from '../components/OutpostHeader';
 
-import AREAS from './areas';
+import AREAS from '../data/areas';
 import swatches from '../components/cinderblock/styles/swatches';
 import { METRICS } from '../components/cinderblock/designConstants';
 

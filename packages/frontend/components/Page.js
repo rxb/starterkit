@@ -199,8 +199,9 @@ class Page extends React.Component {
 				<View style={{flex: 1}}>
 					{children}
 				</View>
+
+				{/*
 				<Stripe style={{
-					//backgroundColor: swatches.backgroundDark,
 					flex: 0,
 					minHeight: 0,
 					flexBasis: 'auto',
@@ -218,6 +219,7 @@ class Page extends React.Component {
 						</Sections>
 					</Bounds>
 				</Stripe>
+				*/}
 
 				<Modal
 					visible={this.state.modalVisible}

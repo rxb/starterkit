@@ -57,7 +57,7 @@ import Page from '../components/Page';
 
 import OutpostHeader from '../components/OutpostHeader';
 
-import AREAS from './areas';
+import AREAS from '../data/areas';
 import swatches from '../components/cinderblock/styles/swatches';
 import { METRICS } from '../components/cinderblock/designConstants';
 import { Check } from 'react-feather';
@@ -204,35 +204,40 @@ class Events extends React.Component {
 					
 					<Bounds>
 
-						<Flex direction="column" switchDirection="large">
+						<Section>
+							<Chunk>
+									<Text color="secondary" style={{marginBottom: 8, marginTop: -3}}>
+										<Image 
+											source="https://api.faviconkit.com/reddit.com/32"
+											style={{
+												width: 18,
+												height: 18,
+												resizeMode: 'contain',
+												flex: 1,
+												marginRight: 6,
+												marginBottom: -3
+											}}
+											/>
+										/r/financialindependence</Text>
+									<Text type="pageHead" >Financial independence</Text>
+								</Chunk>
+						</Section>
 
-							<FlexItem growFactor={2}>
+						<Flex direction="column" switchDirection="large" rowReverse="large">
+
+
+
+			
+							<FlexItem growFactor={1}>
 								<Section>
-									<Chunk>
-										<Text type="big" color="secondary" style={{marginBottom: 8, marginTop: -3}}>
-											<Image 
-												source="https://api.faviconkit.com/reddit.com/32"
-												style={{
-													width: 20,
-													height: 20,
-													resizeMode: 'contain',
-													flex: 1,
-													marginRight: 6,
-													marginBottom: -3
-												}}
-												/>
-											/r/financialindependence</Text>
-										<Text type="pageHead" >Financial independence</Text>
-									</Chunk>
-								
-									<Chunk>
-										<Text color="secondary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
-									</Chunk>
-							
+									
+						
+
 									<Chunk>
 										
 										<Button 
-											label="Suggest a get-together"
+											shape="Plus"
+											label="Add event"
 											onPress={this.toggleModal}
 											width="full"
 											/>	
@@ -246,21 +251,26 @@ class Events extends React.Component {
 										*/}										
 										<Button 
 											color="secondary"
-											label="Get notified about events"
+											label="Follow"
 											onPress={()=>{ alert('get notified'); }}
 											shape="Bell"
 											width="full"
 											/>
 									</Chunk>
+								
+									<Chunk>
+										<Text color="primary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
+									</Chunk>
 								</Section>
 							</FlexItem>
 
-							<FlexItem growFactor={3}>
+							<FlexItem growFactor={2}>
+								
 								<Section>
 									<Chunk>
 										{/* all events near you + a planning thread */}
 										
-										<Text type="sectionHead">Happening in New York</Text>
+										<Text type="sectionHead">Events in New York</Text>
 									</Chunk>
 									<List
 										items={localEvents.items}
@@ -389,6 +399,7 @@ class Events extends React.Component {
 											
 
 								</Section>
+							
 								<Section>
 									<Chunk>
 										<Text type="sectionHead">Happening other places</Text>
@@ -427,7 +438,8 @@ class Events extends React.Component {
 										/>
 								</Section>
 							</FlexItem>
-							
+				
+
 						</Flex>
 
 					</Bounds>

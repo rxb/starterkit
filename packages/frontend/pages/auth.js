@@ -3,7 +3,7 @@ import 'isomorphic-unfetch';
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head'
-import uuid from 'uuid/v1';
+import {v4 as uuid} from 'uuid';
 
 import {
 	//logInAndFetchUser,

@@ -39,7 +39,7 @@ import Page from '../components/Page';
 
 
 
-import TLDRS from './tldrs.js';
+import TLDRS from '../data/tldrs.js';
 import Markdown from 'markdown-to-jsx';
 
 
@@ -349,7 +349,7 @@ class Tldr extends React.Component {
 												<Flex>
 													<FlexItem >
 														<Text weight="strong">Versions (2)</Text>
-														<Text type="small" color="secondary">This card is v1.2</Text>
+														<Text type="small" color="secondary">This card is v1.2, updated 26 days ago</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon

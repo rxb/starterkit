@@ -1,8 +1,8 @@
-// if node modules are written with advanced JS, you have to transpile (babelize) them
-// const withTM = require('next-transpile-modules');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+	enabled: process.env.ANALYZE === 'true',
+})
 
-//module.exports = withTM({
-module.exports = {
+module.exports = withBundleAnalyzer({
 	webpack: (config) => {
 
 		const webpack = require('webpack')
@@ -17,20 +17,6 @@ module.exports = {
 		config.plugins.push(new webpack.ProvidePlugin({'fetch': 'isomorphic-unfetch'})); // fetch for first SSR render
 		config.plugins.push(new webpack.IgnorePlugin(/\/iconv-loader$/)); // something about rn-markdown needs this
 
-		/*
-		// transpile needs this?
-		config.externals = {
-	        react: {
-	          root: 'React',
-	          commonjs2: 'react',
-	          commonjs: 'react',
-	          amd: 'react'
-	        }
-	    };
-	    */
-
 		return config
 	},
-
-	//transpileModules: ['rn-markdown']
-};
+});

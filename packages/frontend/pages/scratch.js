@@ -32,7 +32,7 @@ import {
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
-import AREAS from './areas';
+import AREAS from '../data/areas';
 
 
 

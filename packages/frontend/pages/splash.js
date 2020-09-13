@@ -336,7 +336,7 @@ class Splash extends React.Component {
 
 							<OutpostRow 
 								outposts={outposts.subreddit}
-								headline="Redditors are getting&nbsp;together"
+								headline="Subreddit members are getting&nbsp;together"
 								site="reddit.com"
 								toggleModal={this.toggleModal}
 								/>
