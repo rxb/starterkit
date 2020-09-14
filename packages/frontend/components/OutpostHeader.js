@@ -49,10 +49,10 @@ export default WithMatchMedia((props) => {
 				<FlexItem>
 						<Link href="/splash">
 							<Inline>
-							<View style={{marginTop: 4, transform: [{ rotateY: '180deg' }]}} >
+							<View style={{transform: [{ rotateY: '180deg' }]}} >
 								<Icon color={inverted ? "white" : swatches.tint} shape="Flag"/>
 							</View>
-							<Text type={ media.medium ? 'sectionHead' : 'big'} color={inverted ? 'primary' : 'tint'} inverted={inverted} style={{fontWeight: 700}}>outpost</Text>
+							<Text type="big" color={inverted ? 'primary' : 'tint'} inverted={inverted} style={{fontWeight: 600} }>Outpost</Text>
 							</Inline>
 						</Link>
 				</FlexItem>

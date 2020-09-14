@@ -204,9 +204,9 @@ class Events extends React.Component {
 					
 					<Bounds>
 
-						<Section>
+						<Section style={{borderBottomWidth: 1, borderBottomColor: swatches.border, marginBottom: 12, paddingBottom: 8 }}>
 							<Chunk>
-									<Text type="small" color="secondary" style={{marginBottom: 5, marginTop: -3}}>
+									<Text color="secondary" style={{marginTop: 3, marginBottom: 3}}>
 										<Image 
 											source="https://api.faviconkit.com/reddit.com/32"
 											style={{
@@ -254,18 +254,18 @@ class Events extends React.Component {
 									<Chunk>
 										<Text color="primary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
 									</Chunk>
+									<Chunk>
+										<Text type="sectionHead">Happening Nearby + Online</Text>
+									</Chunk>
 								</Section>
 							</FlexItem>
 
 							<FlexItem growFactor={2}>
 								
 								<Section>
-									<Chunk>
-										{/* all events near you + a planning thread */}
-										
-										<Text type="sectionHead">Events in New York</Text>
-									</Chunk>
+
 									<List
+										
 										items={localEvents.items}
 										variant="grid"
 										itemsInRow={{
@@ -393,20 +393,38 @@ class Events extends React.Component {
 
 								</Section>
 							
-								<Section>
+							</FlexItem>
+
+
+				
+
+						</Flex>
+
+					</Bounds>
+				</Stripe>
+				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
+					<Bounds>
+						<Flex direction="column" switchDirection="large" >
+							<FlexItem growFactor={2}>
+							<Section>
 									<Chunk>
-										<Text type="sectionHead">Happening other places</Text>
+										<Text type="sectionHead">Happening worldwide</Text>
 										{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
 									</Chunk>
 									
 									<List
 										items={areas}
-										variant={{
-											small: "linear",
+										variant="grid"
+										itemsInRow={{
+											small: 1,
+											medium: 2,
 										}}
 										renderItem={(area, i)=>{
 											return (
 												<Chunk>
+													<Card>
+													<Sectionless>
+														<Chunk>
 													<Flex>
 														<FlexItem shrink justify="center">
 															<View style={{width: 120}}>
@@ -425,16 +443,20 @@ class Events extends React.Component {
 																	<Text type="small"  >Let's hike to Mt Awesome</Text>
 														</FlexItem>
 													</Flex>
+													</Chunk>
+													</Sectionless>
+													</Card>
 												</Chunk>
 											);
 										}}
 										/>
 								</Section>
+							
 							</FlexItem>
-				
+							<FlexItem growFactor={1}>
 
+							</FlexItem>
 						</Flex>
-
 					</Bounds>
 				</Stripe>
 
@@ -447,7 +469,7 @@ class Events extends React.Component {
 					<Stripe>
 						<Section>
 							<Chunk>
-								<Text type="pageHead">Import an event</Text>
+								<Text type="pageHead">Add event</Text>
 							</Chunk>
 							<Chunk>
 								<Text>Eventbrite, Facebook, Splashthat, Meetup, or many other event hosting sites</Text>
@@ -509,5 +531,5 @@ const thisCardStyle = {
 	borderWidth: 0,
 	shadowRadius: 16,
 	shadowColor: 'rgba(0,0,0,.15)',
-	marginVertical: 0
+	marginVertical: METRICS.pseudoLineHeight
 }
