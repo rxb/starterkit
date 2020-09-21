@@ -204,80 +204,67 @@ class Events extends React.Component {
 					
 					<Bounds>
 
-						<Section>
-							<Flex direction="column" switchDirection="large">
-							<FlexItem>
-							<Chunk>
-									<Text color="secondary" style={{marginTop: 3, marginBottom: 3}}>
-										<Image 
-											source="https://api.faviconkit.com/reddit.com/32"
-											style={{
-												width: 16,
-												height: 16,
-												resizeMode: 'contain',
-												flex: 1,
-												marginRight: 6,
-												marginBottom: -3
-											}}
-											/>
-										/r/financialindependence</Text>
-									<Text type="pageHead" >Financial independence</Text>
-								</Chunk>
-								<Chunk>
-								
-										<Text color="primary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
-																
-							</Chunk>
-							</FlexItem>
-							<FlexItem shrink>
-								<Chunk>
-									<Flex>
-										<FlexItem>
-											<Button 
-												shape="Plus"
-												label="Add event"
-												onPress={this.toggleModal}
-												width="full"
-												/>	
-										</FlexItem>
-										<FlexItem>
-											<Button 
-												color="secondary"
-												label="Follow"
-												onPress={()=>{ alert('get notified'); }}
-												shape="Bell"
-												width="full"
-												/>	
-										</FlexItem>
-									</Flex>
-								</Chunk>
-							</FlexItem>
-						</Flex>
-
-						</Section>
-				</Bounds>
-			</Stripe>
-			<Stripe style={{borderTopWidth: 1, borderColor: swatches.border, backgroundColor: swatches.backgroundShade}}>
-				<Bounds>
-
-						<Section>
 						<Flex direction="column" switchDirection="large" >
-			
-							<FlexItem growFactor={1}>
-								
-								
+
+							<FlexItem growFactor={2}>
+								<Section>
 									<Chunk>
-										<Text type="sectionHead">Happening Nearby + Online</Text>
+										<Text type="big" color="secondary" style={{marginBottom: 8, marginTop: -3}}>
+											<Image 
+												source="https://api.faviconkit.com/reddit.com/32"
+												style={{
+													width: 20,
+													height: 20,
+													resizeMode: 'contain',
+													flex: 1,
+													marginRight: 6,
+													marginBottom: -3
+												}}
+												/>
+											/r/financialindependence</Text>
+										<Text type="pageHead" >Financial independence</Text>
 									</Chunk>
-								
+									
+									{/*									
+									<Chunk>
+										<Text color="primary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
+									</Chunk>
+									*/}
+
+									<Chunk>
+										
+										<Button 
+											label="Suggest an event"
+											onPress={this.toggleModal}
+											width="full"
+											/>	
+										{/*
+										<Button
+											color="secondary"
+											label="Import an event from..."
+											onPress={this.toggleModal}
+											width="full"
+											/>	
+										*/}										
+										<Button 
+											color="secondary"
+											label="Follow"
+											onPress={()=>{ alert('get notified'); }}
+											shape="Bell"
+											width="full"
+											/>
+									</Chunk>
+								</Section>
 							</FlexItem>
 
 							<FlexItem growFactor={3}>
-								
-								
-
-									<List
+								<Section>
+									<Chunk>
+										{/* all events near you + a planning thread */}
 										
+										<Text type="sectionHead">Events in New York</Text>
+									</Chunk>
+									<List
 										items={localEvents.items}
 										variant="grid"
 										itemsInRow={{
@@ -403,48 +390,22 @@ class Events extends React.Component {
 												</Chunk>
 											
 
-								
+								</Section>
 							
-							</FlexItem>
-
-
-				
-
-							</Flex>
-						</Section>
-			{/*															
-					</Bounds>
-				</Stripe>
-				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
-					<Bounds>
-			*/}
-				<Section>
-						<Flex direction="column" switchDirection="large" >
-						<FlexItem growFactor={1}>
-							
-								<Chunk>
-										<Text type="sectionHead">Happening worldwide</Text>
+								<Section>
+									<Chunk>
+										<Text type="sectionHead">Happening other places</Text>
 										{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
 									</Chunk>
-							
-						</FlexItem>
-							<FlexItem growFactor={3}>
-							
-									
 									
 									<List
 										items={areas}
-										variant="grid"
-										itemsInRow={{
-											small: 1,
-											medium: 2,
+										variant={{
+											small: "linear",
 										}}
 										renderItem={(area, i)=>{
 											return (
 												<Chunk>
-													<Card>
-													<Sectionless>
-														<Chunk>
 													<Flex>
 														<FlexItem shrink justify="center">
 															<View style={{width: 120}}>
@@ -463,19 +424,15 @@ class Events extends React.Component {
 																	<Text type="small"  >Let's hike to Mt Awesome</Text>
 														</FlexItem>
 													</Flex>
-													</Chunk>
-													</Sectionless>
-													</Card>
 												</Chunk>
 											);
 										}}
 										/>
-								
-							
+								</Section>
 							</FlexItem>
 							
 						</Flex>
-						</Section>
+
 					</Bounds>
 				</Stripe>
 
@@ -488,7 +445,7 @@ class Events extends React.Component {
 					<Stripe>
 						<Section>
 							<Chunk>
-								<Text type="pageHead">Add event</Text>
+								<Text type="pageHead">Import an event</Text>
 							</Chunk>
 							<Chunk>
 								<Text>Eventbrite, Facebook, Splashthat, Meetup, or many other event hosting sites</Text>
@@ -550,5 +507,5 @@ const thisCardStyle = {
 	borderWidth: 0,
 	shadowRadius: 16,
 	shadowColor: 'rgba(0,0,0,.15)',
-	marginBottom: METRICS.pseudoLineHeight
+	marginVertical: 0
 }

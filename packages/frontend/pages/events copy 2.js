@@ -204,9 +204,7 @@ class Events extends React.Component {
 					
 					<Bounds>
 
-						<Section>
-							<Flex direction="column" switchDirection="large">
-							<FlexItem>
+						<Section style={{borderBottomWidth: 1, borderBottomColor: swatches.border, marginBottom: 8, paddingBottom: 8 }}>
 							<Chunk>
 									<Text color="secondary" style={{marginTop: 3, marginBottom: 3}}>
 										<Image 
@@ -223,58 +221,48 @@ class Events extends React.Component {
 										/r/financialindependence</Text>
 									<Text type="pageHead" >Financial independence</Text>
 								</Chunk>
-								<Chunk>
-								
-										<Text color="primary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
-																
-							</Chunk>
-							</FlexItem>
-							<FlexItem shrink>
-								<Chunk>
-									<Flex>
-										<FlexItem>
-											<Button 
-												shape="Plus"
-												label="Add event"
-												onPress={this.toggleModal}
-												width="full"
-												/>	
-										</FlexItem>
-										<FlexItem>
-											<Button 
-												color="secondary"
-												label="Follow"
-												onPress={()=>{ alert('get notified'); }}
-												shape="Bell"
-												width="full"
-												/>	
-										</FlexItem>
-									</Flex>
-								</Chunk>
-							</FlexItem>
-						</Flex>
-
 						</Section>
-				</Bounds>
-			</Stripe>
-			<Stripe style={{borderTopWidth: 1, borderColor: swatches.border, backgroundColor: swatches.backgroundShade}}>
-				<Bounds>
 
-						<Section>
-						<Flex direction="column" switchDirection="large" >
+						<Flex direction="column" switchDirection="large" rowReverse="large">
 			
 							<FlexItem growFactor={1}>
+								<Section>
+									<Chunk>
+										<Button 
+											shape="Plus"
+											label="Add event"
+											onPress={this.toggleModal}
+											width="full"
+											/>	
+										{/*
+										<Button
+											color="secondary"
+											label="Import an event from..."
+											onPress={this.toggleModal}
+											width="full"
+											/>	
+										*/}										
+										<Button 
+											color="secondary"
+											label="Follow"
+											onPress={()=>{ alert('get notified'); }}
+											shape="Bell"
+											width="full"
+											/>
+									</Chunk>
 								
-								
+									<Chunk>
+										<Text color="primary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
+									</Chunk>
 									<Chunk>
 										<Text type="sectionHead">Happening Nearby + Online</Text>
 									</Chunk>
-								
+								</Section>
 							</FlexItem>
 
-							<FlexItem growFactor={3}>
+							<FlexItem growFactor={2}>
 								
-								
+								<Section>
 
 									<List
 										
@@ -403,34 +391,26 @@ class Events extends React.Component {
 												</Chunk>
 											
 
-								
+								</Section>
 							
 							</FlexItem>
 
 
 				
 
-							</Flex>
-						</Section>
-			{/*															
+						</Flex>
+
 					</Bounds>
 				</Stripe>
 				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 					<Bounds>
-			*/}
-				<Section>
 						<Flex direction="column" switchDirection="large" >
-						<FlexItem growFactor={1}>
-							
-								<Chunk>
+							<FlexItem growFactor={2}>
+							<Section>
+									<Chunk>
 										<Text type="sectionHead">Happening worldwide</Text>
 										{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
 									</Chunk>
-							
-						</FlexItem>
-							<FlexItem growFactor={3}>
-							
-									
 									
 									<List
 										items={areas}
@@ -470,12 +450,13 @@ class Events extends React.Component {
 											);
 										}}
 										/>
-								
+								</Section>
 							
 							</FlexItem>
-							
+							<FlexItem growFactor={1}>
+
+							</FlexItem>
 						</Flex>
-						</Section>
 					</Bounds>
 				</Stripe>
 
@@ -550,5 +531,5 @@ const thisCardStyle = {
 	borderWidth: 0,
 	shadowRadius: 16,
 	shadowColor: 'rgba(0,0,0,.15)',
-	marginBottom: METRICS.pseudoLineHeight
+	marginVertical: METRICS.pseudoLineHeight
 }

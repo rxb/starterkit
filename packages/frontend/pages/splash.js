@@ -181,7 +181,7 @@ const HeaderContent = WithMatchMedia((props) => {
 						{textAlign: 'center'},
 						media && media.large ? {fontSize: 24, lineHeight: 34} : {}
 					]}
-					>Meet up about things you like</Text>
+					>Meet up about things you follow</Text>
 			</Chunk>
 		</Section>
 	);
@@ -336,34 +336,21 @@ class Splash extends React.Component {
 
 							<OutpostRow 
 								outposts={outposts.subreddit}
-								headline="Subreddit members"
+								headline="Topics and interests from&nbsp;Reddit"
 								site="reddit.com"
 								toggleModal={this.toggleModal}
 								/>
 
 							<OutpostRow 
 								outposts={outposts.twitter}
-								headline="Twitter followers"
+								headline="People and organizations from&nbsp;Twitter"
 								site="twitter.com"
 								toggleModal={this.toggleModal}
 								/>
 	
 					</Bounds>
 				</Stripe>
-				<Stripe>
-					<Bounds>
-						<Section>
-							<Chunk>
-								<Text type="sectionHead">
-									How it works
-								</Text>
-							</Chunk>
-							<Chunk>
-
-							</Chunk>
-						</Section>
-					</Bounds>
-				</Stripe>				
+						
 			</Page>
 
 			<Modal

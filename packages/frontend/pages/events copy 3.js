@@ -204,7 +204,7 @@ class Events extends React.Component {
 					
 					<Bounds>
 
-						<Section>
+						<Section style={{marginBottom: 8, borderBottomWidth: 1, borderColor: swatches.border}}>
 							<Flex direction="column" switchDirection="large">
 							<FlexItem>
 							<Chunk>
@@ -255,13 +255,10 @@ class Events extends React.Component {
 						</Flex>
 
 						</Section>
-				</Bounds>
-			</Stripe>
-			<Stripe style={{borderTopWidth: 1, borderColor: swatches.border, backgroundColor: swatches.backgroundShade}}>
-				<Bounds>
+					
 
 						<Section>
-						<Flex direction="column" switchDirection="large" >
+						<Flex direction="column" switchDirection="large" rowReverse="large">
 			
 							<FlexItem growFactor={1}>
 								
@@ -419,7 +416,7 @@ class Events extends React.Component {
 					<Bounds>
 			*/}
 				<Section>
-						<Flex direction="column" switchDirection="large" >
+						<Flex direction="column" switchDirection="large" rowReverse="large">
 						<FlexItem growFactor={1}>
 							
 								<Chunk>
@@ -550,5 +547,5 @@ const thisCardStyle = {
 	borderWidth: 0,
 	shadowRadius: 16,
 	shadowColor: 'rgba(0,0,0,.15)',
-	marginBottom: METRICS.pseudoLineHeight
+	marginVertical: METRICS.pseudoLineHeight
 }
