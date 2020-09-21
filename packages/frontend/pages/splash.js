@@ -221,11 +221,34 @@ const OutpostRow = (props) => {
 		toggleModal
 	} = props;
 
+	const getSampleCities = (i) => {
+		const cities = [
+			"Los Angeles",
+			"Austin",
+			"Macon",
+			"Medellin",
+			"Nashville",
+			"Saskatoon",
+			"Osaka",
+			"Mexico City",
+			"Bentonville",
+			"Portland",
+			"Pittsburgh",
+			"Phoenix"
+		];
+		return [
+			cities[(i) % cities.length],
+			cities[(i+4) % cities.length],
+			cities[(i+9) % cities.length],
+			cities[(i+7) % cities.length]
+		];
+	}
+
 	const gridItem = (outpost, i) => {
 		return(
 			<Chunk>
 				<Link href="/events">
-					<Card style={[thisCardStyle, ]}>
+					<Card style={[thisCardStyle]}>
 						<Sectionless style={{/*backgroundColor: swatches.tint*/}}>
 								<Chunk>
 									<View style={{marginBottom: 4}}>
@@ -246,7 +269,7 @@ const OutpostRow = (props) => {
 										<Text type="big" color="tint" numberOfLines={2}>{outpost.title}</Text>
 									</View>
 									
-									<Text type="small" color="hint" numberOfLines={4}>Meeting in: Tokyo, Los Angeles, Pittsburgh, Medellin...</Text>
+									<Text type="small" color="hint" numberOfLines={4}>Meeting in: {getSampleCities(i).join(', ')}...</Text>
 									
 								</Chunk>
 						</Sectionless>
