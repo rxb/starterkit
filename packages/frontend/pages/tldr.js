@@ -90,8 +90,8 @@ const Card2 = WithMatchMedia((props) => {
 			style
 			]}>
 			<Sectionless style={[
-					{backgroundColor: swatches.tint},
-					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {}
+					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {},
+					{backgroundColor: "#4353ff"}
 				]}>
 					<Chunk style={{paddingBottom: 4}}>
 						<Flex>
@@ -137,7 +137,7 @@ const Card2 = WithMatchMedia((props) => {
 								/>
 							<View>
 								<Text weight="strong" type="big"><Markdown>{step.head}</Markdown></Text>
-								<Text color="secondary">{step.body}</Text>
+								<Text color="secondary"><Markdown>{step.body}</Markdown></Text>
 							</View>
 							{ showReferences &&
 								<View 

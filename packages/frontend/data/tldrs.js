@@ -16,7 +16,7 @@ export default [
     steps: [
       { 
         head: "Ruthlessly curate what’s included and what’s not",
-        body: "It will be incomplete, but useful and valuable to non-experts",
+        body: "It will be incomplete, but [useful](http://google.com) and valuable to non-experts",
         note: "Well here we are with a note"
       },
       { 

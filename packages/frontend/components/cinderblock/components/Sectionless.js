@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from '../primitives';
 import styles from '../styles/styles';
+import swatches from '../styles/swatches';
 
 const Sectionless = (props) => {
 
