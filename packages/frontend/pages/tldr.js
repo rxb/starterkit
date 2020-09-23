@@ -147,7 +147,7 @@ const Card2 = WithMatchMedia((props) => {
 										background: swatches.shade,
 										borderRadius: METRICS.borderRadius
 									}}>
-										<Text type="small" color="secondary">{step.note}</Text>
+										<Text type="small" color="secondary"><Markdown>{step.note}</Markdown></Text>
 								</View>
 							}
 						</View>
