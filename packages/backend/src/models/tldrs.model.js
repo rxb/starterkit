@@ -44,12 +44,13 @@ module.exports = function (app) {
 
   // eslint-disable-next-line no-unused-vars
   tldrs.associate = function (models) {
-    tldrs.hasMany(models.tldrVersions);
-    tldrs.hasOne(models.tldrVersions, { 
+    tldrs.hasMany(models.tldr_versions);
+    tldrs.hasOne(models.tldr_versions, { 
       as: "currentVersion",
       sourceKey: "currentTldrVersionId"
     }); 
   };
+  
 
   return tldrs;
 };

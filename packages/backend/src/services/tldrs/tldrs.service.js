@@ -1,4 +1,4 @@
-// Initializes the `tldrs` service on path `/t`
+// Initializes the `tldrs` service on path `/tldrs`
 const { Tldrs } = require('./tldrs.class');
 const createModel = require('../../models/tldrs.model');
 const hooks = require('./tldrs.hooks');
@@ -13,7 +13,7 @@ module.exports = function (app) {
   app.use('/tldrs', new Tldrs(options, app));
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('tdlrs');
+  const service = app.service('tldrs');
 
   service.hooks(hooks);
 };
