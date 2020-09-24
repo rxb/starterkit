@@ -44,11 +44,16 @@ module.exports = function (app) {
 
   // eslint-disable-next-line no-unused-vars
   tldrs.associate = function (models) {
+    tldrs.belongsTo(models.users, {
+      foreignKey: 'authorId',
+      as: "author"
+    });
     tldrs.hasMany(models.tldr_versions);
     tldrs.hasOne(models.tldr_versions, { 
-      as: "currentVersion",
-      sourceKey: "currentTldrVersionId"
-    }); 
+      sourceKey: "currentTldrVersionId",
+      foreignKey: "id",
+      as: "currentTldrVersion"
+    });
   };
   
 

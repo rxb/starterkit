@@ -39,8 +39,7 @@ module.exports = function (app) {
 
   // eslint-disable-next-line no-unused-vars
   tldrVersions.associate = function (models) {
-    tldrVersions.belongsTo(models.users, {foreignKey: 'authorId'})
-    tldrVersions.belongsTo(models.tldrs)
+    //tldrVersions.belongsTo(models.tldrs)
   };
 
   return tldrVersions;

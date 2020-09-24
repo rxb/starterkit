@@ -38,6 +38,11 @@ import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedi
 import Page from '../components/Page';
 
 
+import {
+	fetchTldr,
+	addPrompt,
+	addToast
+} from '../actions';
 
 import TLDRS from '../data/tldrs.js';
 import Markdown from 'markdown-to-jsx';
@@ -151,7 +156,7 @@ const Card2 = WithMatchMedia((props) => {
 								</View>
 							}
 						</View>
-					))}
+						))}
 					</View>
 					
 				
@@ -193,16 +198,26 @@ const Card2 = WithMatchMedia((props) => {
 
 class Tldr extends React.Component {
 
+	static async getInitialProps (context) {
+		// next router query bits only initially available to getInitialProps
+		const {store, isServer, pathname, query} = context;
+		const tldrId = query.showId || 2; // default for now
+		const tldr = await store.dispatch(fetchTldr(tldrId));
+		return {
+			tldrId: tldrId,
+			tldr: tldr.payload
+		};
+	}
 
 
 	render() {
 
 		const {
 			user,
-			tldr
+			tldr,
 		} = this.props;
 
-
+		
 		
 		return (
 			<View style={{minHeight: '100vh'}}>
@@ -217,7 +232,7 @@ class Tldr extends React.Component {
 								<FlexItem growFactor={1}>
 									<Section style={{paddingTop: 0, paddingBottom: 0}}>
 										<Chunk>
-											<Card2 tldr={tldr} {...this.props} />
+											<Card2 tldr={tldr.currentTldrVersion.content} />
 										</Chunk>
 									</Section>
 								</FlexItem>
@@ -400,12 +415,15 @@ class Tldr extends React.Component {
 										large: 4
 									}}
 									scrollItemWidth={300}
+									items={[]}
+									/*
 									items={[
-										tldr,
-										tldr,
-										tldr,
-										tldr
+										tldr.currentTldrVersion.content,
+										tldr.currentTldrVersion.content,
+										tldr.currentTldrVersion.content,
+										tldr.currentTldrVersion.content,
 									]}
+									*/
 									renderItem={(item, i)=>{
 										return(
 											<Chunk key={i}>
@@ -450,7 +468,7 @@ class Tldr extends React.Component {
 const mapStateToProps = (state, ownProps) => {	
 	return ({
 		user: state.user,
-		tldr: TLDRS[0]
+		//tldr: TLDRS[0] // now from redux  
 	});
 }
 

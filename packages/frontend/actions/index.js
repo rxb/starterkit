@@ -120,6 +120,24 @@ export const fetchShow = (id) => ({
  	}
 });
 
+// FETCH TLDRS
+export const fetchTldrs = () => ({
+	[RSAA]: {
+		types: ["FETCH_TLDRS", "FETCH_TLDRS_SUCCESS", "FETCH_TLDRS_FAILURE"],
+		endpoint: `${apiHost}tldrs`,
+		method: 'GET',
+ 	}
+});
+
+export const fetchTldr = (id) => ({
+	[RSAA]: {
+		types: ["FETCH_TLDR", "FETCH_TLDR_SUCCESS", "FETCH_TLDR_FAILURE"],
+		endpoint: `${apiHost}tldrs/${id}`,
+		method: 'GET',
+ 	}
+});
+
+
 // FETCH EVENTS
 export const fetchEvents = (data) => ({
 	[RSAA]: {

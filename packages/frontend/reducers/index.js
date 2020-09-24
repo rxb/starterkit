@@ -6,6 +6,8 @@ import show from './show'
 import shows from './shows'
 import showComments from './showComments'
 import tags from './tags'
+import tldr from './tldr'
+import tldrs from './tldrs'
 import toasts from './toasts'
 import users from './users'
 import user from './user'
@@ -19,6 +21,8 @@ const reducers = combineReducers({
 	shows,
 	showComments,
 	tags,
+	tldr,
+	tldrs,
 	toasts,
 	user,
 	users,

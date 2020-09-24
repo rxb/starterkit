@@ -4,7 +4,18 @@ module.exports = {
   before: {
     all: [],
     find: [],
-    get: [],
+    get: [
+      (context) => {
+        context.params.sequelize = {
+          ...context.params.sequelize,
+          include: [
+            "author",
+            "currentTldrVersion"
+          ]
+        }
+        return context;
+      }
+    ],
     create: [],
     update: [],
     patch: [],
