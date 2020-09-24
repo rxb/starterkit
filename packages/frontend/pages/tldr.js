@@ -415,15 +415,14 @@ class Tldr extends React.Component {
 										large: 4
 									}}
 									scrollItemWidth={300}
-									items={[]}
-									/*
+									
 									items={[
 										tldr.currentTldrVersion.content,
 										tldr.currentTldrVersion.content,
 										tldr.currentTldrVersion.content,
 										tldr.currentTldrVersion.content,
 									]}
-									*/
+									
 									renderItem={(item, i)=>{
 										return(
 											<Chunk key={i}>
