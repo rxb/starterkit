@@ -201,7 +201,7 @@ class Tldr extends React.Component {
 	static async getInitialProps (context) {
 		// next router query bits only initially available to getInitialProps
 		const {store, isServer, pathname, query} = context;
-		const tldrId = query.showId || 2; // default for now
+		const tldrId = query.tdlrId || 2; // default for now
 		const tldr = await store.dispatch(fetchTldr(tldrId));
 		return {
 			tldrId: tldrId,

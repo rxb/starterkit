@@ -33,6 +33,9 @@ module.exports = function (app) {
     downvotes: {
       type: DataTypes.INTEGER,
       defaultValue: 0
+    },
+    draftContent: {
+        type: Sequelize.JSONB
     }
   }, {
     hooks: {
