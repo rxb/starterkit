@@ -120,6 +120,34 @@ export const fetchShow = (id) => ({
  	}
 });
 
+// CREATE TLDR
+export const createTldr = (data) => ({
+	[RSAA]: {
+		endpoint: `${apiHost}tldrs/`,
+		method: 'POST',
+		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+		types: ["CREATE_TLDR","CREATE_TLDR_SUCCESS", "CREATE_TLDR_FAILURE"]
+ 	}
+});
+
+// PATCH TLDR
+export const patchTldr = (id, data) => ({
+	[RSAA]: {
+		endpoint: `${apiHost}tldrs/${id}`,
+		method: 'PATCH',
+		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+		types: ["PATCH_TLDR","PATCH_TLDR_SUCCESS", "PATCH_TLDR_FAILURE"]
+ 	}
+});
+
+// VALIDATE TLDR FAILURE
+export const updateErrorTldr = (error) => ({
+    type: 'UPDATE_ERROR_TLDRVERSION',
+    payload: error
+})
+
 // FETCH TLDRS
 export const fetchTldrs = () => ({
 	[RSAA]: {

@@ -6,11 +6,10 @@ import Head from 'next/head'
 
 import {
 	addToast,
-	fetchTldrVersion,
-	fetchTags,
-	createTldrVersion,
-	patchTldrVersion,
-	updateErrorTldrVersion
+	fetchTldr,
+	createTldr,
+	patchTldr,
+	updateErrorTldr
 } from '../actions';
 
 
