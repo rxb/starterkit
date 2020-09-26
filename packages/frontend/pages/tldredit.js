@@ -160,7 +160,7 @@ class TldrEdit extends React.Component {
 										{ tldr.item.id &&
 										<TldrForm
 											initialFields={{
-												draftContent: JSON.stringify(tldr.item.draftContent)
+												draftContent: JSON.stringify(tldr.item.draftContent, null, 2)
 											}}
 											fieldErrors={tldr.error.fieldErrors}
 											onSubmit={ async (fields)=>{
@@ -217,15 +217,7 @@ class TldrEdit extends React.Component {
 
 									</Section>
 								</FlexItem>
-								<FlexItem growFactor={1}>
-
-									<Section>
-										<Chunk>
-											<Text>{JSON.stringify(tldr.item)}</Text>
-										</Chunk>
-									</Section>
-
-								</FlexItem>
+								
 							</Flex>
 						</Sections>
 					</Bounds>
