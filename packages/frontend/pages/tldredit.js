@@ -47,12 +47,11 @@ import {
 
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
-import TldrVersionCard from '../components/TldrVersionCard';
 
 import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
 
 
-const TldrVersionForm = withFormState((props) => {
+const TldrForm = withFormState((props) => {
 
 	const {
 		fields,
@@ -66,122 +65,27 @@ const TldrVersionForm = withFormState((props) => {
 	return(
 		<form>
 			<Chunk>
-				<Label for="title">TldrVersion title</Label>
+				<Label for="description">Card content</Label>
 				<TextInput
-					id="title"
-					value={fields.title}
-					onChange={e => setFieldState({title: e.target.value}) }
-					/>
-				<FieldError error={fieldErrors.title} />
-			</Chunk>
-			<Chunk>
-				<Label for="description">Description</Label>
-				<TextInput
-					id="description"
-					value={fields.description}
-					onChangeText={text => setFieldState({description: text}) }
+					id="draftContent"
+					value={fields.draftContent}
+					onChangeText={text => setFieldState({draftContent: text}) }
 					multiline
 					numberOfLines={4}
-					tldrVersionCounter={true}
+					showCounter={true}
 					maxLength={1000}
 					/>
-				<FieldError error={fieldErrors.description} />
-			</Chunk>
-			<Chunk>
-				<Label for="title">Genres</Label>
-				{(['Comedy', 'Drama', 'Documentary']).map((item, i)=>{
-					const checked = fields.genres.indexOf(item) != -1;
-					return(
-						<CheckBox
-							key={item}
-							label={item}
-							value={checked}
-							onChange={() => {
-								const newItems = (checked) ?  fields.genres.filter(a => a !== item) : fields.genres.concat([item]);
-								setFieldState({genres: newItems})
-							}}
-							/>
-
-					);
-				})}
-				<View>
-
-				</View>
-			</Chunk>
-			<Chunk>
-				<Label>Your photo</Label>
-				<Flex>
-					<FlexItem>
-						<FileInput
-							id="photo"
-							placeholder={(fields.photoUrl) ? 'Select a new file' : 'Select a file'}
-							onChangeFile={(file)=>{
-								setFieldState({
-									// comes from server, doesn't get sent back to server
-									photoUrl:  URL.createObjectURL(file),
-									// comes from server, gets sent back to server
-									photoId: false,
-									// only exists client -> server
-									photoNewFile: file
-								});
-							}}
-							/>
-						{ fields.photoUrl &&
-							<FakeInput
-								label="Remove photo"
-								shape="X"
-								onPress={()=>{
-									setFieldState({
-										photoId: false,
-										photoUrl: false
-									});
-								}}
-								/>
-						}
-					</FlexItem>
-					{ fields.photoUrl &&
-						<FlexItem shrink>
-							<Image
-							    source={{uri: fields.photoUrl }}
-							    style={[{
-							          width: 120,
-							          flex: 1,
-							          resizeMode: 'cover',
-							          borderRadius: 4,
-							          boxSizing: 'content-box'
-							    }, styles.pseudoLineHeight]}
-							    />
-						</FlexItem>
-					}
-				</Flex>
-			</Chunk>
-
-			<Chunk>
-				<Label for="title">Tags</Label>
-				{tags.items.map((item, i)=>{
-					const checked = fields.tags.findIndex( tag => tag.id == item.id ) != -1;
-					return(
-						<CheckBox
-							key={String(item.id)}
-							label={item.label}
-							value={checked}
-							onChange={() => {
-								const {id, label} = item;
-								// keep an obj with id and label
-								// with the idea that maybe an obj with label and without id would be created
-								const newItems = (checked) ?
-									fields.tags.filter(a => a.id !== id) :
-									fields.tags.concat([{id, label}]);
-								setFieldState({tags: newItems});
-							}}
-							/>
-					);
-				})}
+				<FieldError error={fieldErrors.draftContent} />
 			</Chunk>
 			<Chunk>
 				<Button
-					type="primary"
-					label="Let's do this"
+					color="primary"
+					label="Publish"
+					onPress={ handleSubmit }
+					/>
+				<Button
+					color="secondary"
+					label="Save draft"
 					onPress={ handleSubmit }
 					/>
 			</Chunk>
@@ -192,24 +96,23 @@ const TldrVersionForm = withFormState((props) => {
 
 
 
-class TldrVersionTest extends React.Component {
+class TldrEdit extends React.Component {
 
 	static async getInitialProps (context) {
 		const {store, isServer, pathname, query} = context;
-		const tldrVersionId = query.tldrVersionId;
+		const tldrId = query.tldrId;
 		return {
-			tldrVersionId
+			tldrId
 		}
 	}
 
 	constructor(props){
-		  (props);
+		super(props);
 		this.state = {}
 	}
 
 	componentDidMount(){
-		this.props.fetchTldrVersion(this.props.tldrVersionId);
-		this.props.fetchTags();
+		this.props.fetchTldr(this.props.tldrId);
 	}
 
 	componentDidUpdate(prevProps){
@@ -217,7 +120,7 @@ class TldrVersionTest extends React.Component {
 		// watching for toastable errors
 		// still feel like maybe this could go with form?
 		const messages = {
-			tldrVersion: {
+			tldr: {
 				BadRequest: 'Something went wrong',
 				NotAuthenticated: 'Not signed in'
 			}
@@ -229,11 +132,11 @@ class TldrVersionTest extends React.Component {
 	render() {
 
 		const {
-			tldrVersion,
+			tldr,
 			tags,
-			createTldrVersion,
-			patchTldrVersion,
-			updateErrorTldrVersion
+			createtldr,
+			patchtldr,
+			updateErrortldr
 		} = this.props;
 
 		return (
@@ -241,31 +144,25 @@ class TldrVersionTest extends React.Component {
 			<Page>
 				<Head>
 					<meta property='og:title' content='Scratch' />
-					<title>Edit tldrVersion</title>
+					<title>Edit tldr</title>
 				</Head>
 				<Stripe>
 					<Bounds>
 						<Sections>
 							<Section type="pageHead">
 								<Chunk>
-									<Text type="pageHead">Edit tldrVersion</Text>
+									<Text type="pageHead">Edit TLDR</Text>
 								</Chunk>
 							</Section>
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
-										{ tldrVersion.item.id &&
-										<TldrVersionForm
+										{ tldr.item.id &&
+										<TldrForm
 											initialFields={{
-												title: tldrVersion.item.title,
-												photoUrl: tldrVersion.item.photoUrl,
-												photoId: tldrVersion.item.photoId,
-												id: tldrVersion.item.id,
-												genres: tldrVersion.item.genres,
-												tags: tldrVersion.item.tags,
-												description: tldrVersion.item.description
+												draftContent: JSON.stringify(tldr.item.draftContent)
 											}}
-											fieldErrors={tldrVersion.error.fieldErrors}
+											fieldErrors={tldr.error.fieldErrors}
 											onSubmit={ async (fields)=>{
 
 												// client-side validation rules
@@ -280,38 +177,38 @@ class TldrVersionTest extends React.Component {
 											        	},
 											        	notContains: {
 											        		args: "garbage",
-											        		msg: "No tldrVersions about garbage, please"
+											        		msg: "No tldrs about garbage, please"
 											        	}
 										        	}
 										        }
 
 										        // client-side validation
 										        const error = runValidations(fields, validators);
-										        updateErrorTldrVersion(error);
+										        updateErrortldr(error);
 
 										        // if not client errors...
 										        if(!error.errorCount){
 
 										        	// photo process
-													const {photoNewFile, ...tldrVersionFields} = fields;
+													const {photoNewFile, ...tldrFields} = fields;
 													if(photoNewFile){
-														tldrVersionFields.uri = await readFileAsDataUrl(photoNewFile);
+														tldrFields.uri = await readFileAsDataUrl(photoNewFile);
 													}
 
 													// patch & redirect & toast (if no server errors)
-													patchTldrVersion(tldrVersionFields.id, tldrVersionFields)
+													patchtldr(tldrFields.id, tldrFields)
 														.then( response => {
 															if(!response.error){
-																Router.push({pathname:'/tldrVersion', query: {tldrVersionId: tldrVersion.item.id}})
+																Router.push({pathname:'/tldr', query: {tldrId: tldr.item.id}})
 																	.then(()=>{
-																		this.props.addToast('TldrVersion saved; nice work!');
+																		this.props.addToast('tldr saved; nice work!');
 																	})
 															}
 														});
 										        }
 											}}
 											onChange={(fields) => {
-												this.setState({tldrVersionFormFields: fields});
+												this.setState({tldrFormFields: fields});
 											}}
 											tags={tags}
 											/>
@@ -324,7 +221,7 @@ class TldrVersionTest extends React.Component {
 
 									<Section>
 										<Chunk>
-											<Text>{JSON.stringify(tldrVersion.item)}</Text>
+											<Text>{JSON.stringify(tldr.item)}</Text>
 										</Chunk>
 									</Section>
 
@@ -342,22 +239,20 @@ class TldrVersionTest extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
-		tldrVersion: state.tldrVersion,
-		tags: state.tags
+		tldr: state.tldr	
 	});
 }
 
 const actionCreators = {
 	addToast,
-	fetchTldrVersion,
-	fetchTags,
-	createTldrVersion,
-	patchTldrVersion,
-	updateErrorTldrVersion
+	fetchTldr,
+	createTldr,
+	patchTldr,
+	updateErrorTldr
 };
 
 export default connect(
 	mapStateToProps,
 	actionCreators
-)(TldrVersionTest);
+)(TldrEdit);
 
