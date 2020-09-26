@@ -64,6 +64,19 @@ const TldrForm = withFormState((props) => {
 
 	return(
 		<form>
+
+			<Chunk>
+				<Label for="description">Test</Label>
+				<TextInput
+					id="test"
+					value={fields.test}
+					onChangeText={text => setFieldState({test: text}) }
+					multiline
+					numberOfLines={4}
+					showCounter={true}
+					/>
+				<FieldError error={fieldErrors.draftContent} />
+			</Chunk>	
 			<Chunk>
 				<Label for="description">Card content</Label>
 				<TextInput
@@ -73,10 +86,10 @@ const TldrForm = withFormState((props) => {
 					multiline
 					numberOfLines={4}
 					showCounter={true}
-					maxLength={1000}
 					/>
 				<FieldError error={fieldErrors.draftContent} />
 			</Chunk>
+
 			<Chunk>
 				<Button
 					color="primary"
@@ -207,10 +220,6 @@ class TldrEdit extends React.Component {
 														});
 										        }
 											}}
-											onChange={(fields) => {
-												this.setState({tldrFormFields: fields});
-											}}
-											tags={tags}
 											/>
 										}
 
