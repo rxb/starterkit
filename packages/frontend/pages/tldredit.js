@@ -91,12 +91,16 @@ const TldrForm = withFormState((props) => {
 				<Button
 					color="primary"
 					label="Publish"
-					onPress={ props.handleSubmit }
+					onPress={ () => {
+						props.setFieldValue('publish', true, props.handleSubmit.bind(this));
+					}}
 					/>
 				<Button
 					color="secondary"
 					label="Save draft"
-					onPress={ props.handleSubmit }
+					onPress={ () => {
+						props.setFieldValue('publish', false, props.handleSubmit.bind(this));
+					}}				
 					/>
 			</Chunk>
 		</form>
@@ -169,7 +173,8 @@ class TldrEdit extends React.Component {
 										<TldrForm
 											initialFields={{
 												draftContent: JSON.stringify(tldr.item.draftContent, null, 2),
-												id: tldr.item.id
+												id: tldr.item.id,
+												publish: false
 											}}
 											fieldErrors={tldr.error.fieldErrors}
 											onSubmit={ async (fields)=>{
@@ -187,8 +192,14 @@ class TldrEdit extends React.Component {
 										        // if not client errors...
 										        if(!error.errorCount){
 
+													// temporary finesse for json
+													const fieldsCopy = {
+														...fields,
+														draftContent: JSON.parse(fields.draftContent)
+													}
+
 													// patch & redirect & toast (if no server errors)
-													patchTldr(fields.id, fields)
+													patchTldr(fields.id, fieldsCopy)
 														.then( response => {
 															if(!response.error){
 																Router.push({pathname:'/tldr', query: {tldrId: tldr.item.id}})
@@ -201,7 +212,6 @@ class TldrEdit extends React.Component {
 											}}
 											/>
 										}
-
 
 									</Section>
 								</FlexItem>

@@ -58,14 +58,17 @@ const withFormState = ( WrappedComponent ) => {
 			//this.setState({fields: fields}, this.handleChange);
 		}
 
-		setFieldValue(key, value){
+		setFieldValue(key, value, callback = ()=>{} ){
 			// in case i forget
 			// it's because setstate isn't synchronous
 			// and the 3 calls are all using original state value
 			// set field
 			const fields = { ...this.state.fields};
 			fields[key] = value;
-			this.setState({fields: fields}, this.handleChange);
+			this.setState({fields: fields}, ()=>{
+				callback();
+				this.handleChange();
+			});
 		}
 
 		getFieldValue(key){
