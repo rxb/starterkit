@@ -55,7 +55,6 @@ const TldrForm = withFormState((props) => {
 
 	const {
 		fields,
-		setFieldState,
 		handleSubmit,
 		resetFields,
 		fieldErrors = {},
@@ -64,25 +63,23 @@ const TldrForm = withFormState((props) => {
 
 	return(
 		<form>
-
 			<Chunk>
-				<Label for="description">Test</Label>
+				<Label htmlFor="clean">Tell me about yourself</Label>
 				<TextInput
-					id="test"
-					value={fields.test}
-					onChangeText={text => setFieldState({test: text}) }
+					id="clean"
 					multiline
 					numberOfLines={4}
-					showCounter={true}
+					showCounter={false}
+					value={props.getFieldValue('clean')}
+					onChangeText={text => props.setFieldValue('clean', text)}
 					/>
-				<FieldError error={fieldErrors.draftContent} />
-			</Chunk>	
+			</Chunk>
 			<Chunk>
 				<Label for="description">Card content</Label>
 				<TextInput
 					id="draftContent"
-					value={fields.draftContent}
-					onChangeText={text => setFieldState({draftContent: text}) }
+					value={props.getFieldValue('draftContent')}
+					onChangeText={text => props.setFieldValue('draftContent', text) }
 					multiline
 					numberOfLines={4}
 					showCounter={true}
@@ -94,12 +91,12 @@ const TldrForm = withFormState((props) => {
 				<Button
 					color="primary"
 					label="Publish"
-					onPress={ handleSubmit }
+					onPress={ props.handleSubmit }
 					/>
 				<Button
 					color="secondary"
 					label="Save draft"
-					onPress={ handleSubmit }
+					onPress={ props.handleSubmit }
 					/>
 			</Chunk>
 		</form>
@@ -146,17 +143,15 @@ class TldrEdit extends React.Component {
 
 		const {
 			tldr,
-			tags,
-			createtldr,
-			patchtldr,
-			updateErrortldr
+			createTldr,
+			patchTldr,
+			updateErrorTldr
 		} = this.props;
 
 		return (
 			<Fragment>
 			<Page>
 				<Head>
-					<meta property='og:title' content='Scratch' />
 					<title>Edit tldr</title>
 				</Head>
 				<Stripe>
@@ -173,7 +168,8 @@ class TldrEdit extends React.Component {
 										{ tldr.item.id &&
 										<TldrForm
 											initialFields={{
-												draftContent: JSON.stringify(tldr.item.draftContent, null, 2)
+												draftContent: JSON.stringify(tldr.item.draftContent, null, 2),
+												id: tldr.item.id
 											}}
 											fieldErrors={tldr.error.fieldErrors}
 											onSubmit={ async (fields)=>{
@@ -182,34 +178,17 @@ class TldrEdit extends React.Component {
 												// should match up with server rules
 												// don't always need both unless speed is paramount
 												// or doing something like optimistic UI
- 												const validators = {
- 													title: {
-											        	isLength: {
-											        		args: {min: 1},
-											        		msg: "Title can't be blank"
-											        	},
-											        	notContains: {
-											        		args: "garbage",
-											        		msg: "No tldrs about garbage, please"
-											        	}
-										        	}
-										        }
+ 												const validators = {};
 
 										        // client-side validation
 										        const error = runValidations(fields, validators);
-										        updateErrortldr(error);
+										        updateErrorTldr(error);
 
 										        // if not client errors...
 										        if(!error.errorCount){
 
-										        	// photo process
-													const {photoNewFile, ...tldrFields} = fields;
-													if(photoNewFile){
-														tldrFields.uri = await readFileAsDataUrl(photoNewFile);
-													}
-
 													// patch & redirect & toast (if no server errors)
-													patchtldr(tldrFields.id, tldrFields)
+													patchTldr(fields.id, fields)
 														.then( response => {
 															if(!response.error){
 																Router.push({pathname:'/tldr', query: {tldrId: tldr.item.id}})
