@@ -23,8 +23,10 @@ module.exports = function (app) {
     content: {
       type: DataTypes.JSONB
     },
-    versionName: {
-      type: DataTypes.STRING
+    version: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
     },
     tldrId: {
       type: DataTypes.INTEGER

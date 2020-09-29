@@ -64,24 +64,13 @@ const TldrForm = withFormState((props) => {
 	return(
 		<form>
 			<Chunk>
-				<Label htmlFor="clean">Tell me about yourself</Label>
-				<TextInput
-					id="clean"
-					multiline
-					numberOfLines={4}
-					showCounter={false}
-					value={props.getFieldValue('clean')}
-					onChangeText={text => props.setFieldValue('clean', text)}
-					/>
-			</Chunk>
-			<Chunk>
 				<Label for="description">Card content</Label>
 				<TextInput
 					id="draftContent"
 					value={props.getFieldValue('draftContent')}
 					onChangeText={text => props.setFieldValue('draftContent', text) }
 					multiline
-					numberOfLines={4}
+					numberOfLines={10}
 					showCounter={true}
 					/>
 				<FieldError error={fieldErrors.draftContent} />

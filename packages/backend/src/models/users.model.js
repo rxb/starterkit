@@ -46,6 +46,11 @@ module.exports = function (app) {
     redditId: {
       type: DataTypes.STRING,
     },
+    urlKey: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },    
   }, {
     hooks: {
       beforeCount(options) {

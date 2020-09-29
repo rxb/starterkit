@@ -76,7 +76,7 @@ const ConnectedHeader = WithMatchMedia((props) => {
 
 
 
-const Card2 = WithMatchMedia((props) => {
+const TldrCard = WithMatchMedia((props) => {
 
 	const [showReferences, setReferences] = useState(false);
 
@@ -85,6 +85,8 @@ const Card2 = WithMatchMedia((props) => {
 		tldr,
 		style
 	} = props;
+
+	const content = tldr.currentTldrVersion.content;
 
 	return (
 		<Card style={[
@@ -104,27 +106,28 @@ const Card2 = WithMatchMedia((props) => {
 								<Inline>
 									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
 									<Text type="small" inverted color="secondary">
-										{tldr.userid}/{tldr.id}
+										{tldr.author.name}/{tldr.id}
 									</Text>
 								</Inline>
 							</FlexItem>
 							<FlexItem style={{alignItems: 'flex-end'}}>
 								<Text type="small" inverted color="secondary">
-									v1.2
+									{/*v1.2*/}
+									v.{tldr.currentTldrVersion.version}
 								</Text>
 							</FlexItem>
 						</Flex>
 					</Chunk>
 					<Chunk>
-						<Text type="pageHead" inverted>{tldr.title}</Text>
-						<Text inverted style={{fontStyle: 'italic', marginTop: 8}}>{tldr.blurb}</Text>
+						<Text type="pageHead" inverted>{content.title}</Text>
+						<Text inverted style={{fontStyle: 'italic', marginTop: 8}}>{content.blurb}</Text>
 					</Chunk>
 			</Sectionless>
 			<Sectionless style={[
 					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {}
 				]}>
 					<View>
-					{tldr.steps.map((step, i)=>(
+					{content.steps.map((step, i)=>(
 						<View style={{
 							marginTop: 0,
 							marginBottom: METRICS.space + 5,
@@ -232,7 +235,7 @@ class Tldr extends React.Component {
 								<FlexItem growFactor={1}>
 									<Section style={{paddingTop: 0, paddingBottom: 0}}>
 										<Chunk>
-											<Card2 tldr={tldr.currentTldrVersion.content} />
+											<TldrCard tldr={tldr} />
 										</Chunk>
 									</Section>
 								</FlexItem>
@@ -364,7 +367,7 @@ class Tldr extends React.Component {
 												<Flex>
 													<FlexItem >
 														<Text weight="strong">Versions (2)</Text>
-														<Text type="small" color="secondary">This card is v1.2, updated 26 days ago</Text>
+														<Text type="small" color="secondary">This card is v{tldr.currentTldrVersion.version}, updated 26 days ago</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon

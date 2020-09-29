@@ -23,8 +23,7 @@ module.exports = {
       // special handling if this is a publish
       async (context) => {
         if(context.data.publish){
-          console.log('ok publish')
-          const data = {
+            const data = {
             content: context.data.draftContent,
             tldrId: context.data.id
           };

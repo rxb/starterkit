@@ -36,7 +36,17 @@ module.exports = function (app) {
     },
     draftContent: {
         type: Sequelize.JSONB
-    }
+    },
+    versionsUsedCount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    urlKey: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
   }, {
     hooks: {
       beforeCount(options) {
