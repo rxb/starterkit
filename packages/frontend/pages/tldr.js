@@ -264,7 +264,7 @@ class Tldr extends React.Component {
 																		weight="strong"
 																		style={{lineHeight: 16}}
 																		>
-																		3,423
+																		{tldr.upvotes}
 																	</Text>
 																	<Text 
 																		type="micro"
@@ -291,7 +291,7 @@ class Tldr extends React.Component {
 																	weight="strong"
 																	style={{lineHeight: 16, textAlign: 'right'}}
 																	>
-																	104
+																	{tldr.downvotes}
 																</Text>
 																<Text 
 																	type="micro"
@@ -383,12 +383,12 @@ class Tldr extends React.Component {
 													<FlexItem shrink justify="center">
 														<Avatar
 															size="medium"
-															source={{uri: 'https://randomuser.me/api/portraits/women/24.jpg'}}
+															source={{uri: tldr.author.photoUrl}}
 															/>
 													</FlexItem>
 													<FlexItem>
-														<Text weight="strong">Rebecca Black</Text>
-														<Text type="small" color="secondary">@rxb</Text>
+														<Text weight="strong">{tldr.author.name}</Text>
+														<Text type="small" color="secondary">@{tldr.author.urlKey}</Text>
 													</FlexItem>
 												</Flex>
 											</Chunk>
