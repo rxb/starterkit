@@ -44,8 +44,10 @@ import {
 	addToast
 } from '../actions';
 
-import TLDRS from '../data/tldrs.js';
 import Markdown from 'markdown-to-jsx';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 
 
 const ConnectedHeader = WithMatchMedia((props) => {
@@ -112,8 +114,7 @@ const TldrCard = WithMatchMedia((props) => {
 							</FlexItem>
 							<FlexItem style={{alignItems: 'flex-end'}}>
 								<Text type="small" inverted color="secondary">
-									{/*v1.2*/}
-									v.{tldr.currentTldrVersion.version}
+									v{tldr.currentTldrVersion.version}
 								</Text>
 							</FlexItem>
 						</Flex>
@@ -366,8 +367,8 @@ class Tldr extends React.Component {
 											<Chunk style={listItemStyle}>
 												<Flex>
 													<FlexItem >
-														<Text weight="strong">Versions (2)</Text>
-														<Text type="small" color="secondary">This card is v{tldr.currentTldrVersion.version}, updated 26 days ago</Text>
+														<Text weight="strong">Versions</Text>
+														<Text type="small" color="secondary">This card is v{tldr.currentTldrVersion.version}, updated {dayjs(tldr.currentTldrVersion.createdAt).fromNow()}</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon
@@ -470,7 +471,6 @@ class Tldr extends React.Component {
 const mapStateToProps = (state, ownProps) => {	
 	return ({
 		user: state.user,
-		//tldr: TLDRS[0] // now from redux  
 	});
 }
 
