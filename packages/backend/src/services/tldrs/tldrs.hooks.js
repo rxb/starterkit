@@ -19,20 +19,26 @@ module.exports = {
     create: [],
     update: [],
     patch: [
-  
-      // special handling if this is a publish
       async (context) => {
+        
+        // special handling if this is a publish
         if(context.data.publish){
-            const data = {
+          
+          // get tldr from source, increment version number
+          const tldr = await context.app.service('tldrs').get(context.data.id);
+          const newVersion = tldr.versionsUsedCount + 1;
+          
+          // publish new tldr_version
+          const data = {
             content: context.data.draftContent,
-            tldrId: context.data.id
+            tldrId: context.data.id,
+            version: newVersion
           };
           const tldr_version = await context.app.service('tldr-versions').create(data);
+
+          // update references in the tldr
           context.data.currentTldrVersionId = tldr_version.id;
-        }
-        else{
-          console.log('no publish')
-          console.log(context.data)
+          context.data.versionsUsedCount = newVersion;
         }
         return context;
       }
