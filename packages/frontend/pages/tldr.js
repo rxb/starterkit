@@ -337,7 +337,7 @@ class Tldr extends React.Component {
 											<Chunk style={listItemStyle}>
 												<Flex>
 													<FlexItem>
-														<Text weight="strong">Issues (48)</Text>
+														<Text weight="strong">Issues ({tldr.issueCount})</Text>
 														<Text type="small" color="secondary">Report problems and suggest improvements</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
@@ -352,7 +352,7 @@ class Tldr extends React.Component {
 											<Chunk style={listItemStyle}>
 												<Flex>
 													<FlexItem >
-														<Text weight="strong">Forks (3)</Text>
+														<Text weight="strong">Forks ({tldr.forkCount})</Text>
 														<Text type="small" color="secondary">Use this card as a starting point for a new one</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>

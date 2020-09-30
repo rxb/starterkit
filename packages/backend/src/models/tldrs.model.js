@@ -42,6 +42,14 @@ module.exports = function (app) {
       allowNull: false,
       defaultValue: 0
     },
+    forkCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }, 
+    issueCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },        
     urlKey: {
       type: DataTypes.TEXT,
       allowNull: false,

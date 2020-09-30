@@ -10,11 +10,13 @@ module.exports = {
      */
     await queryInterface.changeColumn(
       'users', 'urlKey',{
+        type: Sequelize.TEXT,
         allowNull: false,
         unique: true
       });
     await queryInterface.changeColumn(
       'tldrs', 'urlKey',{
+        type: Sequelize.TEXT,
         allowNull: false,
         unique: true
       });
