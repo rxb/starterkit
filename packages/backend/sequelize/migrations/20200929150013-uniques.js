@@ -8,15 +8,15 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.renameColumn('users', 'urlkey', 'urlKey');
-    await queryInterface.renameColumn('tldrs', 'urlkey', 'urlKey');
     await queryInterface.changeColumn(
       'users', 'urlKey',{
         allowNull: false,
+        unique: true
       });
     await queryInterface.changeColumn(
       'tldrs', 'urlKey',{
         allowNull: false,
+        unique: true
       });
   },
 
@@ -27,15 +27,15 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.renameColumn('users', 'urlKey', 'urlkey');
-    await queryInterface.renameColumn('tldrs', 'urlKey', 'urlkey');
     await queryInterface.changeColumn(
-      'users', 'urlkey',{
+      'users', 'urlKey',{
         allowNull: true,
+        unique: false
       });
     await queryInterface.changeColumn(
-      'tldrs', 'urlkey',{
+      'tldrs', 'urlKey',{
         allowNull: true,
+        unique: false
       });    
   }
 };

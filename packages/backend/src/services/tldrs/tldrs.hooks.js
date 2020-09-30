@@ -20,7 +20,7 @@ module.exports = {
     update: [],
     patch: [
       async (context) => {
-        
+          
         // special handling if this is a publish
         if(context.data.publish){
           

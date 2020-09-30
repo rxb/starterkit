@@ -9,7 +9,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.addColumn(
-      'tldrs', 'urlkey', {
+      'tldrs', 'urlKey', {
         type: Sequelize.TEXT,
         unique : true
       });
@@ -27,7 +27,7 @@ module.exports = {
       });   
     await queryInterface.removeColumn('tldr_versions', 'versionName'); 
     await queryInterface.addColumn(
-      'users', 'urlkey', {
+      'users', 'urlKey', {
         type: Sequelize.TEXT,
         unique : true
       });              

@@ -50,6 +50,9 @@ module.exports = function (app) {
       type: DataTypes.TEXT,
       allowNull: false,
       unique: true,
+      validate: {
+        is: /^[a-zA-Z0-9_-]*$/
+      }
     },    
   }, {
     hooks: {
