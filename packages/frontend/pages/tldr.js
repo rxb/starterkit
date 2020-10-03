@@ -207,6 +207,7 @@ class Tldr extends React.Component {
 		const {store, isServer, pathname, query} = context;
 		const tldrId = query.tdlrId || 2; // default for now
 		const tldr = await store.dispatch(fetchTldr(tldrId));
+		console.log(tldr);
 		return {
 			tldrId: tldrId,
 			tldr: tldr.payload
@@ -468,8 +469,11 @@ class Tldr extends React.Component {
 
 
 
-const mapStateToProps = (state, ownProps) => {	
+const mapStateToProps = (state, ownProps) => {
+	console.log('mapstatetoprops  ')	
+	console.log(state.tldr)
 	return ({
+		tldr: state.tldr,
 		user: state.user,
 	});
 }

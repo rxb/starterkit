@@ -1,18 +1,11 @@
-//import 'isomorphic-unfetch';
-
+// TODO: clean up authentication, reconsider
 
 import App, {Container} from 'next/app';
 import Head from 'next/head';
 import React from 'react';
 import swatches from '../components/cinderblock/styles/swatches';
 
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk';
-import { apiMiddleware, isRSAA, RSAA } from 'redux-api-middleware';
-import { createWrapper } from "next-redux-wrapper";
-import reducer from '../reducers';
-
+import {wrapper} from '../store';
 
 import {
   setUser,
@@ -21,26 +14,6 @@ import {
   logInSuccess
 } from '../actions';
 
-
-const authMiddleware = ({getState, dispatch}) => next => action => {
-  const token = (getState().authentication && getState().authentication.token) ? getState().authentication.token : '';
-  if (action[RSAA]) {
-    action[RSAA].headers = {
-      Authorization: 'Bearer ' + token,
-      ...action[RSAA].headers
-    }
-  }
-  return next(action)
-}
-
-/*
-// NOTE: currently using feathers client for authentication, so this is commented
-const startState = {authentication: {}};
-if (process.browser) {
-  // all values from localstorage are strings until parsed, even null
-  startState['authentication'] = JSON.parse(localStorage.getItem('AUTHENTICATION')) || {};
-}
-*/
 
 // FEATHERS CLIENT: just using this for auth.
 // Commenting out socket transport until it's actually necessary in this project
@@ -61,35 +34,21 @@ feathersClient.configure(feathers.rest(apiUrl).fetch(fetch));
 //feathersClient.reAuthenticate();
 
 
-const makeStore = (initialState, options) => {
-    return createStore(
-      reducer,
-      //startState,
-      applyMiddleware(
-        thunk,
-        authMiddleware,
-        // refreshMiddleware,
-        apiMiddleware,
-      )
-    );
-};
+
+
 
 
 class ThisApp extends App {
 
   componentDidMount(){
-
     const storeAuthAndUser = (authResult, params, context) => {
       this.props.store.dispatch( logInSuccess(authResult.accessToken) );
       this.props.store.dispatch( setUser(authResult.user) );
     }
-
     feathersClient.on('login', storeAuthAndUser);
-
     feathersClient.on('logout', (authResult, params, context) => {
       this.props.store.dispatch( logOut() );
     });
-
     feathersClient.reAuthenticate()
       .then(storeAuthAndUser)
       .catch((error)=>{
@@ -219,7 +178,5 @@ class ThisApp extends App {
   }
 }
 
-// withRedux is glue to make redux work on nextjs ssr
-// as well as client side
-const wrapper = createWrapper(makeStore);
+//https://github.com/vercel/next.js/tree/canary/examples/with-redux-wrapper
 export default wrapper.withRedux(ThisApp);

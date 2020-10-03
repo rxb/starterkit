@@ -137,10 +137,9 @@ class Show extends React.Component {
 		// next router query bits only initially available to getInitialProps
 		const {store, isServer, pathname, query} = context;
 		const showId = query.showId;
-		const show = await store.dispatch(fetchShow(showId));
+		await store.dispatch(fetchShow(showId));		
 		return {
 			showId: showId,
-			show: show.payload
 		};
 	}
 
