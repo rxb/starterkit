@@ -88,7 +88,7 @@ const TldrCard = WithMatchMedia((props) => {
 		style
 	} = props;
 
-	const content = tldr.currentTldrVersion.content;
+	const content = tldr.data.currentTldrVersion.content;
 
 	return (
 		<Card style={[
@@ -108,13 +108,13 @@ const TldrCard = WithMatchMedia((props) => {
 								<Inline>
 									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
 									<Text type="small" inverted color="secondary">
-										{tldr.author.name}/{tldr.id}
+										{tldr.data.author.name}/{tldr.data.id}
 									</Text>
 								</Inline>
 							</FlexItem>
 							<FlexItem style={{alignItems: 'flex-end'}}>
 								<Text type="small" inverted color="secondary">
-									v{tldr.currentTldrVersion.version}
+									v{tldr.data.currentTldrVersion.version}
 								</Text>
 							</FlexItem>
 						</Flex>
@@ -206,12 +206,10 @@ class Tldr extends React.Component {
 		// next router query bits only initially available to getInitialProps
 		const {store, isServer, pathname, query} = context;
 		const tldrId = query.tdlrId || 2; // default for now
-		const tldr = await store.dispatch(fetchTldr(tldrId));
-		console.log(tldr);
+		await store.dispatch(fetchTldr(tldrId));
 		return {
-			tldrId: tldrId,
-			tldr: tldr.payload
-		};
+			tldrId: tldrId
+		}
 	}
 
 
@@ -219,10 +217,11 @@ class Tldr extends React.Component {
 
 		const {
 			user,
-			tldr,
+			tldr
 		} = this.props;
 
-		
+		console.log('render');
+		console.log(tldr);
 		
 		return (
 			<View style={{minHeight: '100vh'}}>
@@ -266,7 +265,7 @@ class Tldr extends React.Component {
 																		weight="strong"
 																		style={{lineHeight: 16}}
 																		>
-																		{tldr.upvotes}
+																		{tldr.data.upvotes}
 																	</Text>
 																	<Text 
 																		type="micro"
@@ -293,7 +292,7 @@ class Tldr extends React.Component {
 																	weight="strong"
 																	style={{lineHeight: 16, textAlign: 'right'}}
 																	>
-																	{tldr.downvotes}
+																	{tldr.data.downvotes}
 																</Text>
 																<Text 
 																	type="micro"
@@ -338,7 +337,7 @@ class Tldr extends React.Component {
 											<Chunk style={listItemStyle}>
 												<Flex>
 													<FlexItem>
-														<Text weight="strong">Issues ({tldr.issueCount})</Text>
+														<Text weight="strong">Issues ({tldr.data.issueCount})</Text>
 														<Text type="small" color="secondary">Report problems and suggest improvements</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
@@ -353,7 +352,7 @@ class Tldr extends React.Component {
 											<Chunk style={listItemStyle}>
 												<Flex>
 													<FlexItem >
-														<Text weight="strong">Forks ({tldr.forkCount})</Text>
+														<Text weight="strong">Forks ({tldr.data.forkCount})</Text>
 														<Text type="small" color="secondary">Use this card as a starting point for a new one</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
@@ -369,7 +368,7 @@ class Tldr extends React.Component {
 												<Flex>
 													<FlexItem >
 														<Text weight="strong">Versions</Text>
-														<Text type="small" color="secondary">This card is v{tldr.currentTldrVersion.version}, updated {dayjs(tldr.currentTldrVersion.createdAt).fromNow()}</Text>
+														<Text type="small" color="secondary">This card is v{tldr.data.currentTldrVersion.version}, updated {dayjs(tldr.data.currentTldrVersion.createdAt).fromNow()}</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon
@@ -385,12 +384,12 @@ class Tldr extends React.Component {
 													<FlexItem shrink justify="center">
 														<Avatar
 															size="medium"
-															source={{uri: tldr.author.photoUrl}}
+															source={{uri: tldr.data.author.photoUrl}}
 															/>
 													</FlexItem>
 													<FlexItem>
-														<Text weight="strong">{tldr.author.name}</Text>
-														<Text type="small" color="secondary">@{tldr.author.urlKey}</Text>
+														<Text weight="strong">{tldr.data.author.name}</Text>
+														<Text type="small" color="secondary">@{tldr.data.author.urlKey}</Text>
 													</FlexItem>
 												</Flex>
 											</Chunk>
@@ -422,10 +421,10 @@ class Tldr extends React.Component {
 									scrollItemWidth={300}
 									
 									items={[
-										tldr.currentTldrVersion.content,
-										tldr.currentTldrVersion.content,
-										tldr.currentTldrVersion.content,
-										tldr.currentTldrVersion.content,
+										tldr.data.currentTldrVersion.content,
+										tldr.data.currentTldrVersion.content,
+										tldr.data.currentTldrVersion.content,
+										tldr.data.currentTldrVersion.content,
 									]}
 									
 									renderItem={(item, i)=>{
@@ -470,7 +469,7 @@ class Tldr extends React.Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-	console.log('mapstatetoprops  ')	
+	console.log('mapstatetoprops')	
 	console.log(state.tldr)
 	return ({
 		tldr: state.tldr,

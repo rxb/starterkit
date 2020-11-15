@@ -158,11 +158,11 @@ class TldrEdit extends React.Component {
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
-										{ tldr.item.id &&
+										{ tldr.data.id &&
 										<TldrForm
 											initialFields={{
-												draftContent: JSON.stringify(tldr.item.draftContent, null, 2),
-												id: tldr.item.id,
+												draftContent: JSON.stringify(tldr.data.draftContent, null, 2),
+												id: tldr.data.id,
 												publish: false
 											}}
 											fieldErrors={tldr.error.fieldErrors}
@@ -191,7 +191,7 @@ class TldrEdit extends React.Component {
 													patchTldr(fields.id, fieldsCopy)
 														.then( response => {
 															if(!response.error){
-																Router.push({pathname:'/tldr', query: {tldrId: tldr.item.id}})
+																Router.push({pathname:'/tldr', query: {tldrId: tldr.data.id}})
 																	.then(()=>{
 																		this.props.addToast('tldr saved; nice work!');
 																	})

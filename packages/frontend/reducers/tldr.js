@@ -4,7 +4,7 @@ import{
 } from './utils.js'
 
 const startState = {
-  item: {},
+  data: {},
   error: {},
   loading: false
 };
@@ -25,7 +25,9 @@ const tldr = (state = startState, action) => {
 			newState = {...startState, loading: true}
 			return newState;
 		case 'FETCH_TLDR_SUCCESS':
-			newState = {...state, item: action.payload}
+			newState = {...state, data: action.payload}
+			console.log('FETCH_TLDR_SUCCESS')
+			console.log(newState);
 			return newState;
 
 		// CREATE
@@ -33,7 +35,7 @@ const tldr = (state = startState, action) => {
 			newState = {...startState, loading: true}
 			return newState;
 		case 'CREATE_TLDR_SUCCESS':
-			newState = {...state, loading: false, item: action.payload};
+			newState = {...state, loading: false, data: action.payload};
 			return newState;
 		case 'CREATE_TLDR_FAILURE':
 			newState = {...state, loading: false, error: parseFeathersError(action.payload.response)}
@@ -44,7 +46,7 @@ const tldr = (state = startState, action) => {
 			newState = {...state, loading: true}
 			return newState;
 		case 'PATCH_TLDR_SUCCESS':
-			newState = {...state, loading: false, item: action.payload};
+			newState = {...state, loading: false, data: action.payload};
 			return newState;
 		case 'PATCH_TLDR_FAILURE':
 			newState = {...state, loading: false, error: parseFeathersError(action.payload.response)}
