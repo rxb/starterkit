@@ -293,7 +293,7 @@ export function logInAndFetchUser(data) {
 export const fetchShowComments = (data) => ({
 	[RSAA]: {
 		types: ["FETCH_SHOW_COMMENTS", "FETCH_SHOW_COMMENTS_SUCCESS", "FETCH_SHOW_COMMENTS_FAILURE"],
-		endpoint: `${apiHost}show-comments/?${querystring.stringify({...data, '$limit': 100})}`,
+		endpoint: `${apiHost}show_comments/?${querystring.stringify({...data, '$limit': 100})}`,
 		method: 'GET',
  	}
 });

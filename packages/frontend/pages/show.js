@@ -50,6 +50,7 @@ import Page from '../components/Page';
 import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
 
 import swatches from '../components/cinderblock/styles/swatches';
+import { METRICS } from '../components/cinderblock/designConstants';
 
 
 const CommentForm = withFormState((props) => {
@@ -135,10 +136,17 @@ class Show extends React.Component {
 
 	static async getInitialProps (context) {
 		// next router query bits only initially available to getInitialProps
-		const {store, isServer, pathname, query} = context;
+		const {store, req, pathname, query} = context;
 		const showId = query.showId;
-		await store.dispatch(fetchShow(showId));		
+		const response = await store.dispatch(fetchShow(showId));
+		console.log('store');
+		console.log(JSON.stringify(store.getState()));
+		// theory: this store isn't the store anymore, it's some other smaller store
+		// store isn't being set up in the context correctly somehow
+
+		const isServer = !!req;	
 		return {
+			isServer,
 			showId: showId,
 		};
 	}
@@ -146,7 +154,6 @@ class Show extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			things: []
 		}
 	}
 
@@ -172,25 +179,26 @@ class Show extends React.Component {
 	render() {
 
 		const {
-			show = {},
+			showId = 0,
+			show,
 			showComments,
 			user,
 		} = this.props;
 
+		console.log('render');
+		console.log(this.props.showComments);
 
 		return (
 			<Page>
 				<Head>
-					<meta property='og:title' content={`Show: ${this.props.show.title}`} />
-					<meta property='og:image' content={this.props.show.photoUrl} />
-					<title>{this.props.show.title}</title>
+					<meta property='og:title' content={`Show: ${show.item.title}`} />
+					<meta property='og:image' content={show.item.photoUrl} />
+					<title>{show.item.title}</title>
 				</Head>
 
 
-
-
 				{/*
-					<Stripe image={show.photoUrl} style={{backgroundColor: '#eee'}}>
+					<Stripe image={show.item.photoUrl} style={{backgroundColor: '#eee'}}>
 					</Stripe>
 				*/}
 
@@ -198,7 +206,7 @@ class Show extends React.Component {
 					<Bounds>
 						<Sections>
 							<ImageSnap
-								image={show.photoUrl}
+								image={show.item.photoUrl}
 								/>
 							<Section>
 								<View style={{
@@ -207,14 +215,22 @@ class Show extends React.Component {
 									borderBottomColor: swatches.border
 									*/
 								}}>
+									<Chunk>
+										<View style={{backgroundColor: 'pink', padding: METRICS.space}}>
+											<Text>showId: {showId}</Text>
+											<Text>isServer: {this.props.isServer ? 'true' : 'false'}</Text>
+										</View>
+									</Chunk>
 									<Flex>
 										<FlexItem>
+											
 											<Chunk>
-												<Text type="pageHead">{show.title}</Text>
+												<Text type="pageHead">{show.item.title}</Text>
+
 												<Text color="secondary">
 													United States &middot;
 													1998
-													{ show.genres.map((genre, i)=>(
+													{ show.item.genres && show.item.genres.map((genre, i)=>(
 														<Fragment> &middot; {genre}</Fragment>
 													))}
 												</Text>
@@ -226,7 +242,7 @@ class Show extends React.Component {
 											>
 											<Chunk>
 												<Button
-													href={{pathname:'/showedit', query: {showId: show.id}}}
+													href={{pathname:'/showedit', query: {showId: show.item.id}}}
 													shape="Edit"
 													label="Edit show"
 													color="secondary"
@@ -242,7 +258,7 @@ class Show extends React.Component {
 						
 
 								<Chunk>
-									<Text>{show.description}</Text>
+									<Text>{show.item.description}</Text>
 								</Chunk>
 							</Section>
 							<Section>
@@ -330,8 +346,10 @@ class Show extends React.Component {
 
 
 const mapStateToProps = (state, ownProps) => {
+	console.log('state 2');
+	console.log(JSON.stringify(state.showComments));
 	return ({
-		//show: state.show,
+		show: state.show,
 		showComments: state.showComments,
 		user: state.user
 	});

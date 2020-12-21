@@ -5,7 +5,7 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const showComments = sequelizeClient.define('ShowComments', {
+  const showComments = sequelizeClient.define('show_comments', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

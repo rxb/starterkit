@@ -1,6 +1,6 @@
 const shows = require('./shows/shows.service.js');
 const users = require('./users/users.service.js');
-const showComments = require('./show-comments/show-comments.service.js');
+const showComments = require('./show_comments/show_comments.service.js');
 const uploads = require('./uploads/uploads.service.js');
 const tags = require('./tags/tags.service.js');
 const showsTags = require('./shows_tags/shows_tags.service.js');

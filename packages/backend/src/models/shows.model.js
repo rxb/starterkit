@@ -56,7 +56,7 @@ module.exports = function (app) {
   shows.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
-    shows.hasMany(models.ShowComments);
+    shows.hasMany(models.show_comments);
     shows.belongsToMany(models.tags, {
       through: 'shows_tags',
       as: 'tags',
