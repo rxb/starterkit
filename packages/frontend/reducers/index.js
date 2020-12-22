@@ -13,25 +13,7 @@ import toasts from './toasts'
 import users from './users'
 import user from './user'
 
-const hydrate = (state = {}, action) => {
-	console.log(action.type);
-	switch (action.type) {
-		/*
-		case HYDRATE:
-			 console.log('hydrate');
-			 console.log(state);
-			 return {
-				  ...state,
-				  ...action.payload
-			 }
-		*/
-		default:
-			return state;
-	}
-};
-
 const combinedReducers = combineReducers({
-	hydrate,
 	authentication,
 	events,
 	prompts,

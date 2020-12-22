@@ -21,8 +21,6 @@
     "fuse.js": "^6.4.3",
     "isomorphic-unfetch": "^3.1.0",
     "js-yaml": "^3.14.0",
-    "leaflet": "^1.7.1",
-    "leaflet.markercluster": "^1.4.1",
     "markdown-to-jsx": "^7.0.1",
     "next": "^10.0.2-canary.11",
     "next-cookies": "^2.0.3",

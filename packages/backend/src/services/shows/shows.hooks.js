@@ -6,12 +6,12 @@ const {
 // (and users/authors)
 const populateShowAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');
-  const { ShowComments, users, tags } = sequelize.models;
+  const { show_comments, users, tags } = sequelize.models;
   context.params.sequelize = {
     ...context.params.sequelize,
     include: [
       {
-        model: ShowComments,
+        model: show_comments,
         include: [ users ]
       },
       {

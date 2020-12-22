@@ -18,21 +18,6 @@ const authMiddleware = ({getState, dispatch}) => next => action => {
    return next(action)
  }
 
-/*
- const reducer = (state, action) => {
-   if (action.type === HYDRATE) {
-     const nextState = {
-       ...state, // use previous state
-       ...action.payload, // apply delta from hydration
-     }
-     if (state.count.count) nextState.count.count = state.count.count // preserve count value on client side navigation
-     return nextState
-   } else {
-     return combinedReducer(state, action)
-   }
- }
- */
-
 
 const makeStore = (initialState, options) => {
    return createStore(

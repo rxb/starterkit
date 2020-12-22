@@ -1,12 +1,13 @@
-// TODO: clean up authentication, reconsider
-
 import App, {Container} from 'next/app';
 import Head from 'next/head';
 import React from 'react';
+
+// design
 import swatches from '../components/cinderblock/styles/swatches';
+import { BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
 
+// redux
 import {wrapper} from '../store';
-
 import {
   setUser,
   logOut,
@@ -15,27 +16,24 @@ import {
 } from '../actions';
 
 
-// FEATHERS CLIENT: just using this for auth.
-// Commenting out socket transport until it's actually necessary in this project
+// FEATHERS CLIENT
+// just using this for auth
+// TODO: would be nice to do this without a client library at all
 import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
 import feathers from '@feathersjs/client'; // but we still need the original to configure
-
-//import io from 'socket.io-client';
-const apiUrl = 'http://localhost:3030';
-//const socket = io(apiUrl);
-
+const apiUrl = 'http://localhost:3030'; // TODO: shouldn't this be in an envirnoment config?
 const authenticationOptions = {};
 if (process.browser) {
   authenticationOptions["storage"] = window.localStorage
 }
 feathersClient.configure(feathers.authentication(authenticationOptions));
 feathersClient.configure(feathers.rest(apiUrl).fetch(fetch));
-//feathersClient.configure(feathers.socketio(socket));
-//feathersClient.reAuthenticate();
-
-
-
-
+/*
+// Commenting out socket transport until it's actually necessary for a project
+import io from 'socket.io-client';
+const socket = io(apiUrl);
+feathersClient.configure(feathers.socketio(socket));
+*/
 
 
 class ThisApp extends App {
@@ -56,16 +54,6 @@ class ThisApp extends App {
         // console.log(error);
       }
     );
-
-    /*
-    // comment out for now
-    // old non-feathersclient version of token management + user checking
-    this.props.store.subscribe(() => {
-      localStorage.setItem('AUTHENTICATION', JSON.stringify(this.props.store.getState().authentication));
-    });
-    this.props.store.dispatch(fetchUser('self'));
-    */
-
   }
 
   render () {
@@ -159,24 +147,25 @@ class ThisApp extends App {
           <link rel='stylesheet' type='text/css' href='/static/nprogress.css' />
           <link rel='stylesheet' type='text/css' href='/static/simplemde.min.css' />
 
-          {/*
-          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-          crossOrigin=""/>
-          <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
-              integrity="sha512-BBToHPBStgMiw0lD4AtkRIZmdndhB6aQbXpX7omcrXeG2PauGBl2lzq2xUZTxaLxYz5IDHlmneCZ1IJ+P3kYtQ=="
-              crossOrigin="" />
-          <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
-              integrity="sha512-RLEjtaFGdC4iQMJDbMzim/dOvAu+8Qp9sw7QE4wIMYcg2goVoivzwgSZq9CsIxp4xKAZPKh5J2f2lOko2Ze6FQ=="
-              crossOrigin="" />
-          */}
-
         </Head>
+
+        {/*
+          MATCHMEDIA HACK
+          at wider screens, prevent showing flash of narrow-screen styling
+        */}
+        <script dangerouslySetInnerHTML={{__html: `
+          if(window.innerWidth > ${BREAKPOINT_SIZES.medium}){
+            document.body.style.display = 'none';
+            window.addEventListener('load', function() {
+              document.body.style.display = '';
+            })
+          }
+        `}} />
+
         <Component {...pageProps} />
       </>
     )
   }
 }
 
-//https://github.com/vercel/next.js/tree/canary/examples/with-redux-wrapper
 export default wrapper.withRedux(ThisApp);

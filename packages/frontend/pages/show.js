@@ -139,10 +139,6 @@ class Show extends React.Component {
 		const {store, req, pathname, query} = context;
 		const showId = query.showId;
 		const response = await store.dispatch(fetchShow(showId));
-		console.log('store');
-		console.log(JSON.stringify(store.getState()));
-		// theory: this store isn't the store anymore, it's some other smaller store
-		// store isn't being set up in the context correctly somehow
 
 		const isServer = !!req;	
 		return {
@@ -158,7 +154,6 @@ class Show extends React.Component {
 	}
 
 	componentDidMount(){
-		// this.props.fetchShow(this.props.showId);
 		this.props.fetchShowComments({showId: this.props.showId});
 	}
 
@@ -184,9 +179,6 @@ class Show extends React.Component {
 			showComments,
 			user,
 		} = this.props;
-
-		console.log('render');
-		console.log(this.props.showComments);
 
 		return (
 			<Page>
@@ -346,8 +338,6 @@ class Show extends React.Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-	console.log('state 2');
-	console.log(JSON.stringify(state.showComments));
 	return ({
 		show: state.show,
 		showComments: state.showComments,
