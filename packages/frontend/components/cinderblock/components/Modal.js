@@ -90,6 +90,7 @@ class Modal extends React.Component{
 	}
 	componentWillUnmount(){
 		document.removeEventListener("keydown", this.onKeyPress, false);
+		clearAllBodyScrollLocks();
 	}
 
 	onKeyPress(event){
@@ -111,6 +112,10 @@ class Modal extends React.Component{
 	}
 
 	open(){
+		console.log('open')
+		console.log(this.targetElement)
+
+		
 		disableBodyScroll(this.targetElement);
 		const duration = 250;
 		this.setState({display: 'flex'})
@@ -124,6 +129,9 @@ class Modal extends React.Component{
 	}
 
 	close(){
+		console.log('close')
+		console.log(this.targetElement)
+
 		enableBodyScroll(this.targetElement);
 		const duration = 250;
 		Animated.timing(

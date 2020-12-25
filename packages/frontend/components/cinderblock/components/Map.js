@@ -1,7 +1,10 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, View} from 'react';
 import Text from './Text';
 
+const Map = () => <View />;
+export default Map;
 
+/*
 // LEAFLET MAP
 // Leaflet is very much not react-like
 // It doesn't even use modules
@@ -86,3 +89,5 @@ class Map extends React.Component {
 }
 
 export default Map;
+
+*/
