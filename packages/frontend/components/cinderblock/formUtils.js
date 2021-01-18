@@ -34,6 +34,8 @@ export const readFileAsDataUrl = (inputFile) => {
   });
 };
 
+
+// deprecated
 export const checkToastableErrors = (newProps, oldProps, messages) => {
 	for (const key in messages){
 		if(newProps[key].error && newProps[key].error !== oldProps[key].error){
@@ -43,4 +45,12 @@ export const checkToastableErrors = (newProps, oldProps, messages) => {
 			}
 		}
 	}
+}
+
+// Add toastable errors
+import { addToast } from '../../actions';
+export const addToastableErrors = (dispatch, item, messages) => {
+  if(item.error && messages[item.error.name]){
+    dispatch(addToast(messages[item.error.name]));
+  }
 }

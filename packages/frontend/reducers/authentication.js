@@ -1,3 +1,7 @@
+import{
+  parseFeathersError
+} from './utils.js'
+
 const authentication = (state = {}, action) => {
   switch (action.type) {
     case 'LOG_IN':
@@ -5,7 +9,7 @@ const authentication = (state = {}, action) => {
     case 'LOG_IN_SUCCESS':
     	return { token: action.payload.token, loading: false };
     case 'LOG_IN_FAILURE':
-      return { loading: false, error: action.payload.response }
+      return { loading: false, error: parseFeathersError(action.payload.response) }
     case 'REAUTHENTICATE':
       return { token: action.payload.token, loading: false };
     case 'LOG_OUT':

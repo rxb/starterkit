@@ -54,7 +54,7 @@ import {
 import LoginForm from './LoginForm';
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
-import { checkToastableErrors } from './cinderblock/formUtils';
+import { addToastableErrors } from './cinderblock/formUtils';
 
 
 
@@ -91,17 +91,13 @@ function Page (props) {
 	}, [user]);
 
 
-	// errors
-	// TODO: fix this. this won't work
+	// errors - do separate useEffect for each error checking
 	useEffect(()=>{
-		const messages = {
-			authentication: {
-				BadRequest: 'That was one bad request',
-				NotAuthenticated: 'You shall not pass'
-			}
-		};
-		//checkToastableErrors(this.props, prevProps, messages);
-	});
+		addToastableErrors(dispatch, authentication, {
+			BadRequest: 'That was one bad request',
+			NotAuthenticated: 'You shall not pass'
+		});
+	},[authentication]);
 
 
 
@@ -198,7 +194,6 @@ function Page (props) {
 							<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
 								<LoginForm
 									onSubmit={(fields)=>{
-										//this.props.logInAndFetchUser(fields);
 										dispatch(logIn());
 										feathersClient
 											.authenticate({strategy: 'local', email: fields.email, password: fields.password})
