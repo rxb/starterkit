@@ -130,8 +130,6 @@ class Modal extends React.Component{
 
 	close(){
 		console.log('close')
-		console.log(this.targetElement)
-
 		enableBodyScroll(this.targetElement);
 		const duration = 250;
 		Animated.timing(
@@ -227,7 +225,10 @@ class Modal extends React.Component{
 
 					{/* scrollview is blocking the rest */}
 
-					<ScrollView style={{/*backgroundColor: 'green'*/}}>
+					<ScrollView 
+						style={{/*backgroundColor: 'green'*/}} 
+						ref={this.targetRef}
+						>
 						{children}
 					</ScrollView>
 				</Animated.View>

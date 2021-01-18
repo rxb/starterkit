@@ -1,22 +1,17 @@
-import React, {Fragment} from 'react';
-import Head from 'next/head'
+import React, {Fragment, useState, useEffect, useRef} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import NProgress from 'nprogress'
 NProgress.configure({ trickle: true, trickleSpeed: 400, showSpinner: false });
 
 import Router from 'next/router'
-Router.onRouteChangeStart = (url) => {
-  console.log(`Loading: ${url}`)
-  NProgress.start()
-}
-Router.onRouteChangeComplete = () => NProgress.done()
-Router.onRouteChangeError = () => NProgress.done()
+Router.onRouteChangeStart = (url) => NProgress.start();
+Router.onRouteChangeComplete = () => NProgress.done();
+Router.onRouteChangeError = () => NProgress.done();
 
 
-import { connect } from 'react-redux';
 import {
 	addToast,
-	//logInAndFetchUser,
 	logIn,
 	logInFailure,
 	logOut,
@@ -62,69 +57,58 @@ import ConnectedPrompter from './ConnectedPrompter';
 import { checkToastableErrors } from './cinderblock/formUtils';
 
 
-class Page extends React.Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			modalVisible: false,
-		}
-		this.toggleModal = this.toggleModal.bind(this);
+
+// usePrevious hook
+// todo: pull this into another file to be reused
+function usePrevious (value) {
+	const ref = useRef();
+	useEffect(() => { 
+		ref.current = value 
+	}, [value]);
+	return ref.current;
+}
+
+function Page (props) {
+	
+	// data from redux
+	const dispatch = useDispatch(); 
+	const user = useSelector(state => state.user);
+	const authentication = useSelector(state => state.authentication);
+
+	// login modal
+	const [modalVisible, setModalVisible] = useState(false);
+	const toggleModal = () => {
+		setModalVisible(!modalVisible);
 	}
 
-	componentWillReceiveProps(nextProps) {
-
-		// going to try to do this in a chained/combo action
-
-		/*
-		// got auth, so get new user info
-		if (nextProps.authentication !== this.props.authentication) {
-			this.props.fetchUser('self');
-		}
-		*/
-
-
-	}
-
-	componentDidUpdate(prevProps){
-
+	// dismiss modal on login
+	const prevUser = usePrevious(user);
+	useEffect(()=>{
 		// got user, so dismiss modal
-		// could do this on auth change, but the user fetch makes the UI jump
-		if(prevProps.user !== this.props.user && this.state.modalVisible){
-			this.toggleModal();
-		}
+		if(prevUser !== user && modalVisible){
+			toggleModal();
+		} 
+	}, [user]);
 
-		// ERROR TOASTS
+
+	// errors
+	// TODO: fix this. this won't work
+	useEffect(()=>{
 		const messages = {
 			authentication: {
 				BadRequest: 'That was one bad request',
 				NotAuthenticated: 'You shall not pass'
 			}
 		};
-		checkToastableErrors(this.props, prevProps, messages);
-	}
+		//checkToastableErrors(this.props, prevProps, messages);
+	});
 
 
-	toggleModal() {
-		this.setState({modalVisible: !this.state.modalVisible})
-	}
 
-	render(){
+	return (
+		<View style={{minHeight: '100vh'}}>
 
-		const {
-			authentication = {},
-			children,
-			hideHeader,
-			logIn,
-			logInFailure,
-			logOut,
-			user = {}
-		} = this.props;
-
-		return (
-
-			<View style={{minHeight: '100vh'}}>
-
-				{ !hideHeader &&
+				{ !props.hideHeader &&
 				<Header maxWidth="auto">
 					<Flex direction="row">
 						<FlexItem>
@@ -136,28 +120,7 @@ class Page extends React.Component {
 							</Link>
 						</FlexItem>
 							<FlexItem style={{alignItems: 'flex-end'}}>
-									{/*
-									<Fragment>
-										{user.id &&
-											<Fragment>
-												<Inline>
-													<Avatar
-														source={{uri: user.photo}}
-														size="small"
-														/>
-													<Text>{user.name}</Text>
-													<Touch onPress={logOut}><Text color="tint">Log out</Text></Touch>
-												</Inline>
-
-											</Fragment>
-										}
-
-										{!user.id &&
-											<Touch onPress={this.toggleModal}><Text color="tint">Log in</Text></Touch>
-										}
-									</Fragment>
-									*/}
-
+									
 									<Fragment>
 										{user.id &&
 											<Fragment>
@@ -188,7 +151,7 @@ class Page extends React.Component {
 										}
 
 										{!user.id &&
-											<Touch onPress={this.toggleModal}><Text color="tint">Log in</Text></Touch>
+											<Touch onPress={toggleModal}><Text color="tint">Log in</Text></Touch>
 										}
 									</Fragment>
 							</FlexItem>
@@ -197,7 +160,7 @@ class Page extends React.Component {
 				}
 
 				<View style={{flex: 1}}>
-					{children}
+					{props.children}
 				</View>
 
 				{/*
@@ -222,8 +185,8 @@ class Page extends React.Component {
 				*/}
 
 				<Modal
-					visible={this.state.modalVisible}
-					onRequestClose={this.toggleModal}
+					visible={modalVisible}
+					onRequestClose={toggleModal}
 					>
 					<Stripe>
 						<Section type="pageHead">
@@ -236,12 +199,12 @@ class Page extends React.Component {
 								<LoginForm
 									onSubmit={(fields)=>{
 										//this.props.logInAndFetchUser(fields);
-										logIn();
+										dispatch(logIn());
 										feathersClient
 											.authenticate({strategy: 'local', email: fields.email, password: fields.password})
 											.then()
 											.catch((e)=>{
-												logInFailure(e)
+												dispatch(logInFailure(e));
 											});
 
 									}}
@@ -257,29 +220,10 @@ class Page extends React.Component {
 				<ConnectedPrompter />
 
 			</View>
-
-		);
-	}
+	);
 
 }
 
 
-const mapStateToProps = (state, ownProps) => {
-	return ({
-		user: state.user,
-		authentication: state.authentication,
-	});
-}
 
-const actionCreators = {
-	logIn,
-	logOut,
-	logInFailure,
-	addToast,
-	//logInAndFetchUser
-}
-
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(Page);
+export default Page;

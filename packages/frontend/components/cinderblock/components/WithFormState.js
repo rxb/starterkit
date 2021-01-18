@@ -3,7 +3,7 @@ import React from 'react';
 /*
 
 Fields.js
-Ultra-lightweight (1k) form helper for React
+Ultra-lightweight form helper for React
 
 */
 

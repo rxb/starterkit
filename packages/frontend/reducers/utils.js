@@ -24,72 +24,232 @@ export const parseFeathersError = (error) => {
   return error;
 }
 
-export const convertArrayToObject = (arr, keyField) => Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})));
 
 
-// Create Reducers
-// to generate reducers to handle the typical crud action types
-// with optional support for optimistic updating
-// and for customizing and adding action types
-export const createReducers = (actionKey, doOptimisticUpdate=false, customActionTypes={}) => {
+export const getItemsAndDefaultSort = (arr, keyField = 'id') => {
+	 let items = {};
+	 let defaultSort = [];
+	 arr.forEach(a => {
+		items[a[keyField]] = a;
+		defaultSort.push(a[keyField]);
+	 })
+	 return {items, defaultSort};
+};
 
-	const startState = {
-		items: [],
-		error: {},
-		loading: false
-	};
 
-	const defaultActionTypes = {
+// deprecated
+export const convertArrayToObject = ()=>{};
 
-		// FETCH
-		[`FETCH_${actionKey}`]: (state, action) => {
-			let newItem, newState, index;
+
+export const defaultStartState = {
+	items: {},
+	defaultSort: [],
+	error: {},
+	loading: false
+};
+
+export const createApiReducersObject = (actionKey, {
+		doOptimisticUpdate=false, 
+		insertIntoDefaultSort=(ids, newId)=>[...ids, newId],
+		startState = defaultStartState
+	}) => {
+
+
+	const apiReducersObject = {
+
+		// FETCH FIND
+		[`FIND_${actionKey}`]: (state, action) => {
 			return {
 				...startState,
 				loading: true
 			};
 		},
-		[`FETCH_${actionKey}_SUCCESS`]: (state, action) => {
-				return {
-					items: action.payload.data,
-					error: {},
-					loading: false
-				}
-		},
-		[`FETCH_${actionKey}_FAILURE`]: (state, action) => {
-			// handle these better
-			alert(`${action.payload.message}`);
-		},
-
-		// CREATE 
-		[`CREATE_${actionKey}`]: (state, action) => {
+		[`FIND_${actionKey}_SUCCESS`]: (state, action) => {
+			const {items, defaultSort} = getItemsAndDefaultSort(action.payload.data);
 			return {
-				items: [...state.items, action.payload],
+				...state,
+				items,
+				defaultSort,
 				error: {},
 				loading: false
 			}
 		},
+		[`FIND_${actionKey}_FAILURE`]: (state, action) => {
+			return {
+				...state,
+				error: parseFeathersError(action.payload.response),
+				loading: false
+			}
+		},
+
+		// FETCH GET
+		[`GET_${actionKey}`]: (state, action) => {
+			return {
+				...state,
+				error: {},
+				loading: true
+			};
+		},
+		[`GET_${actionKey}_SUCCESS`]: (state, action) => {
+			const items = {...state.items, [action.payload.id]: action.payload }
+			return {
+				...state,
+				items,
+				error: {},
+				loading: false
+			}
+		},
+		[`GET_${actionKey}_FAILURE`]: (state, action) => {
+			return {
+				...state,
+				error: parseFeathersError(action.payload.response),
+				loading: false
+			}
+		},
+
+
+		// CREATE 
+		[`CREATE_${actionKey}`]: (state, action) => {
+			if(doOptimisticUpdate){
+				// insert optimistic info
+				const items = { ...state.items, [action.payload.optimisticId]: action.payload};
+				const defaultSort = insertIntoDefaultSort(state.defaultSort, action.payload.optimisticId);
+				return {
+					...state,
+					items,
+					defaultSort,
+					error: {},
+					loading: false
+
+				}
+			}
+			else{
+				return {
+					...state,
+					error: {},
+					loading: true
+				};
+			}
+		},
 		[`CREATE_${actionKey}_SUCCESS`]: (state, action) => {
-			newState = {...state};
-			newComment = action.payload;
-			newState.items[findByOptimisticId(newState.items, action.meta.optimisticId)] = newComment;
-			return newState;
+			if(doOptimisticUpdate){
+				// commit optimistic info, going to leave optimisticId as key
+				const items = { ...state.items, [action.meta.optimisticId]: action.payload};
+				return{
+					...state,
+					items,
+					defaultSort,
+					error: {},
+					loading: false
+				}
+			}
+			else{
+				// insert
+				const items = { ...state.items, [action.payload.id]: action.payload};
+				const defaultSort = insertIntoDefaultSort(state.defaultSort, action.payload.id);
+				return {
+					...state,
+					items,
+					defaultSort,
+					error: {},
+					loading: false
+				}
+			}
 		},
 		[`CREATE_${actionKey}_FAILURE`]: (state, action) => {
-			newState = {...state};
-			newState.items.splice(findByOptimisticId(newState.items, action.meta.optimisticId), 1);
-			newState.error = parseFeathersError(action.payload.response);
-			return newState;
+			if(doOptimisticUpdate){
+				// rollback optimistic info, error
+				const items = {...state.items};
+				delete items[action.meta.optimisticId];
+				const defaultSort = state.defaultSort.filter(d=>(d==action.meta.optimisticId));
+				return{
+					...state,
+					items,
+					defaultSort,
+					error: parseFeathersError(action.payload.response),
+					loading: false
+				}
+			}
+			else{
+				// error
+				return {
+					...state,
+					error: parseFeathersError(action.payload.response),
+					loading: false
+				}
+			}
+		},
+
+		// PATCH
+		[`PATCH_${actionKey}`]: (state, action) => {
+			if(doOptimisticUpdate){
+				// insert optimistic info
+				const items = { 
+					...state.items, 
+					[action.payload.id]: {
+						...action.payload,
+						__rollback: { ...state.items[action.payload.id] }
+					}
+				};
+				return {
+					...state,
+					items,
+					error: {},
+					loading: false
+
+				}
+			}
+			else{
+				return {
+					...state,
+					error: {},
+					loading: true
+				};
+			}
+		},
+		[`PATCH_${actionKey}_SUCCESS`]: (state, action) => {
+			// interestingly, this works the same for optimistic or standard
+			const items = { ...state.items, [action.payload.id]: action.payload};
+			return {
+				...state,
+				items,
+				error: {},
+				loading: false
+			}
+		},
+		[`PATCH_${actionKey}_FAILURE`]: (state, action) => {
+			if(doOptimisticUpdate){
+				// rollback optimistic info, error
+				const items = {
+					...state.items,
+					[action.payload.id]: { ...state.items[action.payload.id].__rollback }
+				};
+				return{
+					...state,
+					items,
+					error: parseFeathersError(action.payload.response),
+					loading: false
+				}
+			}
+			else{
+				// error
+				return {
+					...state,
+					error: parseFeathersError(action.payload.response),
+					loading: false
+				}
+			}
 		},
 
 		// DELETE 
+		// Not going to do optimistic delete for now
 		[`DELETE_${actionKey}`]: (state, action) => {
 			// should probably do something
 			return state;
 		},
 		[`DELETE_${actionKey}_SUCCESS`]: (state, action) => {
 			newState = {...state};
-			newState.items.splice(newState.items.findIndex(comment => comment.id == action.payload.id), 1);
+			newState.items.splice(newState.items.findIndex(item => item.id == action.payload.id), 1);
 			return newState;
 		},
 		[`DELETE_${actionKey}_FAILURE`]: (state, action) => {
@@ -101,18 +261,19 @@ export const createReducers = (actionKey, doOptimisticUpdate=false, customAction
 		[`UPDATE_ERROR_${actionKey}`]: (state, action) => {
 			return {...state, error: action.payload};
 		}
-
 	};
-	const actionTypes = {...defaultActionTypes, ...customActionTypes};
-	
-	return (state = startState, action) => {
-		if( actionTypes[action.type] ){
-			return actionTypes[action.type](state, action);
+	return apiReducersObject;	
+}
+
+
+export const createReducersFromObject = (reducersObject) => {
+	return (state = defaultStartState, action) => {
+		if( reducersObject[action.type] ){
+			return reducersObject[action.type](state, action);
 		}
 		else{
 			// "default"
 			return state;
 		}
 	}
-
 }

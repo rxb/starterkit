@@ -4,75 +4,31 @@ import {v4 as uuid} from 'uuid';
 
 const apiHost = 'http://localhost:3030/';
 
-/*
-// GLOBAL MINOR UI
-export const showModal = (id, content) => ({
-    type: 'SHOW_MODAL',
-    payload: {content: content}
-});
 
-export const teardownModal = (id) => ({
-    type: 'TEARDOWN_MODAL',
-    payload: {content: content}
-});
+let optimisticIdCount = 0;
+const buildOptimisticActions = (baseType, data, extraPayload, extraMeta) => {
+	optimisticIdCount++;
+	let optimisticId = `optimistic_${optimisticIdCount}`;
+	return [
+		{
+			type: baseType,
+			payload: { ...data, ...extraPayload, optimisticId: optimisticId, optimistic: true},
+			meta: { optimisticId: optimisticId, ...extraMeta }
+	    },
+	    {
+			type: `${baseType}_SUCCESS`,
+			payload: (action, state, res) => {
+	        	return res.json().then( json => ({...json, ...extraPayload}) );
+	        },
+			meta: { optimisticId: optimisticId, ...extraMeta }
+	    },
+	    {
+			type: `${baseType}_FAILURE`,
+			meta: { optimisticId: optimisticId, ...extraMeta }
+		}
+	];
+}
 
-export const removeModal = (id) => ({
-    type: 'REMOVE_MODAL',
-    payload: {content: content}
-});
-*/
-
-
-// TOASTS
-export const addToast = (message, options = {}) => ({
-    type: 'ADD_TOAST',
-    payload: {
-	    message: message,
-	    id: uuid(),
-	    visible: true,
-	    ...options
-    }
-});
-
-export const hideToast = (id) => ({
-    type: 'HIDE_TOAST',
-    payload: {
-		id: id,
-    }
-});
-
-export const removeToast = (id) => ({
-    type: 'REMOVE_TOAST',
-    payload: {
-		id: id,
-    }
-});
-
-
-// PROMPTS
-export const addPrompt = (content, options = {}) => ({
-    type: 'ADD_PROMPT',
-    payload: {
-	    content: content,
-	    id: uuid(),
-	    showable: true,
-	    ...options
-    }
-});
-
-export const hidePrompt = (id) => ({
-    type: 'HIDE_PROMPT',
-    payload: {
-		id: id,
-    }
-});
-
-export const removePrompt = (id) => ({
-    type: 'REMOVE_PROMPT',
-    payload: {
-		id: id,
-    }
-});
 
 
 // CREATE SHOW
@@ -117,6 +73,46 @@ export const fetchShow = (id) => ({
 		types: ["FETCH_SHOW", "FETCH_SHOW_SUCCESS", "FETCH_SHOW_FAILURE"],
 		endpoint: `${apiHost}shows/${id}`,
 		method: 'GET',
+ 	}
+});
+
+
+// FETCH SHOW COMMENTS
+export const fetchShowComments = (data) => ({
+	[RSAA]: {
+		types: ["FIND_SHOW_COMMENTS", "FIND_SHOW_COMMENTS_SUCCESS", "FIND_SHOW_COMMENTS_FAILURE"],
+		endpoint: `${apiHost}show_comments/?${querystring.stringify({...data, '$limit': 100})}`,
+		method: 'GET',
+ 	}
+});
+
+
+export const updateErrorShowComment = (error) => ({
+    type: 'UPDATE_ERROR_SHOW_COMMENT',
+    payload: error
+})
+
+/*
+// CREATE SHOW COMMENT
+while reusing existing client data for associations (user/author)
+if you need stuff that can't be passed along in extraPayload, you'll need to wait for the real payload to be returned
+and to get associations on create, sequlize will make you requery in the after hook (see show-comments hooks)
+*/
+export const createShowComment = (data, extra) => ({
+	[RSAA]: {
+		endpoint: `${apiHost}show-comments/`,
+		method: 'POST',
+		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+		types: buildOptimisticActions('CREATE_SHOW_COMMENT', data, {user: extra.user})
+ 	}
+});
+
+export const deleteShowComment = (commentId) => ({
+	[RSAA]: {
+		types: ["DELETE_SHOW_COMMENT", "DELETE_SHOW_COMMENT_SUCCESS", "DELETE_SHOW_COMMENT_FAILURE"],
+		endpoint: `${apiHost}show-comments/${commentId}`,
+		method: 'DELETE',
  	}
 });
 
@@ -202,7 +198,6 @@ export const fetchTags = () => ({
  	}
 });
 
-
 // FETCH USERS
 export const fetchUsers = () => ({
 	[RSAA]: {
@@ -220,6 +215,9 @@ export const fetchUser = (id) => ({
 		method: 'GET',
  	}
 });
+
+
+
 
 
 // LOG IN
@@ -289,71 +287,76 @@ export function logInAndFetchUser(data) {
 	}
 }
 
-// FETCH SHOW COMMENTS
-export const fetchShowComments = (data) => ({
-	[RSAA]: {
-		types: ["FETCH_SHOW_COMMENTS", "FETCH_SHOW_COMMENTS_SUCCESS", "FETCH_SHOW_COMMENTS_FAILURE"],
-		endpoint: `${apiHost}show_comments/?${querystring.stringify({...data, '$limit': 100})}`,
-		method: 'GET',
- 	}
+/*
+// GLOBAL MINOR UI
+export const showModal = (id, content) => ({
+    type: 'SHOW_MODAL',
+    payload: {content: content}
 });
 
-// CREATE SHOW COMMENT
+export const teardownModal = (id) => ({
+    type: 'TEARDOWN_MODAL',
+    payload: {content: content}
+});
 
-/*
-example of optimistic posting
-while reusing existing client data for associations (user/author)
-if you need stuff that can't be passed along in extraPayload, you'll need to wait for the real payload to be returned
-and to get associations on create, sequlize will make you requery in the after hook (see show-comments hooks)
+export const removeModal = (id) => ({
+    type: 'REMOVE_MODAL',
+    payload: {content: content}
+});
 */
 
-let optimisticId = 0;
-const buildOptimisticActions = (baseType, data, extraPayload, extraMeta) => {
-	optimisticId++;
-	return [
-		{
-			type: baseType,
-			payload: { ...data, ...extraPayload, optimisticId: optimisticId, optimistic: true},
-			meta: { optimisticId: optimisticId, ...extraMeta }
-	    },
-	    {
-			type: `${baseType}_SUCCESS`,
-			payload: (action, state, res) => {
-	        	return res.json().then( json => ({...json, ...extraPayload}) );
-	        },
-			meta: { optimisticId: optimisticId, ...extraMeta }
-	    },
-	    {
-			type: `${baseType}_FAILURE`,
-			meta: { optimisticId: optimisticId, ...extraMeta }
-		}
-	];
-}
 
-export const updateErrorShowComment = (error) => ({
-    type: 'UPDATE_ERROR_SHOW_COMMENT',
-    payload: error
-})
+// TOASTS
+export const addToast = (message, options = {}) => ({
+	type: 'ADD_TOAST',
+	payload: {
+		message: message,
+		id: uuid(),
+		visible: true,
+		...options
+	}
+});
 
+export const hideToast = (id) => ({
+	type: 'HIDE_TOAST',
+	payload: {
+	  id: id,
+	}
+});
 
-export const createShowComment = (data, extra) => ({
-	[RSAA]: {
-		endpoint: `${apiHost}show-comments/`,
-		method: 'POST',
-		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-		body: JSON.stringify(data),
-		types: buildOptimisticActions('CREATE_SHOW_COMMENT', data, {user: extra.user})
- 	}
+export const removeToast = (id) => ({
+	type: 'REMOVE_TOAST',
+	payload: {
+	  id: id,
+	}
 });
 
 
-export const deleteShowComment = (commentId) => ({
-	[RSAA]: {
-		types: ["DELETE_SHOW_COMMENT", "DELETE_SHOW_COMMENT_SUCCESS", "DELETE_SHOW_COMMENT_FAILURE"],
-		endpoint: `${apiHost}show-comments/${commentId}`,
-		method: 'DELETE',
- 	}
+// PROMPTS
+export const addPrompt = (content, options = {}) => ({
+	type: 'ADD_PROMPT',
+	payload: {
+		content: content,
+		id: uuid(),
+		showable: true,
+		...options
+	}
 });
+
+export const hidePrompt = (id) => ({
+	type: 'HIDE_PROMPT',
+	payload: {
+	  id: id,
+	}
+});
+
+export const removePrompt = (id) => ({
+	type: 'REMOVE_PROMPT',
+	payload: {
+	  id: id,
+	}
+});
+
 
 
 

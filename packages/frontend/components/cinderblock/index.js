@@ -32,6 +32,7 @@ import Tabs from './components/Tabs';
 import Text from './components/Text';
 import TextInput from './components/TextInput';
 import Toaster from './components/Toaster';
+import useFormState from './components/UseFormState';
 import withFormState from './components/WithFormState';
 import { Image, View } from './primitives';
 
@@ -73,5 +74,6 @@ export {
 	TextInput,
 	Toaster,
 	View,
+	useFormState,
 	withFormState
 };

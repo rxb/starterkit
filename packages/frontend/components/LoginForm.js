@@ -6,36 +6,39 @@ import {
 	LoadingBlock,
 	Text,
 	TextInput,
-	withFormState
+	useFormState,
 } from './cinderblock';
 
 // TODO: maybe this should be a connected component. it's always used the same way.
 
-const LoginForm = withFormState((props) => {
+const LoginForm = (props) => {
+	
+	const formState = useFormState(props);
+
 	return(
 
 			<form name="loginForm">
 				<Chunk>
 					<TextInput
 						id="email"
-						value={props.getFieldValue('email')}
-						onChange={ e => props.setFieldValue('email', e.target.value) }
+						value={formState.getFieldValue('email')}
+						onChange={ e => formState.setFieldValue('email', e.target.value) }
 						keyboardType="email-address"
 						placeholder="email"
-						onSubmitEditing={props.handleSubmit}
+						onSubmitEditing={formState.handleSubmit}
 						/>
 					<TextInput
 						id="password"
-						value={props.getFieldValue('password')}
-						onChange={ e => props.setFieldValue('password', e.target.value) }
+						value={formState.getFieldValue('password')}
+						onChange={ e => formState.setFieldValue('password', e.target.value) }
 						secureTextEntry={true}
 						placeholder="password"
-						onSubmitEditing={props.handleSubmit}
+						onSubmitEditing={formState.handleSubmit}
 						/>
 				</Chunk>
 				<Chunk>
 					<Button
-						onPress={props.handleSubmit}
+						onPress={formState.handleSubmit}
 						accessibilityRole="submit"
 						isLoading={props.isLoading}
 						label="Log in"
@@ -45,6 +48,6 @@ const LoginForm = withFormState((props) => {
 			</form>
 
 	);
-});
+};
 
 export default LoginForm;

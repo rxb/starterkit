@@ -1,3 +1,7 @@
+// SHOW 
+// testing react hooks
+// see showconnect.js for the old way
+
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head';
@@ -173,6 +177,8 @@ class Show extends React.Component {
 
 	render() {
 
+		console.log('render');
+
 		const {
 			showId = 0,
 			show,
@@ -259,6 +265,7 @@ class Show extends React.Component {
 								</Chunk>
 
 								{showComments.items.map((comment, i)=>{
+
 									comment.user = comment.user || {};
 									return (
 										<Chunk key={i} style={{...(comment.optimistic ? {opacity:.5} : {}) }}>
@@ -336,12 +343,36 @@ class Show extends React.Component {
 	}
 }
 
-
+/*
 const mapStateToProps = (state, ownProps) => {
+	const showSelector = (show) => {
+		console.log('showSelector');
+		return show;
+	}
 	return ({
-		show: state.show,
+		show: showSelector(state.show),
 		showComments: state.showComments,
 		user: state.user
+	});
+}
+*/
+
+const mapStateToProps = (state, ownProps) => {
+
+	const getArrayByIds = (entities, ids) => ids.map( id => entities[id] );
+
+
+	//TODO: convert reducer generator to object + defaultSort array
+	//TODO: convert show / shows to the same reducer, consider extended info situation
+	//TODO: consider errors for single item, loading for single item vs loading for list, errors for list
+	// ok as far as i know you're only going to have an error for a single item
+	// and loading could just apply to everything tbh because who knows what is loading
+
+
+	return ({
+		show				: state.shows.items[ownProps.showId] || {item: {}},
+		showComments	: getArrayByIds(state.showComments.items, state.showComments.defaultSort) ,	
+		user				: state.user
 	});
 }
 

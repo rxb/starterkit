@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import Head from 'next/head'
 
 import styles from '../components/cinderblock/styles/styles';
@@ -34,7 +34,8 @@ import Page from '../components/Page';
 import LoginForm from '../components/LoginForm';
 import ShowCard from '../components/ShowCard';
 
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+
 import {
 	//logInAndFetchUser,
 	logIn,
@@ -79,42 +80,37 @@ const FakePrompt = (props) => {
 
 
 
-class Hello extends React.Component {
+function Hello() {
 
-	constructor(props){
-		super(props);
-		this.state = {
-			modalVisible: false,
-		}
-		this.toggleModal = this.toggleModal.bind(this);
+	// data from redux
+	const dispatch = useDispatch(); 
+	const shows = useSelector(state => state.shows);
+	const user = useSelector(state => state.user);
+	const authentication = useSelector(state => state.authentication);
+
+	// modal visibility
+	const [modalVisible, setModalVisible] = useState(false);
+	const toggleModal = () => {
+		setModalVisible(!modalVisible);
 	}
 
-	toggleModal() {
-		this.setState({modalVisible: !this.state.modalVisible})
-	}
+	// on mount
+	useEffect(() => {
+		dispatch(fetchShows());
+	}, []);
+  
 
-	static async getInitialProps(ctx){
-		return {}
-	}
-
-	componentDidMount(){
-		this.props.fetchShows();
-	}
-
-
-	_renderItemCard(show, i) {
+	const _renderItemCard = (show, i) => {
 		return(
 			<Chunk key={i}>
 				<Link style={styles.textTint} href={{pathname:'/show', query: {showId: show.id}}}>
 					<ShowCard show={show} />
-
-
 				</Link>
 			</Chunk>
 		);
 	}
 
-	_renderItemLinear(show, i) {
+	const _renderItemLinear = (show, i) => {
 		return(
 			<Chunk key={i}>
 				<Flex direction="row" growFactor={1}>
@@ -135,20 +131,7 @@ class Hello extends React.Component {
 	}
 
 
-
-	render() {
-
-		const {
-			authentication,
-			logIn,
-			logInFailure,
-			shows,
-			user
-		} = this.props
-
-
-
-		return (
+	return (
 		<Fragment>
 			<Page>
 
@@ -200,9 +183,9 @@ class Hello extends React.Component {
 													large: 3
 												}}
 												renderItem={{
-													//small: this._renderItemLinear,
-													small: this._renderItemCard,
-													medium: this._renderItemCard
+													//small: _renderItemLinear,
+													small: _renderItemCard,
+													medium: _renderItemCard
 												}}
 												scrollItemWidth={300}
 												items={shows.items}
@@ -245,9 +228,13 @@ class Hello extends React.Component {
 											<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
 												<LoginForm
 													onSubmit={(fields)=>{
-														//this.props.logInAndFetchUser(fields);
-														logIn();
-														feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password}).catch((e)=>logInFailure(e));
+														dispatch(logIn()); // start loading
+														feathersClient
+															.authenticate({strategy: 'local', email: fields.email, password: fields.password})
+															.then()
+															.catch((e)=>{
+																dispatch(logInFailure(e));
+															});
 													}}
 													isLoading={(authentication.loading || authentication.token)}
 													/>
@@ -256,7 +243,7 @@ class Hello extends React.Component {
 
 										<Chunk>
 											<Button
-												onPress={this.toggleModal}
+												onPress={toggleModal}
 												color="secondary"
 												label="Show modal"
 												width="full"
@@ -266,12 +253,12 @@ class Hello extends React.Component {
 												label="Toast me"
 												width="full"
 												onPress={()=>{
-													this.props.addToast("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.");
+													dispatch(addToast("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."));
 												}}
 												/>
 											<Button
 												onPress={()=>{
-													this.props.addPrompt(<FakePrompt />)
+													dispatch(addPrompt(<FakePrompt />))
 												}}
 												color="secondary"
 												label="Do a prompt"
@@ -301,8 +288,8 @@ class Hello extends React.Component {
 			</Page>
 
 				<Modal
-					visible={this.state.modalVisible}
-					onRequestClose={this.toggleModal}
+					visible={modalVisible}
+					onRequestClose={toggleModal}
 					>
 					<Stripe>
 						<Section type="pageHead">
@@ -314,7 +301,7 @@ class Hello extends React.Component {
 							</Chunk>
 						</Section>
 						<Section>
-							<form onSubmit={this.onSubmitHandler}>
+							<form>
 								<Chunk>
 									<Text type="label">Pick one of these</Text>
 									<Picker>
@@ -340,28 +327,5 @@ class Hello extends React.Component {
 			</Fragment>
 		);
 	}
-}
 
-
-const mapStateToProps = (state, ownProps) => {
-	return ({
-		shows: state.shows,
-		user: state.user,
-		authentication: state.authentication,
-	});
-}
-
-const actionCreators = {
-	fetchShows,
-	//logInAndFetchUser,
-	logIn,
-	logInFailure,
-	addToast,
-	addPrompt
-}
-
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(Hello);
-
+export default Hello;

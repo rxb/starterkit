@@ -14,6 +14,8 @@
     "@feathersjs/authentication-oauth": "^4.5.11",
     "@feathersjs/client": "^4.5.11",
     "@next/bundle-analyzer": "^10.0.4",
+    "@reduxjs/toolkit": "^1.5.0",
+    "@rtk-incubator/rtk-query": "^0.2.0",
     "accounting": "^0.4.1",
     "babel-plugin-react-native-web": "^0.14.10",
     "body-scroll-lock": "^3.1.5",
