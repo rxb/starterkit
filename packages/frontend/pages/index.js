@@ -1,6 +1,16 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import Head from 'next/head'
 
+import { connect, useDispatch, useSelector } from 'react-redux';
+import {
+	logIn,
+	logInFailure,
+	fetchShows,
+	addToast,
+	addPrompt
+} from '../actions';
+import feathersClient from '../components/FeathersClient';
+
 import styles from '../components/cinderblock/styles/styles';
 import swatches from '../components/cinderblock/styles/swatches';
 import {
@@ -27,26 +37,11 @@ import {
 	Stripe,
 	Text,
 	TextInput,
-	withFormState
 } from '../components/cinderblock';
 
 import Page from '../components/Page';
 import LoginForm from '../components/LoginForm';
 import ShowCard from '../components/ShowCard';
-
-import { connect, useDispatch, useSelector } from 'react-redux';
-
-import {
-	//logInAndFetchUser,
-	logIn,
-	logInFailure,
-	fetchShows,
-	addToast,
-	addPrompt
-} from '../actions';
-
-import feathersClient from '../components/FeathersClient';
-
 
 
 const FakePrompt = (props) => {

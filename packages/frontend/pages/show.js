@@ -2,14 +2,13 @@
 // testing react hooks
 // see showconnect.js for the old way
 
-import React, {Fragment} from 'react';
-import { connect } from 'react-redux';
+import React, {Fragment, useEffect, useState} from 'react';
+
 import Head from 'next/head';
 
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime'
-dayjs.extend(relativeTime)
 
+
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {
 	fetchShow,
 	createShowComment,
@@ -20,6 +19,12 @@ import {
 	addToast
 } from '../actions';
 
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
+
+import swatches from '../components/cinderblock/styles/swatches';
+import { METRICS } from '../components/cinderblock/designConstants';
 import {
 	Avatar,
 	Bounds,
@@ -47,33 +52,25 @@ import {
 	TextInput,
 	Touch,
 	View,
-	withFormState
+	useFormState
 } from '../components/cinderblock';
-
 import Page from '../components/Page';
+
 import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
 
-import swatches from '../components/cinderblock/styles/swatches';
-import { METRICS } from '../components/cinderblock/designConstants';
 
 
-const CommentForm = withFormState((props) => {
+const CommentForm = (props) => {
 
-	const {
-		getFieldValue,
-		setFieldValue,
-		handleSubmit,
-		resetFields,
-		fieldErrors = {}
-	} = props;
+	const formState = useFormState(props);
 
 	return(
 		<form>
 			<Chunk>
 				<TextInput
 					id="body"
-					value={getFieldValue('body')}
-					onChange={e => setFieldValue('body', e.target.value)}
+					value={formState.getFieldValue('body')}
+					onChange={e => formState.setFieldValue('body', e.target.value)}
 					placeholder="Post a comment about this show"
 					autoComplete="off"
 					multiline={true}
@@ -81,17 +78,17 @@ const CommentForm = withFormState((props) => {
 					numberOfLines={4}
 					maxLength={1000}
 					/>
-				<FieldError error={fieldErrors.body} />
+				<FieldError error={formState.fieldErrors.body} />
 			</Chunk>
 			<Chunk>
 				<Button
-					onPress={handleSubmit}
+					onPress={formState.handleSubmit}
 					label="Post Comment"
 					/>
 			</Chunk>
 		</form>
 	);
-});
+};
 
 
 const DeletePrompt = (props) => {
@@ -136,257 +133,200 @@ const DeletePrompt = (props) => {
 
 
 
-class Show extends React.Component {
+function Show(props) {
 
-	static async getInitialProps (context) {
-		// next router query bits only initially available to getInitialProps
-		const {store, req, pathname, query} = context;
-		const showId = query.showId;
-		const response = await store.dispatch(fetchShow(showId));
-
-		const isServer = !!req;	
-		return {
-			isServer,
-			showId: showId,
-		};
-	}
-
-	constructor(props){
-		super(props);
-		this.state = {
-		}
-	}
-
-	componentDidMount(){
-		this.props.fetchShowComments({showId: this.props.showId});
-	}
-
-	componentDidUpdate(prevProps){
-
-		// watching for toastable errors
-		// still feel like maybe this could go with form?
-		const messages = {
-			showComments: {
-				BadRequest: 'Something went wrong',
-				GeneralError: 'Something went wrong (GeneralError)',
-			}
-		};
-		checkToastableErrors(this.props, prevProps, messages);
-
-	}
-
-	render() {
-
-		console.log('render');
-
-		const {
-			showId = 0,
-			show,
-			showComments,
-			user,
-		} = this.props;
-
-		return (
-			<Page>
-				<Head>
-					<meta property='og:title' content={`Show: ${show.item.title}`} />
-					<meta property='og:image' content={show.item.photoUrl} />
-					<title>{show.item.title}</title>
-				</Head>
+	// data from redux
+	const dispatch = useDispatch(); 
+	const show = useSelector(state => state.show);
+	const showComments = useSelector(state => state.showComments);
+	const user = useSelector(state => state.user);
 
 
-				{/*
-					<Stripe image={show.item.photoUrl} style={{backgroundColor: '#eee'}}>
-					</Stripe>
-				*/}
+	// mount / fetch
+	useEffect(()=>{
+		dispatch(fetchShowComments({showId: props.showId}));
+	}, []);
 
-				<Stripe>
-					<Bounds>
-						<Sections>
-							<ImageSnap
-								image={show.item.photoUrl}
-								/>
-							<Section>
-								<View style={{
-									/*
-									borderBottomWidth: 1,
-									borderBottomColor: swatches.border
-									*/
-								}}>
-									<Chunk>
-										<View style={{backgroundColor: 'pink', padding: METRICS.space}}>
-											<Text>showId: {showId}</Text>
-											<Text>isServer: {this.props.isServer ? 'true' : 'false'}</Text>
-										</View>
-									</Chunk>
-									<Flex>
-										<FlexItem>
-											
-											<Chunk>
-												<Text type="pageHead">{show.item.title}</Text>
 
-												<Text color="secondary">
-													United States &middot;
-													1998
-													{ show.item.genres && show.item.genres.map((genre, i)=>(
-														<Fragment> &middot; {genre}</Fragment>
-													))}
-												</Text>
-											</Chunk>
-										</FlexItem>
-										<FlexItem
-											shrink
-											style={{justifyContent: 'flex-end'}}
-											>
-											<Chunk>
-												<Button
-													href={{pathname:'/showedit', query: {showId: show.item.id}}}
-													shape="Edit"
-													label="Edit show"
-													color="secondary"
-													variant={{
-														small: 'iconOnly',
-														large: 'shrink'
-													}}
-													/>
-											</Chunk>
-										</FlexItem>
-									</Flex>
-								</View>
-						
+	// errors - do separate useEffect for each error checking
+	useEffect(()=>{
+		addToastableErrors(dispatch, showComments, {
+			BadRequest: 'Something went wrong',
+			GeneralError: 'Something went wrong (GeneralError)',
+	});
+	},[showComments]);
 
-								<Chunk>
-									<Text>{show.item.description}</Text>
-								</Chunk>
-							</Section>
-							<Section>
-								<Chunk>
-									<Text type="sectionHead">Comments</Text>
-								</Chunk>
+	const { showId } = props;
 
-								{showComments.items.map((comment, i)=>{
+	return (
+		<Page>
+			<Head>
+				<meta property='og:title' content={`Show: ${show.item.title}`} />
+				<meta property='og:image' content={show.item.photoUrl} />
+				<title>{show.item.title}</title>
+			</Head>
 
-									comment.user = comment.user || {};
-									return (
-										<Chunk key={i} style={{...(comment.optimistic ? {opacity:.5} : {}) }}>
-											<Flex>
-												<FlexItem shrink>
-													<Avatar
-														source={{uri: comment.user.photoUrl}}
-														size="medium"
-														/>
-												</FlexItem>
-												<FlexItem>
-													<Text>{comment.body}</Text>
-													<Text>
-														<Text type="small" color="secondary">{comment.user.name} </Text>
-														<Text type="small" color="hint">&middot; {dayjs(comment.createdAt).fromNow()} </Text>
-														{ comment.user.id == user.id &&
-															<Fragment>
-																<Link onPress={()=>{
-																	this.props.addPrompt(
-																		<DeletePrompt
-																			comment={comment}
-																			deleteShowComment={this.props.deleteShowComment}
-																			/>
-																	);
-																}}>
-																	<Text type="small" color="hint">&middot; Delete</Text>
-																</Link>
-															</Fragment>
-														}
-													</Text>
-												</FlexItem>
-											</Flex>
-										</Chunk>
-									);
-								})}
-
-								{user.id &&
-									<Fragment>
-										<CommentForm
-											initialFields={{
-												body: ''
-											}}
-											fieldErrors={showComments.error.fieldErrors}
-											onSubmit={ (fields, context) => {
-												const validators = {
- 													body: {
-											        	notEmpty: {
-											        		msg: "Comment can't be blank"
-											        	},
-											        	notContains: {
-											        		args: "garbage",
-											        		msg: "No comments about garbage, please!"
-											        	}
-										        	}
-										        }
-										        const error = runValidations(fields, validators);
-										        this.props.updateErrorShowComment(error);
-
-										        if(!error.errorCount){
-													const data = { ...fields, showId: this.props.show.id };
-													this.props.createShowComment(data, { user: this.props.user } );
-													context.resetFields();
-												}
-											}}
-											/>
-									</Fragment>
-								}
-
-							</Section>
-						</Sections>
-					</Bounds>
+			{/*
+				<Stripe image={show.item.photoUrl} style={{backgroundColor: '#eee'}}>
 				</Stripe>
-			</Page>
-		);
-	}
+			*/}
+
+			<Stripe>
+				<Bounds>
+					<Sections>
+						<ImageSnap
+							image={show.item.photoUrl}
+							/>
+						<Section>
+							<View style={{
+								/*
+								borderBottomWidth: 1,
+								borderBottomColor: swatches.border
+								*/
+							}}>
+								<Chunk>
+									<View style={{backgroundColor: 'pink', padding: METRICS.space}}>
+										<Text>showId: {showId}</Text>
+										<Text>isServer: {props.isServer ? 'true' : 'false'}</Text>
+									</View>
+								</Chunk>
+								<Flex>
+									<FlexItem>
+										
+										<Chunk>
+											<Text type="pageHead">{show.item.title}</Text>
+
+											<Text color="secondary">
+												United States &middot;
+												1998
+												{ show.item.genres && show.item.genres.map((genre, i)=>(
+													<Fragment> &middot; {genre}</Fragment>
+												))}
+											</Text>
+										</Chunk>
+									</FlexItem>
+									<FlexItem
+										shrink
+										style={{justifyContent: 'flex-end'}}
+										>
+										<Chunk>
+											<Button
+												href={{pathname:'/showedit', query: {showId: show.item.id}}}
+												shape="Edit"
+												label="Edit show"
+												color="secondary"
+												variant={{
+													small: 'iconOnly',
+													large: 'shrink'
+												}}
+												/>
+										</Chunk>
+									</FlexItem>
+								</Flex>
+							</View>
+					
+
+							<Chunk>
+								<Text>{show.item.description}</Text>
+							</Chunk>
+						</Section>
+						<Section>
+							<Chunk>
+								<Text type="sectionHead">Comments</Text>
+							</Chunk>
+
+							{showComments.items && showComments.items.map((comment, i)=>{
+
+								comment.user = comment.user || {};
+								return (
+									<Chunk key={i} style={{...(comment.optimistic ? {opacity:.5} : {}) }}>
+										<Flex>
+											<FlexItem shrink>
+												<Avatar
+													source={{uri: comment.user.photoUrl}}
+													size="medium"
+													/>
+											</FlexItem>
+											<FlexItem>
+												<Text>{comment.body}</Text>
+												<Text>
+													<Text type="small" color="secondary">{comment.user.name} </Text>
+													<Text type="small" color="hint">&middot; {dayjs(comment.createdAt).fromNow()} </Text>
+													{ comment.user.id == user.id &&
+														<Fragment>
+															<Link onPress={()=>{
+																dispatch(addPrompt(
+																	<DeletePrompt
+																		comment={comment}
+																		deleteShowComment={dispatch(deleteShowComment)}
+																		/>
+																));
+															}}>
+																<Text type="small" color="hint">&middot; Delete</Text>
+															</Link>
+														</Fragment>
+													}
+												</Text>
+											</FlexItem>
+										</Flex>
+									</Chunk>
+								);
+							})}
+
+							{user.id &&
+								<Fragment>
+									<CommentForm
+										initialFields={{
+											body: ''
+										}}
+										fieldErrors={showComments.error.fieldErrors}
+										onSubmit={ (fields, context) => {
+											const validators = {
+												body: {
+													notEmpty: {
+														msg: "Comment can't be blank"
+													},
+													notContains: {
+														args: "garbage",
+														msg: "No comments about garbage, please!"
+													}
+												}
+												}
+												const error = runValidations(fields, validators);
+												dispatch(updateErrorShowComment(error));
+
+												if(!error.errorCount){
+												const data = { ...fields, showId: show.id };
+												dispatch(createShowComment(data, { user: user } ));
+												context.resetFields();
+											}
+										}}
+										/>
+								</Fragment>
+							}
+
+						</Section>
+					</Sections>
+				</Bounds>
+			</Stripe>
+		</Page>
+	);
+
 }
 
-/*
-const mapStateToProps = (state, ownProps) => {
-	const showSelector = (show) => {
-		console.log('showSelector');
-		return show;
-	}
-	return ({
-		show: showSelector(state.show),
-		showComments: state.showComments,
-		user: state.user
-	});
-}
-*/
+Show.getInitialProps = async (context) => {
+	// next router query bits only initially available to getInitialProps
+	const {store, req, pathname, query} = context;
+	const showId = query.showId;
+	const response = await store.dispatch(fetchShow(showId));
 
-const mapStateToProps = (state, ownProps) => {
-
-	const getArrayByIds = (entities, ids) => ids.map( id => entities[id] );
-
-
-	//TODO: convert reducer generator to object + defaultSort array
-	//TODO: convert show / shows to the same reducer, consider extended info situation
-	//TODO: consider errors for single item, loading for single item vs loading for list, errors for list
-	// ok as far as i know you're only going to have an error for a single item
-	// and loading could just apply to everything tbh because who knows what is loading
-
-
-	return ({
-		show				: state.shows.items[ownProps.showId] || {item: {}},
-		showComments	: getArrayByIds(state.showComments.items, state.showComments.defaultSort) ,	
-		user				: state.user
-	});
+	const isServer = !!req;	
+	return {
+		isServer,
+		showId: showId,
+	};
 }
 
-const actionCreators = {
-	createShowComment,
-	deleteShowComment,
-	updateErrorShowComment,
-	fetchShowComments,
-	fetchShow,
-	addPrompt,
-	addToast,
-};
 
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(Show);
+
+export default Show;
