@@ -49,8 +49,8 @@ export const checkToastableErrors = (newProps, oldProps, messages) => {
 
 // Add toastable errors
 import { addToast } from '../../actions';
-export const addToastableErrors = (dispatch, item, messages) => {
-  if(item.error && messages[item.error.name]){
-    dispatch(addToast(messages[item.error.name]));
+export const addToastableErrors = (dispatch, error, messages) => {
+  if(error && messages[error.name]){
+    dispatch(addToast(messages[error.name]));
   }
 }

@@ -1,23 +1,30 @@
 // SHOW 
-// testing react hooks
-// see showconnect.js for the old way
+// testing cache managers instead of redux y friends
+// see showconnect.js and showhooks.js for others
+
 
 import React, {Fragment, useEffect, useState} from 'react';
 
-import Head from 'next/head';
+import {
+	fetcher,
+	getShowUrl,
+	useShow,
+	useShowComments,
+} from '../swr';
 
 
-
+// Redux
+// leave in for now, replace piece by piece
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {
-	fetchShow,
 	createShowComment,
 	deleteShowComment,
-	fetchShowComments,
 	updateErrorShowComment,
 	addPrompt,
 	addToast
 } from '../actions';
+
+
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -55,15 +62,12 @@ import {
 	useFormState
 } from '../components/cinderblock';
 import Page from '../components/Page';
+import Head from 'next/head';
 
-import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
-
-
+import { runValidations, readFileAsDataUrl, addToastableErrors } from '../components/cinderblock/formUtils';
 
 const CommentForm = (props) => {
-
 	const formState = useFormState(props);
-
 	return(
 		<form>
 			<Chunk>
@@ -134,40 +138,37 @@ const DeletePrompt = (props) => {
 
 
 function Show(props) {
+	
+	// passing in props.show from getInitialProps avoids second call
+	const { data: showData, error: showError } = useShow(props.showId, props.show);
+
+
+	const { data: showCommentsData, error: showCommentsError } = useShowComments(props.showId);
 
 	// data from redux
 	const dispatch = useDispatch(); 
-	const show = useSelector(state => state.show);
-	const showComments = useSelector(state => state.showComments);
 	const user = useSelector(state => state.user);
-
-
-	// mount / fetch
-	useEffect(()=>{
-		dispatch(fetchShowComments({showId: props.showId}));
-	}, []);
 
 
 	// errors - do separate useEffect for each error checking
 	useEffect(()=>{
-		addToastableErrors(dispatch, showComments, {
+		addToastableErrors(dispatch, showCommentsError, {
 			BadRequest: 'Something went wrong',
 			GeneralError: 'Something went wrong (GeneralError)',
 	});
-	},[showComments]);
+	},[showCommentsError]);
 
-	const { showId } = props;
 
 	return (
 		<Page>
 			<Head>
-				<meta property='og:title' content={`Show: ${show.item.title}`} />
-				<meta property='og:image' content={show.item.photoUrl} />
-				<title>{show.item.title}</title>
+				<meta property='og:title' content={`Show: ${showData.title}`} />
+				<meta property='og:image' content={showData.photoUrl} />
+				<title>{showData.title}</title>
 			</Head>
 
 			{/*
-				<Stripe image={show.item.photoUrl} style={{backgroundColor: '#eee'}}>
+				<Stripe image={showData.photoUrl} style={{backgroundColor: '#eee'}}>
 				</Stripe>
 			*/}
 
@@ -175,7 +176,7 @@ function Show(props) {
 				<Bounds>
 					<Sections>
 						<ImageSnap
-							image={show.item.photoUrl}
+							image={showData.photoUrl}
 							/>
 						<Section>
 							<View style={{
@@ -186,7 +187,7 @@ function Show(props) {
 							}}>
 								<Chunk>
 									<View style={{backgroundColor: 'pink', padding: METRICS.space}}>
-										<Text>showId: {showId}</Text>
+										<Text>showId: {props.showId}</Text>
 										<Text>isServer: {props.isServer ? 'true' : 'false'}</Text>
 									</View>
 								</Chunk>
@@ -194,12 +195,12 @@ function Show(props) {
 									<FlexItem>
 										
 										<Chunk>
-											<Text type="pageHead">{show.item.title}</Text>
+											<Text type="pageHead">{showData.title}</Text>
 
 											<Text color="secondary">
 												United States &middot;
 												1998
-												{ show.item.genres && show.item.genres.map((genre, i)=>(
+												{ showData.genres && showData.genres.map((genre, i)=>(
 													<Fragment> &middot; {genre}</Fragment>
 												))}
 											</Text>
@@ -211,7 +212,7 @@ function Show(props) {
 										>
 										<Chunk>
 											<Button
-												href={{pathname:'/showedit', query: {showId: show.item.id}}}
+												href={{pathname:'/showedit', query: {showId: showData.id}}}
 												shape="Edit"
 												label="Edit show"
 												color="secondary"
@@ -227,7 +228,7 @@ function Show(props) {
 					
 
 							<Chunk>
-								<Text>{show.item.description}</Text>
+								<Text>{showData.description}</Text>
 							</Chunk>
 						</Section>
 						<Section>
@@ -235,7 +236,7 @@ function Show(props) {
 								<Text type="sectionHead">Comments</Text>
 							</Chunk>
 
-							{showComments.items && showComments.items.map((comment, i)=>{
+							{showCommentsData && showCommentsData.map((comment, i)=>{
 
 								comment.user = comment.user || {};
 								return (
@@ -279,7 +280,7 @@ function Show(props) {
 										initialFields={{
 											body: ''
 										}}
-										fieldErrors={showComments.error.fieldErrors}
+										fieldErrors={showCommentsError.fieldErrors}
 										onSubmit={ (fields, context) => {
 											const validators = {
 												body: {
@@ -315,16 +316,20 @@ function Show(props) {
 }
 
 Show.getInitialProps = async (context) => {
+
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
 	const showId = query.showId;
-	const response = await store.dispatch(fetchShow(showId));
-
 	const isServer = !!req;	
+
+	// fetch and pass as props, using in the useSWR as intitialData
+	const show = await fetcher(getShowUrl(showId));
 	return {
 		isServer,
 		showId: showId,
+		show
 	};
+
 }
 
 
