@@ -10,7 +10,7 @@ import {
 	getShowUrl,
 	useShow,
 	useShowComments,
-	createShowComment
+	postShowComment
 } from '../swr';
 
 
@@ -156,7 +156,7 @@ function Show(props) {
 	
 	// passing in props.show from getInitialProps avoids second call
 	const { data: showData, error: showError } = useShow(props.showId, props.show);
-	const { data: showCommentsData, error: showCommentsError } = useShowComments(props.showId);
+	const { data: showCommentsData, error: showCommentsError, mutate: showCommentsMutate } = useShowComments(props.showId);
 
 	// data from redux
 	const dispatch = useDispatch(); 
@@ -312,7 +312,7 @@ function Show(props) {
 
 											if(!error.errorCount){
 												const data = { ...fields, showId: showData.id };
-												createShowComment(data, authentication.token);
+												showCommentsMutate(postShowComment(data, authentication.token));
 												//resetFields();
 											}
 										}}
