@@ -20,7 +20,8 @@ const authMiddleware = ({getState, dispatch}) => next => action => {
 
 
 const makeStore = (initialState, options) => {
-   return createStore(
+
+   const createdStore =  createStore(
      reducer,
      applyMiddleware(
        thunkMiddleware,
@@ -28,6 +29,8 @@ const makeStore = (initialState, options) => {
        apiMiddleware,
      )
    );
+   console.log(createdStore);
+   return createdStore;
 };
 
 export const wrapper = createWrapper(makeStore)

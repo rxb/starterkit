@@ -19,7 +19,7 @@ const combinedReducers = combineReducers({
 	prompts,
 	show,
 	shows,
-	showComments,
+	//showComments,
 	tags,
 	tldr,
 	tldrs,

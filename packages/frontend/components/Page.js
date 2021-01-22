@@ -75,6 +75,7 @@ function Page (props) {
 	const user = useSelector(state => state.user);
 	const authentication = useSelector(state => state.authentication);
 
+
 	// login modal
 	const [modalVisible, setModalVisible] = useState(false);
 	const toggleModal = () => {
@@ -99,7 +100,7 @@ function Page (props) {
 		});
 	},[authentication]);
 
-
+	const userMenu = useRef(null);
 
 	return (
 		<View style={{minHeight: '100vh'}}>
@@ -120,7 +121,7 @@ function Page (props) {
 									<Fragment>
 										{user.id &&
 											<Fragment>
-												<Touch onPress={()=> this.userMenu.toggle()}>
+												<Touch onPress={()=> userMenu.current.toggle()}>
 													<Inline>
 														<Avatar
 															source={{uri: user.photoUrl}}
@@ -130,7 +131,7 @@ function Page (props) {
 													</Inline>
 												</Touch>
 
-												<Menu ref={ref => this.userMenu = ref}>
+												<Menu ref={userMenu}>
 													<Sectionless>
 														<Chunk>
 															{ ['Profile', 'Settings', 'Log out'].map((item, i)=>(

@@ -1,6 +1,7 @@
-import App, {Container} from 'next/app';
 import Head from 'next/head';
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+
 
 // design
 import swatches from '../components/cinderblock/styles/swatches';
@@ -36,12 +37,13 @@ feathersClient.configure(feathers.socketio(socket));
 */
 
 
-class ThisApp extends App {
+function ThisApp(props) {
 
-  componentDidMount(){
+    const dispatch = useDispatch();
+
     const storeAuthAndUser = (authResult, params, context) => {
-      this.props.store.dispatch( logInSuccess(authResult.accessToken) );
-      this.props.store.dispatch( setUser(authResult.user) );
+      dispatch( logInSuccess(authResult.accessToken) );
+      dispatch( setUser(authResult.user) );
     }
     feathersClient.on('login', storeAuthAndUser);
     feathersClient.on('logout', (authResult, params, context) => {
@@ -54,10 +56,8 @@ class ThisApp extends App {
         // console.log(error);
       }
     );
-  }
 
-  render () {
-    const {Component, pageProps, store} = this.props;
+    const {Component, pageProps, store} = props;
     return (
       <>
         <Head>
@@ -165,7 +165,6 @@ class ThisApp extends App {
         <Component {...pageProps} />
       </>
     )
-  }
 }
 
 export default wrapper.withRedux(ThisApp);
