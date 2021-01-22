@@ -153,12 +153,18 @@ const DeletePrompt = (props) => {
 
 
 function Show(props) {
-	
-	// passing in props.show from getInitialProps avoids second call
-	const { data: showData, error: showError } = useShow(props.showId, props.show);
-	const { data: showCommentsData, error: showCommentsError, mutate: showCommentsMutate } = useShowComments(props.showId);
+	const { 
+		data: showData, 
+		error: showError 
+	} = useShow(props.showId, props.show); // passing in props.show from getInitialProps
+	const { 
+		data: showCommentsData, 
+		error: showCommentsError, 
+		mutate: showCommentsMutate 
+	} = useShowComments(props.showId);
 
 	// data from redux
+	// todo: remove these
 	const dispatch = useDispatch(); 
 	const user = useSelector(state => state.user);
 	const authentication = useSelector(state => state.authentication);
@@ -295,7 +301,7 @@ function Show(props) {
 											body: ''
 										}}
 										fieldErrors={showCommentsError?.fieldErrors}
-										onSubmit={ (fields, context) => {
+										onSubmit={ async (fields, context) => {
 											const validators = {
 												body: {
 													notEmpty: {
@@ -312,7 +318,8 @@ function Show(props) {
 
 											if(!error.errorCount){
 												const data = { ...fields, showId: showData.id };
-												showCommentsMutate(postShowComment(data, authentication.token));
+												await postShowComment(data, authentication.token)
+												showCommentsMutate();
 												//resetFields();
 											}
 										}}

@@ -59,6 +59,17 @@ function Scratch(props) {
 	const {data: showCommentsData, mutate: showCommentsMutate} = useSWR(getShowCommentsUrl(showId), fetcher);
 
 
+	/*
+
+	swr is just a cache
+	and mutate is just a trigger to update the cache
+	all fetching is independent
+	except in useSWR it needs to be able to construct its own refresh call
+	it's very very very simple
+	with very limited magic going on
+
+	*/
+
 
 		return (
 			<Page>
@@ -92,6 +103,8 @@ function Scratch(props) {
 										label="add comment" 
 										onPress={async ()=>{
 											const data = {body: 'this is a new comment', showId}
+											// directly update cache 
+											// (fyi: feathers list data is nesty. that's why is such an ugly object)
 											mutate(getShowCommentsUrl(showId), {
 												...showCommentsData, 
 												data: [
@@ -99,7 +112,9 @@ function Scratch(props) {
 													data
 												]
 											}, false);
+											// do call
 											await postShowComment(data, authentication.token);
+											// tell cache to update itself
 											mutate(getShowCommentsUrl(showId));
 										}}
 										/>
