@@ -40,14 +40,13 @@ feathersClient.configure(feathers.socketio(socket));
 function ThisApp(props) {
 
     const dispatch = useDispatch();
-
     const storeAuthAndUser = (authResult, params, context) => {
       dispatch( logInSuccess(authResult.accessToken) );
       dispatch( setUser(authResult.user) );
     }
     feathersClient.on('login', storeAuthAndUser);
     feathersClient.on('logout', (authResult, params, context) => {
-      this.props.store.dispatch( logOut() );
+      dispatch( logOut() );
     });
     feathersClient.reAuthenticate()
       .then(storeAuthAndUser)

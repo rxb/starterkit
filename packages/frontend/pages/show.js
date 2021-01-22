@@ -10,6 +10,7 @@ import {
 	getShowUrl,
 	useShow,
 	useShowComments,
+	createShowComment
 } from '../swr';
 
 
@@ -17,7 +18,6 @@ import {
 // leave in for now, replace piece by piece
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {
-	createShowComment,
 	deleteShowComment,
 	updateErrorShowComment,
 	addPrompt,
@@ -67,7 +67,22 @@ import Head from 'next/head';
 import { runValidations, readFileAsDataUrl, addToastableErrors } from '../components/cinderblock/formUtils';
 
 const CommentForm = (props) => {
-	const formState = useFormState(props);
+	
+	const {
+		fields,
+		setFieldState,
+		onSubmit,
+		resetFields,
+		fieldErrors = {},
+	} = props;
+
+	const formState = useFormState({
+		fields,
+		setFieldState,
+		onSubmit,
+		resetFields,
+	});
+	
 	return(
 		<form>
 			<Chunk>
@@ -82,7 +97,7 @@ const CommentForm = (props) => {
 					numberOfLines={4}
 					maxLength={1000}
 					/>
-				<FieldError error={formState.fieldErrors.body} />
+				<FieldError error={fieldErrors.body} />
 			</Chunk>
 			<Chunk>
 				<Button
@@ -141,13 +156,12 @@ function Show(props) {
 	
 	// passing in props.show from getInitialProps avoids second call
 	const { data: showData, error: showError } = useShow(props.showId, props.show);
-
-
 	const { data: showCommentsData, error: showCommentsError } = useShowComments(props.showId);
 
 	// data from redux
 	const dispatch = useDispatch(); 
 	const user = useSelector(state => state.user);
+	const authentication = useSelector(state => state.authentication);
 
 
 	// errors - do separate useEffect for each error checking
@@ -280,7 +294,7 @@ function Show(props) {
 										initialFields={{
 											body: ''
 										}}
-										fieldErrors={showCommentsError.fieldErrors}
+										fieldErrors={showCommentsError?.fieldErrors}
 										onSubmit={ (fields, context) => {
 											const validators = {
 												body: {
@@ -292,14 +306,14 @@ function Show(props) {
 														msg: "No comments about garbage, please!"
 													}
 												}
-												}
-												const error = runValidations(fields, validators);
-												dispatch(updateErrorShowComment(error));
+											}
+											const error = runValidations(fields, validators);
+											dispatch(updateErrorShowComment(error));
 
-												if(!error.errorCount){
-												const data = { ...fields, showId: show.id };
-												dispatch(createShowComment(data, { user: user } ));
-												context.resetFields();
+											if(!error.errorCount){
+												const data = { ...fields, showId: showData.id };
+												createShowComment(data, authentication.token);
+												//resetFields();
 											}
 										}}
 										/>
