@@ -6,6 +6,7 @@
 import React, {Fragment, useEffect, useState} from 'react';
 
 import {
+	convertFeathersErrors,
 	fetcher,
 	getShowUrl,
 	useShow,
@@ -23,7 +24,6 @@ import {
 	addPrompt,
 	addToast
 } from '../actions';
-
 
 
 import dayjs from 'dayjs';
@@ -64,7 +64,11 @@ import {
 import Page from '../components/Page';
 import Head from 'next/head';
 
-import { runValidations, readFileAsDataUrl, addToastableErrors } from '../components/cinderblock/formUtils';
+import { 
+	runValidations, 
+	readFileAsDataUrl, 
+	addToastableErrors 
+} from '../components/cinderblock/formUtils';
 
 const CommentForm = (props) => {
 	
@@ -96,6 +100,7 @@ const CommentForm = (props) => {
 		if(!error.errorCount){
 			const data = { ...fields, showId: props.showData.id };
 			await postShowComment(data, props.authentication.token)
+				.catch(e => formState.setError(convertFeathersErrors(e)))
 			props.mutate();
 			formState.resetFields();
 		}
