@@ -9,7 +9,6 @@ import {
 	addToast,
 	addPrompt
 } from '../actions';
-import feathersClient from '../components/FeathersClient';
 
 import styles from '../components/cinderblock/styles/styles';
 import swatches from '../components/cinderblock/styles/swatches';
@@ -222,15 +221,7 @@ function Hello() {
 										{!user.id &&
 											<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
 												<LoginForm
-													onSubmit={(fields)=>{
-														dispatch(logIn()); // start loading
-														feathersClient
-															.authenticate({strategy: 'local', email: fields.email, password: fields.password})
-															.then()
-															.catch((e)=>{
-																dispatch(logInFailure(e));
-															});
-													}}
+													
 													isLoading={(authentication.loading || authentication.token)}
 													/>
 											</LoadingBlock>

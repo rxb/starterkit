@@ -68,21 +68,39 @@ import { runValidations, readFileAsDataUrl, addToastableErrors } from '../compon
 
 const CommentForm = (props) => {
 	
-	const {
-		fields,
-		setFieldState,
-		onSubmit,
-		resetFields,
-		fieldErrors = {},
-	} = props;
 
-	const formState = useFormState({
-		fields,
-		setFieldState,
-		onSubmit,
-		resetFields,
+	const fieldErrors= props.showCommentsError?.fieldErrors || {};
+
+	
+	const formState = useFormState({ 
+		initialFields: {
+			body: ''
+		}
 	});
 	
+	const onSubmit =  async (fields) => {
+		const validators = {
+			body: {
+				notEmpty: {
+					msg: "Comment can't be blank"
+				},
+				notContains: {
+					args: "garbage",
+					msg: "No comments about garbage, please!"
+				}
+			}
+		}
+		const error = runValidations(fields, validators);
+		formState.setError(error);
+
+		if(!error.errorCount){
+			const data = { ...fields, showId: props.showData.id };
+			await postShowComment(data, props.authentication.token)
+			props.mutate();
+			formState.resetFields();
+		}
+	};
+
 	return(
 		<form>
 			<Chunk>
@@ -97,11 +115,13 @@ const CommentForm = (props) => {
 					numberOfLines={4}
 					maxLength={1000}
 					/>
-				<FieldError error={fieldErrors.body} />
+				<FieldError error={formState.error?.fieldErrors?.body} />
 			</Chunk>
 			<Chunk>
 				<Button
-					onPress={formState.handleSubmit}
+					onPress={()=>{
+						onSubmit(formState.fields)
+					}}
 					label="Post Comment"
 					/>
 			</Chunk>
@@ -296,33 +316,11 @@ function Show(props) {
 
 							{user.id &&
 								<Fragment>
-									<CommentForm
-										initialFields={{
-											body: ''
-										}}
-										fieldErrors={showCommentsError?.fieldErrors}
-										onSubmit={ async (fields, context) => {
-											const validators = {
-												body: {
-													notEmpty: {
-														msg: "Comment can't be blank"
-													},
-													notContains: {
-														args: "garbage",
-														msg: "No comments about garbage, please!"
-													}
-												}
-											}
-											const error = runValidations(fields, validators);
-											dispatch(updateErrorShowComment(error));
-
-											if(!error.errorCount){
-												const data = { ...fields, showId: showData.id };
-												await postShowComment(data, authentication.token)
-												showCommentsMutate();
-												//resetFields();
-											}
-										}}
+									<CommentForm 
+										showCommentsData={showCommentsData}
+										mutate={showCommentsMutate} 
+										showData={showData}
+										authentication={authentication}
 										/>
 								</Fragment>
 							}
