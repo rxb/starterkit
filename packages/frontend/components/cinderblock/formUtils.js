@@ -1,23 +1,19 @@
 import validator from './validator';
 
 export const runValidations = (fields, validators) => {
-    let errorCount = 0;
-    let fieldErrors = {};
-    let args, msg, fieldValidators;
-    for(let fKey in fields){
-		fieldValidators = validators[fKey];
-        for(let vKey in fieldValidators){
-        	msg = fieldValidators[vKey].msg || 'There was a problem';
-        	args = fieldValidators[vKey].args;
-        	args = Array.isArray(args) ? args : [args];
-        	args = [fields[fKey], ...args];
-        	if( !validator[vKey].apply(validator, args) ){
-	        	errorCount++;
-	        	fieldErrors[fKey] = msg;
-        	}
-        }
+  let errors = [];
+  let args, msg, fieldValidators;
+  for(let fKey in fields){
+    fieldValidators = validators[fKey];
+    for(let vKey in fieldValidators){
+      args = [].concat(fieldValidators[vKey].args);
+      if( !validator[vKey](...[fields[fKey], ...args]) ){ 
+        msg = fieldValidators[vKey].msg || 'There was a problem';
+        errors.push({path: fKey, message: msg});
+      }
     }
-    return (errorCount) ? {name: 'BadRequest', errorCount, fieldErrors} : {};
+  }
+  return (errors.length) ? {name: 'BadRequest', errors} : false;
 }
 
 export const readFileAsDataUrl = (inputFile) => {

@@ -6,7 +6,6 @@
 import React, {Fragment, useEffect, useState} from 'react';
 
 import {
-	convertFeathersErrors,
 	fetcher,
 	getShowUrl,
 	useShow,
@@ -72,18 +71,12 @@ import {
 
 const CommentForm = (props) => {
 	
-
-	const fieldErrors= props.showCommentsError?.fieldErrors || {};
-
-	
 	const formState = useFormState({ 
-		initialFields: {
-			body: ''
-		}
+		initialFields: { body: '' }
 	});
-	
-	const onSubmit =  async (fields) => {
-		const validators = {
+
+	const submitCommentForm =  async () => {
+		const error = runValidations(formState.fields, {
 			body: {
 				notEmpty: {
 					msg: "Comment can't be blank"
@@ -93,16 +86,17 @@ const CommentForm = (props) => {
 					msg: "No comments about garbage, please!"
 				}
 			}
-		}
-		const error = runValidations(fields, validators);
+		});
 		formState.setError(error);
 
-		if(!error.errorCount){
-			const data = { ...fields, showId: props.showData.id };
+		if(!error){
+			formState.setLoading(true);
+			const data = { ...formState.fields, showId: props.showData.id };
 			await postShowComment(data, props.authentication.token)
-				.catch(e => formState.setError(convertFeathersErrors(e)))
+				.catch(error => formState.setError(error))
 			props.mutate();
 			formState.resetFields();
+			formState.setLoading(false);
 		}
 	};
 
@@ -124,9 +118,8 @@ const CommentForm = (props) => {
 			</Chunk>
 			<Chunk>
 				<Button
-					onPress={()=>{
-						onSubmit(formState.fields)
-					}}
+					onPress={submitCommentForm}
+					isLoading={formState.loading}
 					label="Post Comment"
 					/>
 			</Chunk>
@@ -185,9 +178,12 @@ function Show(props) {
 	const { 
 		data: showCommentsData, 
 		error: showCommentsError, 
-		mutate: showCommentsMutate 
+		mutate: showCommentsMutate,
+		meta: showCommentsMeta
 	} = useShowComments(props.showId);
 
+
+	
 	// data from redux
 	// todo: remove these
 	const dispatch = useDispatch(); 
@@ -279,6 +275,7 @@ function Show(props) {
 						<Section>
 							<Chunk>
 								<Text type="sectionHead">Comments</Text>
+								<Text>{JSON.stringify(showCommentsMeta)}</Text>
 							</Chunk>
 
 							{showCommentsData && showCommentsData.map((comment, i)=>{

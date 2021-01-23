@@ -1,12 +1,12 @@
-
+// validator.js + extras
 // for backend / frontend parity
+// sequelize uses validator.js + adds extra validations
 // https://github.com/sequelize/sequelize/lib/utils/validator-extras.js
 
 'use strict';
 
 const _ = require('lodash');
 const validator = _.cloneDeep(require('validator'));
-//const moment = require('moment');
 import moment from 'dayjs';
 
 export const extensions = {

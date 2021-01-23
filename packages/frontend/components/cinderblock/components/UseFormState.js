@@ -20,6 +20,17 @@ function debounce(callback, time = 60) {
 	}
 }
 
+// convert feathers errors to a more usable format
+const convertFeathersErrors = (originalError) => {
+	let error = {...originalError};
+   if(error.errors && error.errors.length){
+      error.fieldErrors = Object.assign({}, ...error.errors.map(err => ({[err.path]: err.message})));
+      error.errorCount = error.errors.length;
+   }
+   return error;
+}
+
+
 function useFormState ( opts = {} ) {
 
 	const {
@@ -31,7 +42,8 @@ function useFormState ( opts = {} ) {
 	useEffect( ()=>{ handleChange() }, [fields]);
 
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState({});
+	const [error, setErrorDirect] = useState({});
+	const setError = (error = {}) => setErrorDirect(convertFeathersErrors(error));
 
 	const setFieldValue = (key, value ) => {
 		setFields({...fields, [key]: value});
