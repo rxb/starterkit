@@ -4,13 +4,15 @@
 
 
 import React, {Fragment, useEffect, useState} from 'react';
+import useSWR, { cache }  from 'swr'
 
 import {
 	fetcher,
 	getShowUrl,
 	useShow,
 	useShowComments,
-	postShowComment
+	postShowComment,
+	getShowCommentsUrl
 } from '../swr';
 
 
@@ -77,7 +79,7 @@ const CommentForm = (props) => {
 
 	const submitCommentForm =  async () => {
 		const error = runValidations(formState.fields, {
-			body: {
+			/*body: {
 				notEmpty: {
 					msg: "Comment can't be blank"
 				},
@@ -85,18 +87,27 @@ const CommentForm = (props) => {
 					args: "garbage",
 					msg: "No comments about garbage, please!"
 				}
-			}
+			}*/
 		});
 		formState.setError(error);
 
 		if(!error){
 			formState.setLoading(true);
-			const data = { ...formState.fields, showId: props.showData.id };
-			await postShowComment(data, props.authentication.token)
-				.catch(error => formState.setError(error))
-			props.mutate();
-			formState.resetFields();
-			formState.setLoading(false);
+			const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showData.id)); // get current cache
+			const newItemData = { ...formState.fields, showId: props.showData.id };
+			props.mutate({ ...oldShowCommentsData, data: [...oldShowCommentsData.data, newItemData] }, false); // optimistic mutate
+			try{
+				await postShowComment(newItemData, props.authentication.token) // post 
+				props.mutate(); // trigger refresh from server
+				formState.resetFields();
+			} 
+			catch(error) {
+				formState.setError(error); // display server errors
+				props.mutate(oldShowCommentsData); // rollback optimistic mutate
+			} 
+			finally{
+				formState.setLoading(false);
+			}
 		}
 	};
 
