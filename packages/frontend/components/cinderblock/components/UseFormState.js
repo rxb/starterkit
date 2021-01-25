@@ -25,7 +25,6 @@ const convertFeathersErrors = (originalError) => {
 	let error = {...originalError};
    if(error.errors && error.errors.length){
       error.fieldErrors = Object.assign({}, ...error.errors.map(err => ({[err.path]: err.message})));
-      error.errorCount = error.errors.length;
    }
    return error;
 }

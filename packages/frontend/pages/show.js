@@ -12,6 +12,7 @@ import {
 	useShow,
 	useShowComments,
 	postShowComment,
+	deleteShowComment,
 	getShowCommentsUrl
 } from '../swr';
 
@@ -20,8 +21,6 @@ import {
 // leave in for now, replace piece by piece
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {
-	deleteShowComment,
-	updateErrorShowComment,
 	addPrompt,
 	addToast
 } from '../actions';
@@ -79,7 +78,7 @@ const CommentForm = (props) => {
 
 	const submitCommentForm =  async () => {
 		const error = runValidations(formState.fields, {
-			/*body: {
+			body: {
 				notEmpty: {
 					msg: "Comment can't be blank"
 				},
@@ -87,15 +86,20 @@ const CommentForm = (props) => {
 					args: "garbage",
 					msg: "No comments about garbage, please!"
 				}
-			}*/
+			}
 		});
 		formState.setError(error);
 
 		if(!error){
-			formState.setLoading(true);
 			const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showData.id)); // get current cache
 			const newItemData = { ...formState.fields, showId: props.showData.id };
-			props.mutate({ ...oldShowCommentsData, data: [...oldShowCommentsData.data, newItemData] }, false); // optimistic mutate
+			props.mutate({ 
+				...oldShowCommentsData, 
+				data: [...oldShowCommentsData.data, {
+					...newItemData, 
+					user: props.user
+				}] 
+			}, false); // optimistic mutate
 			try{
 				await postShowComment(newItemData, props.authentication.token) // post 
 				props.mutate(); // trigger refresh from server
@@ -105,9 +109,6 @@ const CommentForm = (props) => {
 				formState.setError(error); // display server errors
 				props.mutate(oldShowCommentsData); // rollback optimistic mutate
 			} 
-			finally{
-				formState.setLoading(false);
-			}
 		}
 	};
 
@@ -142,10 +143,13 @@ const CommentForm = (props) => {
 const DeletePrompt = (props) => {
 	const {
 		comment,
-		deleteShowComment,
+		authentication,
 		onRequestClose,
 		onCompleteClose
 	} = props;
+	
+	const [loading, setLoading] = useState(false);
+
 	return (
 		<Sectionless>
 			<Chunk>
@@ -156,14 +160,23 @@ const DeletePrompt = (props) => {
 			</Chunk>
 			<Chunk>
 				<Button
-					onPress={()=>{
-						deleteShowComment(comment.id);
-						onRequestClose(()=>{
-							alert('yes!');
-						});
+					onPress={async ()=>{
+						try{
+							setLoading(true);
+							await deleteShowComment(comment.id, authentication.token);
+							props.mutate();
+							onRequestClose();
+						} 
+						catch(error){
+							alert(JSON.stringify(error));
+						}
+						finally{
+							setLoading(false);
+						}
 					}}
 					label="Yes I'm sure"
 					width="full"
+					isLoading={loading}
 					/>
 				<Button
 					onPress={()=>{
@@ -311,8 +324,9 @@ function Show(props) {
 															<Link onPress={()=>{
 																dispatch(addPrompt(
 																	<DeletePrompt
+																		authentication={authentication}
 																		comment={comment}
-																		deleteShowComment={dispatch(deleteShowComment)}
+																		mutate={showCommentsMutate}
 																		/>
 																));
 															}}>
@@ -331,9 +345,10 @@ function Show(props) {
 								<Fragment>
 									<CommentForm 
 										showCommentsData={showCommentsData}
-										mutate={showCommentsMutate} 
 										showData={showData}
 										authentication={authentication}
+										user={user}
+										mutate={showCommentsMutate} 
 										/>
 								</Fragment>
 							}
