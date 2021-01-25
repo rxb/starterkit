@@ -1,16 +1,21 @@
 import React, {Fragment} from 'react';
-import { connect } from 'react-redux';
 import Router from 'next/router'
 import Head from 'next/head'
+
+import {
+	useShow,
+	patchShow,
+} from '../swr';
+
+
+// Redux
+import {connect, useDispatch, useSelector} from 'react-redux';
 
 
 import {
 	addToast,
 	fetchShow,
 	fetchTags,
-	createShow,
-	patchShow,
-	updateErrorShow
 } from '../actions';
 
 
@@ -42,7 +47,7 @@ import {
 	TextInput,
 	Touch,
 	View,
-	withFormState
+	useFormState
 } from '../components/cinderblock';
 
 
@@ -51,18 +56,70 @@ import Page from '../components/Page';
 import ShowCard from '../components/ShowCard';
 
 import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
+import { authentication } from '@feathersjs/client';
 
 
-const ShowForm = withFormState((props) => {
+const ShowForm = (props) => {
 
 	const {
-		fields,
-		setFieldState,
-		handleSubmit,
-		resetFields,
-		fieldErrors = {},
-		tags,
+		showData,
+		tags
 	} = props;
+
+	const formState = useFormState({ 
+		initialFields: {
+			title: showData.title,
+			photoUrl: showData.photoUrl,
+			photoId: showData.photoId,
+			id: showData.id,
+			genres: showData.genres,
+			tags: showData.tags,
+			description: showData.description
+		},
+	});
+
+	const submitEditForm = async ()=> {
+		
+		// NOTE: if you're going to add client validation rules, they should match up with server rules, but most of the time you don't  need both unless doing optimitstic updates
+		const error = runValidations(formState.fields, {
+			title: {
+				 isLength: {
+					 args: {min: 1},
+					 msg: "Title can't be blank"
+				 },
+				 notContains: {
+					 args: "garbage",
+					 msg: "No shows about garbage, please"
+				 }
+			 }
+		 });
+		formState.setError(error);
+
+		if(!error){
+			formState.setLoading(true);
+
+			// photo process
+			const {photoNewFile, ...showFields} = formState.fields;
+			if(photoNewFile){
+				showFields.uri = await readFileAsDataUrl(photoNewFile);
+			}
+
+			try{
+				const response = await patchShow(showFields.id, showFields, authentication.token)
+				Router.push({pathname:'/show', query: {showId: showData.id}})
+					.then(()=>{
+						//props.addToast('Show saved; nice work!');
+					})
+		  	}
+			catch(error){
+				formState.setError(error);
+			}
+			finally{
+				formState.setLoading(false);
+			}
+	}}
+
+	
 
 	return(
 		<form>
@@ -70,36 +127,36 @@ const ShowForm = withFormState((props) => {
 				<Label for="title">Show title</Label>
 				<TextInput
 					id="title"
-					value={fields.title}
-					onChange={e => setFieldState({title: e.target.value}) }
+					value={formState.getFieldValue('title')}
+					onChange={e => formState.setFieldValue('title', e.target.value) }
 					/>
-				<FieldError error={fieldErrors.title} />
+				<FieldError error={formState.error?.fieldErrors?.title} />
 			</Chunk>
 			<Chunk>
 				<Label for="description">Description</Label>
 				<TextInput
 					id="description"
-					value={fields.description}
-					onChangeText={text => setFieldState({description: text}) }
+					value={formState.getFieldValue('description')}
+					onChange={e => formState.setFieldValue('description', e.target.value) }
 					multiline
 					numberOfLines={4}
 					showCounter={true}
 					maxLength={1000}
 					/>
-				<FieldError error={fieldErrors.description} />
+				<FieldError error={formState.error?.fieldErrors?.description} />
 			</Chunk>
 			<Chunk>
 				<Label for="title">Genres</Label>
 				{(['Comedy', 'Drama', 'Documentary']).map((item, i)=>{
-					const checked = fields.genres.indexOf(item) != -1;
+					const checked = formState.getFieldValue('genres').indexOf(item) != -1;
 					return(
 						<CheckBox
 							key={item}
 							label={item}
 							value={checked}
 							onChange={() => {
-								const newItems = (checked) ?  fields.genres.filter(a => a !== item) : fields.genres.concat([item]);
-								setFieldState({genres: newItems})
+								const newItems = (checked) ?  formState.getFieldValue('genres').filter(a => a !== item) : formState.getFieldValue('genres').concat([item]);
+								formState.setFieldValue('genres', newItems)
 							}}
 							/>
 
@@ -115,35 +172,31 @@ const ShowForm = withFormState((props) => {
 					<FlexItem>
 						<FileInput
 							id="photo"
-							placeholder={(fields.photoUrl) ? 'Select a new file' : 'Select a file'}
+							placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
 							onChangeFile={(file)=>{
-								setFieldState({
-									// comes from server, doesn't get sent back to server
-									photoUrl:  URL.createObjectURL(file),
-									// comes from server, gets sent back to server
-									photoId: false,
-									// only exists client -> server
-									photoNewFile: file
-								});
+								// comes from server, doesn't get sent back to server
+								formState.setFieldValue('photoUrl', URL.createObjectURL(file))
+								// comes from server, gets sent back to server
+								formState.setFieldValue('photoId', false)
+								// only exists client -> server
+								formState.setFieldValue('photoNewFile', file)
 							}}
 							/>
-						{ fields.photoUrl &&
+						{ formState.getFieldValue('photoUrl') &&
 							<FakeInput
 								label="Remove photo"
 								shape="X"
 								onPress={()=>{
-									setFieldState({
-										photoId: false,
-										photoUrl: false
-									});
+									formState.setFieldValue('photoId', false)
+									formState.setFieldValue('photoUrl', false)
 								}}
 								/>
 						}
 					</FlexItem>
-					{ fields.photoUrl &&
+					{ formState.getFieldValue('photoUrl') &&
 						<FlexItem shrink>
 							<Image
-							    source={{uri: fields.photoUrl }}
+							    source={{uri: formState.getFieldValue('photoUrl') }}
 							    style={[{
 							          width: 120,
 							          flex: 1,
@@ -160,7 +213,7 @@ const ShowForm = withFormState((props) => {
 			<Chunk>
 				<Label for="title">Tags</Label>
 				{tags.items.map((item, i)=>{
-					const checked = fields.tags.findIndex( tag => tag.id == item.id ) != -1;
+					const checked = formState.getFieldValue('tags').findIndex( tag => tag.id == item.id ) != -1;
 					return(
 						<CheckBox
 							key={String(item.id)}
@@ -171,9 +224,9 @@ const ShowForm = withFormState((props) => {
 								// keep an obj with id and label
 								// with the idea that maybe an obj with label and without id would be created
 								const newItems = (checked) ?
-									fields.tags.filter(a => a.id !== id) :
-									fields.tags.concat([{id, label}]);
-								setFieldState({tags: newItems});
+									formState.getFieldValue('tags').filter(a => a.id !== id) :
+									formState.getFieldValue('tags').concat([{id, label}]);
+								formState.setFieldValue('tags', newItems);
 							}}
 							/>
 					);
@@ -183,31 +236,20 @@ const ShowForm = withFormState((props) => {
 				<Button
 					type="primary"
 					label="Let's do this"
-					onPress={ handleSubmit }
+					onPress={ submitEditForm }
+					isLoading={formState.loading}
 					/>
 			</Chunk>
 		</form>
 	);
-});
+};
 
 
 
 
-class ShowTest extends React.Component {
+function ShowEdit(props) {
 
-	static async getInitialProps (context) {
-		const {store, isServer, pathname, query} = context;
-		const showId = query.showId;
-		return {
-			showId
-		}
-	}
-
-	constructor(props){
-		super(props);
-		this.state = {}
-	}
-
+	/*
 	componentDidMount(){
 		this.props.fetchShow(this.props.showId);
 		this.props.fetchTags();
@@ -217,6 +259,7 @@ class ShowTest extends React.Component {
 
 		// watching for toastable errors
 		// still feel like maybe this could go with form?
+		// ^^^^ oh good, previous me is being proven correct
 		const messages = {
 			show: {
 				BadRequest: 'Something went wrong',
@@ -226,19 +269,11 @@ class ShowTest extends React.Component {
 		checkToastableErrors(this.props, prevProps, messages);
 
 	}
+	*/
 
-	render() {
-
-		const {
-			show,
-			tags,
-			createShow,
-			patchShow,
-			updateErrorShow
-		} = this.props;
+	const { data: showData, error: showError } = useShow(props.showId);
 
 		return (
-			<Fragment>
 			<Page>
 				<Head>
 					<meta property='og:title' content='Scratch' />
@@ -252,113 +287,43 @@ class ShowTest extends React.Component {
 									<Text type="pageHead">Edit show</Text>
 								</Chunk>
 							</Section>
-							<Flex direction="column" switchDirection="medium">
+							{showData && 
+								<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
-										{ show.item.id &&
+										{ showData.id &&
 										<ShowForm
-											initialFields={{
-												title: show.item.title,
-												photoUrl: show.item.photoUrl,
-												photoId: show.item.photoId,
-												id: show.item.id,
-												genres: show.item.genres,
-												tags: show.item.tags,
-												description: show.item.description
-											}}
-											fieldErrors={show.error.fieldErrors}
-											onSubmit={ async (fields)=>{
-
-												// client-side validation rules
-												// should match up with server rules
-												// don't always need both unless speed is paramount
-												// or doing something like optimistic UI
- 												const validators = {
- 													title: {
-											        	isLength: {
-											        		args: {min: 1},
-											        		msg: "Title can't be blank"
-											        	},
-											        	notContains: {
-											        		args: "garbage",
-											        		msg: "No shows about garbage, please"
-											        	}
-										        	}
-										        }
-
-										        // client-side validation
-										        const error = runValidations(fields, validators);
-										        updateErrorShow(error);
-
-										        // if not client errors...
-										        if(!error.errorCount){
-
-										        	// photo process
-													const {photoNewFile, ...showFields} = fields;
-													if(photoNewFile){
-														showFields.uri = await readFileAsDataUrl(photoNewFile);
-													}
-
-													// patch & redirect & toast (if no server errors)
-													patchShow(showFields.id, showFields)
-														.then( response => {
-															if(!response.error){
-																Router.push({pathname:'/show', query: {showId: show.item.id}})
-																	.then(()=>{
-																		this.props.addToast('Show saved; nice work!');
-																	})
-															}
-														});
-										        }
-											}}
-											onChange={(fields) => {
-												this.setState({showFormFields: fields});
-											}}
-											tags={tags}
+											showData={showData}
+											tags={{items: []}}
 											/>
 										}
-
-
 									</Section>
 								</FlexItem>
 								<FlexItem growFactor={1}>
-
 									<Section>
-										<Chunk>
-											<Text>{JSON.stringify(show.item)}</Text>
+										<Chunk style={{overflow: 'hidden'}}>
+											<Text>{JSON.stringify(showData)}</Text>
 										</Chunk>
 									</Section>
 
 								</FlexItem>
 							</Flex>
+							}
 						</Sections>
 					</Bounds>
 				</Stripe>
 			</Page>
-			</Fragment>
 		);
+}
+
+ShowEdit.getInitialProps = async (context) => {
+	const {query} = context;
+	return {
+		showId: query.showId
 	}
 }
 
 
-const mapStateToProps = (state, ownProps) => {
-	return ({
-		show: state.show,
-		tags: state.tags
-	});
-}
 
-const actionCreators = {
-	addToast,
-	fetchShow,
-	fetchTags,
-	createShow,
-	patchShow,
-	updateErrorShow
-};
-
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(ShowTest);
+export default ShowEdit;
 

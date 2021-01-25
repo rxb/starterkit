@@ -18,7 +18,6 @@ import {
 
 
 // Redux
-// leave in for now, replace piece by piece
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {
 	addPrompt,
@@ -91,7 +90,7 @@ const CommentForm = (props) => {
 		formState.setError(error);
 
 		if(!error){
-			const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showData.id)); // get current cache
+			const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showData.id)); // get cache
 			const newItemData = { ...formState.fields, showId: props.showData.id };
 			props.mutate({ 
 				...oldShowCommentsData, 
@@ -195,10 +194,13 @@ const DeletePrompt = (props) => {
 
 
 function Show(props) {
+	
 	const { 
-		data: showData, 
-		error: showError 
-	} = useShow(props.showId, props.show); // passing in props.show from getInitialProps
+		data: showData = {}, 
+		error: showError,
+		mutate: showMutate
+	} = useShow(props.showId, {initialData: props.show}); // passing in props.show from getInitialProps
+
 	const { 
 		data: showCommentsData, 
 		error: showCommentsError, 
@@ -230,6 +232,7 @@ function Show(props) {
 				<meta property='og:title' content={`Show: ${showData.title}`} />
 				<meta property='og:image' content={showData.photoUrl} />
 				<title>{showData.title}</title>
+				
 			</Head>
 
 			{/*
@@ -242,6 +245,7 @@ function Show(props) {
 					<Sections>
 						<ImageSnap
 							image={showData.photoUrl}
+							style={{backgroundColor: swatches.shade}}
 							/>
 						<Section>
 							<View style={{
@@ -250,12 +254,7 @@ function Show(props) {
 								borderBottomColor: swatches.border
 								*/
 							}}>
-								<Chunk>
-									<View style={{backgroundColor: 'pink', padding: METRICS.space}}>
-										<Text>showId: {props.showId}</Text>
-										<Text>isServer: {props.isServer ? 'true' : 'false'}</Text>
-									</View>
-								</Chunk>
+								
 								<Flex>
 									<FlexItem>
 										
@@ -354,6 +353,14 @@ function Show(props) {
 							}
 
 						</Section>
+						<Section>
+								<Chunk>
+									<View style={{backgroundColor: 'pink', padding: METRICS.space}}>
+										<Text>showId: {props.showId}</Text>
+										<Text>isServer: {props.isServer ? 'true' : 'false'}</Text>
+									</View>
+								</Chunk>
+						</Section>
 					</Sections>
 				</Bounds>
 			</Stripe>
@@ -369,8 +376,9 @@ Show.getInitialProps = async (context) => {
 	const showId = query.showId;
 	const isServer = !!req;	
 
-	// fetch and pass as props, using in the useSWR as intitialData
-	const show = await fetcher(getShowUrl(showId));
+	// fetch and pass as props during SSR, using in the useSWR as intitialData
+	const show = (isServer) ? await fetcher(getShowUrl(showId)) : undefined;
+
 	return {
 		isServer,
 		showId: showId,
