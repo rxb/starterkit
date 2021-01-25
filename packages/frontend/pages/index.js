@@ -219,12 +219,12 @@ function Hello() {
 										</Chunk>
 
 										{!user.id &&
-											<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
+											
 												<LoginForm
 													
-													isLoading={(authentication.loading || authentication.token)}
+													
 													/>
-											</LoadingBlock>
+											
 										}
 
 										<Chunk>

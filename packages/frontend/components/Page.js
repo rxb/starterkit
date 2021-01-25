@@ -192,22 +192,7 @@ function Page (props) {
 							</Chunk>
 						</Section>
 						<Section>
-							<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
-								<LoginForm
-									onSubmit={(fields)=>{
-										dispatch(logIn());
-										feathersClient
-											.authenticate({strategy: 'local', email: fields.email, password: fields.password})
-											.then()
-											.catch((e)=>{
-												dispatch(logInFailure(e));
-											});
-
-									}}
-									isLoading={(authentication.loading || authentication.token)}
-									/>
-							</LoadingBlock>
-
+								<LoginForm />
 						</Section>
 					</Stripe>
 				</Modal>

@@ -36,6 +36,8 @@ const LoginForm = (props) => {
 	}
 
 	return(
+			<LoadingBlock isLoading={formState.loading}>
+											
 			<form name="loginForm">
 				<Chunk>
 					<TextInput
@@ -65,7 +67,7 @@ const LoginForm = (props) => {
 						/>
 				</Chunk>
 			</form>
-
+			</LoadingBlock>
 	);
 };
 
