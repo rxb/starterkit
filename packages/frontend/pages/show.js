@@ -210,9 +210,8 @@ function Show(props) {
 	// data from redux
 	// todo: remove these
 	const dispatch = useDispatch(); 
-	const user = useSelector(state => state.user);
 	const authentication = useSelector(state => state.authentication);
-
+	const user = authentication.user || {};
 
 	// errors - do separate useEffect for each error checking
 	useEffect(()=>{

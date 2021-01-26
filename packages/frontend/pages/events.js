@@ -1,6 +1,13 @@
-import React, {Fragment} from 'react';
-import { connect } from 'react-redux';
-import Head from 'next/head'
+import React, {Fragment, useEffect, useState} from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
+
+import { addToast, addPrompt } from '../actions';
+import {
+	fetcher,
+	useEvents,
+	postEvent
+} from '../swr';
+import AREAS from '../data/areas';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -8,18 +15,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 
-
-//import { Map, Marker, Popup, TileLayer } from 'react-leaflet-universal'
-
-import {
-	addPrompt,
-	addToast,
-	createEvent,
-	fetchEvents,
-	fetchLocalEvents
-} from '../actions';
-
-
+import Head from 'next/head'
 import {
 	Avatar,
 	Bounds,
@@ -48,22 +44,21 @@ import {
 	TextInput,
 	Touch,
 	View,
-	withFormState
+	useFormState
 } from '../components/cinderblock';
+
 import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
 
-import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
-
 import OutpostHeader from '../components/OutpostHeader';
-
-import AREAS from '../data/areas';
 import swatches from '../components/cinderblock/styles/swatches';
+import styles from '../components/cinderblock/styles/styles';
 import { METRICS } from '../components/cinderblock/designConstants';
 import { Check } from 'react-feather';
 
 
-const EventForm = withFormState((props) => {
+
+const EventForm = (props) => {
 
 	/*
 
@@ -73,125 +68,109 @@ const EventForm = withFormState((props) => {
 		Eventbrite,
 		Splashthat
 		Patch,
-		Evensi.us,
-
-
-	(other event sites might work too... put the link in and give it a try!)
-
+		(other event sites might work too... put the link in and give it a try!)
 	*/
 
-	const {
-		getFieldValue,
-		setFieldValue,
-		handleSubmit,
-		resetFields,
-		fieldErrors = {}
-	} = props;
+	const formState = useFormState({
+		initialFields: {
+			url: ''
+		},
+		toastableErrors: {
+			BadRequest: 'Something went wrong',
+			NotAuthenticated: 'Not signed in'
+		},
+		addToast: msg => dispatch(addToast(msg))
+	});
+
+	const submitForm = async () => {
+		try{
+			await postEvent( formState.fields, {token: authentication.token});
+			formState.resetFields();	
+		}
+		catch(error){
+			formState.setError(error);
+		}
+		finally{
+			formState.setLoading(false);
+		}
+		return false;
+	}
+
 
 	return(
 		<form autocomplete="off">
-			<LoadingBlock isLoading={props.isLoading}>
+			<LoadingBlock isLoading={formState.loading}>
 				<Chunk>
-
 					<TextInput
 						id="url"
-						value={getFieldValue('url')}
-						onChange={e => setFieldValue('url', e.target.value)}
+						value={formState.getFieldValue('url')}
+						onChange={e => formState.setFieldValue('url', e.target.value)}
 						placeholder="Event URL"
 						autoComplete="whatever"
 						/>
-
-					<FieldError error={fieldErrors.url} />
+					<FieldError error={formState.error?.fieldErrors?.url} />
 					<Button
-						onPress={handleSubmit}
+						onPress={submitForm}
 						label="Import"
-						isLoading={props.isLoading}
+						isLoading={formState.loading}
 						/>
 				</Chunk>
-				
 			</LoadingBlock>
 		</form>
 	);
-});
+};
 
 
-class Events extends React.Component {
+function Events(props) {
+	
+	const areas = AREAS.slice(0,12);
 
-	constructor(props){
-		super(props);
-		this.state = {
-			events: [],
-			user: {},
-			testEvent: {},
-			coords: {"latitude":0,"longitude":0},
-			test: 'test',
-			modalVisible: false,
-		}
-		this.toggleModal = this.toggleModal.bind(this);
+	const authentication = useSelector(state => state.authentication);
+	const user = authentication.user;
+
+	const {data: eventsData, error: eventsError, mutate: eventsMutate} = useEvents();
+	const localEventsData = eventsData;
+	// also: this.props.fetchLocalEvents({radius: 80, latitude: 40.7128, longitude: -74.0060});
+
+	const [coords, setCoords] = useState({ latitude: 0, longitude: 0 })
+
+	// modal visibility
+	const [modalVisible, setModalVisible] = useState(false);
+	const toggleModal = () => {
+		setModalVisible(!modalVisible);
 	}
 
-	toggleModal() {
-		this.setState({modalVisible: !this.state.modalVisible})
-	}
-
-	componentDidMount(){
+	useEffect( () => {
 		const getPosition = function (options) {
 			return new Promise(function (resolve, reject) {
 				navigator.geolocation.getCurrentPosition(resolve, reject, options);
 			});
 		}
-
 		getPosition().then((position)=>{
-			const coords = {latitude: parseFloat(position.coords.latitude), longitude: parseFloat(position.coords.longitude)}
-			this.setState({coords: coords});
-			this.setState({test: 'whatever'})
+			const coords = {
+				latitude: parseFloat(position.coords.latitude), 
+				longitude: parseFloat(position.coords.longitude)
+			};
+			setCoords(coords);
 		});
 
-		this.props.fetchEvents();
-		this.props.fetchLocalEvents({radius: 80, latitude: 40.7128, longitude: -74.0060});
-	}
 
-	componentDidUpdate(prevProps){
+	}, []);
+	
 
-		// watching for toastable errors
-		// still feel like maybe this could go with form?
-		const messages = {
-			events: {
-				BadRequest: 'Something went wrong',
-				GeneralError: 'Something went wrong (GeneralError)',
-			}
-		};
-		checkToastableErrors(this.props, prevProps, messages);
 
-		if(prevProps.events.itemsById !== this.props.events.itemsById && this.state.modalVisible){
-			this.toggleModal();
-		}
+	/*
 
-	}
+	// EVENTS
+	// add event from url
+	// parses as part of create action hook
+	// returns new event to be inserted into list with JSON-LD
+	// or just returns list
+	//
 
-/*
+	*/
 
-// EVENTS
-// add event from url
-// parses as part of create action hook
-// returns new event to be inserted into list with JSON-LD
-// or just returns list
-//
-
-*/
-
-	render() {
-
-		const {
-			areas,
-			createEvent,
-			events,
-			allEvents,
-			localEvents,
-			user,
-		} = this.props;
-
-		return (
+	return (
 
 		<Fragment>
 			<OutpostHeader />
@@ -207,7 +186,7 @@ class Events extends React.Component {
 						<Section>
 							<Flex direction="column" switchDirection="large">
 							<FlexItem>
-							<Chunk>
+								<Chunk>
 									<Text color="secondary" style={{marginTop: 3, marginBottom: 3}}>
 										<Image 
 											source="https://api.faviconkit.com/reddit.com/32"
@@ -224,10 +203,8 @@ class Events extends React.Component {
 									<Text type="pageHead" >Financial independence</Text>
 								</Chunk>
 								<Chunk>
-								
-										<Text color="primary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
-																
-							</Chunk>
+									<Text color="primary">For those that want to approach the problem of financial independence from a minimalist, stoic, frugal, or anti-consumerist trajectory. <a href="https://reddit.com/r/leanfire"><Text color="hint">More on Reddit &#8599;</Text></a></Text>
+								</Chunk>
 							</FlexItem>
 							<FlexItem shrink>
 								<Chunk>
@@ -253,163 +230,141 @@ class Events extends React.Component {
 								</Chunk>
 							</FlexItem>
 						</Flex>
-
-						</Section>
+					</Section>
 				</Bounds>
 			</Stripe>
 			<Stripe style={{borderTopWidth: 1, borderColor: swatches.border, backgroundColor: swatches.backgroundShade}}>
 				<Bounds>
-
-						<Section>
+					<Section>
 						<Flex direction="column" switchDirection="large" >
-			
 							<FlexItem growFactor={1}>
-								
-								
-									<Chunk>
-										<Text type="sectionHead">Happening Nearby + Online</Text>
-									</Chunk>
-								
+								<Chunk>
+									<Text type="sectionHead">Happening Nearby + Online</Text>
+								</Chunk>
 							</FlexItem>
 
 							<FlexItem growFactor={3}>
-								
-								
-
-									<List
-										
-										items={localEvents.items}
-										variant="grid"
-										itemsInRow={{
-											small: 1
-										}}
-										renderItem={(event, i)=>{
-											const hostname = event.url.match(/^https?\:\/\/(www\.)?([^\/?#]+)(?:[\/?#]|$)/i)[2];
-											return (
-												<Chunk key={i}>
-													<Link
-														target="_blank"
-														href={event.url}
-														>
-														<Card style={thisCardStyle}> 
-															<Sectionless>
-																<Chunk>
-																	<Text type="small" color="tint" weight="strong">{dayjs(event.startDate).format('dddd, MMM D LT')}</Text>
-																	<Text type="big" weight="strong">{event.title}</Text>
-																	
-																	<Text type="small" color="secondary">{event.locationName} &middot; {event.city}</Text>
-
-														
-																</Chunk>
-																<Chunk>
-																<Flex>
-																	<FlexItem>
-																	<Inline style={{flexWrap: 'nowrap'}}>
-																<Avatar
-																	source={{uri: `https://randomuser.me/api/portraits/women/${i%50}.jpg`}}
-																	size="small"
-																	style={{
-																		width: 18,
-																		height: 18
-																	}}
-																	/>
-																	<Text type="small" color="hint">
-																		/u/sallyposter
-																	</Text>
-																</Inline>
-																	</FlexItem>
-																	<FlexItem justify="center" shrink>
-																	<View style={{
-																		backgroundColor: swatches.shade,
-																		paddingHorizontal: 6,
-																		borderRadius: 4,
-																		alignSelf: 'flex-end'
-																	}}>
-																	<Text
-																		type="micro"
-																		color="hint"
-																		numberOfLines={1}
-																		ellipsizeMode="tail"
-																		>
-																		{/*
-																		<Image
-																			source={`https://www.google.com/s2/favicons?domain=${hostname}`}
-																			style={{
-																				width: 13,
-																				height: 13,
-																				resizeMode: 'contain',
-																				flex: 1,
-																				marginRight: 4,
-																			}}
-																			/>
-																		*/}
-																			{hostname.toUpperCase()} &#8599;
-																	</Text>
-																	</View>
-																	</FlexItem>
-																</Flex>
+								<List
+									items={localEventsData}
+									variant="grid"
+									itemsInRow={{
+										small: 1
+									}}
+									renderItem={(event, i)=>{
+										const hostname = event.url.match(/^https?\:\/\/(www\.)?([^\/?#]+)(?:[\/?#]|$)/i)[2];
+										return (
+											<Chunk key={i}>
+												<Link
+													target="_blank"
+													href={event.url}
+													>
+													<Card style={thisCardStyle}> 
+														<Sectionless>
+															<Chunk>
+																<Text type="small" color="tint" weight="strong">{dayjs(event.startDate).format('dddd, MMM D LT')}</Text>
+																<Text type="big" weight="strong">{event.title}</Text>
 																
-																</Chunk>
-															</Sectionless>
-														</Card>
-													</Link>
-												</Chunk>
-											);
-										}}
-			
-										/>
+																<Text type="small" color="secondary">{event.locationName} &middot; {event.city}</Text>
 
-										{/* suggest next */}
-										<Chunk >
-													<Link
-														target="_blank"
-														>
-														<Card style={thisCardStyle}> 
-															<Sectionless>
-																<Chunk>
-																	<Text type="small" color="tint" weight="strong">This weekend, TBD</Text>
-																	<Text type="big" weight="strong">Let's get together for drinks</Text>
-																	
-																	<Text type="small" color="secondary">TBD &middot; Greenpoint</Text>
+													
+															</Chunk>
+															<Chunk>
+															<Flex>
+																<FlexItem>
+																<Inline style={{flexWrap: 'nowrap'}}>
+															<Avatar
+																source={{uri: `https://randomuser.me/api/portraits/women/${i%50}.jpg`}}
+																size="small"
+																style={{
+																	width: 18,
+																	height: 18
+																}}
+																/>
+																<Text type="small" color="hint">
+																	/u/sallyposter
+																</Text>
+															</Inline>
+																</FlexItem>
+																<FlexItem justify="center" shrink>
+																<View style={{
+																	backgroundColor: swatches.shade,
+																	paddingHorizontal: 6,
+																	borderRadius: 4,
+																	alignSelf: 'flex-end'
+																}}>
+																<Text
+																	type="micro"
+																	color="hint"
+																	numberOfLines={1}
+																	ellipsizeMode="tail"
+																	>
+																	{/*
+																	<Image
+																		source={`https://www.google.com/s2/favicons?domain=${hostname}`}
+																		style={{
+																			width: 13,
+																			height: 13,
+																			resizeMode: 'contain',
+																			flex: 1,
+																			marginRight: 4,
+																		}}
+																		/>
+																	*/}
+																		{hostname.toUpperCase()} &#8599;
+																</Text>
+																</View>
+																</FlexItem>
+															</Flex>
+															
+															</Chunk>
+														</Sectionless>
+													</Card>
+												</Link>
+											</Chunk>
+										);
+									}}
+		
+									/>
 
+									{/* suggest next */}
+									<Chunk>
+										<Link target="_blank">
+											<Card style={thisCardStyle}> 
+												<Sectionless>
+													<Chunk>
+														<Text type="small" color="tint" weight="strong">This weekend, TBD</Text>
+														<Text type="big" weight="strong">Let's get together for drinks</Text>
 														
-																</Chunk>
-																<Chunk>
-																<Flex>
-																	<FlexItem>
-																	<Inline style={{flexWrap: 'nowrap'}}>
-																<Avatar
-																	source={{uri: `https://randomuser.me/api/portraits/women/52.jpg`}}
-																	size="small"
-																	style={{
-																		width: 18,
-																		height: 18
-																	}}
-																	/>
-																	<Text type="small" color="hint">
-																		/u/sallyposter
-																	</Text>
-																</Inline>
-																	</FlexItem>
-																	<FlexItem justify="center">
-																	
-																	</FlexItem>
-																</Flex>
-																
-																</Chunk>
-															</Sectionless>
-														</Card>
-													</Link>
-												</Chunk>
-											
-
-								
-							
-							</FlexItem>
-
-
-				
-
+														<Text type="small" color="secondary">TBD &middot; Greenpoint</Text>
+													</Chunk>
+													<Chunk>
+													<Flex>
+														<FlexItem>
+															<Inline style={{flexWrap: 'nowrap'}}>
+															<Avatar
+																source={{uri: `https://randomuser.me/api/portraits/women/52.jpg`}}
+																size="small"
+																style={{
+																	width: 18,
+																	height: 18
+																}}
+																/>
+																<Text type="small" color="hint">
+																	/u/sallyposter
+																</Text>
+															</Inline>
+														</FlexItem>
+														<FlexItem justify="center">
+														
+														</FlexItem>
+													</Flex>
+													
+													</Chunk>
+												</Sectionless>
+											</Card>
+										</Link>
+									</Chunk>							
+								</FlexItem>
 							</Flex>
 						</Section>
 			{/*															
@@ -420,70 +375,61 @@ class Events extends React.Component {
 			*/}
 				<Section>
 						<Flex direction="column" switchDirection="large" >
-						<FlexItem growFactor={1}>
-							
+							<FlexItem growFactor={1}>
 								<Chunk>
-										<Text type="sectionHead">Happening worldwide</Text>
-										{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
-									</Chunk>
-							
-						</FlexItem>
+									<Text type="sectionHead">Happening worldwide</Text>
+									{/* this would be upcoming events and seeded converstions planning events in a wide range of cities */}
+								</Chunk>
+							</FlexItem>
 							<FlexItem growFactor={3}>
-							
-									
-									
-									<List
-										items={areas}
-										variant="grid"
-										itemsInRow={{
-											small: 1,
-											medium: 2,
-										}}
-										renderItem={(area, i)=>{
-											return (
-												<Chunk>
-													<Card>
+								<List
+									items={areas}
+									variant="grid"
+									itemsInRow={{
+										small: 1,
+										medium: 2,
+									}}
+									renderItem={(area, i)=>{
+										return (
+											<Chunk>
+												<Card>
 													<Sectionless>
 														<Chunk>
-													<Flex>
-														<FlexItem shrink justify="center">
-															<View style={{width: 120}}>
-																<Text color="tint" weight="strong" numberOfLines={1}>
-																	<Icon
-																		shape="MapPin"
-																		size="small"
-																		color={swatches.tint}
-																		/>
-																	{area.hostname.toUpperCase()}
-																</Text>
-															</View>
-														</FlexItem>
-														<FlexItem>
+															<Flex>
+																<FlexItem shrink justify="center">
+																	<View style={{width: 120}}>
+																		<Text color="tint" weight="strong" numberOfLines={1}>
+																			<Icon
+																				shape="MapPin"
+																				size="small"
+																				color={swatches.tint}
+																				/>
+																			{area.hostname.toUpperCase()}
+																		</Text>
+																	</View>
+																</FlexItem>
+																<FlexItem>
 																	<Text type="small" color="hint">Meeting in 3 days: </Text>
 																	<Text type="small"  >Let's hike to Mt Awesome</Text>
-														</FlexItem>
-													</Flex>
-													</Chunk>
+																</FlexItem>
+															</Flex>
+														</Chunk>
 													</Sectionless>
-													</Card>
-												</Chunk>
-											);
-										}}
-										/>
-								
-							
-							</FlexItem>
-							
-						</Flex>
+												</Card>
+											</Chunk>
+										);
+									}}
+									/>
+								</FlexItem>
+							</Flex>
 						</Section>
 					</Bounds>
 				</Stripe>
-
 			</Page>
 				
 				<Modal
-					visible={this.state.modalVisible}
-					onRequestClose={this.toggleModal}
+					visible={modalVisible}
+					onRequestClose={toggleModal}
 					>
 					<Stripe>
 						<Section>
@@ -494,18 +440,7 @@ class Events extends React.Component {
 								<Text>Eventbrite, Facebook, Splashthat, Meetup, or many other event hosting sites</Text>
 							</Chunk>
 
-							<EventForm
-								initialFields={{
-									url: ''
-								}}
-								fieldErrors={events.error.fieldErrors}
-								onSubmit={ (fields, context) => {
-									this.props.createEvent( fields );
-									context.resetFields();
-									return false;
-								}}
-								isLoading={events.loading}
-								/>
+							<EventForm />
 
 						</Section>
 					</Stripe>
@@ -514,37 +449,13 @@ class Events extends React.Component {
 
 		);
 	}
-}
 
 
-const mapStateToProps = (state, ownProps) => {
-	return ({
-		user: state.user,
-		events: state.events,
-		allEvents: {
-			items: state.events.itemIds.map( id => state.events.itemsById[id] ),
-			loading: state.events.loading
-		},
-		localEvents: {
-			items: state.events.localItemIds.map( id => state.events.itemsById[id] ),
-			loading: state.events.loading
-		},
-		areas: AREAS.slice(0,12)
-	});
-}
 
-const actionCreators = {
-	addPrompt,
-	addToast,
-	createEvent,
-	fetchEvents,
-	fetchLocalEvents,
-};
 
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(Events);
+
+
+export default Events;
 
 const thisCardStyle = {
 	borderWidth: 0,

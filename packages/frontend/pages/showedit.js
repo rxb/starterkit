@@ -53,9 +53,7 @@ import {
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
-
 import { runValidations, readFileAsDataUrl } from '../components/cinderblock/formUtils';
-import { authentication } from '@feathersjs/client';
 
 
 const ShowForm = (props) => {
@@ -255,6 +253,8 @@ function ShowEdit(props) {
 
 	const { data: showData, error: showError } = useShow(props.showId);
 	const { data: tagsData, error: tagsError } = useTags();
+	const authentication = useSelector(state => state.authentication);
+	const user = authentication.user || {};
 
 		return (
 			<Page>

@@ -84,8 +84,8 @@ function Hello() {
 
 	// data from redux
 	const dispatch = useDispatch(); 
-	const user = useSelector(state => state.user);
 	const authentication = useSelector(state => state.authentication);
+	const user = authentication.user || {};
 
 	// modal visibility
 	const [modalVisible, setModalVisible] = useState(false);

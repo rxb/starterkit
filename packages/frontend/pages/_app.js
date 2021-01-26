@@ -9,6 +9,7 @@ import { BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
 
 // redux
 import {wrapper} from '../store';
+
 import {
   setUser,
   logOut,
@@ -29,32 +30,25 @@ if (process.browser) {
 }
 feathersClient.configure(feathers.authentication(authenticationOptions));
 feathersClient.configure(feathers.rest(apiUrl).fetch(fetch));
-/*
-// Commenting out socket transport until it's actually necessary for a project
-import io from 'socket.io-client';
-const socket = io(apiUrl);
-feathersClient.configure(feathers.socketio(socket));
-*/
 
 
 function ThisApp(props) {
 
     const dispatch = useDispatch();
-    const storeAuthAndUser = (authResult, params, context) => {
-      dispatch( logInSuccess(authResult.accessToken) );
-      dispatch( setUser(authResult.user) );
+    const storeAuth = (authResult, params, context) => {
+      dispatch( logInSuccess(authResult) );
     }
-    feathersClient.on('login', storeAuthAndUser);
+    feathersClient.on('login', storeAuth);
     feathersClient.on('logout', (authResult, params, context) => {
       dispatch( logOut() );
     });
     feathersClient.reAuthenticate()
-      .then(storeAuthAndUser)
+      .then(storeAuth)
       .catch((error)=>{
-        // no auth
-        // console.log(error);
+        dispatch( logOut() );
       }
     );
+    
 
     const {Component, pageProps, store} = props;
     return (

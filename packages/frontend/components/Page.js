@@ -72,9 +72,8 @@ function Page (props) {
 	
 	// data from redux
 	const dispatch = useDispatch(); 
-	const user = useSelector(state => state.user);
 	const authentication = useSelector(state => state.authentication);
-
+	const user = authentication.user || {};
 
 	// login modal
 	const [modalVisible, setModalVisible] = useState(false);
@@ -159,27 +158,6 @@ function Page (props) {
 				<View style={{flex: 1}}>
 					{props.children}
 				</View>
-
-				{/*
-				<Stripe style={{
-					flex: 0,
-					minHeight: 0,
-					flexBasis: 'auto',
-				}}>
-					<Bounds>
-
-						<Sections>
-							<Section>
-								<Chunk>
-									<Text color="secondary">Help</Text>
-									<Text color="secondary">Privacy</Text>
-									<Text color="secondary">This is the footer</Text>
-								</Chunk>
-							</Section>
-						</Sections>
-					</Bounds>
-				</Stripe>
-				*/}
 
 				<Modal
 					visible={modalVisible}

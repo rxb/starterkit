@@ -1,5 +1,4 @@
 import{
-  findByOptimisticId,
   parseFeathersError
 } from './utils.js'
 

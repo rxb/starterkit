@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import { useDispatch } from 'react-redux';
 
 import {
 	Button,
@@ -14,6 +15,8 @@ import feathersClient from '../components/FeathersClient';
 
 const LoginForm = (props) => {
 	
+	const dispatch = useDispatch();
+
 	const formState = useFormState({
 		intitialState: props.intitialState
 	});
@@ -29,8 +32,8 @@ const LoginForm = (props) => {
 			.then(()=>{
 				formState.setLoading(false);
 			})
-			.catch((e)=>{
-				alert(e); // handle this better
+			.catch((error)=>{
+				console.log(error);
 				formState.setLoading(false);
 			});
 	}
