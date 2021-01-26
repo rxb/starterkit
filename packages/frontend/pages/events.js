@@ -71,6 +71,10 @@ const EventForm = (props) => {
 		(other event sites might work too... put the link in and give it a try!)
 	*/
 
+	const {
+		authentication
+	} = props
+
 	const formState = useFormState({
 		initialFields: {
 			url: ''
@@ -83,9 +87,11 @@ const EventForm = (props) => {
 	});
 
 	const submitForm = async () => {
+		formState.setLoading(true);
 		try{
-			await postEvent( formState.fields, {token: authentication.token});
+			await postEvent( formState.fields, {token: authentication.accessToken});
 			formState.resetFields();	
+			props.onSuccess();
 		}
 		catch(error){
 			formState.setError(error);
@@ -213,7 +219,7 @@ function Events(props) {
 											<Button 
 												shape="Plus"
 												label="Add event"
-												onPress={this.toggleModal}
+												onPress={toggleModal}
 												width="full"
 												/>	
 										</FlexItem>
@@ -440,7 +446,10 @@ function Events(props) {
 								<Text>Eventbrite, Facebook, Splashthat, Meetup, or many other event hosting sites</Text>
 							</Chunk>
 
-							<EventForm />
+							<EventForm 
+								authentication={authentication} 
+								onSuccess={()=>setModalVisible(false)}
+								/>
 
 						</Section>
 					</Stripe>
