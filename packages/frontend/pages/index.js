@@ -93,7 +93,6 @@ function Hello() {
 		setModalVisible(!modalVisible);
 	}
   
-
 	const _renderItemCard = (show, i) => {
 		return(
 			<Chunk key={i}>

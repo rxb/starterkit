@@ -26,7 +26,6 @@ class TextInput extends React.Component{
 	static defaultProps = {
 		autoExpand: true,
 		onChange: ()=>{},
-		onChangeText: ()=>{},
 		value: ''
 	}
 

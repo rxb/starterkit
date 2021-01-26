@@ -49,31 +49,6 @@ export const fetchTldr = (id) => ({
 });
 
 
-// FETCH EVENTS
-export const fetchEvents = (data) => ({
-	[RSAA]: {
-		types: ["FETCH_EVENTS", "FETCH_EVENTS_SUCCESS", "FETCH_EVENTS_FAILURE"],
-		endpoint: `${apiHost}events?${querystring.stringify(data)}`,
-		method: 'GET',
- 	}
-});
-export const fetchLocalEvents = (data) => ({
-	[RSAA]: {
-		types: ["FETCH_LOCAL_EVENTS", "FETCH_LOCAL_EVENTS_SUCCESS", "FETCH_LOCAL_EVENTS_FAILURE"],
-		endpoint: `${apiHost}events?${querystring.stringify(data)}`,
-		method: 'GET',
- 	}
-});
-
-export const createEvent = (data) => ({
-	[RSAA]: {
-		endpoint: `${apiHost}events/`,
-		method: 'POST',
-		headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-		body: JSON.stringify(data),
-		types: ["CREATE_EVENT","CREATE_EVENT_SUCCESS", "CREATE_EVENT_FAILURE"]
- 	}
-});
 
 // LOG IN WITH FEATHERS CLIENT
 // just use plain action creators
@@ -89,7 +64,7 @@ export const logOut = () => ({
 
 
 /*
-// GLOBAL MINOR UI
+// MODALS
 export const showModal = (id, content) => ({
     type: 'SHOW_MODAL',
     payload: {content: content}

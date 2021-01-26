@@ -110,7 +110,7 @@ const ShowForm = (props) => {
 			}
 
 			try{
-				const response = await patchShow(showFields.id, showFields, authentication.token)
+				const response = await patchShow(showFields.id, showFields, authentication.accessToken)
 				Router.push({pathname:'/show', query: {showId: showData.id}})
 					.then(()=>{
 						dispatch(addToast('Show saved; nice work!'));

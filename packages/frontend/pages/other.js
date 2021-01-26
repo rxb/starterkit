@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react';
-import { connect } from 'react-redux';
 
 import {
 	Bounds,
@@ -24,13 +23,24 @@ import {
 	Text,
 	TextInput,
 	Touch,
-	withFormState
+	useFormState
 } from '../components/cinderblock';
 
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
-const OtherForm = withFormState((props) => {
+const OtherForm = (props) => {
+
+	const formState = useFormState({
+		initialFields: {}
+	});
+
+	const submitForm = () => {
+		formState.setLoading(true);
+		alert(`In theory, we are submitting: ${JSON.stringify(formState.fields)}`);
+		formState.setLoading(false);
+	}
+
 	return(
 		<form>
 			<Sections>
@@ -46,8 +56,8 @@ const OtherForm = withFormState((props) => {
 					<Chunk>
 						<Label htmlFor="theseoptions">Pick one of these</Label>
 						<Picker
-							onValueChange={(itemValue, itemIndex) => props.setFieldState({pickone: itemValue})}
-							selectedValue={props.getFieldValue('pickone')}
+							onValueChange={(itemValue, itemIndex) => formState.setFieldValue('pickone', itemValue)}
+							selectedValue={formState.getFieldValue('pickone')}
 							>
 							<Picker.Item label="One" value="one" />
 							<Picker.Item label="Two" value="two" />
@@ -59,8 +69,8 @@ const OtherForm = withFormState((props) => {
 						<Label htmlFor="bestmemory">Best memory</Label>
 						<TextInput
 							id="bestmemory"
-							value={props.getFieldValue('bestmemory')}
-							onChangeText={text => props.setFieldValue('bestmemory', text)}
+							value={formState.getFieldValue('bestmemory')}
+							onChange={e => formState.setFieldValue('bestmemory', e.target.value)}
 							autoComplete="off"
 							/>
 					</Chunk>
@@ -69,8 +79,8 @@ const OtherForm = withFormState((props) => {
 						<Label htmlFor="worstmemory">Worst memory</Label>
 						<TextInput
 							id="worstmemory"
-							value={props.getFieldValue('worstmemory')}
-							onChangeText={text => props.setFieldValue('worstmemory', text)}
+							value={formState.getFieldValue('worstmemory')}
+							onChange={e => formState.setFieldValue('worstmemory', e.target.value)}
 							autoComplete="off"
 							/>
 						<Text type="small" color="hint">Sucks, doesn't it?</Text>
@@ -82,27 +92,25 @@ const OtherForm = withFormState((props) => {
 							multiline
 							numberOfLines={4}
 							showCounter={false}
-							value={props.getFieldValue('clean')}
-							onChangeText={text => props.setFieldValue('clean', text)}
+							value={formState.getFieldValue('tellMeAboutYou')}
+							onChange={e => formState.setFieldValue('tellMeAboutYou', e.target.value)}
 							/>
 					</Chunk>
 					<Chunk>
 						<Label htmlFor="tellMe">Check out this counter</Label>
 						<TextInput
-							id="tellMe"
 							multiline
 							numberOfLines={4}
 							maxLength={1000}
 							showCounter={true}
-							value={props.getFieldValue('tellMe')}
-							onChangeText={text => props.setFieldValue('tellMe', text)}
+							value={formState.getFieldValue('counterAnswer')}
+							onChange={e => formState.setFieldValue('counterAnswer', e.target.value)}
 							/>
 					</Chunk>
 					<Chunk>
 						<CheckBox
-							id="lastname"
-							value={props.getFieldValue('isRed')}
-							onChange={() => props.setFieldValue('isRed', !props.getFieldValue('isRed'))}
+							value={formState.getFieldValue('termsOfService')}
+							onChange={() => formState.setFieldValue('termsOfService', !formState.getFieldValue('termsOfService'))}
 							label="I agree to everything"
 							/>
 					</Chunk>
@@ -110,56 +118,33 @@ const OtherForm = withFormState((props) => {
 				<Section>
 					<Chunk>
 						<Button
-							onPress={props.handleSubmit}
+							onPress={submitForm}
 							label="Submit"
 							width="snap"
+							isLoading={formState.loading}
 							/>
 					</Chunk>
 				</Section>
 			</Sections>
 		</form>
 	)
-});
+};
 
 
 
-class Other extends React.Component {
-
-	render() {
-
-		const {
-			user
-		} = this.props;
+function Other(props) {
 
 		return (
 			<Page>
 				<Stripe>
 					<Bounds>
-						<OtherForm
-							initialFields={{firstName: 'Joe', lastName: 'Schmo', whatisthis: 'three'}}
-							onSubmit={(fields) => {
-								alert(`in theory we are submitting... ${JSON.stringify(fields)}`);
-							}}
-							/>
+						<OtherForm />
 					</Bounds>
 				</Stripe>
 			</Page>
 		);
 
-
-	}
 }
 
 
-const mapStateToProps = (state, ownProps) => {
-	return ({
-		user: state.user,
-	});
-}
-
-const actionCreators = {};
-
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(Other);
+export default Other;

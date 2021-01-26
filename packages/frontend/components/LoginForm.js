@@ -18,7 +18,7 @@ const LoginForm = (props) => {
 	const dispatch = useDispatch();
 
 	const formState = useFormState({
-		intitialState: props.intitialState
+		initialFields: props.initialFields
 	});
 
 	const onSubmit = () =>{

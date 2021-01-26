@@ -50,8 +50,10 @@ function useFormState ( opts = {} ) {
 		}
 	}, [error]);
 
-	const setFieldValue = (key, value ) => {
-		setFields({...fields, [key]: value});
+	const setFieldValue = (key, value) => {
+		const newFields = {...fields, [key]: value};
+		console.log({...newFields});
+		setFields(newFields);
 	}
 
 	const getFieldValue = (key) => {

@@ -97,7 +97,7 @@ const CommentForm = (props) => {
 				}] 
 			}, false); // optimistic mutate
 			try{
-				await postShowComment(newItemData, props.authentication.token) // post 
+				await postShowComment(newItemData, props.authentication.accessToken) // post 
 				props.mutate(); // trigger refresh from server
 				formState.resetFields();
 			} 
