@@ -10,10 +10,12 @@ const populateShowAssociations = (context) => {
   context.params.sequelize = {
     ...context.params.sequelize,
     include: [
+      /*
       {
         model: show_comments,
         include: [ users ]
       },
+      */
       {
         model: tags,
         as: 'tags'

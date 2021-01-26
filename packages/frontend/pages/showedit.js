@@ -299,10 +299,10 @@ function ShowEdit(props) {
 										}
 									</Section>
 								</FlexItem>
-								<FlexItem growFactor={1}>
+								<FlexItem growFactor={1} style={{minWidth: 'inherit'}}>
 									<Section>
-										<Chunk style={{overflow: 'hidden'}}>
-											<Text>{JSON.stringify(showData)}</Text>
+										<Chunk>
+											<Text color="hint" style={{maxWidth: '100%'}}>{JSON.stringify(showData, null, " ")}</Text>
 										</Chunk>
 									</Section>
 
