@@ -77,6 +77,11 @@ const ShowForm = (props) => {
 			tags: showData.tags,
 			description: showData.description
 		},
+		toastableErrors: {
+			BadRequest: 'Something went wrong',
+			NotAuthenticated: 'Not signed in'
+		},
+		addToast: msg => dispatch(addToast(msg))
 	});
 
 	const submitEditForm = async ()=> {

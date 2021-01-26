@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-/*
-Fields.js
-Ultra-lightweight form helper for React
-*/
 
 function debounce(callback, time = 60) {
 	var timeout;
@@ -34,15 +30,25 @@ function useFormState ( opts = {} ) {
 
 	const {
 		initialFields = {},
-		onChange = () => {}
+		onChange = () => {},
+		toastableErrors = {},
+		addToast = (message) => {console.error(message) }
 	} = opts;
-		
+	
 	const [fields, setFields] = useState(initialFields);
 	useEffect( ()=>{ handleChange() }, [fields]);
 
 	const [loading, setLoading] = useState(false);
 	const [error, setErrorDirect] = useState({});
 	const setError = (error = {}) => setErrorDirect(convertFeathersErrors(error));
+
+	// watch for toastable errors 
+	useEffect(()=>{
+		const message = toastableErrors[error.name];
+		if(message){
+			addToast(message);
+		}
+	}, [error]);
 
 	const setFieldValue = (key, value ) => {
 		setFields({...fields, [key]: value});
