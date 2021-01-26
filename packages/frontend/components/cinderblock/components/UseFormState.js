@@ -52,12 +52,16 @@ function useFormState ( opts = {} ) {
 
 	const setFieldValue = (key, value) => {
 		const newFields = {...fields, [key]: value};
-		console.log({...newFields});
 		setFields(newFields);
 	}
 
 	const getFieldValue = (key) => {
 		return fields[key] || '';
+	}
+
+	const setFieldValues = (updatedFields={}) => {
+		const newFields = {...fields, ...updatedFields};
+		setFields(newFields);
 	}
 
 	const resetFields = () => {
@@ -73,6 +77,7 @@ function useFormState ( opts = {} ) {
 		resetFields,
 		setFieldValue,
 		getFieldValue,
+		setFieldValues,
 		setLoading,
 		loading,
 		setError,

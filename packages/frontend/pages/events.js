@@ -102,7 +102,6 @@ const EventForm = (props) => {
 		return false;
 	}
 
-
 	return(
 		<form autocomplete="off">
 			<LoadingBlock isLoading={formState.loading}>

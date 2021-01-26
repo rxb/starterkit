@@ -1,17 +1,19 @@
-import React, {Fragment} from 'react';
-import { connect } from 'react-redux';
-import Router from 'next/router'
-import Head from 'next/head'
-
+import React, {Fragment, useState} from 'react';
 
 import {
-	addToast,
-	fetchTldr,
-	createTldr,
+	fetcher,
 	patchTldr,
-	updateErrorTldr
-} from '../actions';
+	useTldr
+} from '../swr';
 
+import {connect, useDispatch, useSelector} from 'react-redux';
+import { addPrompt, addToast } from '../actions';
+
+
+
+
+import Router from 'next/router'
+import Head from 'next/head'
 
 import {
 	Avatar,
@@ -41,105 +43,112 @@ import {
 	TextInput,
 	Touch,
 	View,
-	withFormState
+	useFormState
 } from '../components/cinderblock';
 
 
-import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
+import { authentication } from '@feathersjs/client';
 
-import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
 
 
-const TldrForm = withFormState((props) => {
+const TldrForm = (props) => {
 
 	const {
-		fields,
-		handleSubmit,
-		resetFields,
-		fieldErrors = {},
-		tags,
+		tldrData,
+		authentication
 	} = props;
 
+	const dispatch = useDispatch();
+
+	const formState = useFormState({
+		initialFields: {
+			draftContent: JSON.stringify(tldrData.draftContent, null, 2),
+			id: tldrData.id,
+			publish: false
+		},
+		toastableErrors: {
+			BadRequest: 'Something went wrong',
+			NotAuthenticated: 'Not signed in'
+		},
+		addToast: msg => dispatch(addToast(msg))
+	})
+
+	const submitForm = async(finalFields={}) => {
+		// state set is async, so while we're settings them setFields, we don't know when they'll update
+		// so for this function, we'll use a local copy, manually updated.
+		formState.setFieldValues(finalFields);
+		const fieldsCopy = {
+			...formState.fields,
+			...finalFields
+		}
+
+		// parsing text back into json json
+		fieldsCopy.draftContent = JSON.parse(fieldsCopy.draftContent);
+
+		formState.setLoading(true);
+		try{
+			await patchTldr(tldrData.id, fieldsCopy, {token: authentication.accessToken})
+			Router.push({pathname:'/tldr', query: {tldrId: tldrData.id}})
+				.then(()=>{
+					dispatch(addToast('tldr saved; nice work!'));
+				})
+		}
+		catch(error){
+			console.log(error);
+			formState.setError(error);
+			formState.setLoading(false);
+		}
+		
+	
+	}
+	
 	return(
 		<form>
 			<Chunk>
 				<Label for="description">Card content</Label>
 				<TextInput
 					id="draftContent"
-					value={props.getFieldValue('draftContent')}
-					onChangeText={text => props.setFieldValue('draftContent', text) }
+					value={formState.getFieldValue('draftContent')}
+					onChange={e => formState.setFieldValue('draftContent', e.target.value) }
 					multiline
 					numberOfLines={10}
 					showCounter={true}
 					/>
-				<FieldError error={fieldErrors.draftContent} />
+				<FieldError error={formState.errors?.fieldErrors?.draftContent} />
 			</Chunk>
 
 			<Chunk>
 				<Button
 					color="primary"
 					label="Publish"
+					isLoading={formState.loading && formState.getFieldValue('publish')}
 					onPress={ () => {
-						props.setFieldValue('publish', true, props.handleSubmit.bind(this));
+						submitForm({publish: true});
 					}}
 					/>
 				<Button
 					color="secondary"
 					label="Save draft"
+					isLoading={formState.loading && !formState.getFieldValue('publish')}
 					onPress={ () => {
-						props.setFieldValue('publish', false, props.handleSubmit.bind(this));
+						submitForm({publish: false});
 					}}				
 					/>
 			</Chunk>
 		</form>
 	);
-});
+};
 
 
 
 
-class TldrEdit extends React.Component {
+function TldrEdit(props) {
 
-	static async getInitialProps (context) {
-		const {store, isServer, pathname, query} = context;
-		const tldrId = query.tldrId;
-		return {
-			tldrId
-		}
-	}
+	const {data: tldrData, error: tldrError, mutate: tldrMutate} = useTldr(props.tldrId);
 
-	constructor(props){
-		super(props);
-		this.state = {}
-	}
-
-	componentDidMount(){
-		this.props.fetchTldr(this.props.tldrId);
-	}
-
-	componentDidUpdate(prevProps){
-
-		// watching for toastable errors
-		// still feel like maybe this could go with form?
-		const messages = {
-			tldr: {
-				BadRequest: 'Something went wrong',
-				NotAuthenticated: 'Not signed in'
-			}
-		};
-		checkToastableErrors(this.props, prevProps, messages);
-
-	}
-
-	render() {
-
-		const {
-			tldr,
-			createTldr,
-			patchTldr,
-			updateErrorTldr
-		} = this.props;
+	const authentication = useSelector(state => state.authentication);
+	const user = authentication.user || {};
 
 		return (
 			<Fragment>
@@ -158,50 +167,12 @@ class TldrEdit extends React.Component {
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
-										{ tldr.data.id &&
+										{ tldrData &&
 										<TldrForm
-											initialFields={{
-												draftContent: JSON.stringify(tldr.data.draftContent, null, 2),
-												id: tldr.data.id,
-												publish: false
-											}}
-											fieldErrors={tldr.error.fieldErrors}
-											onSubmit={ async (fields)=>{
-
-												// client-side validation rules
-												// should match up with server rules
-												// don't always need both unless speed is paramount
-												// or doing something like optimistic UI
- 												const validators = {};
-
-										        // client-side validation
-										        const error = runValidations(fields, validators);
-										        updateErrorTldr(error);
-
-										        // if not client errors...
-										        if(!error.errorCount){
-
-													// temporary finesse for json
-													const fieldsCopy = {
-														...fields,
-														draftContent: JSON.parse(fields.draftContent)
-													}
-
-													// patch & redirect & toast (if no server errors)
-													patchTldr(fields.id, fieldsCopy)
-														.then( response => {
-															if(!response.error){
-																Router.push({pathname:'/tldr', query: {tldrId: tldr.data.id}})
-																	.then(()=>{
-																		this.props.addToast('tldr saved; nice work!');
-																	})
-															}
-														});
-										        }
-											}}
+											tldrData={tldrData}
+											authentication={authentication}
 											/>
 										}
-
 									</Section>
 								</FlexItem>
 								
@@ -212,26 +183,17 @@ class TldrEdit extends React.Component {
 			</Page>
 			</Fragment>
 		);
+	
+}
+
+TldrEdit.getInitialProps = async(context) => {
+	const {store, isServer, pathname, query} = context;
+	const tldrId = query.tldrId || 2; // hardcode for now
+	return {
+		tldrId
 	}
 }
 
 
-const mapStateToProps = (state, ownProps) => {
-	return ({
-		tldr: state.tldr	
-	});
-}
-
-const actionCreators = {
-	addToast,
-	fetchTldr,
-	createTldr,
-	patchTldr,
-	updateErrorTldr
-};
-
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(TldrEdit);
+export default TldrEdit;
 

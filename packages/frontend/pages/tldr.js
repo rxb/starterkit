@@ -1,5 +1,14 @@
 import React, {Fragment, useState} from 'react';
-import { connect } from 'react-redux';
+
+import {
+	fetcher,
+	getTldrUrl,
+	useTldr
+} from '../swr';
+
+import {connect, useDispatch, useSelector} from 'react-redux';
+import { addPrompt, addToast } from '../actions';
+
 
 import {
 	Avatar,
@@ -37,12 +46,6 @@ import {METRICS} from '../components/cinderblock/designConstants';
 import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedia';
 import Page from '../components/Page';
 
-
-import {
-	fetchTldr,
-	addPrompt,
-	addToast
-} from '../actions';
 
 import Markdown from 'markdown-to-jsx';
 import dayjs from 'dayjs';
@@ -84,11 +87,11 @@ const TldrCard = WithMatchMedia((props) => {
 
 	const {
 		media,
-		tldr,
+		tldrData,
 		style
 	} = props;
 
-	const content = tldr.data.currentTldrVersion.content;
+	const content = tldrData.currentTldrVersion.content;
 
 	return (
 		<Card style={[
@@ -108,13 +111,13 @@ const TldrCard = WithMatchMedia((props) => {
 								<Inline>
 									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
 									<Text type="small" inverted color="secondary">
-										{tldr.data.author.name}/{tldr.data.id}
+										{tldrData.author.name}/{tldrData.id}
 									</Text>
 								</Inline>
 							</FlexItem>
 							<FlexItem style={{alignItems: 'flex-end'}}>
 								<Text type="small" inverted color="secondary">
-									v{tldr.data.currentTldrVersion.version}
+									v{tldrData.currentTldrVersion.version}
 								</Text>
 							</FlexItem>
 						</Flex>
@@ -200,29 +203,17 @@ const TldrCard = WithMatchMedia((props) => {
 });
 
 
-class Tldr extends React.Component {
+function Tldr(props) {
 
-	static async getInitialProps (context) {
-		// next router query bits only initially available to getInitialProps
-		const {store, isServer, pathname, query} = context;
-		const tldrId = query.tdlrId || 2; // default for now
-		await store.dispatch(fetchTldr(tldrId));
-		return {
-			tldrId: tldrId
-		}
-	}
+		const dispatch = useDispatch(); 
+
+		const {data: tldrData, error: tldrError, mutate: tldrMutate} = useTldr(props.tldrId, {initialData: props.tldr});
 
 
-	render() {
+		const authentication = useSelector(state => state.authentication);
+		const user = authentication.user || {};
 
-		const {
-			user,
-			tldr
-		} = this.props;
 
-		console.log('render');
-		console.log(tldr);
-		
 		return (
 			<View style={{minHeight: '100vh'}}>
 				<ConnectedHeader />
@@ -236,7 +227,7 @@ class Tldr extends React.Component {
 								<FlexItem growFactor={1}>
 									<Section style={{paddingTop: 0, paddingBottom: 0}}>
 										<Chunk>
-											<TldrCard tldr={tldr} />
+											<TldrCard tldrData={tldrData} />
 										</Chunk>
 									</Section>
 								</FlexItem>
@@ -265,7 +256,7 @@ class Tldr extends React.Component {
 																		weight="strong"
 																		style={{lineHeight: 16}}
 																		>
-																		{tldr.data.upvotes}
+																		{tldrData.upvotes}
 																	</Text>
 																	<Text 
 																		type="micro"
@@ -292,7 +283,7 @@ class Tldr extends React.Component {
 																	weight="strong"
 																	style={{lineHeight: 16, textAlign: 'right'}}
 																	>
-																	{tldr.data.downvotes}
+																	{tldrData.downvotes}
 																</Text>
 																<Text 
 																	type="micro"
@@ -337,7 +328,7 @@ class Tldr extends React.Component {
 											<Chunk style={listItemStyle}>
 												<Flex>
 													<FlexItem>
-														<Text weight="strong">Issues ({tldr.data.issueCount})</Text>
+														<Text weight="strong">Issues ({tldrData.issueCount})</Text>
 														<Text type="small" color="secondary">Report problems and suggest improvements</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
@@ -352,7 +343,7 @@ class Tldr extends React.Component {
 											<Chunk style={listItemStyle}>
 												<Flex>
 													<FlexItem >
-														<Text weight="strong">Forks ({tldr.data.forkCount})</Text>
+														<Text weight="strong">Forks ({tldrData.forkCount})</Text>
 														<Text type="small" color="secondary">Use this card as a starting point for a new one</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
@@ -368,7 +359,7 @@ class Tldr extends React.Component {
 												<Flex>
 													<FlexItem >
 														<Text weight="strong">Versions</Text>
-														<Text type="small" color="secondary">This card is v{tldr.data.currentTldrVersion.version}, updated {dayjs(tldr.data.currentTldrVersion.createdAt).fromNow()}</Text>
+														<Text type="small" color="secondary">This card is v{tldrData.currentTldrVersion.version}, updated {dayjs(tldrData.currentTldrVersion.createdAt).fromNow()}</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon
@@ -384,12 +375,12 @@ class Tldr extends React.Component {
 													<FlexItem shrink justify="center">
 														<Avatar
 															size="medium"
-															source={{uri: tldr.data.author.photoUrl}}
+															source={{uri: tldrData.author.photoUrl}}
 															/>
 													</FlexItem>
 													<FlexItem>
-														<Text weight="strong">{tldr.data.author.name}</Text>
-														<Text type="small" color="secondary">@{tldr.data.author.urlKey}</Text>
+														<Text weight="strong">{tldrData.author.name}</Text>
+														<Text type="small" color="secondary">@{tldrData.author.urlKey}</Text>
 													</FlexItem>
 												</Flex>
 											</Chunk>
@@ -421,10 +412,10 @@ class Tldr extends React.Component {
 									scrollItemWidth={300}
 									
 									items={[
-										tldr.data.currentTldrVersion.content,
-										tldr.data.currentTldrVersion.content,
-										tldr.data.currentTldrVersion.content,
-										tldr.data.currentTldrVersion.content,
+										tldrData.currentTldrVersion.content,
+										tldrData.currentTldrVersion.content,
+										tldrData.currentTldrVersion.content,
+										tldrData.currentTldrVersion.content,
 									]}
 									
 									renderItem={(item, i)=>{
@@ -461,28 +452,23 @@ class Tldr extends React.Component {
 		);
 
 
+}
+
+Tldr.getInitialProps = async (context) => {
+	// next router query bits only initially available to getInitialProps
+	const {store, req, pathname, query} = context;
+	const tldrId = query.tdlrId || 2;
+	const isServer = !!req;	
+
+	// fetch and pass as props during SSR, using in the useSWR as intitialData
+	const tldr = (isServer) ? await fetcher(getTldrUrl(tldrId)) : undefined;
+
+	return {
+		tldrId: tldrId,
+		isServer,
+		tldr
 	}
 }
-
-
-
-
-
-const mapStateToProps = (state, ownProps) => {
-	console.log('mapstatetoprops')	
-	console.log(state.tldr)
-	return ({
-		tldr: state.tldr,
-		user: state.user,
-	});
-}
-
-const actionCreators = {};
-
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(Tldr);
 
 const listItemStyle = {
 	borderTopColor: swatches.border,
@@ -495,3 +481,6 @@ const thisCardStyle = {
 	shadowRadius: 16,
 	shadowColor: 'rgba(0,0,0,.15)',
 }
+
+
+export default Tldr;

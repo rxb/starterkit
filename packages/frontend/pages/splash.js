@@ -38,8 +38,6 @@ import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedi
 import Page from '../components/Page';
 import OutpostHeader from '../components/OutpostHeader';
 
-
-
 import Markdown from 'markdown-to-jsx';
 
 
@@ -115,40 +113,7 @@ const outposts = {
 	]
 }
 
-class HeaderBlurb extends React.Component {
-	
-	/* TODO: add typing effect */
 
-	constructor(props){
-		super(props);
-		this.state = {
-			blurbExampleUses: [
-				"subreddits",
-				"twitter accounts",
-				"universities",
-				"podcasts"
-			],
-			blurbExampleUse: 0
-		}
-	}
-	componentDidMount(){
-		if(this.props.cycle){
-			const blurbInterval = setInterval(()=>{
-				const blurbExampleUse = this.state.blurbExampleUse + 1 < this.state.blurbExampleUses.length ? this.state.blurbExampleUse + 1 : 0;
-				this.setState({blurbExampleUse});
-			}, 1000);
-			this.setState({blurbInterval});
-		}
-	}
-	componentWillUnmount(){
-		clearInterval(this.state.blurbInterval);
-	}
-	render() {
-		return (
-			<Text type="sectionHead" inverted style={{textAlign: 'center'}}>Local outposts for {this.state.blurbExampleUses[this.state.blurbExampleUse]}</Text>
-		);
-	}
-}
 
 const HeaderContent = WithMatchMedia((props) => {
 	const {
@@ -161,9 +126,6 @@ const HeaderContent = WithMatchMedia((props) => {
 	}
 	return(
 		<Section>
-			
-
-			
 			<Chunk>
 				<Text type="hero" 
 					inverted 
@@ -309,28 +271,13 @@ const OutpostRow = (props) => {
 }
 
 
-class Splash extends React.Component {
+function Splash(props) {
 
-	constructor(props){
-		super(props);
-		this.state = {
-			modalVisible: false
+		// modal visibility
+		const [modalVisible, setModalVisible] = useState(false);
+		const toggleModal = () => {
+			setModalVisible(!modalVisible);
 		}
-		this.toggleModal = this.toggleModal.bind(this);
-
-	}
-
-	toggleModal() {
-		this.setState({modalVisible: !this.state.modalVisible})
-	}
-
-	render() {
-
-		const {
-			user
-		} = this.props;
-
-		
 
 		const headerImageSource = `https://source.unsplash.com/Jztmx9yqjBw/1900x800`
 
@@ -361,14 +308,14 @@ class Splash extends React.Component {
 								outposts={outposts.subreddit}
 								headline="Topics and interests from&nbsp;Reddit"
 								site="reddit.com"
-								toggleModal={this.toggleModal}
+								toggleModal={toggleModal}
 								/>
 
 							<OutpostRow 
 								outposts={outposts.twitter}
 								headline="People and organizations from&nbsp;Twitter"
 								site="twitter.com"
-								toggleModal={this.toggleModal}
+								toggleModal={toggleModal}
 								/>
 	
 					</Bounds>
@@ -377,8 +324,8 @@ class Splash extends React.Component {
 			</Page>
 
 			<Modal
-			visible={this.state.modalVisible}
-			onRequestClose={this.toggleModal}
+			visible={modalVisible}
+			onRequestClose={toggleModal}
 			>
 			<Stripe>
 				<Section>
@@ -390,7 +337,6 @@ class Splash extends React.Component {
 					</Chunk>
 					<SearchForm />
 					<Button label="Search" width="full" />
-
 				</Section>
 			</Stripe>
 			</Modal>
@@ -398,23 +344,8 @@ class Splash extends React.Component {
 		);
 
 
-	}
+	
 }
-
-
-
-const mapStateToProps = (state, ownProps) => {	
-	return ({
-		user: state.user,
-	});
-}
-
-const actionCreators = {};
-
-export default connect(
-	mapStateToProps,
-	actionCreators
-)(Splash);
 
 const thisCardStyle = {
 	borderWidth: 0,
@@ -422,3 +353,5 @@ const thisCardStyle = {
 	shadowColor: 'rgba(0,0,0,.15)',
 	marginVertical: 0
 }
+
+export default Splash;
