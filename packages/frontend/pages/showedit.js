@@ -4,6 +4,7 @@ import Head from 'next/head'
 
 import {
 	useShow,
+	useTags,
 	patchShow,
 } from '../swr';
 
@@ -63,7 +64,7 @@ const ShowForm = (props) => {
 
 	const {
 		showData,
-		tags
+		tagsData
 	} = props;
 
 	const formState = useFormState({ 
@@ -113,8 +114,6 @@ const ShowForm = (props) => {
 		  	}
 			catch(error){
 				formState.setError(error);
-			}
-			finally{
 				formState.setLoading(false);
 			}
 	}}
@@ -212,7 +211,7 @@ const ShowForm = (props) => {
 
 			<Chunk>
 				<Label for="title">Tags</Label>
-				{tags.items.map((item, i)=>{
+				{tagsData && tagsData.map((item, i)=>{
 					const checked = formState.getFieldValue('tags').findIndex( tag => tag.id == item.id ) != -1;
 					return(
 						<CheckBox
@@ -272,6 +271,7 @@ function ShowEdit(props) {
 	*/
 
 	const { data: showData, error: showError } = useShow(props.showId);
+	const { data: tagsData, error: tagsError } = useTags();
 
 		return (
 			<Page>
@@ -294,7 +294,7 @@ function ShowEdit(props) {
 										{ showData.id &&
 										<ShowForm
 											showData={showData}
-											tags={{items: []}}
+											tagsData={tagsData}
 											/>
 										}
 									</Section>
