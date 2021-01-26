@@ -15,8 +15,6 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 
 import {
 	addToast,
-	fetchShow,
-	fetchTags,
 } from '../actions';
 
 
@@ -61,6 +59,8 @@ import { authentication } from '@feathersjs/client';
 
 
 const ShowForm = (props) => {
+
+	const dispatch = useDispatch();
 
 	const {
 		showData,
@@ -109,7 +109,7 @@ const ShowForm = (props) => {
 				const response = await patchShow(showFields.id, showFields, authentication.token)
 				Router.push({pathname:'/show', query: {showId: showData.id}})
 					.then(()=>{
-						//props.addToast('Show saved; nice work!');
+						dispatch(addToast('Show saved; nice work!'));
 					})
 		  	}
 			catch(error){
