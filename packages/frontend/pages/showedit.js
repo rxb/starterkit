@@ -52,9 +52,9 @@ import {
 
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
-import ShowCard from '../components/ShowCard';
 
-import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
+
+import { runValidations, readFileAsDataUrl } from '../components/cinderblock/formUtils';
 import { authentication } from '@feathersjs/client';
 
 
@@ -86,7 +86,8 @@ const ShowForm = (props) => {
 
 	const submitEditForm = async ()=> {
 		
-		// NOTE: if you're going to add client validation rules, they should match up with server rules, but most of the time you don't  need both unless doing optimitstic updates
+		// client-side validations
+		// just for example here. client-side mostly makes sense for optimistic updates
 		const error = runValidations(formState.fields, {
 			title: {
 				 isLength: {
@@ -250,30 +251,7 @@ const ShowForm = (props) => {
 
 
 
-
 function ShowEdit(props) {
-
-	/*
-	componentDidMount(){
-		this.props.fetchShow(this.props.showId);
-		this.props.fetchTags();
-	}
-
-	componentDidUpdate(prevProps){
-
-		// watching for toastable errors
-		// still feel like maybe this could go with form?
-		// ^^^^ oh good, previous me is being proven correct
-		const messages = {
-			show: {
-				BadRequest: 'Something went wrong',
-				NotAuthenticated: 'Not signed in'
-			}
-		};
-		checkToastableErrors(this.props, prevProps, messages);
-
-	}
-	*/
 
 	const { data: showData, error: showError } = useShow(props.showId);
 	const { data: tagsData, error: tagsError } = useTags();

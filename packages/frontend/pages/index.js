@@ -2,13 +2,13 @@ import React, {Fragment, useEffect, useState} from 'react';
 import Head from 'next/head'
 
 import { connect, useDispatch, useSelector } from 'react-redux';
+import { addToast, addPrompt } from '../actions';
+
 import {
-	logIn,
-	logInFailure,
-	fetchShows,
-	addToast,
-	addPrompt
-} from '../actions';
+	fetcher,
+	useShows,
+} from '../swr';
+
 
 import styles from '../components/cinderblock/styles/styles';
 import swatches from '../components/cinderblock/styles/swatches';
@@ -76,9 +76,14 @@ const FakePrompt = (props) => {
 
 function Hello() {
 
+	const { 
+		data: showsData, 
+		error: showsError,
+		meta: showsMeta
+	} = useShows();
+
 	// data from redux
 	const dispatch = useDispatch(); 
-	const shows = useSelector(state => state.shows);
 	const user = useSelector(state => state.user);
 	const authentication = useSelector(state => state.authentication);
 
@@ -87,11 +92,6 @@ function Hello() {
 	const toggleModal = () => {
 		setModalVisible(!modalVisible);
 	}
-
-	// on mount
-	useEffect(() => {
-		dispatch(fetchShows());
-	}, []);
   
 
 	const _renderItemCard = (show, i) => {
@@ -158,13 +158,13 @@ function Hello() {
 
 									</Section>
 									<Section>
-										{shows.loading &&
+										{!showsData && !showsError &&
 											<Chunk>
 												<Text>Loading...</Text>
 											</Chunk>
 										}
 
-										{!shows.loading &&
+										{showsData &&
 											<List
 												variant={{
 													small: "scroll",
@@ -182,7 +182,7 @@ function Hello() {
 													medium: _renderItemCard
 												}}
 												scrollItemWidth={300}
-												items={shows.items}
+												items={[...showsData, ...showsData]}
 												/>
 										}
 

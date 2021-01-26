@@ -19,10 +19,7 @@ import {
 
 // Redux
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {
-	addPrompt,
-	addToast
-} from '../actions';
+import { addPrompt, addToast } from '../actions';
 
 
 import dayjs from 'dayjs';
