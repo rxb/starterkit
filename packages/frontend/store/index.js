@@ -1,17 +1,39 @@
-//https://github.com/vercel/next.js/tree/canary/examples/with-redux-wrapper
+import { useMemo } from 'react'
+import { createStore, applyMiddleware } from 'redux'
+import reducers from '../reducers'
 
-import { createStore } from 'redux';
-import { HYDRATE, createWrapper } from 'next-redux-wrapper';
-import reducer from '../reducers';
+let store
 
+function initStore(initialState) {
+  return createStore(
+    reducers,
+    initialState,
+  )
+}
 
+export const initializeStore = (preloadedState) => {
+  let _store = store ?? initStore(preloadedState)
 
+  // After navigating to a page with an initial Redux state, merge that state
+  // with the current state in the store, and create a new store
+  if (preloadedState && store) {
+    _store = initStore({
+      ...store.getState(),
+      ...preloadedState,
+    })
+    // Reset the current store
+    store = undefined
+  }
 
+  // For SSG and SSR always create a new store
+  if (typeof window === 'undefined') return _store
+  // Create the store once in the client
+  if (!store) store = _store
 
-const makeStore = (initialState, options) => {
+  return _store
+}
 
-   const createdStore =  createStore( reducer );
-   return createdStore;
-};
-
-export const wrapper = createWrapper( makeStore )
+export function useStore(initialState) {
+  const store = useMemo(() => initializeStore(initialState), [initialState])
+  return store
+}

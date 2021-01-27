@@ -1,22 +1,17 @@
 import Head from 'next/head';
 import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-
+import {Provider, useDispatch, useSelector} from 'react-redux';
+import {useStore} from '../store';
 
 // design
 import swatches from '../components/cinderblock/styles/swatches';
 import { BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
 
-// redux
-import {wrapper} from '../store';
-
 import {
-  setUser,
   logOut,
   fetchUser,
   logInSuccess
 } from '../actions';
-
 
 // FEATHERS CLIENT
 // just using this for auth
@@ -35,7 +30,10 @@ feathersClient.configure(feathers.rest(apiHost).fetch(fetch));
 
 function ThisApp(props) {
 
-    const dispatch = useDispatch();
+    const {Component, pageProps} = props;
+    const store = useStore(pageProps.initialReduxState)
+
+    const dispatch = store.dispatch; // not in the Provider yet
     const storeAuth = (authResult, params, context) => {
       dispatch( logInSuccess(authResult) );
     }
@@ -49,9 +47,7 @@ function ThisApp(props) {
         dispatch( logOut() );
       }
     );
-    
 
-    const {Component, pageProps, store} = props;
     return (
       <>
         <Head>
@@ -156,9 +152,12 @@ function ThisApp(props) {
           }
         `}} />
 
-        <Component {...pageProps} />
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
+
       </>
     )
 }
 
-export default wrapper.withRedux(ThisApp);
+export default ThisApp;
