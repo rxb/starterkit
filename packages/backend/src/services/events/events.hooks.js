@@ -1,4 +1,5 @@
-const KEYS = require('../../../keys');
+const GOOGLE_KEY = process.env.GOOGLE_KEY;
+
 const axios = require('axios');
 const cheerio = require('cheerio');
 const NodeGeocoder = require('node-geocoder');
@@ -14,8 +15,6 @@ module.exports = {
     all: [],
     find: [
       (context) => {
-
-
 
         const { query = {} } = context.params;
 
@@ -86,7 +85,7 @@ module.exports = {
 
           // attempt to fill in location information
           if(missingLocationData){
-            const geocoder = NodeGeocoder({provider: 'google', 'apiKey': KEYS.google});
+            const geocoder = NodeGeocoder({provider: 'google', 'apiKey': GOOGLE_KEY});
             const locationString = Object.values(locationData).join(' '); // everything we have
             const locationResponse = await geocoder.geocode( locationString );
             const locationObject = locationResponse[0];

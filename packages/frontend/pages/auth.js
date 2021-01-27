@@ -48,6 +48,8 @@ import Page from '../components/Page';
 import LoginForm from '../components/LoginForm';
 
 import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
+export const apiHost = process.env.NEXT_PUBLIC_API_HOST;
+
 
 /*
 // FEATHERS CLIENT
@@ -203,21 +205,21 @@ class Auth extends React.Component {
 														  	width="full"
 															label="log in with Facebook"
 															onPress={()=>{
-																location.href='http://localhost:3030/oauth/facebook/'
+																location.href=`${apiHost}/oauth/facebook/`
 															}}
 															/>
 														<Button
 														  	width="full"
 															label="log in with Google"
 															onPress={()=>{
-																location.href='http://localhost:3030/oauth/google/'
+																location.href=`${apiHost}/oauth/google/`
 															}}
 															/>
 														<Button
 														  	width="full"
 															label="log in with Reddit"
 															onPress={()=>{
-																location.href='http://localhost:3030/oauth/reddit/'
+																location.href=`${apiHost}/oauth/reddit/`
 															}}
 															/>
 													</Chunk>
@@ -229,7 +231,6 @@ class Auth extends React.Component {
 																//this.loginLocal(fields);
 																logIn(),
 																feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
-
 															}}
 															isLoading={(authentication.loading || authentication.token)}
 															/>

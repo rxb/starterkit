@@ -203,7 +203,7 @@ function Show(props) {
 		error: showCommentsError, 
 		mutate: showCommentsMutate,
 		meta: showCommentsMeta
-	} = useShowComments(props.showId);
+	} = useShowComments({showId: props.showId, $limit: 50});
 
 
 	

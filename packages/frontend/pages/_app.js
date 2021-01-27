@@ -23,13 +23,14 @@ import {
 // TODO: would be nice to do this without a client library at all
 import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
 import feathers from '@feathersjs/client'; // but we still need the original to configure
-const apiUrl = 'http://localhost:3030'; // TODO: shouldn't this be in an envirnoment config?
+export const apiHost = process.env.NEXT_PUBLIC_API_HOST;
+
 const authenticationOptions = {};
 if (process.browser) {
   authenticationOptions["storage"] = window.localStorage
 }
 feathersClient.configure(feathers.authentication(authenticationOptions));
-feathersClient.configure(feathers.rest(apiUrl).fetch(fetch));
+feathersClient.configure(feathers.rest(apiHost).fetch(fetch));
 
 
 function ThisApp(props) {
