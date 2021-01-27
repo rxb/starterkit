@@ -85,11 +85,11 @@ function Page (props) {
 	const prevUser = usePrevious(user);
 	useEffect(()=>{
 		// got user, so dismiss modal
-		if(prevUser !== user && modalVisible){
+		if(user.id && prevUser !== user && modalVisible){
 			toggleModal();
 		} 
 	}, [user]);
-
+	
 
 	// errors - do separate useEffect for each error checking
 	useEffect(()=>{
@@ -138,7 +138,6 @@ function Page (props) {
 																	<Text color="tint" >{item}</Text>
 																</Touch>
 															))}
-
 														</Chunk>
 													</Sectionless>
 												</Menu>

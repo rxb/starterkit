@@ -33,7 +33,6 @@ import Text from './components/Text';
 import TextInput from './components/TextInput';
 import Toaster from './components/Toaster';
 import useFormState from './components/UseFormState';
-import withFormState from './components/WithFormState';
 import { Image, View } from './primitives';
 
 
@@ -75,5 +74,4 @@ export {
 	Toaster,
 	View,
 	useFormState,
-	withFormState
 };

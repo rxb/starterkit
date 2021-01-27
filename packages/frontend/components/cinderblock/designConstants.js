@@ -99,12 +99,6 @@ export const FLEX_ALIGN_VALUES = [
 	"center"
 ];
 
-export const BREAKPOINTS = [
-	"small",
-	"medium",
-	"large",
-	"xlarge"
-];
 
 export const BREAKPOINT_SIZES = {
 	"small": 0,
@@ -112,6 +106,9 @@ export const BREAKPOINT_SIZES = {
 	"large": 840,
 	"xlarge": 1024
 }
+
+export const BREAKPOINTS = Object.keys(BREAKPOINT_SIZES);
+
 
 export const MEDIA_QUERIES = {
 	small: `screen`,
