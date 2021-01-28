@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { View } from '../primitives';
-import React from 'react';
+import React, {useMemo} from 'react';
 import styles from '../styles/styles';
 
 export const FLEX_CLASS = 'flex';
@@ -33,9 +33,18 @@ const FlexItem = (props) => {
 			...[align ? `${FLEX_ALIGN_CLASS}${align}` : undefined],
 		];
 
-		const combinedStyles = [styles[FLEX_ITEM_CLASS], ...descendantStyles, ...styleKeys.map((key, i)=>{
-			return styles[key];
-		})];
+		
+		const getItemStyles = (styleKeys) => {
+			return styleKeys.map((key, i)=>{
+				return styles[key];
+			}).filter(function(item){
+				return item !== undefined;
+			});
+		}
+		const itemStyles = useMemo(()=> getItemStyles(styleKeys), [styleKeys])
+
+
+		const combinedStyles = [styles[FLEX_ITEM_CLASS], ...descendantStyles, itemStyles];
 
 		return (
 			<View
