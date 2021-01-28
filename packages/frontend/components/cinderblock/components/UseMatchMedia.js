@@ -1,38 +1,39 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState, useContext } from 'react';
 import { MEDIA_QUERIES } from '../designConstants';
 
-// TODO: 
-// consider adding param for custom media queries passed in to useMatchMedia beyond standard breakpoints
+const MediaContext = React.createContext({});
 
-function useMatchMedia() {
+export const initMediaProvider = () => {
 
-	const [queries, setQueries] = useState({});
-	const [matches, setMatches] = useState({});
+	return ({children}) => {
 
-	const mediaQueryKeys = Object.keys(MEDIA_QUERIES);
+		if ( typeof window === 'undefined' || !window.matchMedia ) {
+			return <>children</>;
+		}
 
-	const handleMediaChange = () => {
-		const tempMatches = {};
-		mediaQueryKeys.forEach(key => {
-			tempMatches[key] = queries[key].matches;
-		});
-		setMatches(tempMatches);
+		const [matches, setMatches] = useState({});
+
+		useEffect(()=>{
+			console.log('adding listeners');
+			Object.entries(MEDIA_QUERIES).forEach(([key, value]) => {
+				console.log(`${key}: ${value}`);
+				const matchMediaValue = window.matchMedia(value);
+				matchMediaValue.addListener(mq => {
+					console.log('heard listener!');
+					setMatches(prevState => ({
+					  ...prevState,
+					  [key]: mq.matches,
+					}))
+				})
+			});
+			
+		}, []);
+
+		return <MediaContext.Provider value={matches}>{children}</MediaContext.Provider>
 	}
-
-	const tempQueries;
-	mediaQueryKeys.forEach(key => {
-		const query = window.matchMedia(MEDIA_QUERIES[key]);
-		query.addListener(handleMediaChange)
-		tempQueries[key] = query;
-	});
-	setQueries( tempQueries );
-	
-	// check initial values
-	handleMediaChange();
-
-	// return object of state-ly variables 
-	return matches;
 }
 
-export default useMatchMedia;
+
+export const useMediaContext = () => {
+	return useContext(MediaContext);
+};

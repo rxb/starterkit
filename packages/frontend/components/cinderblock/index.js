@@ -33,6 +33,9 @@ import Text from './components/Text';
 import TextInput from './components/TextInput';
 import Toaster from './components/Toaster';
 import useFormState from './components/UseFormState';
+//import useMatchMedia from './components/UseMatchMedia';
+import {WithMatchMedia} from './components/WithMatchMedia';
+
 import { Image, View } from './primitives';
 
 
@@ -74,4 +77,6 @@ export {
 	Toaster,
 	View,
 	useFormState,
+	//useMatchMedia,
+	WithMatchMedia
 };

@@ -5,7 +5,9 @@ import {useStore} from '../store';
 
 // design
 import swatches from '../components/cinderblock/styles/swatches';
-import { BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
+import { MEDIA_QUERIES, BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
+import { initMediaProvider } from '../components/cinderblock/components/UseMatchMedia';
+const MediaProvider = initMediaProvider();
 
 import {
   logOut,
@@ -26,6 +28,8 @@ if (process.browser) {
 }
 feathersClient.configure(feathers.authentication(authenticationOptions));
 feathersClient.configure(feathers.rest(apiHost).fetch(fetch));
+
+
 
 
 function ThisApp(props) {
@@ -152,9 +156,11 @@ function ThisApp(props) {
           }
         `}} />
 
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
+        <MediaProvider>
+          <Provider store={store}>
+              <Component {...pageProps} />
+          </Provider>
+        </MediaProvider>
 
       </>
     )

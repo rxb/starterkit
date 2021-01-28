@@ -17,6 +17,7 @@
     "accounting": "^0.4.1",
     "babel-plugin-react-native-web": "^0.14.10",
     "body-scroll-lock": "^3.1.5",
+    "context-media-match": "^2.0.0",
     "dayjs": "^1.9.7",
     "fuse.js": "^6.4.3",
     "isomorphic-unfetch": "^3.1.0",

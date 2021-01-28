@@ -35,16 +35,17 @@ import {
 	Text,
 	TextInput,
 	Touch,
-	View,
-	withFormState,
-	
+	//useMatchMedia,
+	View,	
 } from '../components/cinderblock';
 
 import styles from '../components/cinderblock/styles/styles';
 import swatches from '../components/cinderblock/styles/swatches';
 import {METRICS} from '../components/cinderblock/designConstants';
-import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedia';
 import Page from '../components/Page';
+
+import {useMediaContext} from '../components/cinderblock/components/UseMatchMedia';
+
 
 
 import Markdown from 'markdown-to-jsx';
@@ -53,11 +54,9 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 
-const ConnectedHeader = WithMatchMedia((props) => {
+const ConnectedHeader = (props) => {
 
-	const {
-		media
-	} = props;
+	const media = useMediaContext();
 
 	return(
 		<Header position="static" type="">
@@ -77,16 +76,17 @@ const ConnectedHeader = WithMatchMedia((props) => {
 			</Flex>
 		</Header>
 	);
-});
+};
 
 
 
-const TldrCard = WithMatchMedia((props) => {
+const TldrCard = (props) => {
+
+	const media = useMediaContext();
 
 	const [showReferences, setReferences] = useState(false);
 
 	const {
-		media,
 		tldrData,
 		style
 	} = props;
@@ -101,6 +101,11 @@ const TldrCard = WithMatchMedia((props) => {
 			},
 			style
 			]}>
+			<Section>
+				<Chunk>
+					<Text>{JSON.stringify(media)}</Text>
+				</Chunk>
+			</Section>
 			<Sectionless style={[
 					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {},
 					{backgroundColor: "#4353ff"}
@@ -200,7 +205,7 @@ const TldrCard = WithMatchMedia((props) => {
 					
 			</Card>
 	);
-});
+};
 
 
 function Tldr(props) {
