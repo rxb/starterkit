@@ -27,14 +27,13 @@ import {
 	TextInput,
 	Touch,
 	View,
-	withFormState,
+	useMediaContext,
 	
 } from '../components/cinderblock';
 
 import styles from '../components/cinderblock/styles/styles';
 import swatches from '../components/cinderblock/styles/swatches';
 import {METRICS} from '../components/cinderblock/designConstants';
-import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedia';
 import Page from '../components/Page';
 import OutpostHeader from '../components/OutpostHeader';
 
@@ -115,10 +114,9 @@ const outposts = {
 
 
 
-const HeaderContent = WithMatchMedia((props) => {
-	const {
-		media
-	} = props;
+const HeaderContent = (props) => {
+	
+	const media = useMediaContext();
 
 	const textShadowStyle = {
       textShadowRadius: 20,
@@ -147,7 +145,7 @@ const HeaderContent = WithMatchMedia((props) => {
 			</Chunk>
 		</Section>
 	);
-});
+};
 
 const SearchForm = (props) => {
 	return (

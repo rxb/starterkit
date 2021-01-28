@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image } from '../primitives';
 import styles from '../styles/styles';
-import {WithMatchMedia} from './WithMatchMedia';
+import {useMediaContext} from './UseMediaContext';
 import { METRICS, BREAKPOINTS } from '../designConstants';
 import { findWidestActiveValue } from '../componentUtils';
 
@@ -12,10 +12,11 @@ const ImageSnap = (props) => {
 		children,
 		image,
 		imageHeight = {small: 250, medium: 300, large: 350, xlarge: 450},
-		media,
 		style,
 		isFirstChild
 	} = props
+
+	const media = useMediaContext();
 
 	const imageHeightStyle = {height: findWidestActiveValue(imageHeight, media)};
 	const styleKeys = [
@@ -39,4 +40,4 @@ const ImageSnap = (props) => {
 
 }
 
-export default WithMatchMedia(ImageSnap);
+export default ImageSnap;

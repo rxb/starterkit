@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image } from '../primitives';
 import styles from '../styles/styles';
-import {WithMatchMedia} from './WithMatchMedia';
+import {useMediaContext} from './UseMediaContext';
 
 const VALID_TYPES = {
 	transparent: "Transparent"
@@ -19,12 +19,12 @@ const Header = (props) => {
 	const {
 		children,
 		style,
-		media,
 		maxWidth = 1100,
 		position = 'sticky',
 		type = 'separated'
 	} = props
 
+	const media = useMediaContext();
 
 	// media query
 	// this could be packaged up
@@ -47,7 +47,6 @@ const Header = (props) => {
 		return styles[key];
 	});
 
-
 	return(
 		<View style={[ combinedStyles, style, {position: VALID_POSITIONS[position]} ]}>
 			<View style={{maxWidth: maxWidth, alignSelf: 'center', width: '100%'}}>
@@ -61,4 +60,4 @@ const Header = (props) => {
 
 }
 
-export default WithMatchMedia(Header);
+export default Header;

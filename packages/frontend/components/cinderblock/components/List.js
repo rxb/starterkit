@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from '../primitives';
-import { WithMatchMedia } from './WithMatchMedia';
+import { useMediaContext } from './UseMediaContext';
 import styles from '../styles/styles';
 import {findWidestActiveValue} from '../componentUtils';
 
@@ -20,11 +20,12 @@ const List = (props) => {
 		variant = 'linear',
 		items = [],
 		renderItem = item => item,
-		media,
 		style,
 		itemStyle,
 		...other
 	} = props;
+
+	const media = useMediaContext();
 
 	const currentVariant = findWidestActiveValue(variant, media);
 	const currentItemsInRow = findWidestActiveValue(itemsInRow, media);
@@ -69,5 +70,4 @@ const List = (props) => {
 	);
 }
 
-
-export default WithMatchMedia(List);
+export default List;

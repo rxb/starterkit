@@ -5,7 +5,7 @@ import { View, Text, StyleSheet } from '../primitives';
 import styles from '../styles/styles';
 import swatches from '../styles/swatches';
 import Icon from './Icon';
-import {WithMatchMedia} from './WithMatchMedia';
+import {useMediaContext} from './UseMediaContext';
 import {findWidestActiveValue} from '../componentUtils';
 import Link from './Link';
 import Touch from './Touch';
@@ -20,7 +20,6 @@ const Button = (props) => {
 			label,
 			shape,
 			color = 'primary',
-			media,
 			isLoading = false,
 			width,
 			size,
@@ -28,6 +27,8 @@ const Button = (props) => {
 			style,
 			...other
 		} = props;
+
+		const media = useMediaContext();
 
 		let { variant = {} } = props;
 
@@ -128,4 +129,4 @@ Button.propTypes = {
 	])
 };
 
-export default WithMatchMedia(Button);
+export default Button;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, ImageBackground } from '../primitives';
 import styles from '../styles/styles';
-import {WithMatchMedia} from './WithMatchMedia';
+import {useMediaContext} from './UseMediaContext';
 import { BREAKPOINTS } from '../designConstants';
 
 // find current values for largest breakpoint with a match in media[*]
@@ -18,17 +18,18 @@ const findWidestActiveValue = (values, media) => {
 
 
 
-const Stripe = WithMatchMedia((props) => {
+const Stripe = (props) => {
 
 	const {
 		children,
 		image,
 		imageHeight = {small: 225, medium: 325, large: 400, xlarge: 450},
-		media,
 		style,
 		forwardedRef,
 		...other
 	} = props
+
+	const media = useMediaContext();
 
 	const imageHeightStyle = (image) ? {height: findWidestActiveValue(imageHeight, media)} : {};
 
@@ -64,7 +65,7 @@ const Stripe = WithMatchMedia((props) => {
 			</View>
 		);
 	}
-});
+};
 
 const WrappedComponent = React.forwardRef((props, ref) => {
 	return <Stripe {...props} forwardedRef={ref} />;

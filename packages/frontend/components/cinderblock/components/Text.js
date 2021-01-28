@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text as ReactText } from '../primitives';
 import styles from '../styles/styles';
-import {WithMatchMedia} from './WithMatchMedia';
+import {useMediaContext} from './UseMediaContext';
 
 const VALID_TYPES = {
 	micro: 'Micro',
@@ -29,13 +29,12 @@ const Text = (props) => {
 		children,
 		inverted,
 		type,
-		media,
 		color = "primary",
 		style,
 		weight,
 		...other
 	} = props;
-
+	const media = useMediaContext();
 
 	const invertedModifier = (inverted) ? '--inverted' : '';
 	const styleKeys = [
@@ -61,4 +60,4 @@ const Text = (props) => {
 }
 
 
-export default WithMatchMedia(Text);
+export default Text;

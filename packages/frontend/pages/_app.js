@@ -6,8 +6,8 @@ import {useStore} from '../store';
 // design
 import swatches from '../components/cinderblock/styles/swatches';
 import { MEDIA_QUERIES, BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
-import { initMediaProvider } from '../components/cinderblock/components/UseMatchMedia';
-const MediaProvider = initMediaProvider();
+import { initMediaProvider } from '../components/cinderblock/components/UseMediaContext';
+const MediaProvider = initMediaProvider(MEDIA_QUERIES);
 
 import {
   logOut,

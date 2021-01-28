@@ -35,7 +35,7 @@ import {
 	Text,
 	TextInput,
 	Touch,
-	//useMatchMedia,
+	useMediaContext,
 	View,	
 } from '../components/cinderblock';
 
@@ -43,8 +43,6 @@ import styles from '../components/cinderblock/styles/styles';
 import swatches from '../components/cinderblock/styles/swatches';
 import {METRICS} from '../components/cinderblock/designConstants';
 import Page from '../components/Page';
-
-import {useMediaContext} from '../components/cinderblock/components/UseMatchMedia';
 
 
 

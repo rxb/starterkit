@@ -26,23 +26,22 @@ import {
 	TextInput,
 	Touch,
 	View,
-	withFormState,
-	
+	useMediaContext	
 } from '../components/cinderblock';
 import styles from '../components/cinderblock/styles/styles';
 import swatches from '../components/cinderblock/styles/swatches';
 import {METRICS} from '../components/cinderblock/designConstants';
-import {WithMatchMedia} from '../components/cinderblock/components/WithMatchMedia';
 
 
-export default WithMatchMedia((props) => {
+export default (props) => {
 
 	const {
-      media,
       type,
       inverted
    } = props;
-   
+	
+	const media = useMediaContext();
+	
 	return(
 		<Header position="static" type={type}>
 			<Flex direction="row">
@@ -66,4 +65,4 @@ export default WithMatchMedia((props) => {
 			</Flex>
 		</Header>
 	);
-});
+};

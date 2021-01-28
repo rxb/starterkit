@@ -3,7 +3,7 @@ import { View } from '../primitives';
 import PropTypes from 'prop-types';
 import styles from '../styles/styles';
 import { BREAKPOINTS, FLEX_ALIGN_VALUES, FLEX_JUSTIFY_VALUES} from '../designConstants';
-import {WithMatchMedia} from './WithMatchMedia';
+import {useMediaContext} from './UseMediaContext';
 
 
 export const DIRECTION_ROW = 'row';
@@ -29,9 +29,10 @@ const Flex = (props) => {
 			columnReverse,
 			children,
 			style,
-			media,
 			...other
 		} = props;
+
+		const media = useMediaContext();
 
 		const isColumn = direction === DIRECTION_COLUMN;
 
@@ -126,4 +127,4 @@ Flex.defaultProps = {
 	direction: DIRECTION_ROW,
 };
 
-export default WithMatchMedia(Flex);
+export default Flex;

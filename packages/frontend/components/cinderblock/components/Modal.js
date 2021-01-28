@@ -12,7 +12,7 @@ import Icon from './Icon';
 import Header from './Header';
 import Section from './Section';
 import Stripe from './Stripe';
-import { WithMatchMedia } from './WithMatchMedia';
+import { MediaContext } from './UseMediaContext';
 import { METRICS, EASE } from '../designConstants';
 
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
@@ -53,6 +53,8 @@ alternate way is to have a skeleton modal just hanging out and waiting to be pop
 
 
 class Modal extends React.Component{
+
+	static contextType = MediaContext;
 
 	// for body locking
 	targetRef = React.createRef();
@@ -150,10 +152,11 @@ class Modal extends React.Component{
 		const {
 			children,
 			onRequestClose,
-			media,
 			visible,
 			...other
 		} = this.props;
+
+		const media = this.context;
 
 		const isFull = !media['medium'];
 		const modalStyle = (isFull) ? styles['modal--full'] : styles['modal'];
@@ -238,4 +241,4 @@ class Modal extends React.Component{
 	}
 }
 
-export default WithMatchMedia(Modal);
+export default Modal;
