@@ -99,11 +99,6 @@ const TldrCard = (props) => {
 			},
 			style
 			]}>
-			<Section>
-				<Chunk>
-					<Text>{JSON.stringify(media)}</Text>
-				</Chunk>
-			</Section>
 			<Sectionless style={[
 					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {},
 					{backgroundColor: "#4353ff"}
