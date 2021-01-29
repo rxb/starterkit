@@ -87,7 +87,7 @@ const CommentForm = (props) => {
 		formState.setError(error);
 
 		if(!error){
-			const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showData.id)); // get cache
+			const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showCommentsParams)); // get cache
 			const newItemData = { ...formState.fields, showId: props.showData.id };
 			props.mutate({ 
 				...oldShowCommentsData, 
@@ -198,12 +198,13 @@ function Show(props) {
 		mutate: showMutate
 	} = useShow(props.showId, {initialData: props.show}); // passing in props.show from getInitialProps
 
+	const showCommentsParams = {showId: props.showId, $limit: 50};
 	const { 
 		data: showCommentsData, 
 		error: showCommentsError, 
 		mutate: showCommentsMutate,
 		meta: showCommentsMeta
-	} = useShowComments({showId: props.showId, $limit: 50});
+	} = useShowComments(showCommentsParams);
 
 
 	
@@ -266,23 +267,25 @@ function Show(props) {
 											</Text>
 										</Chunk>
 									</FlexItem>
-									<FlexItem
-										shrink
-										style={{justifyContent: 'flex-end'}}
-										>
-										<Chunk>
-											<Button
-												href={{pathname:'/showedit', query: {showId: showData.id}}}
-												shape="Edit"
-												label="Edit show"
-												color="secondary"
-												variant={{
-													small: 'iconOnly',
-													large: 'shrink'
-												}}
-												/>
-										</Chunk>
-									</FlexItem>
+									{user.id && 
+										<FlexItem
+											shrink
+											style={{justifyContent: 'flex-end'}}
+											>
+											<Chunk>
+												<Button
+													href={{pathname:'/showedit', query: {showId: showData.id}}}
+													shape="Edit"
+													label="Edit show"
+													color="secondary"
+													variant={{
+														small: 'iconOnly',
+														large: 'shrink'
+													}}
+													/>
+											</Chunk>
+										</FlexItem>
+									}
 								</Flex>
 							</View>
 					
@@ -344,6 +347,7 @@ function Show(props) {
 										authentication={authentication}
 										user={user}
 										mutate={showCommentsMutate} 
+										showCommentsParams={showCommentsParams}
 										/>
 								</Fragment>
 							}

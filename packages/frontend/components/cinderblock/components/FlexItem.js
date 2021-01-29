@@ -33,7 +33,6 @@ const FlexItem = (props) => {
 			...[align ? `${FLEX_ALIGN_CLASS}${align}` : undefined],
 		];
 
-		
 		const getItemStyles = (styleKeys) => {
 			return styleKeys.map((key, i)=>{
 				return styles[key];
@@ -41,16 +40,16 @@ const FlexItem = (props) => {
 				return item !== undefined;
 			});
 		}
+
+		// memoized for perf
 		const itemStyles = useMemo(()=> getItemStyles(styleKeys), [styleKeys])
-
-
 		const combinedStyles = [styles[FLEX_ITEM_CLASS], ...descendantStyles, itemStyles];
 
 		return (
 			<View
 				style={[combinedStyles, style]}
 				{...other}
-			>
+				>
 				{children}
 			</View>
 		);

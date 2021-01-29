@@ -33,7 +33,7 @@ import swatches from '../components/cinderblock/styles/swatches';
 import {METRICS} from '../components/cinderblock/designConstants';
 
 
-export default (props) => {
+const OutpostHeader = (props) => {
 
 	const {
       type,
@@ -66,3 +66,5 @@ export default (props) => {
 		</Header>
 	);
 };
+
+export default OutpostHeader

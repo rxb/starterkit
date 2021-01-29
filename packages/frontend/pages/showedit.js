@@ -62,7 +62,8 @@ const ShowForm = (props) => {
 
 	const {
 		showData,
-		tagsData
+		tagsData,
+		authentication,
 	} = props;
 
 	const formState = useFormState({ 
@@ -278,6 +279,7 @@ function ShowEdit(props) {
 										<ShowForm
 											showData={showData}
 											tagsData={tagsData}
+											authentication={authentication}
 											/>
 										}
 									</Section>
