@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
 		marginVertical: METRICS.pseudoLineHeight,
 	},
 	'input--focus': {
-        outline: 'none',
         borderColor: swatches.textHint,
         backgroundColor: 'transparent',
         boxShadow: `0 0 0 3px ${swatches.focus}`

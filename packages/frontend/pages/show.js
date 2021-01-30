@@ -88,6 +88,7 @@ const CommentForm = (props) => {
 
 		if(!error){
 			const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showCommentsParams)); // get cache
+			const oldFields = {...formState.fields};
 			const newItemData = { ...formState.fields, showId: props.showData.id };
 			props.mutate({ 
 				...oldShowCommentsData, 
@@ -97,12 +98,13 @@ const CommentForm = (props) => {
 				}] 
 			}, false); // optimistic mutate
 			try{
+				formState.resetFields();
 				await postShowComment(newItemData, props.authentication.accessToken) // post 
 				props.mutate(); // trigger refresh from server
-				formState.resetFields();
 			} 
 			catch(error) {
 				formState.setError(error); // display server errors
+				formState.setFieldValues(oldFields); // rollback formstate (in this, fields were reset)
 				props.mutate(oldShowCommentsData); // rollback optimistic mutate
 			} 
 		}
@@ -262,7 +264,7 @@ function Show(props) {
 												United States &middot;
 												1998
 												{ showData.genres && showData.genres.map((genre, i)=>(
-													<Fragment> &middot; {genre}</Fragment>
+													<Fragment key={i}> &middot; {genre}</Fragment>
 												))}
 											</Text>
 										</Chunk>

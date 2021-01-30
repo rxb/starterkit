@@ -8,12 +8,18 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "stats": "next build --stats"
+    "stats": "next build --stats",
+    "analyze": "cross-env ANALYZE=true next build",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^10.0.6",
+    "cross-env": "^7.0.3"
   },
   "dependencies": {
     "@feathersjs/authentication-oauth": "^4.5.11",
     "@feathersjs/client": "^4.5.11",
-    "@next/bundle-analyzer": "^10.0.4",
     "accounting": "^0.4.1",
     "babel-plugin-react-native-web": "^0.14.10",
     "body-scroll-lock": "^3.1.5",

@@ -8,7 +8,7 @@ export const FLEX_ALIGN_CLASS = `${FLEX_CLASS}--align`;
 export const FLEX_ITEM_CLASS = 'flex-item';
 export const FLEX_ITEM_SHRINK_CLASS = 'flex-item--shrink';
 export const FLEX_ITEM_GROW_CLASS = 'flex-item--';
-export const FLEX_GROW_FACTORS = [1,2,3,4,5,6,7];
+export const FLEX_GROW_FACTORS = [0,1,2,3,4,5,6,7];
 
 const FlexItem = (props) => {
 		const {

@@ -130,10 +130,12 @@ const TldrCard = (props) => {
 				]}>
 					<View>
 					{content.steps.map((step, i)=>(
-						<View style={{
-							marginTop: 0,
-							marginBottom: METRICS.space + 5,
-							paddingLeft: 16,
+						<View 
+							key={i} 
+							style={{
+								marginTop: 0,
+								marginBottom: METRICS.space + 5,
+								paddingLeft: 16,
 							}}>
 							<View 
 								style={{
