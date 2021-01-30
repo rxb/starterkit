@@ -1,20 +1,9 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { View, Image, ImageBackground } from '../primitives';
 import styles from '../styles/styles';
 import {useMediaContext} from './UseMediaContext';
-import { BREAKPOINTS } from '../designConstants';
-
-// find current values for largest breakpoint with a match in media[*]
-const findWidestActiveValue = (values, media) => {
-	let valuesMap = (typeof values === 'object') ? values : { small: values }
-	let activeValue = valuesMap['small'];
-	BREAKPOINTS.forEach( BP => {
-		if( typeof valuesMap[BP] !== 'undefined' && media[BP] ){
-			activeValue = valuesMap[BP];
-		}
-	});
-	return activeValue;
-}
+import { BREAKPOINTS, METRICS } from '../designConstants';
+import {findWidestActiveValue} from '../componentUtils';
 
 
 
@@ -31,23 +20,24 @@ const Stripe = (props) => {
 
 	const media = useMediaContext();
 
+	const getCombinedStyles = (media) => {	
+		const styleKeys = [
+			'stripe',
+			...[ (media && media.medium) ? 'stripe--atMedium' : undefined],
+		];
+		return styleKeys.map((key, i)=>{
+			return styles[key];
+		});
+	}
+	const combinedStyles = useMemo( ()=>getCombinedStyles(media), [media]);
 	const imageHeightStyle = (image) ? {height: findWidestActiveValue(imageHeight, media)} : {};
-
-	const styleKeys = [
-		'stripe',
-		...[ (media && media.medium) ? 'stripe--atMedium' : undefined],
-	];
-	const combinedStyles = styleKeys.map((key, i)=>{
-		return styles[key];
-	});
-
 
 	if(image){
 		return(
 			<ImageBackground
 				ref={forwardedRef}
 				source={{uri: image}}
-				style={[combinedStyles, {resizeMode: 'cover', flex: 0}, style, imageHeightStyle]}
+				style={[combinedStyles, {resizeMode: 'cover'}, style, imageHeightStyle]}
 				{...other}
 				>
 				{children}

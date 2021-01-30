@@ -116,13 +116,59 @@ const Postmates = (props) => {
 					</Section>
 				</Bounds>
 			</Stripe>
+			<Stripe 
+				style={{
+					paddingVertical: 0,
+					borderBottomWidth: 1,
+					borderBottomColor: swatches.border
+				}}
+				>
+				<Bounds>
+					<Sectionless>
+						<Flex>
+							<FlexItem shrink>
+								<Chunk>
+									<Text 
+										style={{whiteSpace: 'nowrap'}} 
+										weight="strong"
+										>Delivery <Text color="secondary">or</Text> Pickup</Text>
+								</Chunk>
+							</FlexItem>
+							<FlexItem>
+								<Chunk>
+									<Inline>
+									<Icon 
+										shape="MapPin"
+										size="small"
+										/>
+									<Text weight="strong">Brooklyn</Text>
+									</Inline>
+								</Chunk>
+							</FlexItem>
+						</Flex>
+					</Sectionless>
+				</Bounds>
+			</Stripe>
+			
 			<Stripe>
 				<Bounds>
 					<Section>
-						<Chunk>
-							<Text type="sectionHead">Daily Deals</Text>
-							<Text type="small" color="secondary">Expi deals from your favorite restaurants!</Text>
-						</Chunk>
+						<Flex>
+							<FlexItem>
+								<Chunk>
+									<Text type="sectionHead">Daily Deals</Text>
+									<Text type="small" color="secondary">Epic deals from your favorite restaurants!</Text>
+								</Chunk>
+							</FlexItem>
+							<FlexItem shrink>
+								<Text 
+									color="secondary" 
+									type="small" 
+									style={{whiteSpace: 'nowrap'}} 
+									>View all 19 &rarr;</Text>
+							</FlexItem>
+						</Flex>
+
 						<Chunk>
 							<List
 								variant={{
@@ -150,7 +196,6 @@ const Postmates = (props) => {
 									)
 								}}
 								/>
-
 						</Chunk>
 					</Section>
 				</Bounds>
