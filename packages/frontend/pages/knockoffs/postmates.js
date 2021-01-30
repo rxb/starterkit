@@ -204,5 +204,4 @@ const Postmates = (props) => {
 	)
 }
 
-
 export default Postmates;

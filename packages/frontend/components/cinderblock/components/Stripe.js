@@ -37,7 +37,7 @@ const Stripe = (props) => {
 			<ImageBackground
 				ref={forwardedRef}
 				source={{uri: image}}
-				style={[combinedStyles, {resizeMode: 'cover'}, style, imageHeightStyle]}
+				style={[combinedStyles, style, imageHeightStyle]}
 				{...other}
 				>
 				{children}
