@@ -80,7 +80,10 @@ const Postmates = (props) => {
 	return(
 		<View style={{minHeight: '100vh'}}>
 			<Stripe 
-				style={{backgroundColor: '#FFD324'}}
+				style={{
+					backgroundColor: '#FFD324',
+				}}
+				imageStyle={{top: undefined}}
 				imageHeight={{
 					small: 488,
 					medium: 588,
