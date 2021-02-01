@@ -36,7 +36,8 @@ import {
 	TextInput,
 	Touch,
 	useMediaContext,
-	View,	
+	View,
+	FakeInput,	
 } from '@/components/cinderblock';
 
 import styles from '@/components/cinderblock/styles/styles';
@@ -44,6 +45,15 @@ import swatches from '@/components/cinderblock/styles/swatches';
 import {METRICS} from '@/components/cinderblock/designConstants';
 import Page from '@/components/Page';
 import Head from 'next/head'
+
+const photosData = [
+	{photo: "https://a0.muscache.com/im/pictures/f51b7bce-89bf-4ad5-bcbd-f299593fe5d4.jpg?im_w=720"},
+	{photo: "https://a0.muscache.com/im/pictures/abe3de62-debe-4f7a-a02b-1d601795881e.jpg?im_w=720"},
+	{photo: "https://a0.muscache.com/im/pictures/1329b8fc-77d6-4866-a842-b757e795c687.jpg?im_w=720"},
+	{photo: "https://a0.muscache.com/im/pictures/dd106805-edd1-42df-aebc-1a9d39b3bdc7.jpg?im_w=720"},
+	{photo: "https://a0.muscache.com/im/pictures/179ea677-b290-4180-97bf-edd24ca80ced.jpg?im_w=720"},
+	{photo: "https://a0.muscache.com/im/pictures/218bf92d-0d2d-4381-9253-8dece14681a9.jpg?im_w=720"},
+]
 
 const amenitiesSamples = [
 	{name: "Self check-in", photo: "https://a0.muscache.com/airbnb/static/select/pdp/amenities/tile-view-2x/self-check-in.png"},
@@ -71,9 +81,6 @@ const AirbnbDetail = (props) => {
 			</Stripe>
 			<Stripe>
 				<Bounds>
-					
-
-						
 					<Section>
 						<Flex>
 							<FlexItem>
@@ -128,7 +135,7 @@ const AirbnbDetail = (props) => {
 						</Chunk>
 					</Section>
 					<Flex>
-						<FlexItem growFactor={2}>		
+						<FlexItem growFactor={4}>		
 					<Section>
 						<Flex>
 							<FlexItem>
@@ -201,20 +208,62 @@ const AirbnbDetail = (props) => {
 						</Chunk>
 					</Section>
 					<Section>
-
+							<List
+								variant={{
+									small: "hscroll",
+									medium: "grid",
+								}}
+								itemsInRow={{
+									small: 2,
+									medium: 3,
+									large: 3,
+								}}
+								items={photosData}
+								renderItem={(item, i)=>{
+									return(
+										<Chunk>
+										<Image 
+											source={{uri: item.photo}}
+											style={{height: 160}}
+											/>
+										</Chunk>
+									);
+								}}
+								/>
+								<Chunk>
+									<Button
+										label="Show all photos"
+										color="secondary"
+										/>
+								</Chunk>
 					</Section>
 
 					</FlexItem>
-						<FlexItem growFactor={1}>
+						<FlexItem growFactor={2}>
 							<Card>
 								<Sectionless>
 									<Chunk>
 										<Text type="big" weight="strong">$69 <Text>/ night</Text></Text>
 									</Chunk>
 									<Chunk>
-										
-									</Chunk>
-									<Chunk>
+										<Flex>
+											<FlexItem>
+												<FakeInput
+													label="Check-in"
+													shape="Calendar"
+													/>
+											</FlexItem>
+											<FlexItem>
+												<FakeInput
+													label="Checkout"
+													shape="Calendar"
+													/>
+											</FlexItem>											
+										</Flex>
+										<Picker >
+											<Picker.Item label="1 guest" value="1" />
+										</Picker>
+
 										<Button
 											label="Reserve"
 											width="full"
@@ -227,12 +276,16 @@ const AirbnbDetail = (props) => {
 											<FlexItem shrink><Text>$207</Text></FlexItem>
 										</Flex>
 										<Flex>
-											<FlexItem><Text>$69 x 3 nights</Text></FlexItem>
-											<FlexItem shrink><Text>$207</Text></FlexItem>
+											<FlexItem><Text>Cleaning fee</Text></FlexItem>
+											<FlexItem shrink><Text>$40</Text></FlexItem>
 										</Flex>
 										<Flex>
-											<FlexItem><Text>$69 x 3 nights</Text></FlexItem>
-											<FlexItem shrink><Text>$207</Text></FlexItem>
+											<FlexItem><Text>Service fee</Text></FlexItem>
+											<FlexItem shrink><Text>$35</Text></FlexItem>
+										</Flex>
+										<Flex>
+											<FlexItem><Text>Occupancy taxes and fees</Text></FlexItem>
+											<FlexItem shrink><Text>$50</Text></FlexItem>
 										</Flex>																				
 									</Chunk>
 									<Chunk>
@@ -312,17 +365,21 @@ const AirbnbDetail = (props) => {
 							renderItem={(item, i)=>{
 								return(
 									<Chunk>
-									<View style={{
+									<View style={[{
 										backgroundColor: swatches.backgroundShade,
-										height: 160
-									}}>
+										height: 180,
+										},
+										styles.pseudoLineHeight
+									]}>
 										<Image 
 											source={{uri: item.photo}}
 											style={{
 												height: 100
 											}}
 										/>
-										<Text>{item.name}</Text>
+										<View style={{height: 80, justifyContent: 'center'}}>
+											<Text style={{textAlign: 'center'}}>{item.name}</Text>
+										</View>
 									</View>
 									</Chunk>
 								)
