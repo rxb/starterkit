@@ -16,6 +16,7 @@ const Inline = (props) => {
 	const {
 		children,
 		style,
+		nowrap
 	} = props;
 
 	const wrappedChildren = React.Children.map(children,
@@ -23,7 +24,10 @@ const Inline = (props) => {
 			// "if" statements can return null components, so needs to check
 			if(React.isValidElement(child)){
 				return (
-					<View style={[styles.inlineItem, (i==0 ? styles['inlineItem--firstChild'] : {})]}>
+					<View style={[
+						styles.inlineItem, 
+						(i==0 ? styles['inlineItem--firstChild'] : {})
+						]}>
 						{child}
 					</View>
 				);
@@ -33,7 +37,11 @@ const Inline = (props) => {
 
 
 	return(
-		<View style={[styles.inline, style]}>
+		<View style={[
+			styles.inline, 
+			(nowrap ? styles['inline--noWrap'] : {}),
+			style
+			]}>
 			{wrappedChildren}
 		</View>
 	);

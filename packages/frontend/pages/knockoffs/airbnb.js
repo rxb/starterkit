@@ -52,7 +52,9 @@ const nearbyCitiesData = [
 	{name: "Philadelphia"},
 	{name: "Montauk"},
 	{name: "Stowe"},
-	{name: "Ithaca"}
+	{name: "Ithaca"},
+	{name: "Jersey City"},
+	{name: "Ocean City"}
 ];
 
 const houseTypesData = [
@@ -79,6 +81,11 @@ const Postmates = (props) => {
 
 	return(
 		<View style={{minHeight: '100vh'}}>
+			<View style={{backgroundColor: swatches.backgroundDark}}>
+					<Chunk style={{alignSelf: 'center', paddingTop: METRICS.space, paddingBottom: METRICS.space}}>
+						<Text inverted type="small">See the latest on our COVID-19 repsonse</Text>
+					</Chunk>
+			</View>
 			<Stripe 
 				style={{
 					backgroundColor: '#FFD324',
@@ -91,45 +98,87 @@ const Postmates = (props) => {
 				}}
 				image="https://a0.muscache.com/im/pictures/f0483d09-7d13-42d0-a40a-46d585c42220.jpg?im_w=1440"
 				>
+				<View 
+					style={{
+						backgroundImage: 'linear-gradient(rgba(0,0,0, 0.25), rgba(0, 0, 0, 0))',
+						height: 100,
+						position: 'absolute',
+						left: 0, right: 0, top: 0
+					}}
+					/>
 				<Bounds style={{flex: 1}}>
 					<Section>
-						<Card>
-							<Sectionless>
-								<Flex>
-									<FlexItem>
-										<Chunk>
-											<Text type="small" weight="strong">Location</Text>
-											<Text color="secondary">Where are you going?</Text>
-										</Chunk>
-									</FlexItem>
-									<FlexItem>
-										<Chunk>
-											<Text type="small" weight="strong">Check in</Text>
-											<Text color="secondary">Add dates</Text>
-										</Chunk>
-									</FlexItem>
-									<FlexItem>
-										<Chunk>
-											<Text type="small" weight="strong">Check out</Text>
-											<Text color="secondary">Add dates</Text>
-										</Chunk>
-									</FlexItem>
-									<FlexItem>
-										<Chunk>
-											<Text type="small" weight="strong">Guests</Text>
-											<Text color="secondary">Add guests</Text>
-										</Chunk>
-									</FlexItem>
-									<FlexItem shrink>
-										<Chunk>
-										<Button 
-											shape="Search"
-											/>
-										</Chunk>
-									</FlexItem>
-								</Flex>
-							</Sectionless>
-						</Card>
+							<Flex>
+								<FlexItem>
+									<Inline>
+									<Icon	
+										shape="Paperclip"
+										color="white"
+										/>
+										<Text weight="strong" type="big" inverted>airbnb</Text>
+									</Inline>
+								</FlexItem>
+								<FlexItem shrink>
+									<Text inverted nowrap>Places to stay </Text>
+								</FlexItem>
+								<FlexItem shrink>
+									<Text inverted nowrap>Experiences </Text>
+								</FlexItem>
+								<FlexItem shrink>
+									<Text inverted nowrap>Online Experiences </Text>
+								</FlexItem>	
+								<FlexItem shrink justify="center">
+									<Icon	
+										size="small"
+										shape="Globe"
+										color="white"
+										/>
+								</FlexItem>	
+							</Flex>
+					</Section>
+
+					<Section>
+
+						<Bounds style={{maxWidth: 840}}>
+							<Card>
+								<Sectionless>
+									<Flex>
+										<FlexItem justify="center" growFactor={3}>
+											<Chunk>
+												<Text type="small" weight="strong">Location</Text>
+												<Text color="secondary">Where are you going?</Text>
+											</Chunk>
+										</FlexItem>
+										<FlexItem justify="center" growFactor={2}>
+											<Chunk>
+												<Text type="small" weight="strong">Check in</Text>
+												<Text color="secondary">Add dates</Text>
+											</Chunk>
+										</FlexItem>
+										<FlexItem justify="center" growFactor={2}>
+											<Chunk>
+												<Text type="small" weight="strong">Check out</Text>
+												<Text color="secondary">Add dates</Text>
+											</Chunk>
+										</FlexItem>
+										<FlexItem justify="center" growFactor={2}> 
+											<Chunk>
+												<Text type="small" weight="strong">Guests</Text>
+												<Text color="secondary">Add guests</Text>
+											</Chunk>
+										</FlexItem>
+										<FlexItem shrink justify="center">
+											<Chunk>
+												<Button 
+													style={{marginVertical: 0}}
+													shape="Search"
+													/>
+											</Chunk>
+										</FlexItem>
+									</Flex>
+								</Sectionless>
+							</Card>
+						</Bounds>
 					</Section>
 					<Section style={{flex: 1, justifyContent: 'center'}}>
 						<View>
@@ -156,7 +205,7 @@ const Postmates = (props) => {
 							itemsInRow={{
 								small: 1,
 								medium: 2,
-								large: 3,
+								large: 4,
 							}}
 							items={nearbyCitiesData}
 							renderItem={(item, i)=>{
@@ -167,13 +216,13 @@ const Postmates = (props) => {
 												<Image 
 													source={{uri: "https://a0.muscache.com/im/pictures/676c0a60-2a5a-4598-aeeb-10a81aa5232f.jpg?im_q=medq&im_w=240"}}
 													style={{
-														width: 72,
-														height: 72,
+														width: 64,
+														height: 64,
 														borderRadius: METRICS.borderRadius
 													}}
 													/>
 											</FlexItem>
-											<FlexItem>
+											<FlexItem justify="center">
 												<Text weight="strong">{item.name}</Text>
 												<Text>5.5 hour drive</Text>
 											</FlexItem>
@@ -315,43 +364,110 @@ const Postmates = (props) => {
 			<Stripe style={{backgroundColor: swatches.shade}}>
 				<Bounds>
 					<Section>
-							<Chunk>
-								<Text type="small" weight="strong">ABOUT</Text>
-							</Chunk>
+							
 							<Flex>
 								<FlexItem>
 									<Chunk>
-										<Text>How Airbnb works</Text>
+										<Text type="small" weight="strong">ABOUT</Text>
 									</Chunk>
 									<Chunk>
-										<Text>Airbnb Plus</Text>
+										<Text type="small">How Airbnb works</Text>
 									</Chunk>
 									<Chunk>
-										<Text>Airbnb for work</Text>
+										<Text type="small">Airbnb Plus</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Airbnb for work</Text>
+									</Chunk>	
+									<Chunk>
+										<Text type="small">Newsroom</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Airbnb Luxe</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Olympics</Text>
+									</Chunk>	
+									<Chunk>
+										<Text type="small">Investors</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">HotelTonight</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Careers</Text>
+									</Chunk>																			
+								</FlexItem>
+								<FlexItem>
+									<Chunk>
+										<Text type="small" weight="strong">COMMUNITY</Text>
+									</Chunk>									
+									<Chunk>
+										<Text type="small">Diversity & Belonging</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Airbnb Plus</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Airbnb for work</Text>
+									</Chunk>	
+									<Chunk>
+										<Text type="small">Newsroom</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Airbnb Luxe</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Airbnb.org</Text>
+									</Chunk>																			
+								</FlexItem>
+								<FlexItem>
+									<Chunk>
+										<Text type="small" weight="strong">HOST</Text>
+									</Chunk>										
+									<Chunk>
+										<Text type="small">Host your home</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Airbnb Plus</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Airbnb for work</Text>
+									</Chunk>	
+									<Chunk>
+										<Text type="small">Newsroom</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Airbnb Luxe</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Olympics</Text>
+									</Chunk>	
+									<Chunk>
+										<Text type="small">Community Center</Text>
 									</Chunk>																		
 								</FlexItem>
 								<FlexItem>
 									<Chunk>
-										<Text>Newsroom</Text>
+										<Text type="small" weight="strong">SUPPORT</Text>
+									</Chunk>										
+									<Chunk>
+										<Text type="small">Our COVID-19 Response</Text>
 									</Chunk>
 									<Chunk>
-										<Text>Airbnb Luxe</Text>
+										<Text type="small">Airbnb Plus</Text>
 									</Chunk>
 									<Chunk>
-										<Text>Olympics</Text>
+										<Text type="small">Airbnb for work</Text>
+									</Chunk>	
+									<Chunk>
+										<Text type="small">Newsroom</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="small">Trust & SAfety</Text>
 									</Chunk>																		
 								</FlexItem>
-								<FlexItem>
-									<Chunk>
-										<Text>Investors</Text>
-									</Chunk>
-									<Chunk>
-										<Text>HotelTonight</Text>
-									</Chunk>
-									<Chunk>
-										<Text>Careers</Text>
-									</Chunk>																		
-								</FlexItem>																
+																																						
 							</Flex>
 					</Section>
 				</Bounds>

@@ -75,6 +75,9 @@ const styles = StyleSheet.create({
 		minWidth: 0,
 		overflow: 'hidden'
 	},
+	'inline--noWrap': {
+		flexWrap: 'nowrap'
+	},
 	inlineItem: {
 		marginLeft: space/3,
 		overflow: 'hidden',
@@ -83,6 +86,7 @@ const styles = StyleSheet.create({
 	'inlineItem--firstChild': {
 		marginLeft: 0
 	},
+
 
 	// LISTS
 
@@ -474,6 +478,9 @@ const styles = StyleSheet.create({
 	},
 	textError: {
 		color: swatches.error,
+	},
+	textNowrap: {
+		whiteSpace: 'nowrap'
 	},
 
 	// HEADER

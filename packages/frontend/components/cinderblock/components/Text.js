@@ -31,6 +31,7 @@ const Text = (props) => {
 		type,
 		color = "primary",
 		style,
+		nowrap = false,
 		weight,
 		...other
 	} = props;
@@ -43,6 +44,7 @@ const Text = (props) => {
 		...[color ? `text${VALID_COLORS[color]}${invertedModifier}` : undefined ],
 		...[weight ? `text${VALID_WEIGHTS[weight]}` : undefined ],
 		...[media.large ? `text${VALID_TYPES[type]}--atLarge` : undefined],
+		...[nowrap ? `textNowrap` : undefined],
 	];
 
 	const combinedStyles = styleKeys.map((key, i)=>{

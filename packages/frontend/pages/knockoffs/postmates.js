@@ -46,13 +46,32 @@ import Page from '@/components/Page';
 import Head from 'next/head'
 
 
-const sampleRestaurant = {
+const sampleRestaurants = [
+	{
 		photo: "https://raster-static.postmates.com/?url=https%3A%2F%2Fd1725r39asqzt3.cloudfront.net%2F744cb202-bdb5-409f-bd4b-4310ec3c2723%2Forig.jpg&quality=85&w=640&h=0&mode=auto&format=webp&v=4",
 		name: "Dunkin' Donuts",
-		desc: "25-35 • Donut"
-};
+		desc: "25-35 min • Donut"
+	},
+	{
+		photo: "https://raster-static.postmates.com/?url=https%3A%2F%2Fd1725r39asqzt3.cloudfront.net%2F549cba44-b427-4ddc-8bb3-f609d598a8a0%2Forig.jpg&quality=85&w=640&h=0&mode=auto&format=webp&v=4",
+		name: "McDonald's",
+		desc: "15-25 min • Fast Food"
+	},
+	{
+		photo: "https://raster-static.postmates.com/?url=https%3A%2F%2Fd1725r39asqzt3.cloudfront.net%2Fffd73956-e42c-4a8b-9849-613b3f05ebf0%2Forig.jpg&quality=85&w=640&h=0&mode=auto&format=webp&v=4",
+		name: "Popeye's Louisiana Kitchen",
+		desc: "30-40 min • Fast Food"
+	},
+	{
+		photo: "https://raster-static.postmates.com/?url=https%3A%2F%2Fd1725r39asqzt3.cloudfront.net%2F7c075c47-d458-4d0c-ab45-11d3b2ac4e43%2Forig.png&quality=85&w=640&h=0&mode=auto&format=webp&v=4",
+		name: "Taqueria El Patron Mexican Grill",
+		desc: "30-40 min • Mexican"
+	},	
+];
 
-const restaurantsData = [sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,sampleRestaurant,];
+const nearbyData = [...sampleRestaurants, ...sampleRestaurants, ...sampleRestaurants, ...sampleRestaurants];
+
+const dealsData = nearbyData.slice(1,4);
 
 const Postmates = (props) => {
 
@@ -160,26 +179,61 @@ const Postmates = (props) => {
 									<Text type="small" color="secondary">Epic deals from your favorite restaurants!</Text>
 								</Chunk>
 							</FlexItem>
-							<FlexItem shrink>
+							<FlexItem shrink justify="flex-end">
 								<Text 
 									color="secondary" 
 									type="small" 
-									style={{whiteSpace: 'nowrap'}} 
+									nowrap
 									>View all 19 &rarr;</Text>
 							</FlexItem>
 						</Flex>
-
 						<Chunk>
 							<List
 								variant={{
-									small: "grid",
+									small: "hscroll",
+									large: "grid",
 								}}
 								itemsInRow={{
-									small: 1,
-									medium: 2,
 									large: 3
 								}}
-								items={restaurantsData}
+								items={dealsData}
+								renderItem={(item, i)=>{
+									return (
+										<View key={i}>
+											<Chunk>
+												<Image 
+													source={item.photo}
+													style={[styles.pseudoLineHeight, {height: 200}]}
+												/>
+												
+												<Text weight="strong">{item.name}</Text>
+												<Text type="small" color="hint">{item.desc}</Text>
+											</Chunk>
+										</View>
+									)
+								}}
+								/>
+						</Chunk>
+					</Section>
+
+					<Section>
+						<Flex>
+							<FlexItem>
+								<Chunk>
+									<Text type="sectionHead">Nearby</Text>
+								</Chunk>
+							</FlexItem>
+						</Flex>
+						<Chunk>
+							<List
+								variant={{
+									small: "hscroll",
+									large: "grid",
+								}}
+								itemsInRow={{
+									large: 3
+								}}
+								items={nearbyData}
 								renderItem={(item, i)=>{
 									return (
 										<View key={i}>
@@ -200,6 +254,7 @@ const Postmates = (props) => {
 					</Section>
 				</Bounds>
 			</Stripe>
+		
 		</View>
 	)
 }
