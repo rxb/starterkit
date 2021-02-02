@@ -61,6 +61,12 @@ const amenitiesSamples = [
 	{name: "Gym", photo: "https://a0.muscache.com/airbnb/static/select/pdp/amenities/tile-view-2x/gym.png"},
 	{name: "Full kitchen", photo: "https://a0.muscache.com/airbnb/static/select/pdp/amenities/tile-view-2x/kitchen.png"},	
 ]
+
+const reviewsSamples = [
+	{name: "Sally", photo: "https://a0.muscache.com/im/users/11002835/profile_pic/1422161196/original.jpg?im_w=480", review: "Jamils place was probably one of the best Airbnbs I've ever stayed at. The design of the apartment is super modern, the overall aesthetic is perfect for an artist or professional"},
+];
+const reviewsData = [...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ]
+
 const amenitiesData = [...amenitiesSamples, ...amenitiesSamples, ...amenitiesSamples]
 
 const AirbnbDetail = (props) => {
@@ -70,12 +76,26 @@ const AirbnbDetail = (props) => {
 			<Head>
 				<title>Airbnb Modernist Apartment in Roma Norte</title>
 			</Head>
-			<Stripe>
+			<Stripe style={{backgroundColor: swatches.notwhite}}>
 				<Bounds>
 					<Sectionless>
-						<Chunk>
-							<Text>header</Text>
-						</Chunk>
+							<Flex>
+								<FlexItem shrink>
+									<Inline nowrap>
+									<Icon	
+										shape="Paperclip"
+										/>
+										<Text weight="strong" type="big">airbnb</Text>
+									</Inline>
+								</FlexItem>
+								<FlexItem />
+								<FlexItem shrink justify="center">
+									<Icon	
+										size="small"
+										shape="Globe"
+										/>
+								</FlexItem>	
+							</Flex>
 					</Sectionless>
 				</Bounds>
 			</Stripe>
@@ -114,21 +134,21 @@ const AirbnbDetail = (props) => {
 						</Flex>
 
 						<Chunk>
-							<Flex>
-								<FlexItem growFactor={2}>
+							<Flex noGutters>
+								<FlexItem growFactor={5}>
 									<Image
 										source={{uri: "https://a0.muscache.com/im/pictures/a71cd818-3edc-4486-a4f8-cca704d8f7d8.jpg?aki_policy=xx_large"}}
-										style={{height: 400}}
+										style={{height: '50vh'}}
 										/>
 								</FlexItem>
-								<FlexItem growFactor={1}>
+								<FlexItem growFactor={2}>
 										<Image
 											source={{uri: "https://a0.muscache.com/im/pictures/5a371273-3b1d-4daa-aff5-cc6e91527887.jpg?aki_policy=xx_large"}}
-											style={{height: 200}}
+											style={{height: '25vh'}}
 											/>
 										<Image
 											source={{uri: "https://a0.muscache.com/im/pictures/218bf92d-0d2d-4381-9253-8dece14681a9.jpg?aki_policy=xx_large"}}
-											style={{height: 200}}
+											style={{height: '25vh'}}
 											/>
 								</FlexItem>
 							</Flex>
@@ -385,10 +405,54 @@ const AirbnbDetail = (props) => {
 								)
 							}} 
 							/>
-							<Button 
-								color="secondary"
-								label="Show all 17 amenities"
-								/>
+							<Chunk>
+								<Button 
+									color="secondary"
+									label="Show all 17 amenities"
+									/>
+							</Chunk>
+					</Section>
+					<Section>
+						<Chunk>
+							<Text type="sectionHead">4.82 (89 reviews)</Text>
+						</Chunk>
+						<List
+							variant={{
+								small: "grid",
+							}}
+							itemsInRow={{
+								small: 1,
+								large: 2,
+							}}
+							items={reviewsData}
+							renderItem={(item, i)=>{
+								return(<View>
+									<Chunk>
+										<Flex>
+											<FlexItem shrink>
+												<Avatar 
+													source={item.photo}
+													size="medium"
+													/>
+											</FlexItem>
+											<FlexItem>
+												<Text weight="strong">{item.name}</Text>
+												<Text type="small" color="secondary">January 2021</Text>
+											</FlexItem>
+										</Flex>
+									</Chunk>
+									<Chunk>
+										<Text>{item.review}</Text>
+									</Chunk>
+								</View>)
+							}}
+							/>
+							<Chunk>
+								<Button 
+									color="secondary"
+									label="Show all 89 reviews"
+									/>
+							</Chunk>
 					</Section>
 				</Bounds>
 			</Stripe>
