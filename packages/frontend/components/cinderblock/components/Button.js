@@ -73,27 +73,41 @@ const Button = (props) => {
 			ActionComponent = View
 		}
 
+		// final styles
+		// styles should have references, not literals in props, for performance reasons
+		const finalStyles = [
+			styles.button, 
+			styles[`button--${color}`], 
+			styles[`button--${currentVariant}`], 
+			style
+		];
+		const textFinalStyles = [
+			styles.text, 
+			styles[`text${VALID_TEXT_TYPES[textType]}`], 
+			styles.buttonText, 
+			styles[`buttonText--${color}`]
+		]
+
 		return(
 			<ActionComponent
-				style={[styles.button, styles[`button--${color}`], styles[`button--${currentVariant}`], style]}
+				style={finalStyles}
 				{...actionComponentProps}
 				{...other}
 				>
-
-				<View style={{visibility: (isLoading) ? 'hidden' : 'visible'}}>
+				<View style={isLoading ? visibilityHiddenStyle : visibilityVisibleStyle}>
 					<View style={{flexDirection: 'row', justifyContent: 'center'}}>
 						{ shape &&
 							<Icon 
 								shape={shape} 
 								color={swatches[inkColor]} 
-								style={{marginLeft: 3, marginRight: 3}} 
+								style={iconStyle} 
 								size={iconSize}
 								/>
 						}
 						{ label && currentVariant != 'iconOnly' &&
 							<Text 
 								kind={textKind}
-								style={[styles.text, styles[`text${VALID_TEXT_TYPES[textType]}`], styles.buttonText, styles[`buttonText--${color}`]]}
+								style={textFinalStyles}
 								>{label}</Text>
 						}
 					</View>
@@ -102,7 +116,7 @@ const Button = (props) => {
 
 				{ isLoading &&
 					/* TODO: this "fullscreen center" style should be abstracted */
-					<View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
+					<View style={fillStyle}>
 						<ActivityIndicator
 							color={'white'}
 							/>
@@ -128,5 +142,10 @@ Button.propTypes = {
 		'snap'
 	])
 };
+
+const visibilityHiddenStyle = {visibility: 'hidden'};
+const visibilityVisibleStyle = {visibility: 'visible'};
+const fillStyle = {position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'};
+const iconStyle = {marginLeft: 3, marginRight: 3};
 
 export default Button;

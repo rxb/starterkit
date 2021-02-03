@@ -2,7 +2,7 @@ import { StyleSheet } from '../primitives';
 import swatches from './swatches';
 import flexStyles from './flex';
 
-import { METRICS, BREAKPOINT_SIZES} from '../designConstants';
+import { METRICS, BREAKPOINT_SIZES, MEDIA_SIZES} from '../designConstants';
 
 const {
 	base,
@@ -379,20 +379,30 @@ const styles = StyleSheet.create({
 		resizeMode: 'cover',
 		backgroundColor: swatches.shade
 	},
+	'avatar--xsmall':{
+		width: MEDIA_SIZES.xsmall,
+		height: MEDIA_SIZES.xsmall,
+		borderRadius: MEDIA_SIZES.xsmall
+	},
 	'avatar--small':{
-		width: 24,
-		height: 24,
-		borderRadius: 12
+		width: MEDIA_SIZES.small,
+		height: MEDIA_SIZES.small,
+		borderRadius: MEDIA_SIZES.small
 	},
 	'avatar--medium':{
-		width: 36,
-		height: 36,
-		borderRadius: 18
+		width: MEDIA_SIZES.medium,
+		height: MEDIA_SIZES.medium,
+		borderRadius: MEDIA_SIZES.medium
 	},
 	'avatar--large':{
-		width: 120,
-		height: 120,
-		borderRadius: 60
+		width: MEDIA_SIZES.large,
+		height: MEDIA_SIZES.large,
+		borderRadius: MEDIA_SIZES.large
+	},
+	'avatar--xlarge':{
+		width: MEDIA_SIZES.xlarge,
+		height: MEDIA_SIZES.xlarge,
+		borderRadius: MEDIA_SIZES.xlarge
 	},
 
 	// TEXT

@@ -17,101 +17,89 @@ export const FLEX_NOGUTTER_CLASS = `${FLEX_CLASS}--noGutters`;
 export const FLEX_ALIGN_CLASS = `${FLEX_CLASS}--align`;
 
 
+const getStyleKeys = (props, media) => {
+			
+	const {
+		direction,
+		switchDirection,
+		wrap,
+		noGutters,
+		justify,
+		align,
+		rowReverse,
+		columnReverse
+	} = props;
+
+	const isColumn = direction === DIRECTION_COLUMN;
+	
+	return [
+		FLEX_CLASS,
+
+		// horizontal default
+		...[!isColumn ? FLEX_ROW_CLASS : undefined],
+		...[!isColumn && switchDirection && media[switchDirection] ? FLEX_COLUMN_CLASS : undefined],
+
+		// vertical default
+		...[isColumn ? FLEX_COLUMN_CLASS : undefined],
+		...[isColumn && switchDirection && media[switchDirection] ? FLEX_ROW_CLASS : undefined],
+		
+		// reverse breakpoint modifiers
+		...[rowReverse && media[rowReverse] ? 'flex--rowReverse' : undefined],
+		...[columnReverse && media[columnReverse] ? 'flex--columnReverse' : undefined],
+
+		// other
+		...[wrap ? FLEX_WRAP_CLASS : undefined],
+		...[noGutters ? FLEX_NOGUTTER_CLASS : undefined],
+
+	]
+}
+
+const getCombinedStyles = (styleKeys) => {
+	return styleKeys.map((key, i)=>{
+		return styles[key];
+	});
+}
+
+const getCombinedDescendantStyles = (styleKeys) => {
+	// assuming that the child of Flex will always be FlexItem or equivalent
+	// if that turns out to not be true, this will need to be rethought
+	return styleKeys.map((key, i)=>{
+		// making up a thing here
+		// two dashes "__" is for direct descendants of the first part
+		return styles[`${key}__flex-item`];
+	});
+}
+
 const Flex = (props) => {
-		const {
-			direction,
-			switchDirection,
-			wrap,
-			noGutters,
-			justify,
-			align,
-			rowReverse,
-			columnReverse,
-			children,
-			style,
-			...other
-		} = props;
+
+		const { children, style } = props;
 
 		const media = useMediaContext();
-
-		const isColumn = direction === DIRECTION_COLUMN;
-
-		const getStyleKeys = (media) => {
-			// decide which types of styles are active
-			// only make an array of keys for now
-			// this will be used to reference correct styles for the <Flex> and also <FlexItem>s
-			return [
-				FLEX_CLASS,
-
-				// horizontal default
-				...[!isColumn ? FLEX_ROW_CLASS : undefined],
-				...[!isColumn && switchDirection && media[switchDirection] ? FLEX_COLUMN_CLASS : undefined],
-
-				// vertical default
-				...[isColumn ? FLEX_COLUMN_CLASS : undefined],
-				...[isColumn && switchDirection && media[switchDirection] ? FLEX_ROW_CLASS : undefined],
-
-				// TODO: this concept doesn't really work with switchDirection, which assumes there are only two flex-directions, but there are actually 4
-				
-				// reverse breakpoint modifiers
-				...[rowReverse && media[rowReverse] ? 'flex--rowReverse' : undefined],
-				...[columnReverse && media[columnReverse] ? 'flex--columnReverse' : undefined],
-
-				// other
-				...[wrap ? FLEX_WRAP_CLASS : undefined],
-				...[noGutters ? FLEX_NOGUTTER_CLASS : undefined],
-				...[justify ? `${FLEX_CLASS}--${justify}` : undefined],
-				...[align ? `${FLEX_ALIGN_CLASS}${align}` : undefined],
-			]
-		}
-
-		const getCombinedStyles = (styleKeys) => {
-			return styleKeys.map((key, i)=>{
-				return styles[key];
-			}).filter(function(item){
-				return item !== undefined;
-			});
-		}
-
-		const getCombinedDescendantStyles = (styleKeys) => {
-			// assuming that the child of Flex will always be FlexItem or equivalent
-			// if that turns out to not be true, this will need to be rethought
-			return styleKeys.map((key, i)=>{
-				// making up a thing here
-				// two dashes "__" is for direct descendants of the first part
-				return styles[`${key}__flex-item`];
-			}).filter(function(item){
-				return item !== undefined;
-			});
-
-		}
-
-		// memoized for perf
-		const styleKeys = useMemo(()=> getStyleKeys(media), [media]);
-		const combinedStyles = useMemo(()=> getCombinedStyles(styleKeys), [styleKeys])
+		const styleKeys = useMemo(()=> getStyleKeys(props, media), [media]);
 		const combinedDescendantStyles = useMemo(()=> getCombinedDescendantStyles(styleKeys), [styleKeys])
 
 		// TODO: I really dislike this cloning stuff
 		const childrenWithProps = React.Children.map(children,
 			(child, i) => {
 				if(child){
-					return React.cloneElement(child, {
+					const additionalProps = {
 						descendantStyles: combinedDescendantStyles,
 						isFirstChild: (i==0)
-					})
+					};
+					return React.cloneElement(child, additionalProps);
 				}
 			}
 		);
 
+		const combinedStyles = useMemo(()=> getCombinedStyles(styleKeys), [styleKeys])
+		const finalStyles = [combinedStyles, style];
+
 		return (
-			<View
-				style={[combinedStyles, style]}
-				media={media}
-				{...other}
-			>
+			<View style={finalStyles}>
 				{childrenWithProps}
 			</View>
 		);
+
 }
 
 Flex.propTypes = {

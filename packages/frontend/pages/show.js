@@ -48,7 +48,7 @@ import {
 	Modal,
 	Picker,
 	Section,
-	Sections,
+
 	Sectionless,
 	Stripe,
 	Text,
@@ -66,49 +66,53 @@ import {
 	addToastableErrors 
 } from '../components/cinderblock/formUtils';
 
+// keep big functions outside of render
+
+const submitCommentForm =  async (formState, props) => {
+	
+	const error = runValidations(formState.fields, {
+		body: {
+			notEmpty: {
+				msg: "Comment can't be blank"
+			},
+			notContains: {
+				args: "garbage",
+				msg: "No comments about garbage, please!"
+			}
+		}
+	});
+	formState.setError(error);
+
+	if(!error){
+		const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showCommentsParams)); // get cache
+		const oldFields = {...formState.fields};
+		const newItemData = { ...formState.fields, showId: props.showData.id };
+		props.mutate({ 
+			...oldShowCommentsData, 
+			data: [...oldShowCommentsData.data, {
+				...newItemData, 
+				user: props.user
+			}] 
+		}, false); // optimistic mutate
+		try{
+			formState.resetFields();
+			await postShowComment(newItemData, props.authentication.accessToken) // post 
+			props.mutate(); // trigger refresh from server
+		} 
+		catch(error) {
+			formState.setError(error); // display server errors
+			formState.setFieldValues(oldFields); // rollback formstate (in this, fields were reset)
+			props.mutate(oldShowCommentsData); // rollback optimistic mutate
+		} 
+	}
+};
+
+
 const CommentForm = (props) => {
 	
 	const formState = useFormState({ 
 		initialFields: { body: '' }
 	});
-
-	const submitCommentForm =  async () => {
-		const error = runValidations(formState.fields, {
-			body: {
-				notEmpty: {
-					msg: "Comment can't be blank"
-				},
-				notContains: {
-					args: "garbage",
-					msg: "No comments about garbage, please!"
-				}
-			}
-		});
-		formState.setError(error);
-
-		if(!error){
-			const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showCommentsParams)); // get cache
-			const oldFields = {...formState.fields};
-			const newItemData = { ...formState.fields, showId: props.showData.id };
-			props.mutate({ 
-				...oldShowCommentsData, 
-				data: [...oldShowCommentsData.data, {
-					...newItemData, 
-					user: props.user
-				}] 
-			}, false); // optimistic mutate
-			try{
-				formState.resetFields();
-				await postShowComment(newItemData, props.authentication.accessToken) // post 
-				props.mutate(); // trigger refresh from server
-			} 
-			catch(error) {
-				formState.setError(error); // display server errors
-				formState.setFieldValues(oldFields); // rollback formstate (in this, fields were reset)
-				props.mutate(oldShowCommentsData); // rollback optimistic mutate
-			} 
-		}
-	};
 
 	return(
 		<form>
@@ -128,7 +132,7 @@ const CommentForm = (props) => {
 			</Chunk>
 			<Chunk>
 				<Button
-					onPress={submitCommentForm}
+					onPress={ () => submitCommentForm(formState, props) }
 					isLoading={formState.loading}
 					label="Post Comment"
 					/>
@@ -241,7 +245,7 @@ function Show(props) {
 
 			<Stripe>
 				<Bounds>
-					<Sections>
+
 						<ImageSnap
 							image={showData.photoUrl}
 							style={{backgroundColor: swatches.shade}}
@@ -363,7 +367,7 @@ function Show(props) {
 									</View>
 								</Chunk>
 						</Section>
-					</Sections>
+
 				</Bounds>
 			</Stripe>
 		</Page>

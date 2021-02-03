@@ -39,7 +39,6 @@ import {
 	Modal,
 	Picker,
 	Section,
-	Sections,
 	Sectionless,
 	Stripe,
 	Text,
@@ -265,7 +264,7 @@ function ShowEdit(props) {
 				</Head>
 				<Stripe>
 					<Bounds>
-						<Sections>
+
 							<Section type="pageHead">
 								<Chunk>
 									<Text type="pageHead">Edit show</Text>
@@ -294,7 +293,7 @@ function ShowEdit(props) {
 								</FlexItem>
 							</Flex>
 							}
-						</Sections>
+
 					</Bounds>
 				</Stripe>
 			</Page>

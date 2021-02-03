@@ -12,9 +12,10 @@ const Chunk = (props) => {
 
 	// optimized way to inline layout without explicit <Inline> component
 	const inlineStyle = (inline) ? styles.inline : {};
-
+	const finalStyles = [styles.chunk, inlineStyle, style];
+	
 	return(
-		<View style={[styles.chunk, inlineStyle, style]}>
+		<View style={finalStyles}>
 			{children}
 		</View>
 	);

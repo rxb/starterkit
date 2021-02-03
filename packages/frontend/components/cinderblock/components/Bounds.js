@@ -7,8 +7,9 @@ const Bounds = (props) => {
 		style,
 		children
 	} = props;
+	const finalStyles = [styles.bounds, style];
 	return(
-		<View style={[styles.bounds, style]}>
+		<View style={finalStyles}>
 			{children}
 		</View>
 	);

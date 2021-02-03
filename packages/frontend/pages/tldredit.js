@@ -36,7 +36,7 @@ import {
 	Modal,
 	Picker,
 	Section,
-	Sections,
+
 	Sectionless,
 	Stripe,
 	Text,
@@ -158,7 +158,6 @@ function TldrEdit(props) {
 				</Head>
 				<Stripe>
 					<Bounds>
-						<Sections>
 							<Section type="pageHead">
 								<Chunk>
 									<Text type="pageHead">Edit TLDR</Text>
@@ -177,7 +176,7 @@ function TldrEdit(props) {
 								</FlexItem>
 								
 							</Flex>
-						</Sections>
+
 					</Bounds>
 				</Stripe>
 			</Page>

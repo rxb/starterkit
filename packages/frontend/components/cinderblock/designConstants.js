@@ -1,19 +1,3 @@
-/*
-
-get nomenclature
-all organized
-
-xsmall
-small
-medium
-xlarge...
-
-const base = 16;
-const space = base * .75;
-const space = base * 1.5;
-
-*/
-
 import { Easing } from './primitives';
 
 export const METRICS = {
@@ -118,12 +102,11 @@ export const MEDIA_QUERIES = {
 };
 
 export const MEDIA_SIZES = {
-	xs: '16',
-	s: '24',
-	m: '36',
-	l: '48',
-	xl: '72',
-	xxl: '120',
+	xsmall: 16,
+	small: 24,
+	medium: 36,
+	large: 56,
+	xlarge: 72,
 };
 
 // Apple Easing https://github.com/expo/react-apple-easing/blob/master/AppleEasing.js

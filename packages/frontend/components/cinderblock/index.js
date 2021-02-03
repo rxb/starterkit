@@ -25,7 +25,6 @@ import Modal from './components/Modal';
 import Picker from './components/Picker';
 import Prompter from './components/Prompter';
 import Section from './components/Section';
-import Sections from './components/Sections';
 import Sectionless from './components/Sectionless';
 import Stripe from './components/Stripe';
 import Tabs from './components/Tabs';
@@ -68,7 +67,6 @@ export {
 	Prompter,
 	Section,
 	Sectionless,
-	Sections,
 	Stripe,
 	Tabs,
 	Text,

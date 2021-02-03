@@ -19,7 +19,6 @@ import {
 	Modal,
 	Picker,
 	Section,
-	Sections,
 	Sectionless,
 	Stripe,
 	Text,
@@ -74,7 +73,6 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 			<Page>
 				<Stripe>
 					<Bounds>
-						<Sections>
 							<Section type="pageHead">
 
 								{/*
@@ -137,7 +135,6 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 									</Chunk>
 								</Section>
 
-						</Sections>
 					</Bounds>
 				</Stripe>
 			</Page>

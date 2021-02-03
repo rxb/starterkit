@@ -1,10 +1,6 @@
 import { StyleSheet } from '../primitives';
 
-import {
-	METRICS,
-	FLEX_ALIGN_VALUES,
-	FLEX_JUSTIFY_VALUES
-} from '../designConstants';
+import { METRICS } from '../designConstants';
 
 const {
 	base,
@@ -13,23 +9,7 @@ const {
 
 const flexGrowFactors = [1, 2, 3, 4, 5, 6, 7];
 
-
-const upFirst = word =>
-  word[0].toUpperCase() + word.toLowerCase().slice(1)
-
-const camelize = text => {
-  let words = text.split(/[-_]/g) // ok one simple regexp.
-  return words[0].toLowerCase() + words.slice(1).map(upFirst)
-}
-
-const capitalize = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-
-
 const styles = StyleSheet.create({
-
 
 'flex' : {
 	alignItems: 'stretch',
@@ -41,10 +21,6 @@ const styles = StyleSheet.create({
 	flex: 1,
 	flexBasis: 0,
 	minWidth: 0,
-},
-
-'flex-item--firstChild': {
-	//paddingLeft: 0
 },
 
 'flex--row' : {
@@ -70,12 +46,7 @@ const styles = StyleSheet.create({
 },
 
 
-
-/*
-
-FLEX GROW FACTORS
-
-*/
+// FLEX GROW FACTORS
 
 ...(()=>{
 	const growObj = {};
@@ -85,17 +56,13 @@ FLEX GROW FACTORS
 	return growObj;
 })(),
 
-
 'flex-item--shrink': {
 	flex: 0,
 	minWidth: '-webkit-min-content'
 },
 
-/*
 
-FLEX VARIANTS
-
-*/
+// FLEX VARIANTS
 
 'flex--noGutters': {
 	marginLeft: 0
@@ -117,38 +84,28 @@ FLEX VARIANTS
 	flexDirection: 'row-reverse'
 },
 
+// JUSTIFY
+'flex--justify-flex-start': {
+	justifyContent: 'flex-start'
+},
+'flex--justify-center': {
+	justifyContent: 'center'
+},
+'flex--justify-flex-end': {
+	justifyContent: 'flex-end'
+},
 
-/*
+// ALIGN
+'flex--align-flex-start': {
+	alignItems: 'flex-start'
+},
+'flex--align-center': {
+	alignItems: 'center'
+},
+'flex--align-flex-end': {
+	alignItems: 'flex-end'
+},
 
-FLEX JUSTIFY
-ex:
-flex--flexEnd = flexJustify: 'flex-end'
-
-*/
-...(()=>{
-	const justifyObj = {};
-	FLEX_JUSTIFY_VALUES.forEach( (fj) => {
-		justifyObj[`flex--${camelize(fj)}`] = { justifyContent: fj };
-	});
-	return justifyObj;
-})(),
-
-
-
-/*
-
-FLEX ALIGNMENTS
-ex:
-flex--alignTop = flexAlign: 'top'
-
-*/
-...(()=>{
-	const alignObj = {};
-	FLEX_ALIGN_VALUES.forEach( (fa) => {
-		alignObj[`flex--align${capitalize(camelize(fa))}`] = { alignItems: fa };
-	});
-	return alignObj;
-})(),
 
 
 });

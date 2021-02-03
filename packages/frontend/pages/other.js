@@ -17,7 +17,6 @@ import {
 	Modal,
 	Picker,
 	Section,
-	Sections,
 	Sectionless,
 	Stripe,
 	Text,
@@ -43,7 +42,6 @@ const OtherForm = (props) => {
 
 	return(
 		<form>
-			<Sections>
 				<Section type="pageHead">
 					<Chunk>
 						<Text type="pageHead">Settings</Text>
@@ -125,7 +123,6 @@ const OtherForm = (props) => {
 							/>
 					</Chunk>
 				</Section>
-			</Sections>
 		</form>
 	)
 };

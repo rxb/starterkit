@@ -10,10 +10,11 @@ const Avatar = (props) => {
 		style
 	} = props;
 
+	const finalStyles = [styles['avatar'], styles[`avatar--${size}`], style];
 	return(
 		<Image
 			source={source}
-			style={[styles['avatar'], styles[`avatar--${size}`], style]}
+			style={finalStyles}
 			/>
 	);
 }
@@ -23,7 +24,7 @@ Avatar.defaultProps = {
 };
 
 Avatar.propTypes = {
-	size: PropTypes.oneOf(['small', 'medium', 'large']),
+	size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'xlarge']),
 	source: PropTypes.object
 }
 

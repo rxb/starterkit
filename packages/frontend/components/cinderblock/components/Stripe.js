@@ -5,7 +5,15 @@ import {useMediaContext} from './UseMediaContext';
 import { BREAKPOINTS, METRICS } from '../designConstants';
 import {findWidestActiveValue} from '../componentUtils';
 
-
+const getCombinedStyles = (media) => {	
+	const styleKeys = [
+		'stripe',
+		...[ (media && media.medium) ? 'stripe--atMedium' : undefined],
+	];
+	return styleKeys.map((key, i)=>{
+		return styles[key];
+	});
+}
 
 const Stripe = (props) => {
 
@@ -19,16 +27,6 @@ const Stripe = (props) => {
 	} = props
 
 	const media = useMediaContext();
-
-	const getCombinedStyles = (media) => {	
-		const styleKeys = [
-			'stripe',
-			...[ (media && media.medium) ? 'stripe--atMedium' : undefined],
-		];
-		return styleKeys.map((key, i)=>{
-			return styles[key];
-		});
-	}
 	const combinedStyles = useMemo( ()=>getCombinedStyles(media), [media]);
 	const imageHeightStyle = (image) ? {height: findWidestActiveValue(imageHeight, media)} : {};
 

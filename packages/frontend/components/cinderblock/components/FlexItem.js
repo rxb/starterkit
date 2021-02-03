@@ -4,16 +4,43 @@ import React, {useMemo} from 'react';
 import styles from '../styles/styles';
 
 export const FLEX_CLASS = 'flex';
-export const FLEX_ALIGN_CLASS = `${FLEX_CLASS}--align`;
+export const FLEX_ALIGN_CLASS = `${FLEX_CLASS}--align-`;
+export const FLEX_JUSTIFY_CLASS = `${FLEX_CLASS}--justify-`;
 export const FLEX_ITEM_CLASS = 'flex-item';
 export const FLEX_ITEM_SHRINK_CLASS = 'flex-item--shrink';
 export const FLEX_ITEM_GROW_CLASS = 'flex-item--';
 export const FLEX_GROW_FACTORS = [0,1,2,3,4,5,6,7];
 
+const getStyleKeys = (props) => {
+	const {
+		shrink,
+		growFactor,
+		isFirstChild,
+		justify,
+		align,
+		...other
+	} = props;
+
+	return [
+		shrink ? FLEX_ITEM_SHRINK_CLASS : undefined,
+		growFactor ? `${FLEX_ITEM_GROW_CLASS}${growFactor}` : undefined,
+		isFirstChild ? `${FLEX_ITEM_CLASS}--firstChild` : undefined,
+		...[justify ? `${FLEX_JUSTIFY_CLASS}${justify}` : undefined],
+		...[align ? `${FLEX_ALIGN_CLASS}${align}` : undefined],
+	];
+}
+
+const getItemStyles = (styleKeys) => {
+	return styleKeys.map((key, i)=>{
+		return styles[key];
+	}).filter(function(item){
+		return item !== undefined;
+	});
+}
+
 const FlexItem = (props) => {
 		const {
 			children,
-			className,
 			shrink,
 			growFactor,
 			descendantStyles,
@@ -25,31 +52,13 @@ const FlexItem = (props) => {
 			...other
 		} = props;
 
-		const styleKeys = [
-			shrink ? FLEX_ITEM_SHRINK_CLASS : undefined,
-			growFactor ? `${FLEX_ITEM_GROW_CLASS}${growFactor}` : undefined,
-			isFirstChild ? `${FLEX_ITEM_CLASS}--firstChild` : undefined,
-			...[justify ? `${FLEX_CLASS}--${justify}` : undefined],
-			...[align ? `${FLEX_ALIGN_CLASS}${align}` : undefined],
-		];
-
-		const getItemStyles = (styleKeys) => {
-			return styleKeys.map((key, i)=>{
-				return styles[key];
-			}).filter(function(item){
-				return item !== undefined;
-			});
-		}
-
 		// memoized for perf
+		const styleKeys = useMemo(() => getStyleKeys(props), [shrink, growFactor, isFirstChild, justify, align]);
 		const itemStyles = useMemo(()=> getItemStyles(styleKeys), [styleKeys])
-		const combinedStyles = [styles[FLEX_ITEM_CLASS], ...descendantStyles, itemStyles];
+		const finalStyles = [styles[FLEX_ITEM_CLASS], ...descendantStyles, itemStyles, style];
 
 		return (
-			<View
-				style={[combinedStyles, style]}
-				{...other}
-				>
+			<View style={finalStyles}>
 				{children}
 			</View>
 		);

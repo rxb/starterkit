@@ -29,7 +29,6 @@ import {
 	Modal,
 	Picker,
 	Section,
-	Sections,
 	Sectionless,
 	Stripe,
 	Text,

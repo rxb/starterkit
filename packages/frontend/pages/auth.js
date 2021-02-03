@@ -34,7 +34,6 @@ import {
 	Modal,
 	Picker,
 	Section,
-	Sections,
 	Sectionless,
 	Stripe,
 	Text,
@@ -188,7 +187,6 @@ class Auth extends React.Component {
 				</Head>
 				<Stripe>
 					<Bounds>
-						<Sections>
 							<Section type="pageHead">
 								<Chunk>
 									<Text type="pageHead">Scratch</Text>
@@ -297,7 +295,6 @@ class Auth extends React.Component {
 								*/}
 
 							</Section>
-						</Sections>
 					</Bounds>
 				</Stripe>
 

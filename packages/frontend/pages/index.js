@@ -31,7 +31,6 @@ import {
 	Modal,
 	Picker,
 	Section,
-	Sections,
 	Sectionless,
 	Stripe,
 	Text,
@@ -139,7 +138,6 @@ function Hello() {
 					<FlexItem growFactor={5}>
 						<Stripe>
 							<Bounds>
-								<Sections>
 									<Section>
 										<Chunk>
 											<Text type="hero">Hey hello!</Text>
@@ -201,14 +199,12 @@ function Hello() {
 											<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
 										</Chunk>
 									</Section>
-								</Sections>
 							</Bounds>
 						</Stripe>
 					</FlexItem>
 					<FlexItem growFactor={2}>
 						<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 							<Bounds>
-								<Sections>
 									<Section>
 										<Chunk>
 											<Text type="sectionHead">Side panel</Text>
@@ -263,7 +259,6 @@ function Hello() {
 										</Chunk>
 									</Section>
 
-								</Sections>
 							</Bounds>
 						</Stripe>
 					</FlexItem>

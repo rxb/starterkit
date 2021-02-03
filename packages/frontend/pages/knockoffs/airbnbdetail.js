@@ -29,7 +29,6 @@ import {
 	Modal,
 	Picker,
 	Section,
-	Sections,
 	Sectionless,
 	Stripe,
 	Text,
@@ -74,7 +73,7 @@ const AirbnbDetail = (props) => {
 	return(
 		<View style={{minHeight: '100vh'}}>
 			<Head>
-				<title>Airbnb Modernist Apartment in Roma Norte</title>
+				<title>Airbnb: Modernist Apartment in Roma Norte</title>
 			</Head>
 			<Stripe style={{backgroundColor: swatches.notwhite}}>
 				<Bounds>
@@ -119,13 +118,13 @@ const AirbnbDetail = (props) => {
 										<FlexItem>
 											<Inline nowrap>
 												<Icon shape="Share" size="small" /> 
-												<Text type="small">Share</Text>
+												<Text type="small" weight="strong">Share</Text>
 											</Inline>
 										</FlexItem>
 										<FlexItem>
 											<Inline nowrap>
 												<Icon shape="Heart" size="small" /> 
-												<Text type="small">Save</Text>
+												<Text type="small" weight="strong">Save</Text>
 											</Inline>
 										</FlexItem>
 									</Flex>
@@ -155,7 +154,8 @@ const AirbnbDetail = (props) => {
 						</Chunk>
 					</Section>
 					<Flex>
-						<FlexItem growFactor={4}>		
+				
+				<FlexItem growFactor={2}>		
 					<Section>
 						<Flex>
 							<FlexItem>
@@ -164,10 +164,10 @@ const AirbnbDetail = (props) => {
 									<Text>3 guests • 1 bedroom • 1 bed • 1.5 baths</Text>
 								</Chunk>
 							</FlexItem>
-							<FlexItem>
+							<FlexItem shrink>
 								<Avatar
 									source="https://a0.muscache.com/im/pictures/user/7f8135f6-613b-41bf-95e3-da043e8c1749.jpg?im_w=240"
-									size="medium"
+									size="large"
 									/>
 							</FlexItem>
 						</Flex>
@@ -259,7 +259,8 @@ const AirbnbDetail = (props) => {
 					</Section>
 
 					</FlexItem>
-						<FlexItem growFactor={2}>
+						<FlexItem growFactor={1}>
+							<Section>
 							<Card>
 								<Sectionless>
 									<Chunk>
@@ -316,6 +317,7 @@ const AirbnbDetail = (props) => {
 									</Chunk>
 								</Sectionless>
 							</Card>
+							</Section>
 						</FlexItem>
 					</Flex>
 					<Section>
@@ -432,10 +434,10 @@ const AirbnbDetail = (props) => {
 											<FlexItem shrink>
 												<Avatar 
 													source={item.photo}
-													size="medium"
+													size="large"
 													/>
 											</FlexItem>
-											<FlexItem>
+											<FlexItem justify="center">
 												<Text weight="strong">{item.name}</Text>
 												<Text type="small" color="secondary">January 2021</Text>
 											</FlexItem>
