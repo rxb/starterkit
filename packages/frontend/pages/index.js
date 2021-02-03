@@ -134,8 +134,8 @@ function Hello() {
 					<title>Cinderblock</title>
 				</Head>
 
-				<Flex direction="column" switchDirection="large" noGutters>
-					<FlexItem growFactor={5}>
+				<Flex direction="column" switchDirection="large" flush>
+					<FlexItem growFactor={5} flush>
 						<Stripe>
 							<Bounds>
 									<Section>
@@ -202,7 +202,7 @@ function Hello() {
 							</Bounds>
 						</Stripe>
 					</FlexItem>
-					<FlexItem growFactor={2}>
+					<FlexItem growFactor={2} flush>
 						<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 							<Bounds>
 									<Section>

@@ -236,8 +236,8 @@ function Tldr(props) {
 
 										{/* split scores with labels */}
 										<Chunk>
-											<Flex noGutters>
-												<FlexItem>
+											<Flex flush>
+												<FlexItem flush>
 													<Button
 														color="secondary"
 														width="full"
@@ -269,7 +269,7 @@ function Tldr(props) {
 													</Button>
 												</FlexItem>
 					
-												<FlexItem>
+												<FlexItem flush>
 													<Button
 														color="secondary"
 														width="full"

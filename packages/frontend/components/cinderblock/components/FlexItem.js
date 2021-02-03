@@ -10,6 +10,7 @@ export const FLEX_ITEM_CLASS = 'flex-item';
 export const FLEX_ITEM_SHRINK_CLASS = 'flex-item--shrink';
 export const FLEX_ITEM_GROW_CLASS = 'flex-item--';
 export const FLEX_GROW_FACTORS = [0,1,2,3,4,5,6,7];
+export const FLEX_ITEM_FLUSH_CLASS = `${FLEX_ITEM_CLASS}--flush`;
 
 const getStyleKeys = (props) => {
 	const {
@@ -18,6 +19,7 @@ const getStyleKeys = (props) => {
 		isFirstChild,
 		justify,
 		align,
+		flush,
 		...other
 	} = props;
 
@@ -27,6 +29,7 @@ const getStyleKeys = (props) => {
 		isFirstChild ? `${FLEX_ITEM_CLASS}--firstChild` : undefined,
 		...[justify ? `${FLEX_JUSTIFY_CLASS}${justify}` : undefined],
 		...[align ? `${FLEX_ALIGN_CLASS}${align}` : undefined],
+		...[flush ? FLEX_ITEM_FLUSH_CLASS : undefined],
 	];
 }
 
@@ -49,13 +52,14 @@ const FlexItem = (props) => {
 			justify,
 			align,
 			style,
+			flush,
 			...other
 		} = props;
 
 		// memoized for perf
-		const styleKeys = useMemo(() => getStyleKeys(props), [shrink, growFactor, isFirstChild, justify, align]);
+		const styleKeys = useMemo(() => getStyleKeys(props), [shrink, growFactor, isFirstChild, justify, align, flush]);
 		const itemStyles = useMemo(()=> getItemStyles(styleKeys), [styleKeys])
-		const finalStyles = [styles[FLEX_ITEM_CLASS], ...descendantStyles, itemStyles, style];
+		const finalStyles = [styles[FLEX_ITEM_CLASS], /* ...descendantStyles,*/ itemStyles, style];
 
 		return (
 			<View style={finalStyles}>

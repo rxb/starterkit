@@ -13,8 +13,9 @@ export const FLEX_CLASS = 'flex';
 export const FLEX_ROW_CLASS = `${FLEX_CLASS}--${DIRECTION_ROW}`;
 export const FLEX_COLUMN_CLASS = `${FLEX_CLASS}--${DIRECTION_COLUMN}`;
 export const FLEX_WRAP_CLASS = `${FLEX_CLASS}--wrap`;
-export const FLEX_NOGUTTER_CLASS = `${FLEX_CLASS}--noGutters`;
+//export const FLEX_NOGUTTER_CLASS = `${FLEX_CLASS}--noGutters`;
 export const FLEX_ALIGN_CLASS = `${FLEX_CLASS}--align`;
+export const FLEX_FLUSH_CLASS = `${FLEX_CLASS}--flush`;
 
 
 const getStyleKeys = (props, media) => {
@@ -27,6 +28,7 @@ const getStyleKeys = (props, media) => {
 		justify,
 		align,
 		rowReverse,
+		flush,
 		columnReverse
 	} = props;
 
@@ -49,7 +51,10 @@ const getStyleKeys = (props, media) => {
 
 		// other
 		...[wrap ? FLEX_WRAP_CLASS : undefined],
-		...[noGutters ? FLEX_NOGUTTER_CLASS : undefined],
+		//...[noGutters ? FLEX_NOGUTTER_CLASS : undefined],
+		...[flush ? FLEX_FLUSH_CLASS : undefined],
+
+		
 
 	]
 }
@@ -76,6 +81,12 @@ const Flex = (props) => {
 
 		const media = useMediaContext();
 		const styleKeys = useMemo(()=> getStyleKeys(props, media), [media]);
+		
+
+		const combinedStyles = useMemo(()=> getCombinedStyles(styleKeys), [styleKeys])
+		const finalStyles = [combinedStyles, style];
+
+		/*
 		const combinedDescendantStyles = useMemo(()=> getCombinedDescendantStyles(styleKeys), [styleKeys])
 
 		// TODO: I really dislike this cloning stuff
@@ -90,13 +101,11 @@ const Flex = (props) => {
 				}
 			}
 		);
-
-		const combinedStyles = useMemo(()=> getCombinedStyles(styleKeys), [styleKeys])
-		const finalStyles = [combinedStyles, style];
+		*/
 
 		return (
 			<View style={finalStyles}>
-				{childrenWithProps}
+				{/*childrenWithProps */} {children}
 			</View>
 		);
 

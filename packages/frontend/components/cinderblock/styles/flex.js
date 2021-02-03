@@ -11,10 +11,26 @@ const flexGrowFactors = [1, 2, 3, 4, 5, 6, 7];
 
 const styles = StyleSheet.create({
 
+/*
+// Flex
+
+
 'flex' : {
 	alignItems: 'stretch',
 	flexDirection: 'row',
 },
+
+'flex--row' : {
+	flexDirection: 'row',
+	marginLeft: -1*base,
+},
+
+'flex--column': {
+	flexDirection: 'column',
+	height: '100%'
+},
+
+// FlexItem
 
 'flex-item' : {
 	width: 'auto',
@@ -23,10 +39,6 @@ const styles = StyleSheet.create({
 	minWidth: 0,
 },
 
-'flex--row' : {
-	flexDirection: 'row',
-	marginLeft: -1*base,
-},
 
 'flex--row__flex-item': {
 	paddingLeft: base,
@@ -34,15 +46,40 @@ const styles = StyleSheet.create({
 },
 
 
+'flex--column__flex-item': {
+	paddingLeft: 0,
+	minHeight: '-webkit-min-content',
+	minWidth: '-webkit-min-content',
+},
+*/
+
+// Flex
+
+
+'flex' : {
+	alignItems: 'stretch',
+	flexDirection: 'row',
+	marginLeft: -1*base,
+},
+
+'flex--row' : {
+	flexDirection: 'row',
+},
+
 'flex--column': {
 	flexDirection: 'column',
 	height: '100%'
 },
 
-'flex--column__flex-item': {
-	paddingLeft: 0,
+// FlexItem
+
+'flex-item' : {
+	width: 'auto',
+	flex: 1,
+	flexBasis: 0,
 	minHeight: '-webkit-min-content',
 	minWidth: '-webkit-min-content',
+	paddingLeft: base,
 },
 
 
@@ -63,14 +100,22 @@ const styles = StyleSheet.create({
 
 
 // FLEX VARIANTS
-
-'flex--noGutters': {
-	marginLeft: 0
+'flex--flush': {
+	marginLeft: 0,
 },
 
+'flex-item--flush': {
+	paddingLeft: 0,
+},
+
+/*
+'flex--noGutters': {
+	marginLeft: 0,
+},
 'flex--noGutters__flex-item': {
 	paddingLeft: 0,
 },
+*/
 
 'flex--wrap': {
 	flexWrap: 'wrap'

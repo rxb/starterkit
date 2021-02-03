@@ -114,7 +114,7 @@ function Page (props) {
 								</Inline>
 							</Link>
 						</FlexItem>
-							<FlexItem style={{alignItems: 'flex-end'}}>
+							<FlexItem align="flex-end">
 									
 									<Fragment>
 										{user.id &&

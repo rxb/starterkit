@@ -62,7 +62,7 @@ const amenitiesSamples = [
 ]
 
 const reviewsSamples = [
-	{name: "Sally", photo: "https://a0.muscache.com/im/users/11002835/profile_pic/1422161196/original.jpg?im_w=480", review: "Jamils place was probably one of the best Airbnbs I've ever stayed at. The design of the apartment is super modern, the overall aesthetic is perfect for an artist or professional"},
+	{name: "Sally", photo: "https://a0.muscache.com/im/pictures/user/7f8135f6-613b-41bf-95e3-da043e8c1749.jpg?im_w=240", review: "Jamils place was probably one of the best Airbnbs I've ever stayed at. The design of the apartment is super modern, the overall aesthetic is perfect for an artist or professional"},
 ];
 const reviewsData = [...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ]
 
@@ -133,14 +133,14 @@ const AirbnbDetail = (props) => {
 						</Flex>
 
 						<Chunk>
-							<Flex noGutters>
-								<FlexItem growFactor={5}>
+							<Flex flush>
+								<FlexItem growFactor={5} flush>
 									<Image
 										source={{uri: "https://a0.muscache.com/im/pictures/a71cd818-3edc-4486-a4f8-cca704d8f7d8.jpg?aki_policy=xx_large"}}
 										style={{height: '50vh'}}
 										/>
 								</FlexItem>
-								<FlexItem growFactor={2}>
+								<FlexItem growFactor={2} flush>
 										<Image
 											source={{uri: "https://a0.muscache.com/im/pictures/5a371273-3b1d-4daa-aff5-cc6e91527887.jpg?aki_policy=xx_large"}}
 											style={{height: '25vh'}}
@@ -153,7 +153,8 @@ const AirbnbDetail = (props) => {
 							</Flex>
 						</Chunk>
 					</Section>
-					<Flex>
+			
+			<Flex direction="column" switchDirection="xlarge">
 				
 				<FlexItem growFactor={2}>		
 					<Section>
