@@ -62,11 +62,15 @@ const amenitiesSamples = [
 ]
 
 const reviewsSamples = [
-	{name: "Sally", photo: "https://a0.muscache.com/im/pictures/user/7f8135f6-613b-41bf-95e3-da043e8c1749.jpg?im_w=240", review: "Jamils place was probably one of the best Airbnbs I've ever stayed at. The design of the apartment is super modern, the overall aesthetic is perfect for an artist or professional"},
+	{name: "Sally", photo: "https://randomuser.me/api/portraits/women/24.jpg", review: "Jamils place was probably one of the best Airbnbs I've ever stayed at. The design of the apartment is super modern, the overall aesthetic is perfect for an artist or professional"},
 ];
 const reviewsData = [...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ...reviewsSamples, ]
 
 const amenitiesData = [...amenitiesSamples, ...amenitiesSamples, ...amenitiesSamples]
+
+
+
+
 
 const AirbnbDetail = (props) => {
 
@@ -75,29 +79,25 @@ const AirbnbDetail = (props) => {
 			<Head>
 				<title>Airbnb: Modernist Apartment in Roma Norte</title>
 			</Head>
-			<Stripe style={{backgroundColor: swatches.notwhite}}>
-				<Bounds>
-					<Sectionless>
-							<Flex>
-								<FlexItem shrink>
-									<Inline nowrap>
-									<Icon	
-										shape="Paperclip"
-										/>
-										<Text weight="strong" type="big">airbnb</Text>
-									</Inline>
-								</FlexItem>
-								<FlexItem />
-								<FlexItem shrink justify="center">
-									<Icon	
-										size="small"
-										shape="Globe"
-										/>
-								</FlexItem>	
-							</Flex>
-					</Sectionless>
-				</Bounds>
-			</Stripe>
+			<Header>
+					<Flex>
+						<FlexItem shrink>
+							<Inline nowrap>
+							<Icon	
+								shape="Paperclip"
+								/>
+								<Text weight="strong" type="big">airbnb</Text>
+							</Inline>
+						</FlexItem>
+						<FlexItem />
+						<FlexItem shrink justify="center">
+							<Icon	
+								size="small"
+								shape="Globe"
+								/>
+						</FlexItem>	
+					</Flex>
+			</Header>
 			<Stripe>
 				<Bounds>
 					<Section>
@@ -133,22 +133,28 @@ const AirbnbDetail = (props) => {
 						</Flex>
 
 						<Chunk>
-							<Flex flush>
-								<FlexItem growFactor={5} flush>
+							<Flex nbsp>
+								<FlexItem growFactor={5} nbsp>
+									<View style={{height: '50vh'}}>
 									<Image
 										source={{uri: "https://a0.muscache.com/im/pictures/a71cd818-3edc-4486-a4f8-cca704d8f7d8.jpg?aki_policy=xx_large"}}
-										style={{height: '50vh'}}
+										style={[{flex: 1}, styles.pseudoLineHeight]}
 										/>
+									</View>
 								</FlexItem>
-								<FlexItem growFactor={2} flush>
+								<FlexItem growFactor={2} nbsp>
+									<View style={{height: '25vh'}}>
 										<Image
 											source={{uri: "https://a0.muscache.com/im/pictures/5a371273-3b1d-4daa-aff5-cc6e91527887.jpg?aki_policy=xx_large"}}
-											style={{height: '25vh'}}
+											style={[{flex: 1}, styles.pseudoLineHeight]}
 											/>
+									</View>
+									<View style={{height: '25vh'}}>
 										<Image
 											source={{uri: "https://a0.muscache.com/im/pictures/218bf92d-0d2d-4381-9253-8dece14681a9.jpg?aki_policy=xx_large"}}
-											style={{height: '25vh'}}
+											style={[{flex: 1}, styles.pseudoLineHeight]}
 											/>
+									</View>
 								</FlexItem>
 							</Flex>
 						</Chunk>
@@ -174,7 +180,7 @@ const AirbnbDetail = (props) => {
 						</Flex>
 					</Section>
 					
-					<Section>
+					<Section border>
 						<Chunk>
 							<Flex>
 								<FlexItem shrink>
@@ -215,7 +221,7 @@ const AirbnbDetail = (props) => {
 							</Flex>
 						</Chunk>
 					</Section>
-					<Section>
+					<Section border>
 						<Chunk>
 							<Text>Shower in a stylish Corian cabin before preparing a tasty brunch in a kitchen filled with new Teka appliances. The state-of-the-art structure is set within a historic 1910 home, and this downstairs loft also benefits from a shaded garden courtyard.</Text>
 						</Chunk>
@@ -262,20 +268,20 @@ const AirbnbDetail = (props) => {
 					</FlexItem>
 						<FlexItem growFactor={1}>
 							<Section>
-							<Card>
+							<Card shadow>
 								<Sectionless>
 									<Chunk>
 										<Text type="big" weight="strong">$69 <Text>/ night</Text></Text>
 									</Chunk>
 									<Chunk>
-										<Flex>
-											<FlexItem>
+										<Flex nbsp>
+											<FlexItem nbsp>
 												<FakeInput
 													label="Check-in"
 													shape="Calendar"
 													/>
 											</FlexItem>
-											<FlexItem>
+											<FlexItem nbsp>
 												<FakeInput
 													label="Checkout"
 													shape="Calendar"
@@ -321,7 +327,7 @@ const AirbnbDetail = (props) => {
 							</Section>
 						</FlexItem>
 					</Flex>
-					<Section>
+					<Section border>
 						<Chunk>
 							<Text type="sectionHead">Every Airbnb Plus place is inspected in person for quality</Text>
 						</Chunk>
@@ -370,7 +376,7 @@ const AirbnbDetail = (props) => {
 							</FlexItem>
 						</Flex>
 					</Section>
-					<Section>
+					<Section border>
 						<Chunk>
 							<Text type="sectionHead">Amenities</Text>
 						</Chunk>
@@ -415,7 +421,7 @@ const AirbnbDetail = (props) => {
 									/>
 							</Chunk>
 					</Section>
-					<Section>
+					<Section border>
 						<Chunk>
 							<Text type="sectionHead">4.82 (89 reviews)</Text>
 						</Chunk>

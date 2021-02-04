@@ -214,12 +214,7 @@ function Hello() {
 										</Chunk>
 
 										{!user.id &&
-											
-												<LoginForm
-													
-													
-													/>
-											
+											<LoginForm />
 										}
 
 										<Chunk>

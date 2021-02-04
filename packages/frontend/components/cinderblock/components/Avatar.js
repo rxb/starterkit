@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image } from '../primitives';
+import { View, Image, Text } from '../primitives';
 import PropTypes from 'prop-types';
 import styles from '../styles/styles';
 
@@ -12,10 +12,12 @@ const Avatar = (props) => {
 
 	const finalStyles = [styles['avatar'], styles[`avatar--${size}`], style];
 	return(
+		<>
 		<Image
 			source={source}
 			style={finalStyles}
 			/>
+		</>
 	);
 }
 

@@ -16,7 +16,7 @@ export const FLEX_WRAP_CLASS = `${FLEX_CLASS}--wrap`;
 //export const FLEX_NOGUTTER_CLASS = `${FLEX_CLASS}--noGutters`;
 export const FLEX_ALIGN_CLASS = `${FLEX_CLASS}--align`;
 export const FLEX_FLUSH_CLASS = `${FLEX_CLASS}--flush`;
-
+export const FLEX_NBSP_CLASS = `${FLEX_CLASS}--nbsp`;
 
 const getStyleKeys = (props, media) => {
 			
@@ -29,6 +29,7 @@ const getStyleKeys = (props, media) => {
 		align,
 		rowReverse,
 		flush,
+		nbsp,
 		columnReverse
 	} = props;
 
@@ -53,6 +54,7 @@ const getStyleKeys = (props, media) => {
 		...[wrap ? FLEX_WRAP_CLASS : undefined],
 		//...[noGutters ? FLEX_NOGUTTER_CLASS : undefined],
 		...[flush ? FLEX_FLUSH_CLASS : undefined],
+		...[nbsp ? FLEX_NBSP_CLASS : undefined],
 
 		
 

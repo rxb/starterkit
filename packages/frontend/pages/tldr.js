@@ -91,9 +91,7 @@ const TldrCard = (props) => {
 	const content = tldrData.currentTldrVersion.content;
 
 	return (
-		<Card style={[
-			thisCardStyle,
-			{
+		<Card shadow style={[{
 				borderRadius: 12
 			},
 			style
@@ -475,11 +473,7 @@ const listItemStyle = {
 	paddingTop: METRICS.space
 }
 
-const thisCardStyle = {
-	borderWidth: 0,
-	shadowRadius: 16,
-	shadowColor: 'rgba(0,0,0,.15)',
-}
+
 
 
 export default Tldr;

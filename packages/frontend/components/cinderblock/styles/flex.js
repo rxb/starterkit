@@ -103,9 +103,14 @@ const styles = StyleSheet.create({
 'flex--flush': {
 	marginLeft: 0,
 },
-
 'flex-item--flush': {
 	paddingLeft: 0,
+},
+'flex--nbsp': {
+	marginLeft: -1 * METRICS.pseudoLineHeight * 2,
+},
+'flex-item--nbsp': {
+	paddingLeft: METRICS.pseudoLineHeight * 2,
 },
 
 /*

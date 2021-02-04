@@ -67,6 +67,7 @@ export const METRICS = {
 	},
 	borderRadius: 4,
 	cardBorderRadius: 10,
+	boundsWidth: 1100,
 	fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
 }
 

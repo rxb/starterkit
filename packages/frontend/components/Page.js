@@ -53,7 +53,7 @@ import {
 import LoginForm from './LoginForm';
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
-import { addToastableErrors } from './cinderblock/formUtils';
+import { addToastableErrors } from './cinderblock/utils';
 
 
 

@@ -64,7 +64,7 @@ import {
 	runValidations, 
 	readFileAsDataUrl, 
 	addToastableErrors 
-} from '../components/cinderblock/formUtils';
+} from '../components/cinderblock/utils';
 
 // keep big functions outside of render
 

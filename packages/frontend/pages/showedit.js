@@ -52,7 +52,7 @@ import {
 import styles from '../components/cinderblock/styles/styles';
 import Page from '../components/Page';
 
-import { runValidations, readFileAsDataUrl } from '../components/cinderblock/formUtils';
+import { runValidations, readFileAsDataUrl } from '../components/cinderblock/utils';
 
 
 const ShowForm = (props) => {

@@ -29,17 +29,25 @@ const styles = StyleSheet.create({
 	},
 	*/
 	bounds: {
-		maxWidth: 1100,
+		maxWidth: METRICS.boundsWidth,
 		minWidth: 1,
 		marginHorizontal: 'auto',
 		width: '100%',
 	},
+
 	section: {
 		paddingTop: space,
 		marginHorizontal: space,
 		paddingBottom: 0,
 	},
 
+	'section--border': {
+		borderTopWidth: 1,
+		borderTopColor: swatches.border,
+		paddingTop: space  * 1.75,
+		marginTop: space * .75
+		// theory that a border needs space and a half
+	},
 
 	imageSnap: {
 		marginHorizontal: 0,
@@ -246,6 +254,11 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: swatches.border,
 		overflow: 'hidden'
+	},
+	'card--shadow': {
+		borderWidth: 0,
+		shadowRadius: 16,
+		shadowColor: 'rgba(0,0,0,.15)'
 	},
 
 	// TABS
@@ -564,7 +577,7 @@ const styles = StyleSheet.create({
 
 	// MODIFIERS
 	pseudoLineHeight: {
-		marginVertical: METRICS.pseudoLineHeight
+		marginVertical: METRICS.pseudoLineHeight,
 	},
 });
 

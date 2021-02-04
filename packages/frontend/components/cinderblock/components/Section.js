@@ -1,32 +1,36 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { View } from '../primitives';
 import styles from '../styles/styles';
+
+const getCombinedStyles = (props) => {
+	const {
+		border
+	} = props	
+	
+	const styleKeys = [
+		'section',
+		...[ (border) ? 'section--border' : undefined],
+	];
+	return styleKeys.map((key, i)=>{
+		return styles[key];
+	});
+}
 
 const Section = (props) => {
 
 	const {
 		children,
-		/*
-		isFirstChild,
-		noBorder,
-		*/
 		type,
 		style,
+		border,
 		...other
 	} = props
 
-	//const typeStyle = (type == 'pageHead') ? styles['section--pageHead'] : undefined;
+	const combinedStyles = useMemo( ()=>getCombinedStyles(props), [border]);
+	const finalStyles = [ combinedStyles, styles ];
 
 	return(
-		<View style={[
-			styles.section,
-			/*
-			typeStyle,
-			(noBorder ? styles['section--noBorder'] : undefined),
-			(isFirstChild ? styles['section--firstChild'] : undefined),
-			*/
-			style
-		]}>
+		<View style={finalStyles}>
 			{children}
 		</View>
 	);

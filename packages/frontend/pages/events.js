@@ -46,7 +46,7 @@ import {
 	useFormState
 } from '../components/cinderblock';
 
-import { runValidations, readFileAsDataUrl, checkToastableErrors } from '../components/cinderblock/formUtils';
+import { runValidations, readFileAsDataUrl } from '../components/cinderblock/utils';
 
 import Page from '../components/Page';
 import OutpostHeader from '../components/OutpostHeader';
