@@ -74,6 +74,12 @@ const styles = StyleSheet.create({
 	chunk: {
 		paddingBottom: space
 	},
+	'chunk--border': {
+		borderTopWidth: 1,
+		borderTopColor: swatches.border,
+		paddingTop: space
+	},
+
 
 	// stacking up some inline
 	inline: {

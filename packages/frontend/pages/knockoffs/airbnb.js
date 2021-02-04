@@ -93,7 +93,7 @@ const Postmates = (props) => {
 				imageHeight={{
 					small: 488,
 					medium: 588,
-					large: 564
+					large: 590
 				}}
 				image="https://a0.muscache.com/im/pictures/f0483d09-7d13-42d0-a40a-46d585c42220.jpg?im_w=1440"
 				>
@@ -105,7 +105,7 @@ const Postmates = (props) => {
 						left: 0, right: 0, top: 0
 					}}
 					/>
-				<Bounds style={{flex: 1}}>
+				<Bounds>
 					<Section>
 							<Flex>
 								<FlexItem>
@@ -137,7 +137,6 @@ const Postmates = (props) => {
 					</Section>
 
 					<Section>
-
 						<Bounds style={{maxWidth: 840}}>
 							<Card>
 								<Sectionless>
@@ -169,7 +168,7 @@ const Postmates = (props) => {
 										<FlexItem shrink justify="center">
 											<Chunk>
 												<Button 
-													style={{marginVertical: 0}}
+													style={{marginVertical: -1*METRICS.pseudoLineHeight}}
 													shape="Search"
 													/>
 											</Chunk>
@@ -179,7 +178,7 @@ const Postmates = (props) => {
 							</Card>
 						</Bounds>
 					</Section>
-					<Section style={{flex: 1, justifyContent: 'center'}}>
+					<Section style={{flex: 1}}>
 						<View>
 							<Chunk>
 								<Text type="hero" inverted>Go near</Text>
@@ -197,6 +196,10 @@ const Postmates = (props) => {
 			<Stripe>
 				<Bounds>
 					<Section>
+
+						{/* normally lineHeight from a header would space this */}
+						<View style={{height: 2*METRICS.pseudoLineHeight}} />
+
 						<List
 							variant={{
 								small: "grid",

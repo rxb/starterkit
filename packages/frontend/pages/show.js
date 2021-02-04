@@ -313,8 +313,10 @@ function Show(props) {
 									<Chunk key={i} style={{...(comment.optimistic ? {opacity:.5} : {}) }}>
 										<Flex>
 											<FlexItem shrink>
+
 												<Avatar
 													source={{uri: comment.user.photoUrl}}
+													style={{marginBottom: METRICS.pseudoLineHeight}}
 													size="medium"
 													/>
 											</FlexItem>

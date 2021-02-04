@@ -103,11 +103,11 @@ export const MEDIA_QUERIES = {
 };
 
 export const MEDIA_SIZES = {
-	xsmall: 16,
-	small: 24,
-	medium: 36,
-	large: 56,
-	xlarge: 72,
+	xsmall: 16,		// text character size
+	small: 24,		// comment reply avatar
+	medium: 48,		// comment avatar		
+	large: 64,		// semi-hero, author/host
+	xlarge: 128 	// hero
 };
 
 // Apple Easing https://github.com/expo/react-apple-easing/blob/master/AppleEasing.js

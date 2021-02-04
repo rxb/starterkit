@@ -84,9 +84,10 @@ const AirbnbDetail = (props) => {
 						<FlexItem shrink>
 							<Inline nowrap>
 							<Icon	
-								shape="Paperclip"
+								shape="Home"
+								color={swatches.tint}
 								/>
-								<Text weight="strong" type="big">airbnb</Text>
+								<Text weight="strong" type="big" color="tint">airbnb</Text>
 							</Inline>
 						</FlexItem>
 						<FlexItem />
@@ -441,7 +442,8 @@ const AirbnbDetail = (props) => {
 											<FlexItem shrink>
 												<Avatar 
 													source={item.photo}
-													size="large"
+													size="medium"
+													style={styles.pseudoLineHeight}
 													/>
 											</FlexItem>
 											<FlexItem justify="center">
@@ -449,8 +451,7 @@ const AirbnbDetail = (props) => {
 												<Text type="small" color="secondary">January 2021</Text>
 											</FlexItem>
 										</Flex>
-									</Chunk>
-									<Chunk>
+								
 										<Text>{item.review}</Text>
 									</Chunk>
 								</View>)

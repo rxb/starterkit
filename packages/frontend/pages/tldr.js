@@ -56,7 +56,7 @@ const ConnectedHeader = (props) => {
 	const media = useMediaContext();
 
 	return(
-		<Header position="static" type="">
+		<Header position="static">
 			<Flex direction="row">
 				<FlexItem>
 						<Link href="/tldr">
@@ -165,11 +165,11 @@ const TldrCard = (props) => {
 					
 				
 					<Chunk>
-						<Touch onPress={()=>{
-							setReferences(!showReferences)
-						}}>
 
-							
+							<Touch onPress={()=>{
+								setReferences(!showReferences)
+							}}>
+
 							{ !showReferences &&
 								<Text color="hint">
 									<Icon 
@@ -322,7 +322,7 @@ function Tldr(props) {
 										</Chunk>
 										
 
-											<Chunk style={listItemStyle}>
+											<Chunk border>
 												<Flex>
 													<FlexItem>
 														<Text weight="strong">Issues ({tldrData.issueCount})</Text>
@@ -337,7 +337,7 @@ function Tldr(props) {
 												</Flex>
 											</Chunk>
 
-											<Chunk style={listItemStyle}>
+											<Chunk border>
 												<Flex>
 													<FlexItem >
 														<Text weight="strong">Forks ({tldrData.forkCount})</Text>
@@ -352,7 +352,7 @@ function Tldr(props) {
 												</Flex>
 											</Chunk>
 
-											<Chunk style={listItemStyle}>
+											<Chunk border>
 												<Flex>
 													<FlexItem >
 														<Text weight="strong">Versions</Text>
@@ -367,7 +367,7 @@ function Tldr(props) {
 												</Flex>
 											</Chunk>
 
-											<Chunk style={listItemStyle}>
+											<Chunk border>
 												<Flex>
 													<FlexItem shrink justify="center">
 														<Avatar
