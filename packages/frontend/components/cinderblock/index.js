@@ -23,6 +23,7 @@ import Map from './components/Map';
 import Menu from './components/Menu';
 import Modal from './components/Modal';
 import Picker from './components/Picker';
+import Picture from './components/Picture';
 import Prompter from './components/Prompter';
 import Section from './components/Section';
 import Sectionless from './components/Sectionless';
@@ -64,6 +65,7 @@ export {
 	Menu,
 	Modal,
 	Picker,
+	Picture,
 	Prompter,
 	Section,
 	Sectionless,

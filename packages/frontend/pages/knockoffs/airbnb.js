@@ -28,6 +28,7 @@ import {
 	Link,
 	Modal,
 	Picker,
+	Picture,
 	Section,
 	Sectionless,
 	Stripe,
@@ -215,13 +216,9 @@ const Postmates = (props) => {
 									<Chunk>
 										<Flex>
 											<FlexItem shrink>
-												<Image 
+												<Picture 
 													source={{uri: "https://a0.muscache.com/im/pictures/676c0a60-2a5a-4598-aeeb-10a81aa5232f.jpg?im_q=medq&im_w=240"}}
-													style={{
-														width: 64,
-														height: 64,
-														borderRadius: METRICS.borderRadius
-													}}
+													size="large"
 													/>
 											</FlexItem>
 											<FlexItem justify="center">
@@ -256,12 +253,13 @@ const Postmates = (props) => {
 							renderItem={(item, i)=>{
 								return (
 									<Chunk>
-										<Image 
+										<Picture 
 											source={{uri: item.photo}}
-											style={[{
-												height: 240,
-												borderRadius: METRICS.borderRadius
-											}, styles.pseudoLineHeight]}
+											size={false}
+											style={[
+												{ height: 240,}, 
+												styles.pseudoLineHeight
+											]}
 											/>
 										<Text weight="strong">{item.name}</Text>
 									</Chunk>
@@ -347,11 +345,11 @@ const Postmates = (props) => {
 							renderItem={(item, i)=>{
 								return (
 									<Chunk>
-										<Image 
+										<Picture 
 											source={{uri: item.photo}}
+											size={false}
 											style={[{
 												height: 240,
-												borderRadius: METRICS.borderRadius
 											}, styles.pseudoLineHeight]}
 											/>
 										<Text weight="strong">{item.name}</Text>

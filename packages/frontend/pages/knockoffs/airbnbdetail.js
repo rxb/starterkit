@@ -28,6 +28,7 @@ import {
 	Link,
 	Modal,
 	Picker,
+	Picture,
 	Section,
 	Sectionless,
 	Stripe,
@@ -137,23 +138,26 @@ const AirbnbDetail = (props) => {
 							<Flex nbsp>
 								<FlexItem growFactor={5} nbsp>
 									<View style={{height: '50vh'}}>
-									<Image
+									<Picture
 										source={{uri: "https://a0.muscache.com/im/pictures/a71cd818-3edc-4486-a4f8-cca704d8f7d8.jpg?aki_policy=xx_large"}}
 										style={[{flex: 1}, styles.pseudoLineHeight]}
+										size={false}
 										/>
 									</View>
 								</FlexItem>
 								<FlexItem growFactor={2} nbsp>
 									<View style={{height: '25vh'}}>
-										<Image
+										<Picture
 											source={{uri: "https://a0.muscache.com/im/pictures/5a371273-3b1d-4daa-aff5-cc6e91527887.jpg?aki_policy=xx_large"}}
 											style={[{flex: 1}, styles.pseudoLineHeight]}
+											size={false}
 											/>
 									</View>
 									<View style={{height: '25vh'}}>
-										<Image
+										<Picture
 											source={{uri: "https://a0.muscache.com/im/pictures/218bf92d-0d2d-4381-9253-8dece14681a9.jpg?aki_policy=xx_large"}}
 											style={[{flex: 1}, styles.pseudoLineHeight]}
+											size={false}
 											/>
 									</View>
 								</FlexItem>
@@ -250,8 +254,9 @@ const AirbnbDetail = (props) => {
 								renderItem={(item, i)=>{
 									return(
 										<Chunk>
-										<Image 
+										<Picture 
 											source={{uri: item.photo}}
+											size={false}
 											style={{height: 160}}
 											/>
 										</Chunk>

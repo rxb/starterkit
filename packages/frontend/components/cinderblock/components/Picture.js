@@ -11,7 +11,11 @@ const Picture = (props) => {
 		style
 	} = props;
 
-	const finalStyles = [styles['[picture]'], styles[`avatar--${size}`], style];
+	const finalStyles = [
+		styles['picture'], 
+		styles[`picture--${size}`],
+		style
+	];
 
 	return(
 		<Image

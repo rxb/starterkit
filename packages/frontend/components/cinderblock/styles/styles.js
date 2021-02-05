@@ -424,6 +424,33 @@ const styles = StyleSheet.create({
 		borderRadius: MEDIA_SIZES.xlarge
 	},
 
+	// PICTURE
+	picture: {
+		resizeMode: 'cover',
+		backgroundColor: swatches.shade,
+		borderRadius: METRICS.borderRadius
+	},
+	'picture--xsmall':{
+		width: MEDIA_SIZES.xsmall,
+		height: MEDIA_SIZES.xsmall,
+	},
+	'picture--small':{
+		width: MEDIA_SIZES.small,
+		height: MEDIA_SIZES.small,
+	},
+	'picture--medium':{
+		width: MEDIA_SIZES.medium,
+		height: MEDIA_SIZES.medium,
+	},
+	'picture--large':{
+		width: MEDIA_SIZES.large,
+		height: MEDIA_SIZES.large,
+	},
+	'picture--xlarge':{
+		width: MEDIA_SIZES.xlarge,
+		height: MEDIA_SIZES.xlarge,
+	},
+
 	// TEXT
 	text: {
 		fontSize: METRICS.bodySize,
