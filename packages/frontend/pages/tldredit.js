@@ -53,6 +53,18 @@ import Page from '../components/Page';
 import { authentication } from '@feathersjs/client';
 
 
+const inputJoinedTop = {
+	marginBottom: 0, 
+	borderBottomLeftRadius: 0, 
+	borderBottomRightRadius: 0, 
+	zIndex: 1
+};
+const inputJoinedBottom = {
+	marginTop: -1, 
+	borderTopLeftRadius: 0, 
+	borderTopRightRadius: 0,  
+	zIndex: 1
+};
 
 const TldrForm = (props) => {
 
@@ -110,14 +122,14 @@ const TldrForm = (props) => {
 
 			<Chunk>
 				<TextInput
-					style={[styles.textPageHead]}
+					style={[styles.textPageHead, inputJoinedTop]}
 					id="title"
 					value={formState.getFieldValue('title')}
 					onChange={e => formState.setFieldValue('title', e.target.value) }
 					/>
 				<FieldError error={formState.errors?.fieldErrors?.title} />	
 				<TextInput
-					style={{fontStyle: 'italic'}}
+					style={[{fontStyle: 'italic'}, inputJoinedBottom]}
 					id="blurb"
 					value={formState.getFieldValue('blurb')}
 					onChange={e => formState.setFieldValue('blurb', e.target.value) }
@@ -142,7 +154,7 @@ const TldrForm = (props) => {
 						}}
 						/>
 						<TextInput
-							style={[styles.textBig, {marginBottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0, marginBottom: -1, zIndex: 1}]}
+							style={[styles.textBig, inputJoinedTop]}
 							id={`step${i}head`}
 							value={item.head}
 							onChange={e => formState.setFieldValue('steps', [
@@ -152,7 +164,7 @@ const TldrForm = (props) => {
 							]) }
 							/>
 						<TextInput
-							style={[styles.textSecondary, {marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0}]}
+							style={[styles.textSecondary, inputJoinedBottom]}
 							id={`step${i}body`}
 							value={item.body}
 							onChange={e => formState.setFieldValue('steps', [
@@ -229,10 +241,13 @@ function TldrEdit(props) {
 				</Head>
 				<Stripe>
 					<Bounds>
-							
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
+										<Chunk>
+											<Text type="big">/rxb/whatever v1.2</Text>
+										</Chunk>
+
 										{ tldrData &&
 										<TldrForm
 											tldrData={tldrData}
