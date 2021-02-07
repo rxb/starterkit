@@ -178,7 +178,7 @@ const AirbnbDetail = (props) => {
 							</FlexItem>
 							<FlexItem shrink>
 								<Avatar
-									source="https://a0.muscache.com/im/pictures/user/7f8135f6-613b-41bf-95e3-da043e8c1749.jpg?im_w=240"
+									source={{uri: 'https://a0.muscache.com/im/pictures/user/7f8135f6-613b-41bf-95e3-da043e8c1749.jpg?im_w=240"'}}
 									size="large"
 									/>
 							</FlexItem>
@@ -268,6 +268,7 @@ const AirbnbDetail = (props) => {
 										label="Show all photos"
 										color="secondary"
 										/>
+
 								</Chunk>
 					</Section>
 
@@ -301,6 +302,17 @@ const AirbnbDetail = (props) => {
 										<Button
 											label="Reserve"
 											width="full"
+											size="small"
+											/>
+										<Button
+											label="Reserve"
+											width="full"
+											size="medium"
+											/>
+										<Button
+											label="Reserve"
+											width="full"
+											size="large"
 											/>
 										<Text type="small" color="secondary" style={{alignSelf: 'center'}}>You won't be charged yet</Text>
 									</Chunk>
@@ -446,7 +458,7 @@ const AirbnbDetail = (props) => {
 										<Flex>
 											<FlexItem shrink>
 												<Avatar 
-													source={item.photo}
+													source={{url: item.photo}}
 													size="medium"
 													style={styles.pseudoLineHeight}
 													/>

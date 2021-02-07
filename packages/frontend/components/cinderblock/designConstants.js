@@ -110,6 +110,29 @@ export const MEDIA_SIZES = {
 	xlarge: 128 	// hero
 };
 
+export const TEXT_TYPES = {
+	micro: 'Micro',
+	small: 'Small',
+	body: 'Body',
+	big: 'Big',
+	sectionHead: 'SectionHead',
+	pageHead: 'PageHead',
+	hero: 'Hero'
+}
+
+export const TEXT_COLORS = {
+	primary: 'Primary',
+	secondary: 'Secondary',
+	hint: 'Hint',
+	tint: 'Tint'
+}
+
+export const TEXT_WEIGHTS = {
+	strong: 'Strong',
+}
+
+
+
 // Apple Easing https://github.com/expo/react-apple-easing/blob/master/AppleEasing.js
 const EPSILON = 1e-9;
 export const EASE = Easing.bezier(0.25, 0.1, 0.25, 1, EPSILON);

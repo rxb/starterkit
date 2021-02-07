@@ -30,7 +30,7 @@ Picture.defaultProps = {
 };
 
 Picture.propTypes = {
-	size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'xlarge']),
+	size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'xlarge', false]),
 	source: PropTypes.object
 }
 

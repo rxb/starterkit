@@ -213,7 +213,7 @@ const OutpostRow = (props) => {
 									<View style={{marginBottom: 4}}>
 										<Text type="small" color="secondary"  numberOfLines={1}>
 											<Image 
-												source={`https://api.faviconkit.com/${site}/32`}
+												source={{uri: `https://api.faviconkit.com/${site}/32`}}
 												style={{
 													width: 13,
 													height: 13,

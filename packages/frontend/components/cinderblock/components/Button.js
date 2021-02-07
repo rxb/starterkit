@@ -1,151 +1,173 @@
-import React, {Fragment} from 'react';
+import React, {useMemo} from 'react';
 import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from '../primitives';
+import { View, Text } from '../primitives';
 import styles from '../styles/styles';
 import swatches from '../styles/swatches';
+import {TEXT_TYPES, TEXT_COLORS, TEXT_WEIGHTS} from '../designConstants';
 import Icon from './Icon';
 import {useMediaContext} from './UseMediaContext';
 import {findWidestActiveValue} from '../componentUtils';
 import Link from './Link';
 import Touch from './Touch';
-import Router from 'next/router'
+
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1); 
+
+const getCombinedStyles = (props) => {
+
+	const {
+		color,
+		inverted,
+		currentVariant,
+		size,
+		textType
+	} = props;
+	const invertedModifier = (inverted) ? 'Inverted' : '';
+
+	// BUTTON 
+	const buttonStyleKeys = [
+		'button',
+		`button--${currentVariant}`,
+		`button--${size}`,
+		...[color ? `button--${color}${invertedModifier}` : undefined ]
+	];
+	const button = buttonStyleKeys.map((key, i)=>{
+		return styles[key];
+	});
+
+	// BUTTON TEXT
+	const textStyleKeys = [
+		'text',
+		...[textType ? `text${TEXT_TYPES[textType]}` : undefined ],
+		'buttonText',
+		...[color ? `buttonText--${color}${invertedModifier}` : undefined ],
+	];
+	const text =  textStyleKeys.map((key, i)=>{
+		return styles[key];
+	});
+
+	return { button, text }
+}
 
 const Button = (props) => {
 
-		const {
-			children,
-			href,
-			onPress,
-			label,
-			shape,
-			color = 'primary',
-			isLoading = false,
-			width,
-			size,
-			textType = "",
-			style,
-			...other
-		} = props;
+	const {
+		// style props
+		color,
+		size,
+		inverted,
+		// rest
+		href,
+		width,
+		onPress,
+		label,
+		shape,
+		isLoading,
+		style,
+		children,
+		...other
+	} = props
+	const media = useMediaContext();
 
-		const media = useMediaContext();
+	// inferred props
+	let textType, iconSize;
+	switch(size){
+		case 'small':
+			textType = "small";
+			iconSize = "small";
+			break;
+		case 'medium':
+			iconSize = "medium";
+			textType = "body";
+			break;
+		case 'large':
+			textType = "big";
+			iconSize = "large";
+			break;
+	}
 
-		let { variant = {} } = props;
-
-
-		// TODO: deprecate and remove
-		// supporting deprecated width props, for now
-		/*
-		*/
-		if (width == 'snap'){
-			variant = {small: 'grow', medium: 'shrink'};
+	// width is shorthand for variants
+	// maybe reconsider and do like list
+	let variant;
+	if(!props.variant){
+		switch(width){
+			case 'snap':
+				variant = {small: 'grow', medium: 'shrink'};
+				break;
+			case 'full':
+				variant = {small: 'grow'};
+				break;
+			default:
+				variant = {small: 'shrink'};
+				break;
 		}
-		if (width == 'full'){
-			variant = {small: 'grow'}
+	}
+	const currentVariant = findWidestActiveValue(variant, media);
+
+	// touchable component and semantics
+	let ActionComponent, actionComponentProps;
+	if(href){
+		ActionComponent = Link;
+		actionComponentProps = {
+			href: href,
+			accessibilityRole: 'link'
 		}
-		const currentVariant = findWidestActiveValue(variant, media);
-
-		// TODO: this is a janky way to set color?
-		const inkColor = `button${color.charAt(0).toUpperCase() + color.slice(1)}Ink`;
-
-		// TODO: support more sizes
-		const textKind = (size == 'small') ? "small" : "";
-		const iconSize = (size == 'small') ? "small" : "medium";
-
-		// render appropriate touchable component and semantics
-		let ActionComponent, actionComponentProps;
-		if(href){
-			ActionComponent = Link;
-			actionComponentProps = {
-				href: href,
-				accessibilityRole: 'link'
-			}
+	}
+	else{
+		ActionComponent = Touch;
+		actionComponentProps = {
+			onPress: onPress,
+			accessibilityRole: 'button'
 		}
-		else if(onPress){
-			ActionComponent = Touch;
-			actionComponentProps = {
-				onPress: onPress,
-				accessibilityRole: 'button'
-			}
-		}
-		else{
-			// not sure when this would happen, but just in case
-			ActionComponent = View
-		}
+	}
 
-		// final styles
-		// styles should have references, not literals in props, for performance reasons
-		const finalStyles = [
-			styles.button, 
-			styles[`button--${color}`], 
-			styles[`button--${currentVariant}`], 
-			style
-		];
-		const textFinalStyles = [
-			styles.text, 
-			styles[`text${VALID_TEXT_TYPES[textType]}`], 
-			styles.buttonText, 
-			styles[`buttonText--${color}`]
-		]
+	// styles 
+	const combinedStyles = useMemo(()=>getCombinedStyles({...props, currentVariant, textType}), [color, inverted, currentVariant, size, textType ]);
+	const buttonFinalStyles = [ combinedStyles.button, style];
+	const textFinalStyles = combinedStyles.text;
+	const inkColor = swatches[`button${capitalize(color)}${ inverted ? 'Inverted' : ''}Ink`];
 
-		return(
-			<ActionComponent
-				style={finalStyles}
-				{...actionComponentProps}
-				{...other}
-				>
-				<View style={isLoading ? visibilityHiddenStyle : visibilityVisibleStyle}>
-					<View style={{flexDirection: 'row', justifyContent: 'center'}}>
-						{ shape &&
-							<Icon 
-								shape={shape} 
-								color={swatches[inkColor]} 
-								style={iconStyle} 
-								size={iconSize}
-								/>
-						}
-						{ label && currentVariant != 'iconOnly' &&
-							<Text 
-								kind={textKind}
-								style={textFinalStyles}
-								>{label}</Text>
-						}
-					</View>
-					{children}
-				</View>
-
-				{ isLoading &&
-					/* TODO: this "fullscreen center" style should be abstracted */
-					<View style={fillStyle}>
-						<ActivityIndicator
-							color={'white'}
+	return(
+		<ActionComponent
+			style={buttonFinalStyles}
+			{...actionComponentProps}
+			{...other}
+			>
+			<View style={isLoading ? styles.visibilityHidden : styles.visibilityVisibile}>
+				<View style={styles.inline}>
+					{ shape &&
+						<Icon 
+							shape={shape} 
+							color={inkColor} 
+							style={{marginLeft: 3, marginRight: 3}} 
+							size={iconSize}
 							/>
-					</View>
-				}
+					}
+					{ label && currentVariant != 'iconOnly' &&
+						<Text 
+							style={textFinalStyles}
+							>{label}</Text>
+					}
+				</View>
+				{children}
+			</View>
+			
+			{ isLoading &&
+				<View style={styles.absoluteCenter}>
+					<ActivityIndicator
+						color={inkColor}
+						/>
+				</View>
+			}
 
-			</ActionComponent>
-		);
+		</ActionComponent>
+	);
 }
 
-const VALID_TEXT_TYPES = {
-	micro: 'Micro',
-	small: 'Small',
-	big: 'Big',
-	sectionHead: 'SectionHead',
-	pageHead: 'PageHead',
-	hero: 'Hero'
+Button.defaultProps = {
+	size: 'medium',
+	onPress: () => {},
+	color: 'primary'
 }
-
-Button.propTypes = {
-	width: PropTypes.oneOf([
-		'full',
-		'snap'
-	])
-};
-
-const visibilityHiddenStyle = {visibility: 'hidden'};
-const visibilityVisibleStyle = {visibility: 'visible'};
-const fillStyle = {position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'};
-const iconStyle = {marginLeft: 3, marginRight: 3};
 
 export default Button;

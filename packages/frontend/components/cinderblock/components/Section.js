@@ -27,7 +27,7 @@ const Section = (props) => {
 	} = props
 
 	const combinedStyles = useMemo( ()=>getCombinedStyles(props), [border]);
-	const finalStyles = [ combinedStyles, styles ];
+	const finalStyles = [ combinedStyles, style ];
 
 	return(
 		<View style={finalStyles}>

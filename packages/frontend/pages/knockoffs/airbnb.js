@@ -188,6 +188,7 @@ const Postmates = (props) => {
 								<Button 
 									label="Explore nearby stays"
 									inverted
+									size="small"
 									/>
 							</Chunk>
 						</View>

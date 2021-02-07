@@ -107,7 +107,7 @@ const Flex = (props) => {
 
 		return (
 			<View style={finalStyles}>
-				{/*childrenWithProps */} {children}
+				{children}
 			</View>
 		);
 

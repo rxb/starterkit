@@ -193,7 +193,7 @@ function Events(props) {
 								<Chunk>
 									<Text color="secondary" style={{marginTop: 3, marginBottom: 3}}>
 										<Image 
-											source="https://api.faviconkit.com/reddit.com/32"
+											source={{uri: "https://api.faviconkit.com/reddit.com/32"}}
 											style={{
 												width: 16,
 												height: 16,
@@ -304,7 +304,7 @@ function Events(props) {
 																	>
 																	{/*
 																	<Image
-																		source={`https://www.google.com/s2/favicons?domain=${hostname}`}
+																		source={{uri: `https://www.google.com/s2/favicons?domain=${hostname}`}}
 																		style={{
 																			width: 13,
 																			height: 13,

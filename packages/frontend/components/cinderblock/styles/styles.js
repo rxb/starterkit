@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
 		borderTopColor: swatches.border,
 		paddingTop: space  * 1.75,
 		marginTop: space * .75
-		// theory that a border needs space and a half
 	},
 
 	imageSnap: {
@@ -199,8 +198,6 @@ const styles = StyleSheet.create({
 
 	// BUTTON
 	button: {
-		paddingHorizontal: 13,
-		paddingVertical: 13, /* this has something to do with lineheight */
 		borderRadius: borderRadius,
 		borderRadius: 500,
 		userSelect: 'none',
@@ -209,6 +206,18 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignSelf: 'flex-start'
 	},
+	'button--small': {
+		paddingHorizontal: 9, 
+		paddingVertical: 9,
+	},
+	'button--medium': {
+		paddingHorizontal: 13,
+		paddingVertical: 13,
+	},
+	'button--large': {
+		paddingHorizontal: 16,
+		paddingVertical: 16,
+	},
 	'button--shrink': {},
 	'button--iconOnly': {},
 	'button--grow': {
@@ -216,10 +225,16 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	'button--primary': {
-		backgroundColor: swatches.tint,
+		backgroundColor: swatches.buttonPrimaryBackground,
 	},
 	'button--secondary': {
-		backgroundColor: swatches.shade,
+		backgroundColor: swatches.buttonSecondaryBackground,
+	},
+	'button--primaryInverted': {
+		backgroundColor: swatches.textPrimaryInverted,
+	},
+	'button--secondaryInverted': {
+		backgroundColor: swatches.textSecondaryInverted,
 	},
 	buttonText: {
 		textAlign: 'center',
@@ -232,6 +247,12 @@ const styles = StyleSheet.create({
 	},
 	'buttonText--secondary': {
 		color: swatches.buttonSecondaryInk,
+	},
+	'buttonText--primaryInverted': {
+		color: swatches.buttonPrimaryInvertedInk,
+	},
+	'buttonText--secondaryInverted': {
+		color: swatches.buttonSecondaryInvertedInk,
 	},
 
 
@@ -453,8 +474,6 @@ const styles = StyleSheet.create({
 
 	// TEXT
 	text: {
-		fontSize: METRICS.bodySize,
-		lineHeight: METRICS.bodyLineHeight,
 		fontFamily: METRICS.fontFamily,
 		fontWeight: '400',
 		WebkitFontSmoothing: 'antialiased', // retina/non-retina rendering
@@ -481,6 +500,9 @@ const styles = StyleSheet.create({
 	textTint:{
 		color: swatches.tint,
 	},
+	textStrong: {
+		fontWeight: '600',
+	},
 	textMicro: {
 		fontSize: METRICS.microSize,
 		lineHeight: METRICS.microLineHeight,
@@ -489,8 +511,9 @@ const styles = StyleSheet.create({
 		fontSize: METRICS.smallSize,
 		lineHeight: METRICS.smallLineHeight,
 	},
-	textStrong: {
-		fontWeight: '600',
+	textBody: {
+		fontSize: METRICS.bodySize,
+		lineHeight: METRICS.bodyLineHeight,
 	},
 	textBig: {
 		fontSize: METRICS.bigSize,
@@ -612,6 +635,21 @@ const styles = StyleSheet.create({
 	pseudoLineHeight: {
 		marginVertical: METRICS.pseudoLineHeight,
 	},
+	absoluteCenter: {
+		position: 'absolute', 
+		top: 0, 
+		left: 0, 
+		right: 0, 
+		bottom: 0, 
+		alignItems: 'center', 
+		justifyContent: 'center'
+	},
+	visibilityHidden: {
+		visibility: 'hidden'
+	},
+	visibilityVisible: {
+		visibility: 'visible'
+	}
 });
 
 export default {...styles, ...flexStyles};

@@ -201,7 +201,7 @@ const Postmates = (props) => {
 										<View key={i}>
 											<Chunk>
 												<Image 
-													source={item.photo}
+													source={{uri: item.photo}}
 													style={[styles.pseudoLineHeight, {height: 200}]}
 												/>
 												
@@ -238,7 +238,7 @@ const Postmates = (props) => {
 										<View key={i}>
 											<Chunk>
 												<Image 
-													source={item.photo}
+													source={{uri: item.photo}}
 													style={[styles.pseudoLineHeight, {height: 200}]}
 												/>
 												

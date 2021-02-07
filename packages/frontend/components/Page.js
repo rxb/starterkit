@@ -156,13 +156,16 @@ function Page (props) {
 				<View style={{flex: 1}}>
 					{props.children}
 				</View>
-
+				
+			
 				<Modal
 					visible={modalVisible}
 					onRequestClose={toggleModal}
 					>
+					
 					<Stripe>
-						<Section type="pageHead">
+						
+						<Section>
 							<Chunk>
 								<Text type="pageHead">Log in</Text>
 							</Chunk>
@@ -170,11 +173,15 @@ function Page (props) {
 						<Section>
 								<LoginForm />
 						</Section>
+						
 					</Stripe>
+					
 				</Modal>
-
+				
+				
 				<ConnectedToaster />
 				<ConnectedPrompter />
+			
 
 			</View>
 	);
