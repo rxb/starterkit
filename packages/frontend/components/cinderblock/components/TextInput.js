@@ -26,7 +26,7 @@ class TextInput extends React.Component{
 	static defaultProps = {
 		autoExpand: true,
 		onChange: ()=>{},
-		value: ''
+		value: '',
 	}
 
 	constructor(props){
@@ -42,6 +42,7 @@ class TextInput extends React.Component{
 	}
 
 	componentDidMount(){
+
 		this.updateCounter(this.props.value);
 	}
 
@@ -71,9 +72,10 @@ class TextInput extends React.Component{
 	}
 
 	onContentSizeChange(event){
-		// autoexpand
+		// right now, only expands, not contracts
+		// doesn't fire on ssr
 		const height = event.nativeEvent.contentSize.height;
-		if(this.props.multiline && this.props.autoExpand && this.state.height != height){
+		if(this.props.multiline && this.props.autoExpand && this.state.height <= height){
 			this.setState({height: height});
 		}
 	}

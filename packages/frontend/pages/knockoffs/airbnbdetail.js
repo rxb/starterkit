@@ -85,10 +85,10 @@ const AirbnbDetail = (props) => {
 						<FlexItem shrink>
 							<Inline nowrap>
 							<Icon	
-								shape="Home"
+								shape="Paperclip"
 								color={swatches.tint}
 								/>
-								<Text weight="strong" type="big" color="tint">airbnb</Text>
+								<Text weight="strong" type="big" color="tint" style={{fontFamily: 'SF Pro Rounded', fontWeight: 700, fontSize: 22}}>Airbnb</Text>
 							</Inline>
 						</FlexItem>
 						<FlexItem />

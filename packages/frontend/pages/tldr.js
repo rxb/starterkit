@@ -145,7 +145,7 @@ const TldrCard = (props) => {
 								}}
 								/>
 							<View>
-								<Text weight="strong" type="big"><Markdown>{step.head}</Markdown></Text>
+								<Text type="big"><Markdown>{step.head}</Markdown></Text>
 								<Text color="secondary"><Markdown>{step.body}</Markdown></Text>
 							</View>
 							{ showReferences &&

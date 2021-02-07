@@ -45,6 +45,8 @@ import {
 	View,
 	useFormState
 } from '../components/cinderblock';
+import styles from '@/components/cinderblock/styles/styles';
+import swatches from '@/components/cinderblock/styles/swatches';
 
 
 import Page from '../components/Page';
@@ -54,15 +56,17 @@ import { authentication } from '@feathersjs/client';
 
 const TldrForm = (props) => {
 
+	const dispatch = useDispatch();
+
 	const {
 		tldrData,
 		authentication
 	} = props;
 
-	const dispatch = useDispatch();
 
 	const formState = useFormState({
 		initialFields: {
+			...tldrData.draftContent,
 			draftContent: JSON.stringify(tldrData.draftContent, null, 2),
 			id: tldrData.id,
 			publish: false
@@ -99,14 +103,72 @@ const TldrForm = (props) => {
 			formState.setError(error);
 			formState.setLoading(false);
 		}
-		
-	
 	}
 	
 	return(
 		<form>
+
 			<Chunk>
-				<Label for="description">Card content</Label>
+				<TextInput
+					style={[styles.textPageHead]}
+					id="title"
+					value={formState.getFieldValue('title')}
+					onChange={e => formState.setFieldValue('title', e.target.value) }
+					/>
+				<FieldError error={formState.errors?.fieldErrors?.title} />	
+				<TextInput
+					style={{fontStyle: 'italic'}}
+					id="blurb"
+					value={formState.getFieldValue('blurb')}
+					onChange={e => formState.setFieldValue('blurb', e.target.value) }
+					/>
+				<FieldError error={formState.errors?.fieldErrors?.blurb} />
+			</Chunk>
+
+			{ formState.getFieldValue('steps')?.map((item, i)=>(
+				<Chunk>
+
+					<View 
+						style={{paddingLeft: 14}}
+						>
+					<View 
+						style={{
+							position: 'absolute',
+							top: 3,
+							bottom: 3,
+							left: 0,
+							width: 4,
+							backgroundColor: swatches.border,
+						}}
+						/>
+						<TextInput
+							style={[styles.textBig]}
+							id={`step${i}head`}
+							value={item.head}
+							onChange={e => formState.setFieldValue('steps', [
+								...formState.getFieldValue('steps').slice(0, i),
+								{...item, head: e.target.value},
+								...formState.getFieldValue('steps').slice(i + 1)
+							]) }
+							/>
+						<TextInput
+							style={[styles.textSecondary]}
+							id={`step${i}body`}
+							value={item.body}
+							onChange={e => formState.setFieldValue('steps', [
+								...formState.getFieldValue('steps').slice(0, i),
+								{...item, body: e.target.value},
+								...formState.getFieldValue('steps').slice(i + 1)
+							]) }
+							/>
+					</View>
+				</Chunk>
+			))}
+
+				
+			{/*
+			<Chunk>
+				<Label for="draftContent">Card content</Label>
 				<TextInput
 					id="draftContent"
 					value={formState.getFieldValue('draftContent')}
@@ -117,24 +179,33 @@ const TldrForm = (props) => {
 					/>
 				<FieldError error={formState.errors?.fieldErrors?.draftContent} />
 			</Chunk>
+			*/}
 
 			<Chunk>
-				<Button
-					color="primary"
-					label="Publish"
-					isLoading={formState.loading && formState.getFieldValue('publish')}
-					onPress={ () => {
-						submitForm({publish: true});
-					}}
-					/>
-				<Button
-					color="secondary"
-					label="Save draft"
-					isLoading={formState.loading && !formState.getFieldValue('publish')}
-					onPress={ () => {
-						submitForm({publish: false});
-					}}				
-					/>
+				<Flex nbsp>
+					<FlexItem nbsp shrink>
+						<Button
+							color="secondary"
+							label="Save draft"
+							isLoading={formState.loading && !formState.getFieldValue('publish')}
+							onPress={ () => {
+								submitForm({publish: false});
+							}}				
+							/>
+					</FlexItem>
+					<FlexItem nbsp shrink>
+						<Button
+							color="primary"
+							label="Publish"
+							isLoading={formState.loading && formState.getFieldValue('publish')}
+							onPress={ () => {
+								submitForm({publish: true});
+							}}
+							/>						
+					</FlexItem>
+				</Flex>
+
+
 			</Chunk>
 		</form>
 	);
@@ -158,11 +229,7 @@ function TldrEdit(props) {
 				</Head>
 				<Stripe>
 					<Bounds>
-							<Section type="pageHead">
-								<Chunk>
-									<Text type="pageHead">Edit TLDR</Text>
-								</Chunk>
-							</Section>
+							
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
