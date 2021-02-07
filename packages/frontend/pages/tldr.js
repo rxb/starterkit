@@ -91,11 +91,7 @@ const TldrCard = (props) => {
 	const content = tldrData.currentTldrVersion.content;
 
 	return (
-		<Card shadow style={[{
-				borderRadius: 12
-			},
-			style
-			]}>
+		<Card shadow style={[{ borderRadius: 12 }, style ]}>
 			<Sectionless style={[
 					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {},
 					{backgroundColor: "#4353ff"}
@@ -419,7 +415,6 @@ function Tldr(props) {
 										return(
 											<Chunk key={i}>
 												<Card style={[
-													thisCardStyle,
 													{minHeight: 180} 
 													]}>
 													<Sectionless

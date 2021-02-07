@@ -79,7 +79,6 @@ const TldrForm = (props) => {
 	const formState = useFormState({
 		initialFields: {
 			...tldrData.draftContent,
-			draftContent: JSON.stringify(tldrData.draftContent, null, 2),
 			id: tldrData.id,
 			publish: false
 		},
@@ -94,17 +93,29 @@ const TldrForm = (props) => {
 		// state set is async, so while we're settings them setFields, we don't know when they'll update
 		// so for this function, we'll use a local copy, manually updated.
 		formState.setFieldValues(finalFields);
-		const fieldsCopy = {
+		
+		/*
+		const patchFields = {
 			...formState.fields,
 			...finalFields
 		}
-
 		// parsing text back into json json
-		fieldsCopy.draftContent = JSON.parse(fieldsCopy.draftContent);
+		patchFields.draftContent = JSON.parse(fieldsCopy.draftContent);
+		*/
+
+		const patchFields = {
+			...finalFields,
+			id: tldrData.id,
+			draftContent: {
+				title: formState.fields.title,
+				blurb: formState.fields.blurb,
+				steps: formState.fields.steps
+			}
+		}
 
 		formState.setLoading(true);
 		try{
-			await patchTldr(tldrData.id, fieldsCopy, {token: authentication.accessToken})
+			await patchTldr(tldrData.id, patchFields, {token: authentication.accessToken})
 			Router.push({pathname:'/tldr', query: {tldrId: tldrData.id}})
 				.then(()=>{
 					dispatch(addToast('tldr saved; nice work!'));
@@ -244,8 +255,9 @@ function TldrEdit(props) {
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
 									<Section>
-										<Chunk>
-											<Text type="big">/rxb/whatever v1.2</Text>
+										<Chunk inline>
+											<Avatar size="small" source={{uri: 'https://randomuser.me/api/portraits/women/40.jpg'}} />
+											<Text weight="strong"> /rxb/whatever v1.2</Text>
 										</Chunk>
 
 										{ tldrData &&
