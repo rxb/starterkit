@@ -142,7 +142,7 @@ const TldrForm = (props) => {
 						}}
 						/>
 						<TextInput
-							style={[styles.textBig]}
+							style={[styles.textBig, {marginBottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0, marginBottom: -1, zIndex: 1}]}
 							id={`step${i}head`}
 							value={item.head}
 							onChange={e => formState.setFieldValue('steps', [
@@ -152,7 +152,7 @@ const TldrForm = (props) => {
 							]) }
 							/>
 						<TextInput
-							style={[styles.textSecondary]}
+							style={[styles.textSecondary, {marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0}]}
 							id={`step${i}body`}
 							value={item.body}
 							onChange={e => formState.setFieldValue('steps', [

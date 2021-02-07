@@ -93,6 +93,7 @@ function ThisApp(props) {
                 border-color: ${swatches.tint};
                 background-color: transparent;
                 //box-shadow: 0 0 0 3px ${swatches.focus};
+                zIndex: 2;
               }
 
               /* many browsers have broken search inputs */
