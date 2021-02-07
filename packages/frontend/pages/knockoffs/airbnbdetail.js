@@ -178,7 +178,7 @@ const AirbnbDetail = (props) => {
 							</FlexItem>
 							<FlexItem shrink>
 								<Avatar
-									source={{uri: 'https://a0.muscache.com/im/pictures/user/7f8135f6-613b-41bf-95e3-da043e8c1749.jpg?im_w=240"'}}
+									source={{uri: 'https://a0.muscache.com/im/pictures/user/7f8135f6-613b-41bf-95e3-da043e8c1749.jpg?im_w=240'}}
 									size="large"
 									/>
 							</FlexItem>
@@ -447,7 +447,7 @@ const AirbnbDetail = (props) => {
 										<Flex>
 											<FlexItem shrink>
 												<Avatar 
-													source={{url: item.photo}}
+													source={{uri: item.photo}}
 													size="medium"
 													style={styles.pseudoLineHeight}
 													/>
