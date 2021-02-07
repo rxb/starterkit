@@ -298,21 +298,10 @@ const AirbnbDetail = (props) => {
 										<Picker >
 											<Picker.Item label="1 guest" value="1" />
 										</Picker>
-
-										<Button
-											label="Reserve"
-											width="full"
-											size="small"
-											/>
 										<Button
 											label="Reserve"
 											width="full"
 											size="medium"
-											/>
-										<Button
-											label="Reserve"
-											width="full"
-											size="large"
 											/>
 										<Text type="small" color="secondary" style={{alignSelf: 'center'}}>You won't be charged yet</Text>
 									</Chunk>
