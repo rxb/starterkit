@@ -104,7 +104,8 @@ const TldrForm = (props) => {
 		formState.setLoading(true);
 		try{
 			await patchTldr(tldrData.id, patchFields, {token: authentication.accessToken})
-			dispatch(addDelayedToast("Nice work; TLDR edited!"))
+			const toastMessage = (patchFields.publish) ? "New TLDR version published!" : "TLDR draft saved!"
+			dispatch(addDelayedToast(toastMessage));
 			Router.push({pathname:'/tldr', query: {tldrId: tldrData.id}})
 		}
 		catch(error){
@@ -138,13 +139,13 @@ const TldrForm = (props) => {
 				<Chunk>
 
 					<View 
-						style={{paddingLeft: 14}}
+						style={{paddingLeft: 16}}
 						>
 					<View 
 						style={{
 							position: 'absolute',
-							top: 3,
-							bottom: 3,
+							top: 5,
+							bottom: 5,
 							left: 0,
 							width: 4,
 							backgroundColor: swatches.border,

@@ -7,7 +7,6 @@ const toasts = (state = [], action) => {
       newToasts.push(action.payload);
       return newToasts;
     case 'SHOW_DELAYED_TOASTS':
-      console.log('show delayed');
       newToasts = [...state];
       newToasts.forEach( (toast, index) => {
         if( newToasts[index].delayed){
@@ -15,7 +14,6 @@ const toasts = (state = [], action) => {
           newToasts[index].delayed = false;
         }
       });
-      console.log(newToasts);
       return newToasts;      
     case 'HIDE_TOAST':
       newToasts = [...state];

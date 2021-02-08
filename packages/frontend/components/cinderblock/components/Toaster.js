@@ -28,8 +28,6 @@ class Toast extends React.Component {
 	}
 
 	componentDidMount(){
-		console.log('toast mount:');
-		console.log(this.props.toast);
 		if(this.props.visible){
 			setTimeout(()=>{
 				this.show();
@@ -39,8 +37,6 @@ class Toast extends React.Component {
 
 
 	componentWillReceiveProps(nextProps){
-		console.log('toast willReceiveProps:');
-		console.log(nextProps.toast);
 		if (this.props.visible != nextProps.visible){
 			if(nextProps.visible){
 				this.show();
