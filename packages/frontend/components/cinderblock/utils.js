@@ -1,3 +1,5 @@
+import {useMemo} from 'react';
+
 import validator from './validator';
 
 export const runValidations = (fields, validators) => {
@@ -31,6 +33,21 @@ export const readFileAsDataUrl = (inputFile) => {
 };
 
 
+import { BREAKPOINTS } from './designConstants';
+export const findWidestActiveValue = (values, media) => {
+	const fwav = (values, media) => {
+		let valuesMap = (typeof values === 'object') ? values : { small: values }
+		let activeValue = valuesMap['small'];
+		BREAKPOINTS.forEach( BP => {
+			if( valuesMap[BP] && media[BP] ){
+				activeValue = valuesMap[BP];
+			}
+		});
+		return activeValue;
+	}
+	return useMemo(() => fwav(values, media), [values, media]);
+}
+
 // Add toastable errors
 import { addToast } from '../../actions';
 export const addToastableErrors = (dispatch, error, messages) => {
@@ -39,26 +56,12 @@ export const addToastableErrors = (dispatch, error, messages) => {
   }
 }
 
-
-/*
-// nthChildTest
-
-const ordinals = nthChildTest ({
-  specialOffer: user 
-  header: true,
-  signUp: !user,
-  suggestions: suggestionsData?.length,
-});
-
-{ user && 
-  <SpecialOffer />
+// for easy delays in promise chains
+export const sleep = (ms) => {
+  return function(x) {
+    return new Promise(resolve => setTimeout(() => resolve(x), ms));
+  };
 }
-
-<Header hasBorder={ordinals.header != 1}> { // header isn't the first child so yes to border }
-  <Text>Header stuff woo</Text>
-</Headder>
-
-*/
 
 export const nthChildTest = (conditionsInOrder) => {
   const ordinals = {};

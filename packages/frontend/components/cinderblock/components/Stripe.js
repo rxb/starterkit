@@ -3,7 +3,7 @@ import { View, Image, ImageBackground } from '../primitives';
 import styles from '../styles/styles';
 import {useMediaContext} from './UseMediaContext';
 import { BREAKPOINTS, METRICS } from '../designConstants';
-import {findWidestActiveValue} from '../componentUtils';
+import {findWidestActiveValue} from '../utils';
 
 const getCombinedStyles = (media) => {	
 	const styleKeys = [

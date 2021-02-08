@@ -40,7 +40,8 @@ import {
 
 import styles from '../components/cinderblock/styles/styles';
 import swatches from '../components/cinderblock/styles/swatches';
-import {METRICS} from '../components/cinderblock/designConstants';
+import { sleep } from '@/components/cinderblock/utils';
+import { METRICS } from '../components/cinderblock/designConstants';
 import Page from '../components/Page';
 
 
@@ -208,8 +209,7 @@ function Tldr(props) {
 
 
 		return (
-			<View style={{minHeight: '100vh'}}>
-				<ConnectedHeader />
+			<Page>
 
 				<Stripe style={{/*paddingTop: 0,*/ backgroundColor: swatches.notwhite}}>
 
@@ -345,14 +345,16 @@ function Tldr(props) {
 															shape="GitPullRequest"
 															/>
 													</FlexItem>
-												</Flex>
+												</Flex>  
 											</Chunk>
 
 											<Chunk border>
 												<Flex>
-													<FlexItem >
-														<Text weight="strong">Versions</Text>
-														<Text type="small" color="secondary">This card is v{tldrData.currentTldrVersion.version}, updated {dayjs(tldrData.currentTldrVersion.createdAt).fromNow()}</Text>
+													<FlexItem>
+														<Link href={`tldredit/?tldrId=${tldrData.id}`}>
+															<Text weight="strong">Versions</Text>
+															<Text type="small" color="secondary">This card is v{tldrData.currentTldrVersion.version}, updated {dayjs(tldrData.currentTldrVersion.createdAt).fromNow()}</Text>
+														</Link>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon
@@ -440,7 +442,7 @@ function Tldr(props) {
 
 					</Bounds>
 				</Stripe>
-			</View>
+			</Page>
 		);
 
 

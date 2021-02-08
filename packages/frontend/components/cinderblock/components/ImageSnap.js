@@ -3,7 +3,7 @@ import { View, Image } from '../primitives';
 import styles from '../styles/styles';
 import {useMediaContext} from './UseMediaContext';
 import { METRICS, BREAKPOINTS } from '../designConstants';
-import { findWidestActiveValue } from '../componentUtils';
+import { findWidestActiveValue } from '../utils';
 
 
 const ImageSnap = (props) => {

@@ -58,6 +58,22 @@ export const removeToast = (id) => ({
 	}
 });
 
+export const addDelayedToast = (message, options = {}) => ({
+	type: 'ADD_DELAYED_TOAST',
+	payload: {
+		message: message,
+		id: uuid(),
+		visible: false,
+		delayed: true,
+		...options
+	}
+});
+
+export const showDelayedToasts = () => ({
+	type: 'SHOW_DELAYED_TOASTS',
+	payload: {}
+});
+
 
 // PROMPTS
 export const addPrompt = (content, options = {}) => ({

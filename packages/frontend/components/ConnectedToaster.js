@@ -14,6 +14,10 @@ import {
 import{ Toaster } from './cinderblock';
 
 const ConnectedToaster = (props) => ( <Toaster {...props} />);
-const mapStateToProps = (state, ownProps) => ({ toasts: state.toasts });
+const mapStateToProps = (state, ownProps) => {
+	console.log('connectedToaster mapStateToProps');
+	console.log(state.toasts);
+	return { toasts: state.toasts }
+};
 const actionCreators = { addToast, hideToast, removeToast }
 export default connect( mapStateToProps, actionCreators )(ConnectedToaster);

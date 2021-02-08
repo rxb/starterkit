@@ -1,24 +1,18 @@
 import React, {Fragment, useState, useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import NProgress from 'nprogress'
-NProgress.configure({ trickle: true, trickleSpeed: 400, showSpinner: false });
-
-import Router from 'next/router'
-Router.onRouteChangeStart = (url) => NProgress.start();
-Router.onRouteChangeComplete = () => NProgress.done();
-Router.onRouteChangeError = () => NProgress.done();
-
-
 import {
 	addToast,
+	showToast,
+	showDelayedToasts,
 	logIn,
 	logInFailure,
 	logOut,
 } from '../actions';
 
-import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
+import NProgress from 'nprogress'
+import Router from 'next/router'
 
+import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
 
 import styles from './cinderblock/styles/styles';
 import swatches from './cinderblock/styles/swatches';
@@ -56,7 +50,6 @@ import ConnectedPrompter from './ConnectedPrompter';
 import { addToastableErrors } from './cinderblock/utils';
 
 
-
 // usePrevious hook
 // todo: pull this into another file to be reused
 function usePrevious (value) {
@@ -73,6 +66,19 @@ function Page (props) {
 	const dispatch = useDispatch(); 
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
+
+	
+	// router-related UI config	
+	useEffect(()=>{
+		NProgress.configure({ trickle: true, trickleSpeed: 400, showSpinner: false });
+		Router.onRouteChangeStart = (url) => NProgress.start();
+		Router.onRouteChangeComplete = () => {
+			NProgress.done();
+			setTimeout(() => dispatch(showDelayedToasts()), 500);
+		}
+		Router.onRouteChangeError = () => NProgress.done();
+	}, []);
+
 
 	// login modal
 	const [modalVisible, setModalVisible] = useState(false);

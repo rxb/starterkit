@@ -7,7 +7,7 @@ import swatches from '../styles/swatches';
 import {TEXT_TYPES, TEXT_COLORS, TEXT_WEIGHTS} from '../designConstants';
 import Icon from './Icon';
 import {useMediaContext} from './UseMediaContext';
-import {findWidestActiveValue} from '../componentUtils';
+import {findWidestActiveValue} from '../utils';
 import Link from './Link';
 import Touch from './Touch';
 

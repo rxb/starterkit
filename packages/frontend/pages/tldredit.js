@@ -7,10 +7,7 @@ import {
 } from '../swr';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast } from '../actions';
-
-
-
+import { addPrompt, addToast, addDelayedToast } from '../actions';
 
 import Router from 'next/router'
 import Head from 'next/head'
@@ -36,7 +33,6 @@ import {
 	Modal,
 	Picker,
 	Section,
-
 	Sectionless,
 	Stripe,
 	Text,
@@ -47,6 +43,7 @@ import {
 } from '../components/cinderblock';
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
+import { sleep } from '@/components/cinderblock/utils';
 
 
 import Page from '../components/Page';
@@ -94,15 +91,6 @@ const TldrForm = (props) => {
 		// so for this function, we'll use a local copy, manually updated.
 		formState.setFieldValues(finalFields);
 		
-		/*
-		const patchFields = {
-			...formState.fields,
-			...finalFields
-		}
-		// parsing text back into json json
-		patchFields.draftContent = JSON.parse(fieldsCopy.draftContent);
-		*/
-
 		const patchFields = {
 			...finalFields,
 			id: tldrData.id,
@@ -116,10 +104,8 @@ const TldrForm = (props) => {
 		formState.setLoading(true);
 		try{
 			await patchTldr(tldrData.id, patchFields, {token: authentication.accessToken})
+			dispatch(addDelayedToast("Nice work; TLDR edited!"))
 			Router.push({pathname:'/tldr', query: {tldrId: tldrData.id}})
-				.then(()=>{
-					dispatch(addToast('tldr saved; nice work!'));
-				})
 		}
 		catch(error){
 			console.log(error);

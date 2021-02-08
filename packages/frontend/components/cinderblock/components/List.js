@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View } from '../primitives';
 import { useMediaContext } from './UseMediaContext';
 import styles from '../styles/styles';
-import {findWidestActiveValue} from '../componentUtils';
+import {findWidestActiveValue} from '../utils';
 
 // combine styles
 const combineStyles = (styleKeys) => styleKeys.map((key, i)=>{
