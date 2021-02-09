@@ -155,6 +155,7 @@ const TldrForm = (props) => {
 							style={[styles.textBig, inputJoinedTop]}
 							id={`step${i}head`}
 							value={item.head}
+							placeholder="Bulletpoint headline"
 							onChange={e => formState.setFieldValue('steps', [
 								...formState.getFieldValue('steps').slice(0, i),
 								{...item, head: e.target.value},
@@ -162,9 +163,10 @@ const TldrForm = (props) => {
 							]) }
 							/>
 						<TextInput
-							style={[styles.textSecondary, inputJoinedBottom]}
+							style={[inputJoinedBottom]}
 							id={`step${i}body`}
 							value={item.body}
+							placeholder="Bulletpoint description"
 							onChange={e => formState.setFieldValue('steps', [
 								...formState.getFieldValue('steps').slice(0, i),
 								{...item, body: e.target.value},
@@ -214,8 +216,6 @@ const TldrForm = (props) => {
 							/>						
 					</FlexItem>
 				</Flex>
-
-
 			</Chunk>
 		</form>
 	);
