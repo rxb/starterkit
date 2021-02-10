@@ -81,7 +81,8 @@ const TldrForm = (props) => {
 	const formState = useFormState({
 		initialFields: {
 			...tldrData.draftContent,
-			steps: tldrData.draftContent.steps?.map( (step,i) => ({...step, id: i}) ), // steps need stable IDs for reordering
+			// steps need stable IDs for reordering
+			steps: tldrData.draftContent.steps?.map( (step,i) => ({...step, id: i}) ), 
 			id: tldrData.id,
 			publish: false
 		},
@@ -165,8 +166,9 @@ const TldrForm = (props) => {
 							top: 5,
 							bottom: 5,
 							left: 0,
-							width: 4,
+							width: 10,
 							backgroundColor: swatches.border,
+							cursor: 'pointer'
 						}}
 						/>
 						<TextInput
@@ -197,8 +199,6 @@ const TldrForm = (props) => {
 				))}
 			</DndProvider>
 
-				
-	
 
 			<Chunk>
 				<Flex nbsp>
