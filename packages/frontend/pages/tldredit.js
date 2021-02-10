@@ -116,7 +116,10 @@ const TldrForm = (props) => {
 			draftContent: {
 				title: formState.fields.title,
 				blurb: formState.fields.blurb,
-				steps: formState.fields.steps
+				steps: formState.fields.steps.map(item => {
+						delete item.id
+						return item;
+					}).filter(item => (item.head && item.head.length || item.body && item.body.length) )
 			}
 		}
 
@@ -157,54 +160,63 @@ const TldrForm = (props) => {
 			<DndProvider backend={HTML5Backend}>
 				{formState.getFieldValue('steps')?.map((item, i)=>(
 					<Reorderable key={item.id} index={i} id={item.id} moveItem={moveStep}>
-
-				<Chunk>
-
-					<View 
-						style={{paddingLeft: 16}}
-						>
-					<View 
-						style={{
-							position: 'absolute',
-							top: 6,
-							bottom: 6,
-							left: 0,
-							width: 12,
-							backgroundColor: swatches.border,
-							borderRadius: METRICS.borderRadius,
-							cursor: 'pointer'
-						}}
-						/>
-						<TextInput
-							style={[styles.textBig, inputJoinedTop]}
-							id={`step${i}head`}
-							value={item.head}
-							placeholder="Bulletpoint headline"
-							onChange={e => formState.setFieldValue('steps', [
-								...formState.getFieldValue('steps').slice(0, i),
-								{...item, head: e.target.value},
-								...formState.getFieldValue('steps').slice(i + 1)
-							]) }
-							/>
-						<TextInput
-							style={[inputJoinedBottom]}
-							id={`step${i}body`}
-							value={item.body}
-							placeholder="Bulletpoint description"
-							onChange={e => formState.setFieldValue('steps', [
-								...formState.getFieldValue('steps').slice(0, i),
-								{...item, body: e.target.value},
-								...formState.getFieldValue('steps').slice(i + 1)
-							]) }
-							/>
-					</View>
-				</Chunk>
-				</Reorderable>
+						<Chunk>
+							<View 
+								style={{paddingLeft: 16}}
+								>
+							<View 
+								style={{
+									position: 'absolute',
+									top: 6,
+									bottom: 6,
+									left: 0,
+									width: 12,
+									backgroundColor: swatches.border,
+									borderRadius: METRICS.borderRadius,
+									cursor: 'pointer'
+								}}
+								/>
+								<TextInput
+									style={[styles.textBig, inputJoinedTop]}
+									id={`step${i}head`}
+									value={item.head}
+									placeholder="Bulletpoint headline"
+									onChange={e => formState.setFieldValue('steps', [
+										...formState.getFieldValue('steps').slice(0, i),
+										{...item, head: e.target.value},
+										...formState.getFieldValue('steps').slice(i + 1)
+									]) }
+									/>
+								<TextInput
+									style={[inputJoinedBottom]}
+									id={`step${i}body`}
+									value={item.body}
+									placeholder="Bulletpoint description"
+									onChange={e => formState.setFieldValue('steps', [
+										...formState.getFieldValue('steps').slice(0, i),
+										{...item, body: e.target.value},
+										...formState.getFieldValue('steps').slice(i + 1)
+									]) }
+									/>
+							</View>
+						</Chunk>
+					</Reorderable>
 				))}
 			</DndProvider>
+			
+				<Touch onPress={()=>{
+					formState.setFieldValue('steps', [
+						...formState.getFieldValue('steps'),
+						{title: '', body: '', id: formState.getFieldValue('steps').length},
+					])
+				}}>
+				<Chunk inline>
+					<Icon shape="PlusCircle" />
+					<Text> Add new item</Text>
+				</Chunk>
+				</Touch>
 
-
-			<Chunk>
+			<Chunk border>
 				<Flex nbsp>
 					<FlexItem nbsp shrink>
 						<Button
