@@ -25,6 +25,7 @@ import Modal from './components/Modal';
 import Picker from './components/Picker';
 import Picture from './components/Picture';
 import Prompter from './components/Prompter';
+import Reorderable from './components/Reorderable';
 import Section from './components/Section';
 import Sectionless from './components/Sectionless';
 import Stripe from './components/Stripe';
@@ -67,6 +68,7 @@ export {
 	Picker,
 	Picture,
 	Prompter,
+	Reorderable,
 	Section,
 	Sectionless,
 	Stripe,

@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useCallback} from 'react';
 
 import {
 	fetcher,
@@ -32,6 +32,7 @@ import {
 	Link,
 	Modal,
 	Picker,
+	Reorderable,
 	Section,
 	Sectionless,
 	Stripe,
@@ -43,12 +44,13 @@ import {
 } from '../components/cinderblock';
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
-import { sleep } from '@/components/cinderblock/utils';
 
 
 import Page from '../components/Page';
 import { authentication } from '@feathersjs/client';
 
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const inputJoinedTop = {
 	marginBottom: 0, 
@@ -63,6 +65,9 @@ const inputJoinedBottom = {
 	zIndex: 1
 };
 
+
+
+
 const TldrForm = (props) => {
 
 	const dispatch = useDispatch();
@@ -76,6 +81,7 @@ const TldrForm = (props) => {
 	const formState = useFormState({
 		initialFields: {
 			...tldrData.draftContent,
+			steps: tldrData.draftContent.steps?.map( (step,i) => ({...step, id: i}) ), // steps need stable IDs for reordering
 			id: tldrData.id,
 			publish: false
 		},
@@ -85,6 +91,15 @@ const TldrForm = (props) => {
 		},
 		addToast: msg => dispatch(addToast(msg))
 	})
+
+	const moveStep = useCallback((dragIndex, hoverIndex) => {
+		const dragItem = formState.getFieldValue('steps')[dragIndex];
+		const newSteps = [...formState.getFieldValue('steps')];
+		newSteps.splice(dragIndex, 1);
+		newSteps.splice(hoverIndex, 0, dragItem);
+		formState.setFieldValue('steps', newSteps);
+	}, [formState.getFieldValue('steps')]);
+
 
 	const submitForm = async(finalFields={}) => {
 		// state set is async, so while we're settings them setFields, we don't know when they'll update
@@ -135,7 +150,10 @@ const TldrForm = (props) => {
 				<FieldError error={formState.errors?.fieldErrors?.blurb} />
 			</Chunk>
 
-			{ formState.getFieldValue('steps')?.map((item, i)=>(
+			<DndProvider backend={HTML5Backend}>
+				{formState.getFieldValue('steps')?.map((item, i)=>(
+					<Reorderable key={item.id} index={i} id={item.id} moveItem={moveStep}>
+
 				<Chunk>
 
 					<View 
@@ -175,23 +193,12 @@ const TldrForm = (props) => {
 							/>
 					</View>
 				</Chunk>
-			))}
+				</Reorderable>
+				))}
+			</DndProvider>
 
 				
-			{/*
-			<Chunk>
-				<Label for="draftContent">Card content</Label>
-				<TextInput
-					id="draftContent"
-					value={formState.getFieldValue('draftContent')}
-					onChange={e => formState.setFieldValue('draftContent', e.target.value) }
-					multiline
-					numberOfLines={10}
-					showCounter={true}
-					/>
-				<FieldError error={formState.errors?.fieldErrors?.draftContent} />
-			</Chunk>
-			*/}
+	
 
 			<Chunk>
 				<Flex nbsp>
