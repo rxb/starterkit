@@ -44,6 +44,7 @@ import {
 } from '../components/cinderblock';
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
+import {METRICS} from '@/components/cinderblock/designConstants';
 
 
 import Page from '../components/Page';
@@ -54,6 +55,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const inputJoinedTop = {
 	marginBottom: 0, 
+	//borderTopLeftRadius: 0, 
 	borderBottomLeftRadius: 0, 
 	borderBottomRightRadius: 0, 
 	zIndex: 1
@@ -61,6 +63,7 @@ const inputJoinedTop = {
 const inputJoinedBottom = {
 	marginTop: -1, 
 	borderTopLeftRadius: 0, 
+	//borderBottomLeftRadius: 0,
 	borderTopRightRadius: 0,  
 	zIndex: 1
 };
@@ -163,11 +166,12 @@ const TldrForm = (props) => {
 					<View 
 						style={{
 							position: 'absolute',
-							top: 5,
-							bottom: 5,
+							top: 6,
+							bottom: 6,
 							left: 0,
-							width: 10,
+							width: 12,
 							backgroundColor: swatches.border,
+							borderRadius: METRICS.borderRadius,
 							cursor: 'pointer'
 						}}
 						/>
