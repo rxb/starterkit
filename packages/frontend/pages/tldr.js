@@ -207,6 +207,8 @@ function Tldr(props) {
 		const authentication = useSelector(state => state.authentication);
 		const user = authentication.user || {};
 
+		if( !tldrData )
+			return <View />
 
 		return (
 			<Page>
@@ -451,7 +453,7 @@ function Tldr(props) {
 Tldr.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
-	const tldrId = query.tdlrId || 2;
+	const tldrId = query.tldrId || 2;
 	const isServer = !!req;	
 
 	// fetch and pass as props during SSR, using in the useSWR as intitialData

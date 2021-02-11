@@ -55,7 +55,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const inputJoinedTop = {
 	marginBottom: 0, 
-	//borderTopLeftRadius: 0, 
 	borderBottomLeftRadius: 0, 
 	borderBottomRightRadius: 0, 
 	zIndex: 1
@@ -63,12 +62,9 @@ const inputJoinedTop = {
 const inputJoinedBottom = {
 	marginTop: -1, 
 	borderTopLeftRadius: 0, 
-	//borderBottomLeftRadius: 0,
 	borderTopRightRadius: 0,  
 	zIndex: 1
 };
-
-
 
 
 const TldrForm = (props) => {
@@ -180,6 +176,7 @@ const TldrForm = (props) => {
 									style={[styles.textBig, inputJoinedTop]}
 									id={`step${i}head`}
 									value={item.head}
+									multiline
 									placeholder="Bulletpoint headline"
 									onChange={e => formState.setFieldValue('steps', [
 										...formState.getFieldValue('steps').slice(0, i),
@@ -191,6 +188,7 @@ const TldrForm = (props) => {
 									style={[inputJoinedBottom]}
 									id={`step${i}body`}
 									value={item.body}
+									multiline
 									placeholder="Bulletpoint description"
 									onChange={e => formState.setFieldValue('steps', [
 										...formState.getFieldValue('steps').slice(0, i),
@@ -204,7 +202,7 @@ const TldrForm = (props) => {
 				))}
 			</DndProvider>
 			
-				<Touch onPress={()=>{
+			<Touch onPress={()=>{
 					formState.setFieldValue('steps', [
 						...formState.getFieldValue('steps'),
 						{title: '', body: '', id: formState.getFieldValue('steps').length},
@@ -214,7 +212,7 @@ const TldrForm = (props) => {
 					<Icon shape="PlusCircle" />
 					<Text> Add new item</Text>
 				</Chunk>
-				</Touch>
+			</Touch>
 
 			<Chunk border>
 				<Flex nbsp>
@@ -271,10 +269,10 @@ function TldrEdit(props) {
 										</Chunk>
 
 										{ tldrData &&
-										<TldrForm
-											tldrData={tldrData}
-											authentication={authentication}
-											/>
+											<TldrForm
+												tldrData={tldrData}
+												authentication={authentication}
+												/>
 										}
 									</Section>
 								</FlexItem>

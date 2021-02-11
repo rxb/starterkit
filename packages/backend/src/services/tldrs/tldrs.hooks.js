@@ -1,20 +1,22 @@
-
+const populateTldrAssociations = (context) => {
+  context.params.sequelize = {
+    ...context.params.sequelize,
+    include: [
+      "author",
+      "currentTldrVersion"
+    ]
+  }
+  return context;
+}
 
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [
+      populateTldrAssociations
+    ],
     get: [
-      (context) => {
-        context.params.sequelize = {
-          ...context.params.sequelize,
-          include: [
-            "author",
-            "currentTldrVersion"
-          ]
-        }
-        return context;
-      }
+      populateTldrAssociations
     ],
     create: [],
     update: [],

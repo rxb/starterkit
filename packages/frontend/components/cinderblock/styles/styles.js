@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
 	'section--border': {
 		borderTopWidth: 1,
 		borderTopColor: swatches.border,
-		paddingTop: space  * 1.75,
-		marginTop: space * .75
+		paddingTop: space  * 1.5,
+		marginTop: space * .5
 	},
 
 	imageSnap: {
