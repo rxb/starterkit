@@ -2,10 +2,10 @@ import React, {Fragment, useState} from 'react';
 
 import {
 	useTldrs
-} from '../swr';
+} from '@/swr';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast } from '../actions';
+import { addPrompt, addToast } from '@/actions';
 
 
 import {
@@ -34,13 +34,13 @@ import {
 	Touch,
 	useMediaContext,
 	View,	
-} from '../components/cinderblock';
+} from '@/components/cinderblock';
 
-import styles from '../components/cinderblock/styles/styles';
-import swatches from '../components/cinderblock/styles/swatches';
+import styles from '@/components/cinderblock/styles/styles';
+import swatches from '@/components/cinderblock/styles/swatches';
 import { sleep } from '@/components/cinderblock/utils';
-import { METRICS } from '../components/cinderblock/designConstants';
-import Page from '../components/Page';
+import { METRICS } from '@/components/cinderblock/designConstants';
+import Page from '@/components/Page';
 
 
 
@@ -112,15 +112,23 @@ function TldrProfile(props) {
 					<Stripe>
 					<Bounds>
 							<Section>
-								<Chunk>
-									<Avatar
-										source={{uri: user.photoUrl}}
-										size="xlarge"
-										/>
-								</Chunk>
-								<Chunk>
-									<Text type="pageHead">{user.name}</Text>
-								</Chunk>
+								<Flex>
+									<FlexItem>
+										<Chunk>
+											<Text type="pageHead">@rxb</Text>
+											<Text>{user.name}</Text>
+										</Chunk>
+									</FlexItem>
+									<FlexItem shrink justify="center">
+										<Chunk>
+											<Avatar
+												source={{uri: user.photoUrl}}
+												size="large"
+												/>
+										</Chunk>
+									</FlexItem>
+								</Flex>
+								
 							</Section>
 							<Section border>
 								<Flex>
@@ -153,27 +161,14 @@ function TldrProfile(props) {
 									items={tldrsData}
 									renderItem={(item, i)=>(
 										<Chunk key={i}>
-											<Link href={`/tldr?tldrId=${item.id}`}>
+											<Link href={`./tldr?tldrId=${item.id}`}>
 												<TldrCardSmall tldr={item} />
 											</Link>
 										</Chunk>
 									)}
 									/>
 							</Section>
-							<Section border>
-								<Flex>
-									<FlexItem justify="center">
-										<Chunk>
-											<Text type="sectionHead">Saved ({tldrsData.length})</Text>
-										</Chunk>		
-									</FlexItem>
-									<FlexItem shrink>
-									</FlexItem>
-								</Flex>
-								<Chunk>
-									jlksdjf
-								</Chunk>
-							</Section>
+							
 					</Bounds>
 				</Stripe>
 				}

@@ -4,10 +4,10 @@ import {
 	fetcher,
 	getTldrUrl,
 	useTldr
-} from '../swr';
+} from '../../swr';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast } from '../actions';
+import { addPrompt, addToast } from '../../actions';
 
 
 import {
@@ -36,13 +36,13 @@ import {
 	Touch,
 	useMediaContext,
 	View,	
-} from '../components/cinderblock';
+} from '../../components/cinderblock';
 
-import styles from '../components/cinderblock/styles/styles';
-import swatches from '../components/cinderblock/styles/swatches';
+import styles from '../../components/cinderblock/styles/styles';
+import swatches from '../../components/cinderblock/styles/swatches';
 import { sleep } from '@/components/cinderblock/utils';
-import { METRICS } from '../components/cinderblock/designConstants';
-import Page from '../components/Page';
+import { METRICS } from '../../components/cinderblock/designConstants';
+import Page from '../../components/Page';
 
 
 
@@ -60,7 +60,7 @@ const ConnectedHeader = (props) => {
 		<Header position="static">
 			<Flex direction="row">
 				<FlexItem>
-						<Link href="/tldr">
+						<Link href="./tldr">
 							<Text type={ media.medium ? 'sectionHead' : 'big'} color="tint" style={{fontWeight: 700}}>tldr</Text>
 						</Link>
 				</FlexItem>

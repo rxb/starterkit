@@ -124,7 +124,7 @@ const TldrForm = (props) => {
 			await patchTldr(tldrData.id, patchFields, {token: authentication.accessToken})
 			const toastMessage = (patchFields.publish) ? "New TLDR version published!" : "TLDR draft saved!"
 			dispatch(addDelayedToast(toastMessage));
-			Router.push({pathname:'/tldr', query: {tldrId: tldrData.id}})
+			Router.push({pathname:'./tldr', query: {tldrId: tldrData.id}})
 		}
 		catch(error){
 			console.log(error);

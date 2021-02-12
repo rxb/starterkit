@@ -3,8 +3,9 @@
      "baseUrl": ".",
      "paths": {
        "@/components/*": ["components/*"],
-       "@/actions/*": ["actions/*"],
-       "@/swr/*": ["swr/*"]
+       "@/components": ["components"],
+       "@/actions": ["actions"],
+       "@/swr": ["swr"]
      }
    }
  }
