@@ -116,6 +116,7 @@ class TextInput extends React.Component{
 						multiline && styles['input--multiline'],
 						multiline && maxLength && showCounter && styles['input--multilineAndCounter'],
 						styles.text,
+						styles.textBody,
 						{minHeight: this.state.height},
 						style,
 					]}

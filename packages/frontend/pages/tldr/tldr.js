@@ -353,7 +353,7 @@ function Tldr(props) {
 											<Chunk border>
 												<Flex>
 													<FlexItem>
-														<Link href={`tldredit/?tldrId=${tldrData.id}`}>
+														<Link href={`versionedit/?tldrId=${tldrData.id}`}>
 															<Text weight="strong">Versions</Text>
 															<Text type="small" color="secondary">This card is v{tldrData.currentTldrVersion.version}, updated {dayjs(tldrData.currentTldrVersion.createdAt).fromNow()}</Text>
 														</Link>

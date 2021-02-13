@@ -4,10 +4,10 @@ import {
 	fetcher,
 	patchTldr,
 	useTldr
-} from '../swr';
+} from '@/swr';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast, addDelayedToast } from '../actions';
+import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 import Router from 'next/router'
 import Head from 'next/head'
@@ -41,13 +41,13 @@ import {
 	Touch,
 	View,
 	useFormState
-} from '../components/cinderblock';
+} from '@/components/cinderblock';
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
 import {METRICS} from '@/components/cinderblock/designConstants';
 
 
-import Page from '../components/Page';
+import Page from '@/components/Page';
 import { authentication } from '@feathersjs/client';
 
 import { DndProvider } from 'react-dnd'
@@ -245,7 +245,7 @@ const TldrForm = (props) => {
 
 
 
-function TldrEdit(props) {
+function VersionEdit(props) {
 
 	const {data: tldrData, error: tldrError, mutate: tldrMutate} = useTldr(props.tldrId);
 
@@ -287,7 +287,7 @@ function TldrEdit(props) {
 	
 }
 
-TldrEdit.getInitialProps = async(context) => {
+VersionEdit.getInitialProps = async(context) => {
 	const {store, isServer, pathname, query} = context;
 	const tldrId = query.tldrId || 2; // hardcode for now
 	return {
@@ -296,5 +296,5 @@ TldrEdit.getInitialProps = async(context) => {
 }
 
 
-export default TldrEdit;
+export default VersionEdit;
 

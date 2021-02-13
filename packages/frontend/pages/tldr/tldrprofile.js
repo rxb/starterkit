@@ -142,6 +142,7 @@ function TldrProfile(props) {
 											<Button
 												size="small"
 												label="Create card"
+												href={`./edit`}
 												/>
 										</Chunk>
 									</FlexItem>
