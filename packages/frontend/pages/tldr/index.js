@@ -44,77 +44,41 @@ import Page from '@/components/Page';
 
 import {TldrCardSmall} from './components';
 
-import Markdown from 'markdown-to-jsx';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
+const categories = [
+   {name: 'Personal finance'},
+   {name: 'Health & fitness'},
+   {name: 'Social'},
+   {name: 'Travel'},
+   {name: 'Career'},
+   {name: 'Parenting'},
+   {name: 'Emergency preparedness'},
+   {name: 'Self-care'},
+   {name: 'Home Ec'},
+   {name: 'Cooking'},
+   {name: 'Arts'},
+];
 
-
-function TldrProfile(props) {
+function TldrHome(props) {
 
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
 		const user = authentication.user || {};
-		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs({authorId: user.id});
-		
+		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs();
 		
 
 		return (
 			<Page>
 
-				{ !user.id && 
-					<Stripe>
-						<Bounds>
-							<Section>
-								<Chunk>
-									<Text type="pageHead">Who are you??</Text>
-								</Chunk>
-							</Section>
-						</Bounds>
-					</Stripe>
 
-				}
-
-				{ user.id && tldrsData && 
+				{ categories && 
 					<Stripe>
 					<Bounds>
+
 							<Section>
-								<Flex>
-									<FlexItem>
-										<Chunk>
-											<Text type="pageHead">@rxb</Text>
-											<Text>{user.name}</Text>
-										</Chunk>
-									</FlexItem>
-									<FlexItem shrink justify="center">
-										<Chunk>
-											<Avatar
-												source={{uri: user.photoUrl}}
-												size="large"
-												/>
-										</Chunk>
-									</FlexItem>
-								</Flex>
-								
-							</Section>
-							<Section border>
-								<Flex>
-									<FlexItem justify="center">
-										<Chunk>
-											<Text type="sectionHead">Author ({tldrsData.length})</Text>
-										</Chunk>		
-									</FlexItem>
-									<FlexItem shrink>
-										<Chunk>
-											<Button
-												size="small"
-												label="Create card"
-												href={`./edit`}
-												/>
-										</Chunk>
-									</FlexItem>
-								</Flex>
 								
 								<List
 									variant={{
@@ -126,13 +90,23 @@ function TldrProfile(props) {
 										large: 4
 									}}
 									scrollItemWidth={300}
-									
-									items={tldrsData}
+									items={categories}
 									renderItem={(item, i)=>(
 										<Chunk key={i}>
-											<Link href={`./tldr?tldrId=${item.id}`}>
-												<TldrCardSmall tldr={item} />
-											</Link>
+                                 <Text>{item.name}</Text>
+											<View>
+												<TldrCardSmall 
+                                       tldr={tldrsData ? tldrsData[0] : {}} 
+                                       style={{marginVertical: 0, zIndex: 10}}
+                                       />
+                                    <View 
+                                       style={{backgroundColor: 'red', position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
+                                       />
+                                     <View 
+                                       style={{backgroundColor: 'blue', position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8}}
+                                       />   
+											</View>
+                                 <Text>1,263 cards</Text>
 										</Chunk>
 									)}
 									/>
@@ -147,7 +121,7 @@ function TldrProfile(props) {
 
 }
 
-TldrProfile.getInitialProps = async (context) => {
+TldrHome.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
 	//const userId = query.userId || 4; // for now
@@ -168,4 +142,4 @@ const listItemStyle = {
 
 
 
-export default TldrProfile;
+export default TldrHome;

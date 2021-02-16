@@ -69,3 +69,9 @@ typings/
 
 # Serverless directories
 .serverless
+
+#DS
+.DS_Store
+
+# VSCode
+.vscode
