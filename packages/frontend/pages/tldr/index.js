@@ -94,16 +94,16 @@ function TldrHome(props) {
 									renderItem={(item, i)=>(
 										<Chunk key={i}>
                                  <Text>{item.name}</Text>
-											<View>
+											<View style={{marginRight: 10, marginBottom: 14, marginTop: 4}}>
 												<TldrCardSmall 
                                        tldr={tldrsData ? tldrsData[0] : {}} 
                                        style={{marginVertical: 0, zIndex: 10}}
                                        />
-                                    <View 
-                                       style={{backgroundColor: 'red', position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
+                                    <Card 
+                                       style={{marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
                                        />
-                                     <View 
-                                       style={{backgroundColor: 'blue', position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8}}
+                                     <Card 
+                                       style={{marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8}}
                                        />   
 											</View>
                                  <Text>1,263 cards</Text>
