@@ -48,6 +48,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
+// at some point make real categories
 const categories = [
    {name: 'Personal finance'},
    {name: 'Health & fitness'},
@@ -55,7 +56,7 @@ const categories = [
    {name: 'Travel'},
    {name: 'Career'},
    {name: 'Parenting'},
-   {name: 'Emergency preparedness'},
+   {name: 'Emergency prep'},
    {name: 'Self-care'},
    {name: 'Home Ec'},
    {name: 'Cooking'},
@@ -63,6 +64,9 @@ const categories = [
 ];
 
 function TldrHome(props) {
+
+      const { categoryId } = props
+      const category = categories[categoryId];
 
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
@@ -74,47 +78,108 @@ function TldrHome(props) {
 			<Page>
 
 
-				{ categories && 
-					<Stripe>
-					<Bounds>
-
-							<Section>
-								
-								<List
-									variant={{
-										small: 'grid',
-									}}
-									itemsInRow={{
-										small: 1,
-										medium: 2,
-										large: 4
-									}}
-									scrollItemWidth={300}
-									items={categories}
-									renderItem={(item, i)=>(
-										<Chunk key={i}>
-                                 <Text>{item.name}</Text>
-											<View style={{marginRight: 10, marginBottom: 14, marginTop: 4}}>
-												<TldrCardSmall 
-                                       tldr={tldrsData ? tldrsData[0] : {}} 
-                                       style={{marginVertical: 0, zIndex: 10}}
-                                       />
-                                    <Card 
-                                       style={{marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
-                                       />
-                                     <Card 
-                                       style={{marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8}}
-                                       />   
-											</View>
-                                 <Text>1,263 cards</Text>
-										</Chunk>
-									)}
-									/>
-							</Section>
-							
-					</Bounds>
-				</Stripe>
+				{ !categoryId && 
+                  <Stripe>
+                     <Bounds>
+                        <Section>
+                           <List
+                              variant={{
+                                 small: 'grid',
+                              }}
+                              itemsInRow={{
+                                 small: 1,
+                                 medium: 2,
+                                 large: 3
+                              }}
+                              scrollItemWidth={300}
+                              items={categories}
+                              renderItem={(item, i)=>(
+                                 <Chunk key={i}>
+                                    <Link href={`/tldr/?categoryId=${i}`}>
+                                       <View style={{backgroundColor: swatches.backgroundShade}}>
+                                          <Sectionless>
+                                             <Chunk>
+                                                <Text type="big">{item.name}</Text>
+                                                   <View style={{position: 'relative', marginRight: 10, marginBottom: 14, marginTop: 4}}>
+                                                      <TldrCardSmall 
+                                                         tldr={tldrsData ? tldrsData[0] : {}} 
+                                                         style={{marginVertical: 0, zIndex: 10, minHeight: 160}}
+                                                         />
+                                                      <Card 
+                                                         style={{marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
+                                                         />
+                                                      <Card 
+                                                         style={{marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8}}
+                                                         />   
+                                                   </View>
+                                                   <Text type="small">+ 1,263 more cards</Text>
+                                                </Chunk>
+                                             </Sectionless>
+                                          </View>
+                                       </Link>
+                                    </Chunk>
+                                 )}
+                                 />
+                        </Section>
+                  </Bounds>
+               </Stripe>
 				}
+
+            { (categoryId && tldrsData) && 
+
+               <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
+                  <Bounds>
+                     <Section>
+                        <Chunk>
+                           <Text type="pageHead">{category.name}</Text>
+                        </Chunk>
+                     </Section>
+                     <Section border>
+                        <Chunk>
+                           <List
+                              variant={{
+                                 small: 'grid',
+                              }}
+                              itemsInRow={{
+                                 small: 1,
+                                 medium: 2,
+                                 large: 4
+                              }}
+                              scrollItemWidth={300}
+                              items={[...tldrsData, {last: true}]}
+                              renderItem={(item, i)=>(
+                                 <Chunk key={i}>
+                                    { !item.last &&
+                                       <Link href={`/tldr/tldr?tldrId=${item.id}`}>
+                                          <TldrCardSmall tldr={item} style={{minHeight: 160}} />
+                                       </Link>
+                                    }
+                                    { item.last &&
+                                       <Link href={`/tldr/edit`}>
+                                          <Card style={{minHeight: 160, borderStyle: 'dashed', backgroundColor: 'transparent'}}>
+                                             <Sectionless style={{flex: 1}}>
+                                                <View style={styles.absoluteCenter}>
+                                                      <Icon 
+                                                         shape="Plus"
+                                                         size="large"
+                                                         color={swatches.textSecondary}
+                                                         style={{alignSelf: 'center'}}
+                                                         />
+                                                      <Text type="small" color="secondary">new card</Text>
+                                                </View>
+                                             </Sectionless>
+                                          </Card>
+                                       </Link>
+                                    }
+                                 </Chunk>
+                              )}
+                              />
+                        </Chunk>
+                     </Section>
+                  </Bounds>
+               </Stripe>
+
+            }
 			</Page>
 		);
 
@@ -124,12 +189,12 @@ function TldrHome(props) {
 TldrHome.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
-	//const userId = query.userId || 4; // for now
+   const {categoryId} = query;
 	const isServer = !!req;	
 
 	return {
-		//userId: userId,
-		isServer,
+      categoryId,
+      isServer,
 	}
 }
 

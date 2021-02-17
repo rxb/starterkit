@@ -28,6 +28,11 @@ import {
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
 import { METRICS } from '@/components/cinderblock/designConstants';
+import CinderblockPage from '@/components/Page';
+
+export const Page = (props) => {
+   return <CinderblockPage hideHeader />
+}
 
 export const TldrCardSmall = (props) => {
 

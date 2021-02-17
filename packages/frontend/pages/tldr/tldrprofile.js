@@ -126,7 +126,6 @@ function TldrProfile(props) {
 										large: 4
 									}}
 									scrollItemWidth={300}
-									
 									items={tldrsData}
 									renderItem={(item, i)=>(
 										<Chunk key={i}>
