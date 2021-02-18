@@ -21,10 +21,10 @@ export const METRICS = {
 		return this.smallSize * 1.6
 	},
 	get microSize() {
-		return this.base * 0.6
+		return this.base * 0.675
 	},
 	get microLineHeight() {
-		return this.microSize * 2
+		return this.microSize * 1.75
 	},
 	get bigSize() {
 		return this.base * 1.25

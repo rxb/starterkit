@@ -103,7 +103,8 @@ const TldrCard = (props) => {
 								<Inline>
 									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
 									<Text type="small" inverted color="secondary">
-										@{tldrData.author.name.split(" ")[0].toLowerCase()} / {content.title.replace(/\s+/gi,"-").toLowerCase()}
+										{/* TODO: replace with actual data, this is fakedwha */}
+										@{tldrData.author.name.split(" ")[0].toLowerCase()} / {content.title.replace(/[^A-Za-z0-9-\s]+/gi, "").replace(/\s+/gi,"-").toLowerCase()}
 									</Text>
 								</Inline>
 							</FlexItem>
@@ -237,75 +238,47 @@ function Tldr(props) {
 								<FlexItem growFactor={0} style={{flexBasis: 350, flex: 0}}>
 									<Section>
 
-										{/* split scores with labels */}
-										<Chunk>
+										<Chunk border>
 											<Flex flush>
+												<FlexItem justify="center" align="center" flush>
+													<Text type="sectionHead">1,230</Text>
+													<Text type="micro" color="secondary">53% positive</Text>
+												</FlexItem>
 												<FlexItem flush>
-													<Button
-														color="secondary"
-														width="full"
-														style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
-														>
-															<View style={{flexDirection: 'row', justifyContent: 'center'}}>
+													<Flex flush>
+														<FlexItem flush>
+															<Button
+																color="secondary"
+																width="full"
+																style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
+																>
 																<Icon 
 																	shape="ArrowUp" 
 																	color={swatches.tint} 
-																	style={{marginLeft: 3, marginRight: 3, }} 
 																	/>
-																<View style={{marginLeft: 3}}>
-																	<Text 
-																		color="tint" 
-																		weight="strong"
-																		style={{lineHeight: 16}}
-																		>
-																		{tldrData.upvotes}
-																	</Text>
-																	<Text 
-																		type="micro"
-																		color="tint"
-																		style={{lineHeight: 11, marginTop: 3,}}
-																		>
-																		useful
-																	</Text>
-																</View>
-															</View>
-													</Button>
-												</FlexItem>
-					
-												<FlexItem flush>
-													<Button
-														color="secondary"
-														width="full"
-														style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
-														>
-														<View style={{flexDirection: 'row', justifyContent: 'center'}}>
-															<View style={{marginRight: 3}}>
-																<Text 
-																	color="tint" 
-																	weight="strong"
-																	style={{lineHeight: 16, textAlign: 'right'}}
-																	>
-																	{tldrData.downvotes}
-																</Text>
-																<Text 
-																	type="micro"
-																	color="tint"
-																	style={{lineHeight: 11, marginTop: 3, textAlign: 'right'}}
-																	>
-																	not useful
-																	</Text>
-															</View>
-															<Icon 
-																shape="ArrowDown" 
-																color={swatches.tint} 
-																style={{marginLeft: 3, marginRight: 3}} 
-																/>
-														</View>
-													</Button>
+																		
+															</Button>
+														</FlexItem>
+												
+														<FlexItem flush>
+															<Button
+																color="secondary"
+																width="full"
+																style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
+																>
+												
+																	<Icon 
+																		shape="ArrowDown" 
+																		color={swatches.tint} 
+																		/>
+															</Button>
+														</FlexItem>
+													</Flex>
 												</FlexItem>
 											</Flex>
-										
-										
+										</Chunk>
+										<Chunk border>
+											{/*
 											<Flex style={{marginTop: METRICS.space / 2}}>
 												<FlexItem>
 														<Button 
@@ -324,6 +297,37 @@ function Tldr(props) {
 															/>
 												</FlexItem>
 											</Flex>
+											*/}
+											
+											<Flex>
+												<FlexItem>
+														<Button 
+															shape="Share2" 
+															color="secondary" 
+															width="full"
+															/>
+															<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Share</Text>
+												</FlexItem>
+												<FlexItem>
+														<Button 
+															shape="Bookmark" 
+															color="secondary" 
+															width="full"
+															/>
+															<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Save</Text>
+												</FlexItem>
+												<FlexItem>
+														<Button 
+															shape="DownloadCloud" 
+															color="secondary" 
+															width="full"
+															/>
+															<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Download</Text>
+
+												</FlexItem>
+											</Flex>
+
+
 										</Chunk>
 										
 

@@ -87,6 +87,7 @@ const Button = (props) => {
 	}
 
 	// width is shorthand for variants
+	// this is pretty janky
 	// maybe reconsider and do like list
 	let variant;
 	if(!props.variant){
@@ -101,6 +102,9 @@ const Button = (props) => {
 				variant = {small: 'shrink'};
 				break;
 		}
+	}
+	else{
+		variant = props.variant
 	}
 	const currentVariant = findWidestActiveValue(variant, media);
 
