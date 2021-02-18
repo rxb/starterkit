@@ -103,21 +103,14 @@ const TldrCard = (props) => {
 								<Inline>
 									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
 									<Text type="small" inverted color="secondary">
-										@{tldrData.author.name.split(" ")[0].toLowerCase()} / {content.title.replace(/\s+/gi,"-").toLowerCase()}
+										{tldrData.author.name}/{tldrData.id}
 									</Text>
 								</Inline>
 							</FlexItem>
 							<FlexItem style={{alignItems: 'flex-end'}}>
-								<Inline>
 								<Text type="small" inverted color="secondary">
 									v{tldrData.currentTldrVersion.version}
 								</Text>
-								<Icon
-									shape="ChevronDown"
-									size="small"
-									color={swatches.textSecondaryInverted}
-									/>
-								</Inline>
 							</FlexItem>
 						</Flex>
 					</Chunk>
@@ -330,20 +323,64 @@ function Tldr(props) {
 											<Chunk border>
 												<Flex>
 													<FlexItem>
-														<Text weight="strong">Improve this card</Text>
-														<Text type="small" color="secondary">34 open issues</Text>
+														<Text weight="strong">Issues ({tldrData.issueCount})</Text>
+														<Text type="small" color="secondary">Report problems and suggest improvements</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon
 															color={swatches.textSecondary}
-															shape="MessageCircle"
+															shape="Gift"
 															/>
 													</FlexItem>
 												</Flex>
 											</Chunk>
 
-											
+											<Chunk border>
+												<Flex>
+													<FlexItem >
+														<Text weight="strong">Forks ({tldrData.forkCount})</Text>
+														<Text type="small" color="secondary">Use this card as a starting point for a new one</Text>
+													</FlexItem>
+													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
+														<Icon
+															color={swatches.textSecondary}
+															shape="GitPullRequest"
+															/>
+													</FlexItem>
+												</Flex>  
+											</Chunk>
 
+											<Chunk border>
+												<Flex>
+													<FlexItem>
+														<Link href={`versions/?tldrId=${tldrData.id}`}>
+															<Text weight="strong">Versions</Text>
+															<Text type="small" color="secondary">This card is v{tldrData.currentTldrVersion.version}, updated {dayjs(tldrData.currentTldrVersion.createdAt).fromNow()}</Text>
+														</Link>
+													</FlexItem>
+													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
+														<Icon
+															color={swatches.textSecondary}
+															shape="List"
+															/>
+													</FlexItem>
+												</Flex>
+											</Chunk>
+
+											<Chunk border>
+												<Flex>
+													<FlexItem shrink justify="center">
+														<Avatar
+															size="medium"
+															source={{uri: tldrData.author.photoUrl}}
+															/>
+													</FlexItem>
+													<FlexItem>
+														<Text weight="strong">{tldrData.author.name}</Text>
+														<Text type="small" color="secondary">@{tldrData.author.urlKey}</Text>
+													</FlexItem>
+												</Flex>
+											</Chunk>
 											
 									</Section>
 
