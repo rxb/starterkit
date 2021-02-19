@@ -386,17 +386,19 @@ function Tldr(props) {
 											</Chunk>
 
 											<Chunk border>
-												<Flex>
-													<FlexItem>
-														<Text weight="strong">Maintainer</Text>
-														<Text type="small" color="secondary">@rxb • Richard Boenigk</Text>
-													</FlexItem>
-													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
-														<Avatar 
-															size="small"
-															source={{uri: 'https://randomuser.me/api/portraits/women/28.jpg'}} />
-													</FlexItem>
-												</Flex>
+												<Link href={`/tldr/tldrprofile?userId=4`}>
+													<Flex>
+														<FlexItem>
+															<Text weight="strong">Maintainer</Text>
+															<Text type="small" color="secondary">@rxb • Richard Boenigk</Text>
+														</FlexItem>
+														<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
+															<Avatar 
+																size="small"
+																source={{uri: 'https://randomuser.me/api/portraits/women/28.jpg'}} />
+														</FlexItem>
+													</Flex>
+												</Link>
 											</Chunk>
 
 											

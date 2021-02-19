@@ -77,8 +77,8 @@ function TldrProfile(props) {
 				}
 
 				{ user.id && tldrsData && 
-					<Stripe>
-					<Bounds>
+					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
+						<Bounds>
 							<Section>
 								<Flex>
 									<FlexItem>
