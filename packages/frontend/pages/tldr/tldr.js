@@ -304,28 +304,38 @@ function Tldr(props) {
 											</Flex>
 										</Chunk>
 										*/}
-										<Chunk style={{marginTop: METRICS.space*2}}>
-											<Button
-												color="secondary"
-												style={{borderBottomRightRadius: 0, borderBottomLeftRadius: 0, marginBottom: 1}}
-												shape="ArrowUp"
-												onPress={()=>{
-													setTimeout(() =>{
-														dispatch(addToast("Thanks for the feedback"))
-													}, 300);
-												}}
-												/>
-											<Button
-												style={{borderTopRightRadius: 0, borderTopLeftRadius: 0, marginTop: 1}}
-												color="secondary"
-												shape="ArrowDown"
-												onPress={()=>{
-													setTimeout(() =>{
-														dispatch(addPrompt(<DownVotePrompt/>))
-													}, 300);
-												}}
-												/>
-										</Chunk>
+										<Flex style={{marginTop: METRICS.space*2.5}}>
+											<FlexItem shrink>
+												<Chunk>
+													<Button
+														color="secondary"
+														style={{borderBottomRightRadius: 0, borderBottomLeftRadius: 0, marginBottom: 1}}
+														shape="ArrowUp"
+														onPress={()=>{
+															setTimeout(() =>{
+																dispatch(addToast("Thanks for the feedback"))
+															}, 300);
+														}}
+														/>
+													<Button
+														style={{borderTopRightRadius: 0, borderTopLeftRadius: 0, marginTop: 1}}
+														color="secondary"
+														shape="ArrowDown"
+														onPress={()=>{
+															setTimeout(() =>{
+																dispatch(addPrompt(<DownVotePrompt/>))
+															}, 300);
+														}}
+														/>
+												</Chunk>
+											</FlexItem>
+											<FlexItem justify="center">
+												<Chunk>
+													<Text type="big">18.7k</Text>
+													<Text type="micro" color="hint">95% positive</Text>
+												</Chunk>
+											</FlexItem>
+										</Flex>
 
 										<Chunk border>
 											<Flex>
