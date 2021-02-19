@@ -309,6 +309,11 @@ function Tldr(props) {
 												color="secondary"
 												style={{borderBottomRightRadius: 0, borderBottomLeftRadius: 0, marginBottom: 1}}
 												shape="ArrowUp"
+												onPress={()=>{
+													setTimeout(() =>{
+														dispatch(addToast("Thanks for the feedback"))
+													}, 300);
+												}}
 												/>
 											<Button
 												style={{borderTopRightRadius: 0, borderTopLeftRadius: 0, marginTop: 1}}
@@ -317,7 +322,7 @@ function Tldr(props) {
 												onPress={()=>{
 													setTimeout(() =>{
 														dispatch(addPrompt(<DownVotePrompt/>))
-													}, 325);
+													}, 300);
 												}}
 												/>
 										</Chunk>
@@ -373,14 +378,13 @@ function Tldr(props) {
 											<Chunk border>
 												<Flex>
 													<FlexItem>
-														<Text weight="strong">Improve this card</Text>
-														<Text type="small" color="secondary">34 open issues</Text>
+														<Text weight="strong">Maintainer</Text>
+														<Text type="small" color="secondary">@rxb • Richard Boenigk</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
-														<Icon
-															color={swatches.textSecondary}
-															shape="MessageCircle"
-															/>
+														<Avatar 
+															size="small"
+															source={{uri: 'https://randomuser.me/api/portraits/women/28.jpg'}} />
 													</FlexItem>
 												</Flex>
 											</Chunk>
