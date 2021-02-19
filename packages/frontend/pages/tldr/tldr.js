@@ -204,6 +204,35 @@ const TldrCard = (props) => {
 	);
 };
 
+const DownVotePrompt = (props) => {
+	const {
+		onRequestClose
+	} = props;
+	return (
+		<Section>
+			<Chunk>
+				<Text type="sectionHead">Thanks for the feedback</Text>
+			</Chunk>
+			<Chunk>
+				<Text>Something something about making TLDR.cards even better</Text>
+			</Chunk>
+			<Chunk>
+				<Button
+					onPress={onRequestClose}
+					label="Open an issue"
+					width="full"
+					/>
+				<Button
+					onPress={onRequestClose}
+					color="secondary"
+					label="Report this card"
+					width="full"
+					/>
+			</Chunk>
+		</Section>
+	);
+};
+
 
 function Tldr(props) {
 
@@ -237,11 +266,11 @@ function Tldr(props) {
 
 								<FlexItem growFactor={0} style={{flexBasis: 350, flex: 0}}>
 									<Section>
-
-										<Chunk border>
+										{/*
+										<Chunk border style={{marginTop: METRICS.space*2}}>
 											<Flex flush>
 												<FlexItem justify="center" align="center" flush>
-													<Text type="sectionHead">1,230</Text>
+													<Text type="sectionHead">686</Text>
 													<Text type="micro" color="secondary">53% positive</Text>
 												</FlexItem>
 												<FlexItem flush>
@@ -256,49 +285,44 @@ function Tldr(props) {
 																	shape="ArrowUp" 
 																	color={swatches.tint} 
 																	/>
-																		
 															</Button>
 														</FlexItem>
-												
 														<FlexItem flush>
 															<Button
 																color="secondary"
 																width="full"
 																style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
 																>
-												
-																	<Icon 
-																		shape="ArrowDown" 
-																		color={swatches.tint} 
-																		/>
+																<Icon 
+																	shape="ArrowDown" 
+																	color={swatches.tint} 
+																	/>
 															</Button>
 														</FlexItem>
 													</Flex>
 												</FlexItem>
 											</Flex>
 										</Chunk>
+										*/}
+										<Chunk style={{marginTop: METRICS.space*2}}>
+											<Button
+												color="secondary"
+												style={{borderBottomRightRadius: 0, borderBottomLeftRadius: 0, marginBottom: 1}}
+												shape="ArrowUp"
+												/>
+											<Button
+												style={{borderTopRightRadius: 0, borderTopLeftRadius: 0, marginTop: 1}}
+												color="secondary"
+												shape="ArrowDown"
+												onPress={()=>{
+													setTimeout(() =>{
+														dispatch(addPrompt(<DownVotePrompt/>))
+													}, 325);
+												}}
+												/>
+										</Chunk>
+
 										<Chunk border>
-											{/*
-											<Flex style={{marginTop: METRICS.space / 2}}>
-												<FlexItem>
-														<Button 
-															shape="Share2" 
-															color="secondary" 
-															label="Share" 
-															width="full"
-															/>
-												</FlexItem>
-												<FlexItem>
-														<Button 
-															shape="Bookmark" 
-															color="secondary" 
-															label="Save" 
-															width="full"
-															/>
-												</FlexItem>
-											</Flex>
-											*/}
-											
 											<Flex>
 												<FlexItem>
 														<Button 
@@ -346,7 +370,20 @@ function Tldr(props) {
 												</Flex>
 											</Chunk>
 
-											
+											<Chunk border>
+												<Flex>
+													<FlexItem>
+														<Text weight="strong">Improve this card</Text>
+														<Text type="small" color="secondary">34 open issues</Text>
+													</FlexItem>
+													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
+														<Icon
+															color={swatches.textSecondary}
+															shape="MessageCircle"
+															/>
+													</FlexItem>
+												</Flex>
+											</Chunk>
 
 											
 									</Section>
