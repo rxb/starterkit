@@ -202,9 +202,9 @@ const styles = StyleSheet.create({
 		borderRadius: 500,
 		userSelect: 'none',
 		marginVertical: METRICS.pseudoLineHeight,
-		flexDirection: 'row',
+		//flexDirection: 'row',
 		justifyContent: 'center',
-		alignSelf: 'flex-start'
+		alignSelf: 'flex-start',
 	},
 	'button--small': {
 		paddingHorizontal: 9, 

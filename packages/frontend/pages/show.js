@@ -282,7 +282,7 @@ function Show(props) {
 												<Button
 													href={{pathname:'/showedit', query: {showId: showData.id}}}
 													shape="Edit"
-													label="Edit show"
+													label="Edit show show show"
 													color="secondary"
 													variant={{
 														small: 'iconOnly',
