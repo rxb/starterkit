@@ -138,7 +138,7 @@ const Button = (props) => {
 			{...other}
 			>
 			<View style={isLoading ? styles.visibilityHidden : styles.visibilityVisibile}>
-				<View style={[styles["inline"], styles["inline--noWrap"]]}>
+				<View style={styles.buttonContent}>
 					{ shape &&
 						<Icon 
 							shape={shape} 

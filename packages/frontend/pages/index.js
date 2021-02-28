@@ -37,7 +37,7 @@ import {
 	TextInput,
 } from '../components/cinderblock';
 
-import Page from '../components/Page';
+import CinderblockPage from '../components/CinderblockPage';
 import LoginForm from '../components/LoginForm';
 import ShowCard from '../components/ShowCard';
 
@@ -125,7 +125,7 @@ function Hello() {
 
 	return (
 		<Fragment>
-			<Page>
+			<CinderblockPage>
 
 				<Head>
 					<meta property='og:title' content='Cinderblock' />
@@ -260,7 +260,7 @@ function Hello() {
 
 				</Flex>
 
-			</Page>
+			</CinderblockPage>
 
 				<Modal
 					visible={modalVisible}

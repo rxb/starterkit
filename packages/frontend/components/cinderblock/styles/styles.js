@@ -236,6 +236,15 @@ const styles = StyleSheet.create({
 	'button--secondaryInverted': {
 		backgroundColor: swatches.textSecondaryInverted,
 	},
+	buttonContent: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		alignItems: 'center',
+		justifyContent: 'center',
+		minWidth: 0,
+		overflow: 'hidden',
+		flexWrap: 'nowrap'
+	},
 	buttonText: {
 		textAlign: 'center',
 		fontWeight: '600',
