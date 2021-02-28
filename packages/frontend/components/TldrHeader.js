@@ -57,7 +57,7 @@ function TldrHeader (props) {
 				<Header>
 					<Flex direction="row">
 						<FlexItem>
-							<Link href="/">
+							<Link href="/tldr">
 								<Inline>
 									<Icon shape="FileText" color={swatches.tint} />
 									<Text weight="strong" color="tint" type="big">tldr</Text>

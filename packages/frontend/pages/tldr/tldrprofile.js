@@ -44,7 +44,7 @@ import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
 
 
-import {TldrCardSmall} from './components';
+import {TldrCardSmall, CreateTldrCardSmall} from './components';
 
 import Markdown from 'markdown-to-jsx';
 import dayjs from 'dayjs';
@@ -84,12 +84,6 @@ function TldrProfile(props) {
 						<Bounds>
 							<Section>
 								<Flex>
-									<FlexItem>
-										<Chunk>
-											<Text type="pageHead">@rxb</Text>
-											<Text>{user.name}</Text>
-										</Chunk>
-									</FlexItem>
 									<FlexItem shrink justify="center">
 										<Chunk>
 											<Avatar
@@ -98,6 +92,13 @@ function TldrProfile(props) {
 												/>
 										</Chunk>
 									</FlexItem>
+									<FlexItem>
+										<Chunk>
+											<Text type="pageHead">@rxb</Text>
+											<Text>{user.name}</Text>
+										</Chunk>
+									</FlexItem>
+									
 								</Flex>
 								
 							</Section>
@@ -108,14 +109,43 @@ function TldrProfile(props) {
 											<Text type="sectionHead">Author ({tldrsData.length})</Text>
 										</Chunk>		
 									</FlexItem>
-									<FlexItem shrink>
+									
+								</Flex>
+								
+								<List
+									variant={{
+										small: 'grid',
+									}}
+									itemsInRow={{
+										small: 1,
+										medium: 2,
+										large: 4
+									}}
+									scrollItemWidth={300}
+									items={[...tldrsData, {last: true}]}
+                              renderItem={(item, i)=>(
+                                 <Chunk key={i}>
+                                    { !item.last &&
+                                       <Link href={`/tldr/tldr?tldrId=${item.id}`}>
+                                          <TldrCardSmall tldr={item} style={{minHeight: 160}} />
+                                       </Link>
+                                    }
+                                    { item.last &&
+                                       <Link href={`/tldr/edit`}>
+                                          <CreateTldrCardSmall />
+                                       </Link>
+                                    }
+                                 </Chunk>
+                              )}
+									/>
+							</Section>
+							
+							<Section border>
+								<Flex>
+									<FlexItem justify="center">
 										<Chunk>
-											<Button
-												size="small"
-												label="Create card"
-												href={`./edit`}
-												/>
-										</Chunk>
+											<Text type="sectionHead">Saved ({tldrsData.length})</Text>
+										</Chunk>		
 									</FlexItem>
 								</Flex>
 								

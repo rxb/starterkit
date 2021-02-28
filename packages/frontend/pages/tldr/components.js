@@ -62,3 +62,21 @@ export const TldrCardSmall = (props) => {
 	);
 
 }
+
+export const CreateTldrCardSmall = (props) => {
+	return(
+		<Card style={{minHeight: 160, borderStyle: 'dashed', backgroundColor: 'transparent'}}>
+			<Sectionless style={{flex: 1}}>
+				<View style={styles.absoluteCenter}>
+						<Icon 
+							shape="Plus"
+							size="large"
+							color={swatches.tint}
+							style={{alignSelf: 'center'}}
+							/>
+						<Text type="micro" color="hint">Create card</Text>
+				</View>
+			</Sectionless>
+		</Card>
+	)
+}

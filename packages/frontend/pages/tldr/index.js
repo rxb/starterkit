@@ -44,7 +44,7 @@ import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
 
 
-import {TldrCardSmall} from './components';
+import {TldrCardSmall, CreateTldrCardSmall} from './components';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -158,19 +158,8 @@ function TldrHome(props) {
                                     }
                                     { item.last &&
                                        <Link href={`/tldr/edit`}>
-                                          <Card style={{minHeight: 160, borderStyle: 'dashed', backgroundColor: 'transparent'}}>
-                                             <Sectionless style={{flex: 1}}>
-                                                <View style={styles.absoluteCenter}>
-                                                      <Icon 
-                                                         shape="Plus"
-                                                         size="large"
-                                                         color={swatches.textSecondary}
-                                                         style={{alignSelf: 'center'}}
-                                                         />
-                                                      <Text type="small" color="secondary">new card</Text>
-                                                </View>
-                                             </Sectionless>
-                                          </Card>
+                                          <CreateTldrCardSmall />
+                                         
                                        </Link>
                                     }
                                  </Chunk>
