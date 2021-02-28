@@ -50,6 +50,9 @@ import {METRICS} from '@/components/cinderblock/designConstants';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
 
+import {TldrCardSmall, TldrCard} from './components';
+
+
 import { authentication } from '@feathersjs/client';
 
 import { DndProvider } from 'react-dnd'
@@ -254,6 +257,8 @@ function VersionEdit(props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
+	const liveTldrData = {currentTldrVersion: {content: {title: '', steps: []}}, author: {name: ''}};
+
 		return (
 			<Fragment>
 			<Page>
@@ -271,12 +276,19 @@ function VersionEdit(props) {
 											<Text weight="strong"> /rxb/whatever v1.2</Text>
 										</Chunk>
 
-										{ tldrData &&
-											<TldrForm
-												tldrData={tldrData}
-												authentication={authentication}
-												/>
-										}
+										<Flex>
+											<FlexItem>
+												{ tldrData &&
+													<TldrForm
+														tldrData={tldrData}
+														authentication={authentication}
+														/>
+												}
+											</FlexItem>
+											<FlexItem>
+												<TldrCard tldrData={liveTldrData} />
+											</FlexItem>
+										</Flex>
 									</Section>
 								</FlexItem>
 								

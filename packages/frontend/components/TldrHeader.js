@@ -56,7 +56,9 @@ function TldrHeader (props) {
 
 				<Header>
 					<Flex direction="row">
-						<FlexItem>
+						<FlexItem
+						
+							>
 							<Link href="/tldr">
 								<Inline>
 									<Icon shape="FileText" color={swatches.tint} />
@@ -64,7 +66,10 @@ function TldrHeader (props) {
 								</Inline>
 							</Link>
 						</FlexItem>
-							<FlexItem shrink align="flex-end">
+							<FlexItem 
+								shrink 
+								align="flex-end" 
+								>
 								<Link href="/tldr/edit">
 									<Inline nowrap>
 										<Icon shape="Plus" color={swatches.tint} />
@@ -72,7 +77,10 @@ function TldrHeader (props) {
 									</Inline>
 								</Link>
 							</FlexItem>
-							<FlexItem shrink align="flex-end">
+							<FlexItem 
+								shrink 
+								align="flex-end"
+								>
 									
 									<Fragment>
 										{user.id &&
