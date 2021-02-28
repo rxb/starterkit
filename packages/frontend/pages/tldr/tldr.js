@@ -339,6 +339,13 @@ function Tldr(props) {
 										</Flex>
 
 										<Chunk border>
+											<Button 
+												shape="Edit"
+												label="Edit card"
+												width="full"
+												color="secondary"
+												href={`/tldr/versionedit?tldrid=${tldrData.id}`}
+												/>
 											<Flex>
 												<FlexItem>
 														<Button 
@@ -374,8 +381,8 @@ function Tldr(props) {
 											<Chunk border>
 												<Flex>
 													<FlexItem>
-														<Text weight="strong">Improve this card</Text>
-														<Text type="small" color="secondary">34 open issues</Text>
+														<Text weight="strong">Open issues (13)</Text>
+														<Text type="small" color="secondary">Help improve this card</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 														<Icon
@@ -385,6 +392,7 @@ function Tldr(props) {
 													</FlexItem>
 												</Flex>
 											</Chunk>
+											
 
 											<Chunk border>
 												<Link href={`/tldr/tldrprofile?userId=4`}>
@@ -400,8 +408,8 @@ function Tldr(props) {
 														</FlexItem>
 													</Flex>
 												</Link>
-											</Chunk>
 
+											</Chunk>
 											
 									</Section>
 

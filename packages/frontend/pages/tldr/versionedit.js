@@ -217,21 +217,21 @@ const TldrForm = (props) => {
 			</Touch>
 
 			<Chunk border>
-				<Flex nbsp>
-					<FlexItem nbsp shrink>
+				<Flex >
+					<FlexItem shrink>
 						<Button
 							color="secondary"
-							label="Save draft"
+							label="Save as draft"
 							isLoading={formState.loading && !formState.getFieldValue('publish')}
 							onPress={ () => {
 								submitForm({publish: false});
 							}}				
 							/>
 					</FlexItem>
-					<FlexItem nbsp shrink>
+					<FlexItem shrink>
 						<Button
 							color="primary"
-							label="Publish"
+							label="Publish as new version (v.12)"
 							isLoading={formState.loading && formState.getFieldValue('publish')}
 							onPress={ () => {
 								submitForm({publish: true});
