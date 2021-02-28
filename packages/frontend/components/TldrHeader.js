@@ -64,18 +64,26 @@ function TldrHeader (props) {
 								</Inline>
 							</Link>
 						</FlexItem>
-							<FlexItem align="flex-end">
+							<FlexItem shrink align="flex-end">
+								<Link href="/tldr/edit">
+									<Inline nowrap>
+										<Icon shape="Plus" color={swatches.tint} />
+										<Text color="tint">Create</Text>
+									</Inline>
+								</Link>
+							</FlexItem>
+							<FlexItem shrink align="flex-end">
 									
 									<Fragment>
 										{user.id &&
 											<Fragment>
 												<Touch onPress={()=> userMenu.current.toggle()}>
-													<Inline>
+													<Inline nowrap>
 														<Avatar
 															source={{uri: user.photoUrl}}
 															size="small"
 															/>
-														<Text>{user.name}</Text>
+														<Icon shape="ChevronDown" size="small" color={swatches.tint} />
 													</Inline>
 												</Touch>
 
@@ -97,7 +105,7 @@ function TldrHeader (props) {
 										{!user.id &&
 											<Touch onPress={()=>{
 												dispatch(updateUi({logInModalVisible: true}))
-											}}><Text color="tint">Log in</Text></Touch>
+											}}><Text color="tint" nowrap>Log in</Text></Touch>
 										}
 									</Fragment>
 							</FlexItem>

@@ -58,7 +58,6 @@ export const TldrCardSmall = (props) => {
 					</Chunk>
 				</Sectionless>
 			</Card>
-
 	);
 
 }
