@@ -6,7 +6,7 @@ import {
 	showDelayedToasts,
 	logIn,
 	logInFailure,
-	logOut,
+	updateUi
 } from '../actions';
 
 import NProgress from 'nprogress'
@@ -60,10 +60,15 @@ function usePrevious (value) {
 	return ref.current;
 }
 
+
+// TODO: pass in header
+
+
 function Page (props) {
 	
 	// data from redux
 	const dispatch = useDispatch(); 
+	const ui = useSelector(state => state.ui);
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
@@ -80,18 +85,12 @@ function Page (props) {
 	}, []);
 
 
-	// login modal
-	const [modalVisible, setModalVisible] = useState(false);
-	const toggleModal = () => {
-		setModalVisible(!modalVisible);
-	}
-
 	// dismiss modal on login
 	const prevUser = usePrevious(user);
 	useEffect(()=>{
 		// got user, so dismiss modal
-		if(user.id && prevUser !== user && modalVisible){
-			toggleModal();
+		if(user.id && prevUser !== user && ui.logInModalVisible){
+			dispatch(updateUi({logInModalVisible: false}))
 		} 
 	}, [user]);
 	
@@ -104,92 +103,39 @@ function Page (props) {
 		});
 	},[authentication]);
 
-	const userMenu = useRef(null);
 
 	return (
-		<View style={{minHeight: '100vh'}}>
+		<View style={{minHeight: '100vh', flex: 1}}>
 
-				{ !props.hideHeader &&
-				<Header maxWidth="auto">
-					<Flex direction="row">
-						<FlexItem>
-							<Link href="/">
-								<Inline>
-									<Icon shape="FileText" color={swatches.tint} />
-									<Text weight="strong" color="tint">CINDERBLOCK</Text>
-								</Inline>
-							</Link>
-						</FlexItem>
-							<FlexItem align="flex-end">
-									
-									<Fragment>
-										{user.id &&
-											<Fragment>
-												<Touch onPress={()=> userMenu.current.toggle()}>
-													<Inline>
-														<Avatar
-															source={{uri: user.photoUrl}}
-															size="small"
-															/>
-														<Text>{user.name}</Text>
-													</Inline>
-												</Touch>
-
-												<Menu ref={userMenu}>
-													<Sectionless>
-														<Chunk>
-															{ ['Profile', 'Settings', 'Log out'].map((item, i)=>(
-																<Touch onPress={feathersClient.logout} key={i}>
-																	<Text color="tint" >{item}</Text>
-																</Touch>
-															))}
-														</Chunk>
-													</Sectionless>
-												</Menu>
-
-											</Fragment>
-										}
-
-										{!user.id &&
-											<Touch onPress={toggleModal}><Text color="tint">Log in</Text></Touch>
-										}
-									</Fragment>
-							</FlexItem>
-					</Flex>
-				</Header>
-				}
-
-				<View style={{flex: 1}}>
-					{props.children}
-				</View>
-				
+			{props.children}
 			
-				<Modal
-					visible={modalVisible}
-					onRequestClose={toggleModal}
-					>
-					
-					<Stripe>
-						
-						<Section>
-							<Chunk>
-								<Text type="pageHead">Log in</Text>
-							</Chunk>
-						</Section>
-						<Section>
-								<LoginForm />
-						</Section>
-						
-					</Stripe>
-					
-				</Modal>
+			<Modal
+				visible={ui.logInModalVisible}
+				onRequestClose={()=>{
+					dispatch(updateUi({logInModalVisible: false}))
+				}}
+				>
 				
+				<Stripe>
+					<Section>
+						<Chunk>
+							<Text type="pageHead">Log in</Text>
+						</Chunk>
+					</Section>
+					<Section>
+						<LoginForm />
+					</Section>
+					
+				</Stripe>
 				
-				<ConnectedToaster />
-				<ConnectedPrompter />
+			</Modal>
 			
+			
+			<ConnectedToaster />
+			<ConnectedPrompter />
+		
 
-			</View>
+		</View>
 	);
 
 }

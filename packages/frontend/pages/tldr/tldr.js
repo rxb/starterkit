@@ -43,7 +43,7 @@ import swatches from '../../components/cinderblock/styles/swatches';
 import { sleep } from '@/components/cinderblock/utils';
 import { METRICS } from '../../components/cinderblock/designConstants';
 import Page from '../../components/Page';
-
+import TldrHeader from '@/components/TldrHeader';
 
 
 import Markdown from 'markdown-to-jsx';
@@ -249,6 +249,7 @@ function Tldr(props) {
 
 		return (
 			<Page>
+				<TldrHeader />
 
 				<Stripe style={{/*paddingTop: 0,*/ backgroundColor: swatches.notwhite}}>
 

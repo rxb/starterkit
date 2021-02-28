@@ -48,6 +48,8 @@ import {METRICS} from '@/components/cinderblock/designConstants';
 
 
 import Page from '@/components/Page';
+import TldrHeader from '@/components/TldrHeader';
+
 import { authentication } from '@feathersjs/client';
 
 import { DndProvider } from 'react-dnd'
@@ -255,6 +257,7 @@ function VersionEdit(props) {
 		return (
 			<Fragment>
 			<Page>
+				<TldrHeader />
 				<Head>
 					<title>Edit tldr</title>
 				</Head>

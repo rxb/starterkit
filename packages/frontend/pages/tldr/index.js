@@ -41,6 +41,8 @@ import swatches from '@/components/cinderblock/styles/swatches';
 import { sleep } from '@/components/cinderblock/utils';
 import { METRICS } from '@/components/cinderblock/designConstants';
 import Page from '@/components/Page';
+import TldrHeader from '@/components/TldrHeader';
+
 
 import {TldrCardSmall} from './components';
 
@@ -76,7 +78,7 @@ function TldrHome(props) {
 
 		return (
 			<Page>
-
+            <TldrHeader />
 
 				{ !categoryId && 
                   <Stripe>

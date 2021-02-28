@@ -28,13 +28,13 @@ import {
 	View,
 	useMediaContext,
 	
-} from '../components/cinderblock';
+} from '@/components/cinderblock';
 
-import styles from '../components/cinderblock/styles/styles';
-import swatches from '../components/cinderblock/styles/swatches';
-import {METRICS} from '../components/cinderblock/designConstants';
-import Page from '../components/Page';
-import OutpostHeader from '../components/OutpostHeader';
+import styles from '@/components/cinderblock/styles/styles';
+import swatches from '@/components/cinderblock/styles/swatches';
+import {METRICS} from '@/components/cinderblock/designConstants';
+import Page from '@/components/Page';
+import OutpostHeader from '@/components/OutpostHeader';
 
 import Markdown from 'markdown-to-jsx';
 
@@ -206,7 +206,7 @@ const OutpostRow = (props) => {
 	const gridItem = (outpost, i) => {
 		return(
 			<Chunk>
-				<Link href="/events">
+				<Link href="/outpost/events">
 					<Card style={[thisCardStyle]}>
 						<Sectionless style={{/*backgroundColor: swatches.tint*/}}>
 								<Chunk>

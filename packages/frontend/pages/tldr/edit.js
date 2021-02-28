@@ -48,6 +48,8 @@ import {METRICS} from '@/components/cinderblock/designConstants';
 
 
 import Page from '@/components/Page';
+import TldrHeader from '@/components/TldrHeader';
+
 import { authentication } from '@feathersjs/client';
 
 
@@ -72,6 +74,7 @@ const Edit = (props) => {
 
    return (
       <Page>
+         <TldrHeader />
          <Stripe>
             <Bounds>
                <Section>

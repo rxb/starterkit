@@ -50,7 +50,7 @@ import {
 
 
 import styles from '../components/cinderblock/styles/styles';
-import Page from '../components/Page';
+import CinderblockPage from '../components/CinderblockPage';
 
 import { runValidations, readFileAsDataUrl } from '../components/cinderblock/utils';
 
@@ -257,7 +257,7 @@ function ShowEdit(props) {
 	const user = authentication.user || {};
 
 		return (
-			<Page>
+			<CinderblockPage>
 				<Head>
 					<meta property='og:title' content='Scratch' />
 					<title>Edit show</title>
@@ -296,7 +296,7 @@ function ShowEdit(props) {
 
 					</Bounds>
 				</Stripe>
-			</Page>
+			</CinderblockPage>
 		);
 }
 

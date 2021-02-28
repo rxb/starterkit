@@ -1,13 +1,13 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 
-import { addToast, addPrompt } from '../actions';
+import { addToast, addPrompt } from '../../actions';
 import {
 	fetcher,
 	useEvents,
 	postEvent
-} from '../swr';
-import AREAS from '../data/areas';
+} from '../../swr';
+import AREAS from '../../data/areas';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -44,15 +44,15 @@ import {
 	Touch,
 	View,
 	useFormState
-} from '../components/cinderblock';
+} from '@/components/cinderblock';
 
-import { runValidations, readFileAsDataUrl } from '../components/cinderblock/utils';
+import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/utils';
 
-import Page from '../components/Page';
-import OutpostHeader from '../components/OutpostHeader';
-import swatches from '../components/cinderblock/styles/swatches';
-import styles from '../components/cinderblock/styles/styles';
-import { METRICS } from '../components/cinderblock/designConstants';
+import Page from '@/components/Page';
+import OutpostHeader from '@/components/OutpostHeader';
+import swatches from '@/components/cinderblock/styles/swatches';
+import styles from '@/components/cinderblock/styles/styles';
+import { METRICS } from '@/components/cinderblock/designConstants';
 import { Check } from 'react-feather';
 
 

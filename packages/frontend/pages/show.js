@@ -57,8 +57,10 @@ import {
 	View,
 	useFormState
 } from '../components/cinderblock';
-import Page from '../components/Page';
+import CinderblockPage from '../components/CinderblockPage';
+
 import Head from 'next/head';
+
 
 import { 
 	runValidations, 
@@ -230,7 +232,8 @@ function Show(props) {
 
 
 	return (
-		<Page>
+		<CinderblockPage>
+
 			<Head>
 				<meta property='og:title' content={`Show: ${showData.title}`} />
 				<meta property='og:image' content={showData.photoUrl} />
@@ -282,7 +285,7 @@ function Show(props) {
 												<Button
 													href={{pathname:'/showedit', query: {showId: showData.id}}}
 													shape="Edit"
-													label="Edit show show show"
+													label="Edit show"
 													color="secondary"
 													variant={{
 														small: 'iconOnly',
@@ -372,7 +375,7 @@ function Show(props) {
 
 				</Bounds>
 			</Stripe>
-		</Page>
+		</CinderblockPage>
 	);
 
 }

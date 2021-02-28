@@ -32,6 +32,15 @@ export const removeModal = (id) => ({
 });
 */
 
+// UI -- assorted global UI state
+export const updateUi = ( diff ) => ({
+	type: 'UPDATE_UI',
+	payload: diff
+});
+
+export const resetUi = ( ) => ({
+	type: 'RESET_UI',
+});
 
 // TOASTS
 export const addToast = (message, options = {}) => ({

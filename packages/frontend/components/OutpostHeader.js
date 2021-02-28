@@ -45,7 +45,7 @@ const OutpostHeader = (props) => {
 		<Header position="static" type={type}>
 			<Flex direction="row">
 				<FlexItem>
-						<Link href="/splash">
+						<Link href="/outpost/">
 							<Inline>
 							<View style={{transform: [{ rotateY: '180deg' }]}} >
 								<Icon color={inverted ? "white" : swatches.tint} shape="Flag"/>
