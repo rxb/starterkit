@@ -314,16 +314,20 @@ function Tldr(props) {
 									scrollItemWidth={300}
 									
 									items={[
-										tldrData.currentTldrVersion.content,
-										tldrData.currentTldrVersion.content,
-										tldrData.currentTldrVersion.content,
-										tldrData.currentTldrVersion.content,
+										tldrData,
+										tldrData,
+										tldrData,
+										tldrData,
 									]}
 									
 									renderItem={(item, i)=>{
 										return(
 											<Chunk key={i}>
-												<TldrCardSmall tldr={item} />
+												<Link 
+													href={`/tldr/tldr?tldrid=${item.id}`}
+													>
+													<TldrCardSmall tldr={item} />
+												</Link>
 											</Chunk>
 										);
 									}}

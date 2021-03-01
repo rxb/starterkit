@@ -165,9 +165,10 @@ export const TldrCardSmall = (props) => {
 
 	const {
 		tldr,
-      style
+		style
 	} = props;
-	const content = tldr.currentTldrVersion?.content || {};
+	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
+	const content = thisVersion?.content || {};
 
 	return(
 			<Card style={style}>
@@ -179,7 +180,7 @@ export const TldrCardSmall = (props) => {
 					}}
 					>
 					<Chunk>
-						<Text type="small" color="hint">someuser/{tldr.id}</Text>
+						<Text type="small" color="hint">@{tldr.author?.urlKey}/{tldr.id}</Text>
 						<Text type="big">{content.title}</Text>
 						<Text color="secondary" type="small" style={{fontStyle: 'italic'}}>{content.blurb}</Text>
 					</Chunk>
