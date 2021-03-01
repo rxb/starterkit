@@ -67,7 +67,7 @@ export const TldrCard = (props) => {
 							<FlexItem style={{alignItems: 'flex-end'}}>
 								<Inline>
 								<Text type="small" inverted color="secondary">
-									v{thisVersion.version}
+									v.{thisVersion.version}
 								</Text>
 								<Icon
 									shape="ChevronDown"

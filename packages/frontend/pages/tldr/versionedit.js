@@ -286,14 +286,16 @@ function VersionEdit(props) {
 					<Bounds>
 							<Flex direction="column" switchDirection="medium">
 								<FlexItem growFactor={2}>
-									<Section>
-										<Chunk inline>
-											<Avatar size="small" source={{uri: 'https://randomuser.me/api/portraits/women/40.jpg'}} />
-											<Text weight="strong"> /rxb/whatever v${previewVersion.version}</Text>
-										</Chunk>
+									
+										
 
 										<Flex>
 											<FlexItem>
+											<Section>
+												<Chunk inline>
+													<Avatar size="small" source={{uri: 'https://randomuser.me/api/portraits/women/40.jpg'}} />
+													<Text weight="strong"> /rxb/whatever v.{previewVersion.version}</Text>
+												</Chunk>
 												{ tldr &&
 													<TldrForm
 														tldrData={tldr}
@@ -302,15 +304,17 @@ function VersionEdit(props) {
 														authentication={authentication}
 														/>
 												}
+												</Section>
 											</FlexItem>
 											<FlexItem>
-												<TldrCard 
-													tldr={tldr}
-													thisVersion={previewVersion} 
-													/>
+												<Section>
+													<TldrCard 
+														tldr={tldr}
+														thisVersion={previewVersion} 
+														/>
+												</Section>
 											</FlexItem>
 										</Flex>
-									</Section>
 								</FlexItem>
 								
 							</Flex>
