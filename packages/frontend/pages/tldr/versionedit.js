@@ -3,7 +3,7 @@ import React, {Fragment, useState, useCallback} from 'react';
 import {
 	fetcher,
 	patchTldr,
-	useTldr
+	getTldrUrl,
 } from '@/swr';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
@@ -78,8 +78,21 @@ const TldrForm = (props) => {
 
 	const {
 		tldrData,
-		authentication
+		authentication,
+		previewVersion,
+		setPreviewVersion
 	} = props;
+
+	const parseDraftContent = (fields) => {
+		return {
+			title: fields.title,
+			blurb: fields.blurb,
+			steps: fields.steps.map(item => {
+				delete item.id
+				return item;
+			}).filter(item => (item.head && item.head.length || item.body && item.body.length) )
+		}
+	};
 
 
 	const formState = useFormState({
@@ -93,6 +106,13 @@ const TldrForm = (props) => {
 		toastableErrors: {
 			BadRequest: 'Something went wrong',
 			NotAuthenticated: 'Not signed in'
+		},
+		onChange: fields => {
+			const content = parseDraftContent(fields)
+			setPreviewVersion({
+				...previewVersion,
+				content: content 
+			})
 		},
 		addToast: msg => dispatch(addToast(msg))
 	})
@@ -114,14 +134,7 @@ const TldrForm = (props) => {
 		const patchFields = {
 			...finalFields,
 			id: tldrData.id,
-			draftContent: {
-				title: formState.fields.title,
-				blurb: formState.fields.blurb,
-				steps: formState.fields.steps.map(item => {
-						delete item.id
-						return item;
-					}).filter(item => (item.head && item.head.length || item.body && item.body.length) )
-			}
+			draftContent: parseDraftContent(formState.fields)
 		}
 
 		formState.setLoading(true);
@@ -234,7 +247,7 @@ const TldrForm = (props) => {
 					<FlexItem shrink>
 						<Button
 							color="primary"
-							label="Publish as new version (v.12)"
+							label={`Publish as new version (v.${previewVersion.version})`}
 							isLoading={formState.loading && formState.getFieldValue('publish')}
 							onPress={ () => {
 								submitForm({publish: true});
@@ -252,12 +265,15 @@ const TldrForm = (props) => {
 
 function VersionEdit(props) {
 
-	const {data: tldrData, error: tldrError, mutate: tldrMutate} = useTldr(props.tldrId);
-
+	const { tldr } = props
+	console.log("TLDR");
+	console.log(tldr)
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
-
-	const liveTldrData = {currentTldrVersion: {content: {title: '', steps: []}}, author: {name: ''}};
+	const [previewVersion, setPreviewVersion] = useState({
+		version: (tldr.currentTldrVersion.version + 1),
+		content: tldr.draftContent
+	});
 
 		return (
 			<Fragment>
@@ -273,20 +289,25 @@ function VersionEdit(props) {
 									<Section>
 										<Chunk inline>
 											<Avatar size="small" source={{uri: 'https://randomuser.me/api/portraits/women/40.jpg'}} />
-											<Text weight="strong"> /rxb/whatever v1.2</Text>
+											<Text weight="strong"> /rxb/whatever v${previewVersion.version}</Text>
 										</Chunk>
 
 										<Flex>
 											<FlexItem>
-												{ tldrData &&
+												{ tldr &&
 													<TldrForm
-														tldrData={tldrData}
+														tldrData={tldr}
+														previewVersion={previewVersion}
+														setPreviewVersion={setPreviewVersion}
 														authentication={authentication}
 														/>
 												}
 											</FlexItem>
 											<FlexItem>
-												<TldrCard tldrData={liveTldrData} />
+												<TldrCard 
+													tldr={tldr}
+													thisVersion={previewVersion} 
+													/>
 											</FlexItem>
 										</Flex>
 									</Section>
@@ -304,9 +325,13 @@ function VersionEdit(props) {
 
 VersionEdit.getInitialProps = async(context) => {
 	const {store, isServer, pathname, query} = context;
-	const tldrId = query.tldrId || 2; // hardcode for now
+	const tldrId = query.tldrid; // query params become lowercase
+	const tldr = await fetcher(getTldrUrl(tldrId));
+	console.log('after fetch');
+	console.log(tldr);
 	return {
-		tldrId
+		tldrId,
+		tldr
 	}
 }
 

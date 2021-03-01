@@ -41,11 +41,11 @@ export const TldrCard = (props) => {
 	const [showReferences, setReferences] = useState(false);
 
 	const {
-		tldrData,
+		tldr,
 		style
 	} = props;
-
-	const content = tldrData.currentTldrVersion.content;
+	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
+	const content = thisVersion.content;
 
 	return (
 		<Card shadow style={[{ borderRadius: 12 }, style ]}>
@@ -60,14 +60,14 @@ export const TldrCard = (props) => {
 									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
 									<Text type="small" inverted color="secondary">
 										{/* TODO: replace with actual data, this is fakedwha */}
-										@{tldrData.author.name.split(" ")[0].toLowerCase()} / {content.title.replace(/[^A-Za-z0-9-\s]+/gi, "").replace(/\s+/gi,"-").toLowerCase()}
+										@{tldr.author.urlKey} / {content.title.replace(/[^A-Za-z0-9-\s]+/gi, "").replace(/\s+/gi,"-").toLowerCase()}
 									</Text>
 								</Inline>
 							</FlexItem>
 							<FlexItem style={{alignItems: 'flex-end'}}>
 								<Inline>
 								<Text type="small" inverted color="secondary">
-									v{tldrData.currentTldrVersion.version}
+									v{thisVersion.version}
 								</Text>
 								<Icon
 									shape="ChevronDown"
@@ -86,7 +86,7 @@ export const TldrCard = (props) => {
 			<Sectionless style={[
 					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {}
 				]}>
-					<View>
+				<View>
 					{content.steps.map((step, i)=>(
 						<View 
 							key={i} 
@@ -126,10 +126,9 @@ export const TldrCard = (props) => {
 					
 				
 					<Chunk>
-
-							<Touch onPress={()=>{
-								setReferences(!showReferences)
-							}}>
+						<Touch onPress={()=>{
+							setReferences(!showReferences)
+						}}>
 
 							{ !showReferences &&
 								<Text color="hint">
@@ -151,7 +150,8 @@ export const TldrCard = (props) => {
 										/>
 									Hide references & rationale
 								</Text>
-							}							
+							}	
+
 						</Touch>
 					</Chunk>
 				</Sectionless>
