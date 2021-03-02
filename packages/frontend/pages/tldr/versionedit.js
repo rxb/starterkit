@@ -36,6 +36,7 @@ import {
 	Section,
 	Sectionless,
 	Stripe,
+	Tabs,
 	Text,
 	TextInput,
 	Touch,
@@ -158,6 +159,7 @@ const TldrForm = (props) => {
 				<TextInput
 					style={[styles.textPageHead, inputJoinedTop]}
 					id="title"
+					placeholder="Title"
 					value={formState.getFieldValue('title')}
 					onChange={e => formState.setFieldValue('title', e.target.value) }
 					/>
@@ -165,6 +167,7 @@ const TldrForm = (props) => {
 				<TextInput
 					style={[{fontStyle: 'italic'}, inputJoinedBottom]}
 					id="blurb"
+					placeholder="Short description"
 					value={formState.getFieldValue('blurb')}
 					onChange={e => formState.setFieldValue('blurb', e.target.value) }
 					/>
@@ -266,14 +269,13 @@ const TldrForm = (props) => {
 function VersionEdit(props) {
 
 	const { tldr } = props
-	console.log("TLDR");
-	console.log(tldr)
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 	const [previewVersion, setPreviewVersion] = useState({
 		version: (tldr.currentTldrVersion.version + 1),
 		content: tldr.draftContent
 	});
+	const [selectedTab, setSelectedTab] = useState();
 
 		return (
 			<Fragment>
@@ -284,41 +286,47 @@ function VersionEdit(props) {
 				</Head>
 				<Stripe>
 					<Bounds>
-							<Flex direction="column" switchDirection="medium">
-								<FlexItem growFactor={2}>
-									
-										
+							<Section>
+								<Chunk>
+									<Tabs 
+										selectedValue={selectedTab}
+										onChange={ value => setSelectedTab(value) }
+										>
+										<Tabs.Item 
+											label="Edit" 
+											value="edit" 
+											/>
+										<Tabs.Item 
+											label="Preview" 
+											value="preview" 
+											/>
+									</Tabs>
+								</Chunk>
+							</Section>
 
-										<Flex>
-											<FlexItem>
-											<Section>
-												<Chunk inline>
-													<Avatar size="small" source={{uri: 'https://randomuser.me/api/portraits/women/40.jpg'}} />
-													<Text weight="strong"> /rxb/whatever v.{previewVersion.version}</Text>
-												</Chunk>
-												{ tldr &&
-													<TldrForm
-														tldrData={tldr}
-														previewVersion={previewVersion}
-														setPreviewVersion={setPreviewVersion}
-														authentication={authentication}
-														/>
-												}
-												</Section>
-											</FlexItem>
-											<FlexItem>
-												<Section>
-													<TldrCard 
-														tldr={tldr}
-														thisVersion={previewVersion} 
-														/>
-												</Section>
-											</FlexItem>
-										</Flex>
+							<Flex>
+								<FlexItem>
+								<Section>
+									{ tldr &&
+										<TldrForm
+											tldrData={tldr}
+											previewVersion={previewVersion}
+											setPreviewVersion={setPreviewVersion}
+											authentication={authentication}
+											/>
+									}
+									</Section>
 								</FlexItem>
-								
+								<FlexItem>
+									<Section>
+										<TldrCard 
+											tldr={tldr}
+											thisVersion={previewVersion} 
+											/>
+									</Section>
+								</FlexItem>
 							</Flex>
-
+							
 					</Bounds>
 				</Stripe>
 			</Page>
