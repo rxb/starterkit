@@ -278,7 +278,6 @@ function VersionEdit(props) {
 	const [selectedTab, setSelectedTab] = useState();
 
 		return (
-			<Fragment>
 			<Page>
 				<TldrHeader />
 				<Head>
@@ -304,33 +303,27 @@ function VersionEdit(props) {
 								</Chunk>
 							</Section>
 
-							<Flex>
-								<FlexItem>
+							{ (selectedTab == 'edit') &&
 								<Section>
-									{ tldr &&
-										<TldrForm
-											tldrData={tldr}
-											previewVersion={previewVersion}
-											setPreviewVersion={setPreviewVersion}
-											authentication={authentication}
-											/>
-									}
-									</Section>
-								</FlexItem>
-								<FlexItem>
-									<Section>
-										<TldrCard 
-											tldr={tldr}
-											thisVersion={previewVersion} 
-											/>
-									</Section>
-								</FlexItem>
-							</Flex>
-							
+									<TldrForm
+										tldrData={tldr}
+										previewVersion={previewVersion}
+										setPreviewVersion={setPreviewVersion}
+										authentication={authentication}
+										/>
+								</Section>
+							}
+							{ (selectedTab == 'preview') &&
+								<Section>
+									<TldrCard 
+										tldr={tldr}
+										thisVersion={previewVersion} 
+										/>
+								</Section>
+							}	
 					</Bounds>
 				</Stripe>
 			</Page>
-			</Fragment>
 		);
 	
 }
