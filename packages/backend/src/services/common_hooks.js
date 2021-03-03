@@ -1,5 +1,25 @@
 module.exports = {
 
+  // hook for anonymous auth situations
+  // (ie when an api would do additional work for an authorized user, but still allows an anonymous user)
+  allowAnonymous: (options = {}) => { 
+    return async context => {
+      const { params } = context;
+  
+      if(params.provider && !params.authentication) {
+        context.params = {
+          ...params,
+          authentication: {
+            strategy: 'anonymous'
+          }
+        }
+      }
+  
+      return context;
+    };
+  },
+
+
   // SAVE AND GET NEW IMAGE REFERENCE
   saveAndGetNewImageReference: (options = {}) => {
 

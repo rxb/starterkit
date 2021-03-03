@@ -275,7 +275,7 @@ function VersionEdit(props) {
 		version: (tldr.currentTldrVersion.version + 1),
 		content: tldr.draftContent
 	});
-	const [selectedTab, setSelectedTab] = useState();
+	const [selectedTab, setSelectedTab] = useState('edit');
 
 		return (
 			<Page>
@@ -332,8 +332,6 @@ VersionEdit.getInitialProps = async(context) => {
 	const {store, isServer, pathname, query} = context;
 	const tldrId = query.tldrid; // query params become lowercase
 	const tldr = await fetcher(getTldrUrl(tldrId));
-	console.log('after fetch');
-	console.log(tldr);
 	return {
 		tldrId,
 		tldr

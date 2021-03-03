@@ -7,6 +7,7 @@ const {
 } = require('@feathersjs/authentication-local').hooks;
 
 const {
+  allowAnonymous,
   saveAndGetNewImageReference
 } = require('../common_hooks.js');
 
@@ -15,8 +16,10 @@ module.exports = {
     all: [],
     find: [],
     get: [
-      // this is probably inefficient to always auth
-      authenticate('jwt', {allowUnauthenticated: true}),
+      
+      // anyone can get a user, but authenticated users can get 'self'
+      allowAnonymous(),
+      authenticate('jwt', 'anonymous'),
       (context) => {
         // this probably should fail in a redirect way
         // if you try to "self" a non-logged in request

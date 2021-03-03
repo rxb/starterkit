@@ -1,7 +1,8 @@
 import React, {Fragment, useState} from 'react';
 
 import {
-	useTldrs
+	useTldrs,
+	useUser
 } from '@/swr';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
@@ -55,31 +56,20 @@ dayjs.extend(relativeTime)
 
 function TldrProfile(props) {
 
+		const { userId } = props;
+		console.log(userId);
+
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
-		const user = authentication.user || {};
-		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs({authorId: user.id});
 		
+		const {data: userData, error: userError, mutate: userMutate} = useUser(userId);
+		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs({authorId: userId});
 		
-
 		return (
 			<Page>
 				<TldrHeader />
 
-				{ !user.id && 
-					<Stripe>
-						<Bounds>
-							<Section>
-								<Chunk>
-									<Text type="pageHead">Who are you??</Text>
-								</Chunk>
-							</Section>
-						</Bounds>
-					</Stripe>
-
-				}
-
-				{ user.id && tldrsData && 
+				{ userData && tldrsData && 
 					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
 						<Bounds>
 							<Section>
@@ -87,15 +77,15 @@ function TldrProfile(props) {
 									<FlexItem shrink justify="center">
 										<Chunk>
 											<Avatar
-												source={{uri: user.photoUrl}}
+												source={{uri: userData.photoUrl}}
 												size="large"
 												/>
 										</Chunk>
 									</FlexItem>
 									<FlexItem>
 										<Chunk>
-											<Text type="pageHead">@rxb</Text>
-											<Text>{user.name}</Text>
+											<Text type="pageHead">@{userData.urlKey}</Text>
+											<Text>{userData.name}</Text>
 										</Chunk>
 									</FlexItem>
 									
@@ -182,11 +172,12 @@ function TldrProfile(props) {
 TldrProfile.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
-	//const userId = query.userId || 4; // for now
+	const userId = query.userId;
+	console.log(query);
 	const isServer = !!req;	
 
 	return {
-		//userId: userId,
+		userId: userId,
 		isServer,
 	}
 }

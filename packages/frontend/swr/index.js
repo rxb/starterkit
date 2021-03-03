@@ -153,3 +153,26 @@ export const patchTldr = (id, data, token) => {
 export const deleteTldr = (id, token) => {
    return request(getTldrUrl(id), {method: 'DELETE', token} );
 }
+
+// USERS
+export const getUsersUrl = (params) => `${apiHost}/users/${buildQs(params)}`; 
+export const getUserUrl = (id='') => `${apiHost}/users/${id}`; 
+
+export const useUsers = (params, options) => {
+   return parsePageObj(useSWR(getUsersUrl(params), fetcher, options))
+}
+export const useUser = (id, options) => {
+   console.log('useUser');
+   console.log(id);
+   return useSWR(getUserUrl(id), fetcher, options)
+}
+
+export const postUser = (data, token) => {
+   return request(getUserUrl(), {method: 'POST', data, token} );
+}
+export const patchUser = (id, data, token) => {
+   return request(getUserUrl(id), {method: 'PATCH', data, token} );
+}
+export const deleteUser = (id, token) => {
+   return request(getUserUrl(id), {method: 'DELETE', token} );
+}

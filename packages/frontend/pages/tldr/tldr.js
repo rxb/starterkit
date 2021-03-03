@@ -78,8 +78,6 @@ const ConnectedHeader = (props) => {
 
 
 
-
-
 const DownVotePrompt = (props) => {
 	const {
 		onRequestClose
@@ -271,7 +269,7 @@ function Tldr(props) {
 											
 
 											<Chunk border>
-												<Link href={`/tldr/tldrprofile?userId=4`}>
+												<Link href={`/tldr/tldrprofile?userId=${tldrData.author.id}`}>
 													<Flex>
 														<FlexItem>
 															<Text weight="strong">Maintainer</Text>
