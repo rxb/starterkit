@@ -41,7 +41,8 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	useMediaContext
 } from '@/components/cinderblock';
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
@@ -162,25 +163,27 @@ function VersionEdit(props) {
 					<title>Edit tldr</title>
 				</Head>
 				<Stripe>
-					<Bounds>
 						<Sticky>
-							<Section>
-								<Tabs 
-									selectedValue={selectedTab}
-									onChange={ value => setSelectedTab(value) }
-									>
-									<Tabs.Item 
-										label="Edit" 
-										value="edit" 
-										/>
-									<Tabs.Item 
-										label="Preview" 
-										value="preview" 
-										/>
-								</Tabs>
-							</Section>
+							<Bounds>
+								<Section>
+									<Tabs 
+										selectedValue={selectedTab}
+										onChange={ value => setSelectedTab(value) }
+										>
+										<Tabs.Item 
+											label="Edit" 
+											value="edit" 
+											/>
+										<Tabs.Item 
+											label="Preview" 
+											value="preview" 
+											/>
+									</Tabs>
+								</Section>
+							</Bounds>
 						</Sticky>
 
+						<Bounds>
 							<form>
 
 								<Section>
@@ -325,14 +328,39 @@ VersionEdit.getInitialProps = async(context) => {
 
 export default VersionEdit;
 
-
 import { useInView } from 'react-intersection-observer';
 const Sticky = (props) => {
+
+	const media = useMediaContext();
 	const [ref, inView, entry] = useInView({threshold: 1});
+
+	// TODO: 
+	// the compensation for stripe padding feels a little hacky but whatever
+	// fix it later
+	const stickyStyle = {
+		backgroundColor: 'white', 
+		zIndex: 2, 
+		position: 'sticky', 
+		top: -1, 
+		marginBottom: METRICS.space
+	}
+	const stickyStyleShadow = {
+		shadowRadius: 16, 
+		shadowColor: 'rgba(0,0,0,.15)', 
+	}
+	const stickyStyleMedium = {
+		marginHorizontal: -1 * METRICS.space,
+		paddingHorizontal: METRICS.space 
+	}
+
 	return (
 		<View 
 			ref={ref}
-			style={{zIndex: 2, position: 'sticky', top: -1, marginBottom: METRICS.space, backgroundColor: (inView) ? 'white' :'blue'}}
+			style={[
+				stickyStyle,
+				(!inView) ? stickyStyleShadow : {},
+				(!inView && media.medium) ? stickyStyleMedium : {}
+			]}
 			>
 			{props.children}
 		</View>
