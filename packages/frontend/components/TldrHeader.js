@@ -54,7 +54,7 @@ function TldrHeader (props) {
 
 	return (
 
-				<Header>
+				<Header position="static">
 					<Flex direction="row">
 						<FlexItem
 						
