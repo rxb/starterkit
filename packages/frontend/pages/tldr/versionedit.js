@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useCallback} from 'react';
+import React, {Fragment, useState, useCallback, useEffect, useRef} from 'react';
 
 import {
 	fetcher,
@@ -47,14 +47,13 @@ import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
 import {METRICS} from '@/components/cinderblock/designConstants';
 
-
 import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
-
 import {TldrCardSmall, TldrCard} from './components';
 
-
 import { authentication } from '@feathersjs/client';
+
+
 
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -71,8 +70,6 @@ const inputJoinedBottom = {
 	borderTopRightRadius: 0,  
 	zIndex: 1
 };
-
-
 
 
 function VersionEdit(props) {
@@ -166,31 +163,27 @@ function VersionEdit(props) {
 				</Head>
 				<Stripe>
 					<Bounds>
+						<Sticky>
 							<Section>
-								<Chunk>
-									<Text type="pageHead">Edit</Text>
-								</Chunk>
-								<Chunk>
-									<Tabs 
-										selectedValue={selectedTab}
-										onChange={ value => setSelectedTab(value) }
-										>
-										<Tabs.Item 
-											label="Edit" 
-											value="edit" 
-											/>
-										<Tabs.Item 
-											label="Preview" 
-											value="preview" 
-											/>
-									</Tabs>
-								</Chunk>
+								<Tabs 
+									selectedValue={selectedTab}
+									onChange={ value => setSelectedTab(value) }
+									>
+									<Tabs.Item 
+										label="Edit" 
+										value="edit" 
+										/>
+									<Tabs.Item 
+										label="Preview" 
+										value="preview" 
+										/>
+								</Tabs>
 							</Section>
+						</Sticky>
 
 							<form>
-							<Section>
 
-								
+								<Section>
 
 									{ (selectedTab == 'edit') &&
 									<>
@@ -313,8 +306,6 @@ function VersionEdit(props) {
 									</Section>
 								</form>
 
-							
-
 					</Bounds>
 				</Stripe>
 			</Page>
@@ -332,6 +323,19 @@ VersionEdit.getInitialProps = async(context) => {
 	}
 }
 
-
 export default VersionEdit;
+
+
+import { useInView } from 'react-intersection-observer';
+const Sticky = (props) => {
+	const [ref, inView, entry] = useInView({threshold: 1});
+	return (
+		<View 
+			ref={ref}
+			style={{zIndex: 2, position: 'sticky', top: -1, marginBottom: METRICS.space, backgroundColor: (inView) ? 'white' :'blue'}}
+			>
+			{props.children}
+		</View>
+	);
+}
 
