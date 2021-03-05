@@ -78,6 +78,8 @@ const inputJoinedBottom = {
 
 function VersionEdit(props) {
 
+	const dispatch = useDispatch();
+
 	const { tldr } = props
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
