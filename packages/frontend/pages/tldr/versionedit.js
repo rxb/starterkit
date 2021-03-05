@@ -54,8 +54,6 @@ import {TldrCardSmall, TldrCard} from './components';
 
 import { authentication } from '@feathersjs/client';
 
-
-
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -73,6 +71,11 @@ const inputJoinedBottom = {
 };
 
 
+
+
+
+
+
 function VersionEdit(props) {
 
 	const { tldr } = props
@@ -83,7 +86,6 @@ function VersionEdit(props) {
 		content: tldr.draftContent
 	});
 	const [selectedTab, setSelectedTab] = useState('edit');
-
 
 
 	const parseDraftContent = (fields) => {
@@ -101,8 +103,7 @@ function VersionEdit(props) {
 	const formState = useFormState({
 		initialFields: {
 			...tldr.draftContent,
-			// steps need stable IDs for reordering
-			steps: tldr.draftContent.steps?.map( (step,i) => ({...step, id: i}) ), 
+			steps: tldr.draftContent.steps.map( (step,i) => ({...step, stepid: i}) ),
 			id: tldr.id,
 			publish: false
 		},
@@ -211,7 +212,7 @@ function VersionEdit(props) {
 
 										<DndProvider backend={HTML5Backend}>
 											{formState.getFieldValue('steps')?.map((item, i)=>(
-												<Reorderable key={item.id} index={i} id={item.id} moveItem={moveStep}>
+												<Reorderable key={item.stepid} index={i} id={item.stepid} moveItem={moveStep}>
 													<Chunk>
 														<View 
 															style={{paddingLeft: 16}}
@@ -228,6 +229,7 @@ function VersionEdit(props) {
 																cursor: 'pointer'
 															}}
 															/>
+															
 															<TextInput
 																style={[styles.textBig, inputJoinedTop]}
 																id={`step${i}head`}
