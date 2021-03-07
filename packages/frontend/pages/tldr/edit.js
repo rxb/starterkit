@@ -87,7 +87,13 @@ const Edit = (props) => {
                         <TextInput
                            id="title"
                            value={formState.getFieldValue('title')}
-                           onChange={e => formState.setFieldValue('title', e.target.value) }
+                           onChange={e => {
+                              const value = e.target.value;
+                              formState.setFieldValues({
+                                 'title': value,
+                                 'urlKey': value.replace(/[^A-Za-z0-9-\s]+/gi, "").replace(/\s+/gi,"-").toLowerCase()
+                              });
+                           }}
                            />
                         <FieldError error={formState.errors?.fieldErrors?.title} />	
                      </Chunk>
@@ -100,22 +106,22 @@ const Edit = (props) => {
                            <FlexItem flush>
                               <TextInput
                               style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}
-                              id="title"
-                              value={formState.getFieldValue('title')}
-                              onChange={e => formState.setFieldValue('title', e.target.value) }
+                              id="urlKey"
+                              value={formState.getFieldValue('urlKey')}
+                              onChange={e => formState.setFieldValue('urlKey', e.target.value) }
                               />
                            </FlexItem>
                         </Flex>
-                        <FieldError error={formState.errors?.fieldErrors?.title} />	
+                        <FieldError error={formState.errors?.fieldErrors?.urlKey} />	
                      </Chunk>
                      <Chunk>
                         <Label for="title">Tags</Label>
                         <TextInput
-                           id="title"
-                           value={formState.getFieldValue('title')}
-                           onChange={e => formState.setFieldValue('title', e.target.value) }
+                           id="tags"
+                           value={formState.getFieldValue('tags')}
+                           onChange={e => formState.setFieldValue('tags', e.target.value) }
                            />
-                        <FieldError error={formState.errors?.fieldErrors?.title} />	
+                        <FieldError error={formState.errors?.fieldErrors?.tags} />	
                      </Chunk>
                      <Chunk>
                         <Button 

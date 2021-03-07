@@ -108,6 +108,36 @@ const DownVotePrompt = (props) => {
 };
 
 
+const DeletePrompt = (props) => {
+	const {
+		onRequestClose
+	} = props;
+	return (
+		<Section>
+			<Chunk>
+				<Text type="sectionHead">Delete this card?</Text>
+			</Chunk>
+			<Chunk>
+				<Text>Something something about deleting cards</Text>
+			</Chunk>
+			<Chunk>
+				<Button
+					onPress={onRequestClose}
+					label="Delete card"
+					width="full"
+					/>
+				<Button
+					onPress={onRequestClose}
+					color="secondary"
+					label="Never mind"
+					width="full"
+					/>
+			</Chunk>
+		</Section>
+	);
+};
+
+
 function Tldr(props) {
 
 		const dispatch = useDispatch(); 
@@ -267,7 +297,6 @@ function Tldr(props) {
 												</Flex>
 											</Chunk>
 											
-
 											<Chunk border>
 												<Link href={`/tldr/tldrprofile?userId=${tldrData.author.id}`}>
 													<Flex>
@@ -282,9 +311,20 @@ function Tldr(props) {
 														</FlexItem>
 													</Flex>
 												</Link>
-
 											</Chunk>
-											
+											<Chunk border>
+												<Inline>
+													<Link href={`/tldr/edit?tldrId=${tldrData.id}`}>
+														<Text type="small" color="hint">Settings</Text>
+													</Link>
+														<Text type="small" color="hint"> </Text>
+													<Touch onPress={() => { 
+														dispatch(addPrompt(<DeletePrompt/>))
+													}}>
+														<Text type="small" color="hint">Delete</Text>		
+													</Touch>
+												</Inline>
+											</Chunk>
 									</Section>
 
 								</FlexItem>

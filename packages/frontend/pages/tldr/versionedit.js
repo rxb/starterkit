@@ -73,9 +73,6 @@ const inputJoinedBottom = {
 
 
 
-
-
-
 function VersionEdit(props) {
 
 	const dispatch = useDispatch();
@@ -265,7 +262,7 @@ function VersionEdit(props) {
 										<Touch onPress={()=>{
 												formState.setFieldValue('steps', [
 													...formState.getFieldValue('steps'),
-													{title: '', body: '', id: formState.getFieldValue('steps').length},
+													{title: '', body: '', stepid: formState.getFieldValue('steps').length},
 												])
 											}}>
 											<Chunk inline>

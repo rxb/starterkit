@@ -1,7 +1,7 @@
 const swatches = {
 	textPrimary: 'rgba(0,0,0,.87)',
-	textSecondary: 'rgba(0,0,0,.54)',
-	textHint: 'rgba(0,0,0,.38)',
+	textSecondary: 'rgba(0,0,0,.57)',
+	textHint: 'rgba(0,0,0,.33)',
 	textPrimaryInverted: '#ffffff',
 	textSecondaryInverted: 'rgba(255,255,255,0.7)',
 	textHintInverted: 'rgba(255,255,255,0.5)',
