@@ -112,30 +112,31 @@ const Edit = (props) => {
                      </Chunk>
                      */}
                      
-                     { (formStep >= 0) && 
-                     <Chunk>
-                        <Label for="title">What is your card about?</Label>
-                        <TextInput
-                           id="verb"
-                           placeholder="verb (ex. baking, choosing, visiting)"
-                           value={formState.getFieldValue('verb')}
-                           onChange={e => {
-                              const value = e.target.value;
-                              formState.setFieldValue('verb', value);
-                           }}
-                           />
-                        <TextInput
-                           id="verb"
-                           placeholder="noun (ex. bread, a major, Tokyo)"
-                           value={formState.getFieldValue('noun')}
-                           onChange={e => {
-                              const value = e.target.value;
-                              formState.setFieldValue('noun', value);
-                           }}
-                           />             
-                        <FieldError error={formState.errors?.fieldErrors?.title} />	
-                     </Chunk>
-                     }
+                  { (formStep >= 0) && 
+                  <Chunk>
+                     <Label for="title">What is your card about?</Label>
+                     <TextInput
+                        id="verb"
+                        placeholder="verb (ex. baking, choosing, visiting)"
+                        value={formState.getFieldValue('verb')}
+                        onChange={e => {
+                           const value = e.target.value;
+                           formState.setFieldValue('verb', value);
+                        }}
+                        />
+                     <TextInput
+                        id="verb"
+                        placeholder="noun (ex. bread, a major, Tokyo)"
+                        value={formState.getFieldValue('noun')}
+                        onChange={e => {
+                           const value = e.target.value;
+                           formState.setFieldValue('noun', value);
+                        }}
+                        />             
+                     <FieldError error={formState.errors?.fieldErrors?.title} />	
+                  </Chunk>
+                  }
+
                   { (formStep == 0) && 
                      <Chunk>
                         <Button 
@@ -149,10 +150,9 @@ const Edit = (props) => {
                            />
                      </Chunk>
                   }
-                   
                    { (formStep >= 1) && 
                      <Chunk>
-                        <Label for="title">How is this as a link for your card?</Label>
+                        <Label for="title">How's this as a link for your card?</Label>
                         <Flex flush>
                            <FlexItem flush shrink justify="center" >
                               <FakeInput label={`${user.urlKey}/`} style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, borderRight: 0}} />
