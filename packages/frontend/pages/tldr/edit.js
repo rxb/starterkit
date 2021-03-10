@@ -112,37 +112,47 @@ const Edit = (props) => {
                      </Chunk>
                      */}
                      
-
+                     { (formStep >= 0) && 
                      <Chunk>
                         <Label for="title">What is your card about?</Label>
                         <TextInput
                            id="verb"
-                           placeholder="verb-ing"
-                           value={formState.getFieldValue('title')}
+                           placeholder="verb (ex. baking, choosing, visiting)"
+                           value={formState.getFieldValue('verb')}
                            onChange={e => {
                               const value = e.target.value;
-                              formState.setFieldValues({
-                                 'title': value,
-                              });
+                              formState.setFieldValue('verb', value);
                            }}
                            />
                         <TextInput
-                           id="noun"
-                           placeholder="noun"
-                           value={formState.getFieldValue('title')}
+                           id="verb"
+                           placeholder="noun (ex. bread, a major, Tokyo)"
+                           value={formState.getFieldValue('noun')}
                            onChange={e => {
                               const value = e.target.value;
-                              formState.setFieldValues({
-                                 'title': value,
-                              });
+                              formState.setFieldValue('noun', value);
                            }}
-                           />
+                           />             
                         <FieldError error={formState.errors?.fieldErrors?.title} />	
                      </Chunk>
-
-                   
+                     }
+                  { (formStep == 0) && 
                      <Chunk>
-                        <Label for="title">Url</Label>
+                        <Button 
+                           onPress={ () => {
+                              const combined = [formState.getFieldValue('verb'), formState.getFieldValue('noun')].join(' ');
+                              const urlKey = combined.replace(/[^A-Za-z0-9-\s]+/gi, "").replace(/\s+/gi,"-").toLowerCase();
+                              formState.setFieldValue('urlKey', urlKey);
+                              setFormStep(1);
+                           }}
+                           label="Next"
+                           />
+                     </Chunk>
+                  }
+                   
+                   { (formStep >= 1) && 
+                     <Chunk>
+                        <Label for="title">How is this as a link for your card?</Label>
                         <Flex flush>
                            <FlexItem flush shrink justify="center" >
                               <FakeInput label={`${user.urlKey}/`} style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, borderRight: 0}} />
@@ -158,7 +168,19 @@ const Edit = (props) => {
                         </Flex>
                         <FieldError error={formState.errors?.fieldErrors?.urlKey} />	
                      </Chunk>
-
+                  }
+                  { (formStep == 1) && 
+                     <Chunk>
+                        <Button 
+                           onPress={ () => {
+                              setFormStep(2);
+                           }}
+                           label="Looks good"
+                           />
+                     </Chunk>
+                  }
+                  
+                  { (formStep >= 2) && 
                      <Chunk>
                         <Label for="title">Category</Label>
                         <Picker
@@ -170,11 +192,15 @@ const Edit = (props) => {
                         </Picker>
                         <FieldError error={formState.errors?.fieldErrors?.tags} />	
                      </Chunk>
+                  }
+                  { (formStep == 2) && 
                      <Chunk>
                         <Button 
                            label="Create"
                            />
                      </Chunk>
+                  }
+
                   </form>
                </Section>
             </Bounds>

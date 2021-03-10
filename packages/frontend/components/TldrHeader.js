@@ -72,8 +72,11 @@ function TldrHeader (props) {
 								>
 								<Link href="/tldr/edit">
 									<Inline nowrap>
-										<Icon shape="Plus" color={swatches.tint} />
-										<Text color="tint">Create</Text>
+										<Button
+											label="Create"
+											size="xsmall"
+											color="secondary"
+											/>
 									</Inline>
 								</Link>
 							</FlexItem>
@@ -91,7 +94,10 @@ function TldrHeader (props) {
 															source={{uri: user.photoUrl}}
 															size="small"
 															/>
-														<Icon shape="ChevronDown" size="small" color={swatches.tint} />
+														<Icon 
+															shape="ChevronDown" 
+															size="small" color={swatches.hint} 
+															/>
 													</Inline>
 												</Touch>
 
