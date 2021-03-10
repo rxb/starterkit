@@ -55,6 +55,13 @@ import TldrHeader from '@/components/TldrHeader';
 import { authentication } from '@feathersjs/client';
 
 
+const buildUrlKey = (pieces = []) => {
+   return pieces.join(' ')
+            .replace(/[^A-Za-z0-9-\s]+/gi, "")
+            .replace(/\s+/gi,"-")
+            .toLowerCase();
+}
+
 const Edit = (props) => {
    const dispatch = useDispatch(); 
    const authentication = useSelector(state => state.authentication);
@@ -88,31 +95,6 @@ const Edit = (props) => {
                </Section>
                <Section>
                   <form>
-
-                     {/*
-                     <Chunk>
-                        <Label for="title">Card name</Label>
-                        <TextInput
-                           id="title"
-                           placeholder="ex. short-and-sweet"
-                           value={formState.getFieldValue('title')}
-                           onChange={e => {
-                              const value = e.target.value;
-                              formState.setFieldValues({
-                                 'title': value,
-                                 'urlKey': value.replace(/[^A-Za-z0-9-\s]+/gi, "").replace(/\s+/gi,"-").toLowerCase()
-                              });
-                           }}
-                           />
-                           { !formState.getFieldValue('urlKey') && 
-                              <Text type="small" color="hint">This is like a username for your new card</Text>
-                           }
-                           { formState.getFieldValue('urlKey') && 
-                              <Text type="small" color="hint">@{user.urlKey} / {formState.getFieldValue('urlKey')}</Text>
-                           }  
-                        <FieldError error={formState.errors?.fieldErrors?.title} />	
-                     </Chunk>
-                     */}
                      
                   { (formStep >= 0) && 
                   <Chunk>
@@ -123,7 +105,11 @@ const Edit = (props) => {
                         value={formState.getFieldValue('verb')}
                         onChange={e => {
                            const value = e.target.value;
-                           formState.setFieldValue('verb', value);
+                           const urlKey = buildUrlKey([value, formState.getFieldValue('noun')]);
+                           formState.setFieldValues({
+                              'verb': value,
+                              'urlKey': urlKey
+                           });
                         }}
                         />
                      <TextInput
@@ -132,7 +118,11 @@ const Edit = (props) => {
                         value={formState.getFieldValue('noun')}
                         onChange={e => {
                            const value = e.target.value;
-                           formState.setFieldValue('noun', value);
+                           const urlKey = buildUrlKey([formState.getFieldValue('verb'), value]);
+                           formState.setFieldValues({
+                              'noun': value,
+                              'urlKey': urlKey
+                           });
                         }}
                         />             
                      <FieldError error={formState.errors?.fieldErrors?.title} />	
@@ -143,8 +133,7 @@ const Edit = (props) => {
                      <Chunk>
                         <Button 
                            onPress={ () => {
-                              const combined = [formState.getFieldValue('verb'), formState.getFieldValue('noun')].join(' ');
-                              const urlKey = combined.replace(/[^A-Za-z0-9-\s]+/gi, "").replace(/\s+/gi,"-").toLowerCase();
+                              const urlKey = buildUrlKey([formState.getFieldValue('verb'), formState.getFieldValue('noun')]);
                               formState.setFieldValue('urlKey', urlKey);
                               setFormStep(1);
                            }}
