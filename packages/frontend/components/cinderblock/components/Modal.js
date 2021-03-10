@@ -113,11 +113,7 @@ class Modal extends React.Component{
 		}
 	}
 
-	open(){
-		console.log('open')
-		console.log(this.targetElement)
-
-		
+	open(){		
 		disableBodyScroll(this.targetElement);
 		const duration = 250;
 		this.setState({display: 'flex'})
@@ -131,7 +127,6 @@ class Modal extends React.Component{
 	}
 
 	close(){
-		console.log('close')
 		enableBodyScroll(this.targetElement);
 		const duration = 250;
 		Animated.timing(

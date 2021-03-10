@@ -1,4 +1,5 @@
-import React, {Fragment, useState, useCallback} from 'react';
+import React, {Fragment, useState, useEffect, useCallback } from 'react';
+import { Animated } from '@/components/cinderblock/primitives';
 
 import {
 	fetcher,
@@ -44,7 +45,7 @@ import {
 } from '@/components/cinderblock';
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
-import {METRICS} from '@/components/cinderblock/designConstants';
+import {METRICS, EASE} from '@/components/cinderblock/designConstants';
 
 
 import Page from '@/components/Page';
@@ -150,7 +151,9 @@ const Edit = (props) => {
                            />
                      </Chunk>
                   }
-                   { (formStep >= 1) && 
+
+
+                   <RevealBlock visible={formStep >= 1} delay={150}>
                      <Chunk>
                         <Label for="title">How's this as a link for your card?</Label>
                         <Flex flush>
@@ -168,19 +171,19 @@ const Edit = (props) => {
                         </Flex>
                         <FieldError error={formState.errors?.fieldErrors?.urlKey} />	
                      </Chunk>
-                  }
-                  { (formStep == 1) && 
-                     <Chunk>
-                        <Button 
-                           onPress={ () => {
-                              setFormStep(2);
-                           }}
-                           label="Looks good"
-                           />
-                     </Chunk>
-                  }
+                     { (formStep == 1) && 
+                        <Chunk>
+                           <Button 
+                              onPress={ () => {
+                                 setFormStep(2);
+                              }}
+                              label="Looks good"
+                              />
+                        </Chunk>
+                     }
+                  </RevealBlock> 
                   
-                  { (formStep >= 2) && 
+                  <RevealBlock visible={formStep >= 2} delay={150}>
                      <Chunk>
                         <Label for="title">Category</Label>
                         <Picker
@@ -192,14 +195,14 @@ const Edit = (props) => {
                         </Picker>
                         <FieldError error={formState.errors?.fieldErrors?.tags} />	
                      </Chunk>
-                  }
-                  { (formStep == 2) && 
-                     <Chunk>
-                        <Button 
-                           label="Create"
-                           />
-                     </Chunk>
-                  }
+                     { (formStep == 2) && 
+                        <Chunk>
+                           <Button 
+                              label="Create"
+                              />
+                        </Chunk>
+                     }
+                  </RevealBlock> 
 
                   </form>
                </Section>
@@ -210,3 +213,62 @@ const Edit = (props) => {
 }
 
 export default Edit;
+
+
+
+const RevealBlock = (props) => {
+
+   const { delay = 0 } = props;
+
+
+   // basically like how modals work
+   const [blockValue, setBlockValue] = useState('none');
+   const [visibilityValue, setVisibilityValue] = useState(new Animated.Value(0));
+
+
+   useEffect(()=>{
+      const duration = 250;
+      if(props.visible){
+         setBlockValue('flex');
+         Animated.timing(
+            visibilityValue,{
+               toValue: 1,
+               easing: EASE,
+               duration,
+               delay
+            }
+         ).start()
+      }
+      else{
+         Animated.timing(
+            visibilityValue,{
+               toValue: 0,
+               easing: EASE,
+               duration,
+               delay
+            }
+         ).start(()=>{
+            setBlockValue('none');
+         })
+      }
+   }, [props.visible]);
+
+   return(
+      <Animated.View
+         style={{
+            display: blockValue,
+            opacity: visibilityValue,
+            transform: [{
+               translateY: visibilityValue.interpolate({
+               inputRange: [0, 1],
+               outputRange: [100, 0]
+               }),
+            }]
+         }}
+         >
+         {props.children}
+      </Animated.View>
+   );
+   
+
+}
