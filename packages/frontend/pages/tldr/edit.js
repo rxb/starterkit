@@ -34,6 +34,7 @@ import {
 	Modal,
 	Picker,
 	Reorderable,
+   RevealBlock,
 	Section,
 	Sectionless,
 	Stripe,
@@ -216,59 +217,3 @@ export default Edit;
 
 
 
-const RevealBlock = (props) => {
-
-   const { delay = 0 } = props;
-
-
-   // basically like how modals work
-   const [blockValue, setBlockValue] = useState('none');
-   const [visibilityValue, setVisibilityValue] = useState(new Animated.Value(0));
-
-
-   useEffect(()=>{
-      const duration = 250;
-      if(props.visible){
-         setBlockValue('flex');
-         Animated.timing(
-            visibilityValue,{
-               toValue: 1,
-               easing: EASE,
-               duration,
-               delay
-            }
-         ).start()
-      }
-      else{
-         Animated.timing(
-            visibilityValue,{
-               toValue: 0,
-               easing: EASE,
-               duration,
-               delay
-            }
-         ).start(()=>{
-            setBlockValue('none');
-         })
-      }
-   }, [props.visible]);
-
-   return(
-      <Animated.View
-         style={{
-            display: blockValue,
-            opacity: visibilityValue,
-            transform: [{
-               translateY: visibilityValue.interpolate({
-               inputRange: [0, 1],
-               outputRange: [100, 0]
-               }),
-            }]
-         }}
-         >
-         {props.children}
-      </Animated.View>
-   );
-   
-
-}

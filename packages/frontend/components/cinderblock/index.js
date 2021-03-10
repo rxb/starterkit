@@ -25,6 +25,7 @@ import Modal from './components/Modal';
 import Picker from './components/Picker';
 import Picture from './components/Picture';
 import Prompter from './components/Prompter';
+import RevealBlock from './components/RevealBlock';
 import Reorderable from './components/Reorderable';
 import Section from './components/Section';
 import Sectionless from './components/Sectionless';
@@ -69,6 +70,7 @@ export {
 	Picture,
 	Prompter,
 	Reorderable,
+	RevealBlock,
 	Section,
 	Sectionless,
 	Stripe,
