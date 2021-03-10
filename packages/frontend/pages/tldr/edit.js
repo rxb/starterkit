@@ -58,6 +58,8 @@ const Edit = (props) => {
    const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
+   const [formStep, setFormStep] = useState(0);
+
    const formState = useFormState({
 		initialFields: {
 		},
@@ -81,11 +83,16 @@ const Edit = (props) => {
                   <Chunk>
                      <Text type="pageHead">Create new card</Text>
                   </Chunk>
+               </Section>
+               <Section>
                   <form>
+
+                     {/*
                      <Chunk>
-                        <Label for="title">Title</Label>
+                        <Label for="title">Card name</Label>
                         <TextInput
                            id="title"
+                           placeholder="ex. short-and-sweet"
                            value={formState.getFieldValue('title')}
                            onChange={e => {
                               const value = e.target.value;
@@ -95,13 +102,50 @@ const Edit = (props) => {
                               });
                            }}
                            />
+                           { !formState.getFieldValue('urlKey') && 
+                              <Text type="small" color="hint">This is like a username for your new card</Text>
+                           }
+                           { formState.getFieldValue('urlKey') && 
+                              <Text type="small" color="hint">@{user.urlKey} / {formState.getFieldValue('urlKey')}</Text>
+                           }  
                         <FieldError error={formState.errors?.fieldErrors?.title} />	
                      </Chunk>
+                     */}
+                     
+
+                     <Chunk>
+                        <Label for="title">What is your card about?</Label>
+                        <TextInput
+                           id="verb"
+                           placeholder="verb-ing"
+                           value={formState.getFieldValue('title')}
+                           onChange={e => {
+                              const value = e.target.value;
+                              formState.setFieldValues({
+                                 'title': value,
+                              });
+                           }}
+                           />
+                        <TextInput
+                           id="noun"
+                           placeholder="noun"
+                           value={formState.getFieldValue('title')}
+                           onChange={e => {
+                              const value = e.target.value;
+                              formState.setFieldValues({
+                                 'title': value,
+                              });
+                           }}
+                           />
+                        <FieldError error={formState.errors?.fieldErrors?.title} />	
+                     </Chunk>
+
+                   
                      <Chunk>
                         <Label for="title">Url</Label>
                         <Flex flush>
                            <FlexItem flush shrink justify="center" >
-                              <FakeInput label="rxb/" style={{borderTopRightRadius: 0, borderBottomRightRadius: 0}} />
+                              <FakeInput label={`${user.urlKey}/`} style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, borderRight: 0}} />
                            </FlexItem>
                            <FlexItem flush>
                               <TextInput
@@ -114,13 +158,16 @@ const Edit = (props) => {
                         </Flex>
                         <FieldError error={formState.errors?.fieldErrors?.urlKey} />	
                      </Chunk>
+
                      <Chunk>
-                        <Label for="title">Tags</Label>
-                        <TextInput
+                        <Label for="title">Category</Label>
+                        <Picker
                            id="tags"
                            value={formState.getFieldValue('tags')}
                            onChange={e => formState.setFieldValue('tags', e.target.value) }
-                           />
+                           >
+                           <Picker.Item value="1" label="Whatever" />
+                        </Picker>
                         <FieldError error={formState.errors?.fieldErrors?.tags} />	
                      </Chunk>
                      <Chunk>
