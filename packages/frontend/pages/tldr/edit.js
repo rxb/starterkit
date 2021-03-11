@@ -211,7 +211,7 @@ const Edit = (props) => {
                                     <View style={[
                                        styles.input,
                                        (selected) 
-                                          ? { backgroundColor:  'blue'} 
+                                          ? { backgroundColor:  swatches.tint} 
                                           : { }
                                     ]}>
                                        <Text inverted={selected}>{category.name}</Text>
