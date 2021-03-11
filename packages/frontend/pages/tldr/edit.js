@@ -192,24 +192,34 @@ const Edit = (props) => {
                   
                   <RevealBlock visible={formStep >= 2} delay={150}>
                      <Chunk>
-                        <Label for="title">Category</Label>
-                        {CATEGORIES.map((category, i)=>{
-                           const selected = category.urlKey == formState.getFieldValue('category');
-                           return (
-                              <Touch onPress={()=>{
-                                 formState.setFieldValue('category', category.urlKey)
-                              }}>
-                                 <View style={[
-                                    styles.input,
-                                    (selected) 
-                                       ? { backgroundColor:  'blue'} 
-                                       : { }
-                                 ]}>
-                                    <Text inverted={selected}>{category.name}</Text>
-                                 </View>
-                              </Touch>
-                           )
-                        })}
+                        <Label for="title">What category fits the best?</Label>
+                        <List
+                           variant={{
+                              small: 'grid',
+                           }}
+                           itemsInRow={{
+                              medium: 2,
+                              large: 3
+                           }}
+                           items={CATEGORIES}
+                           renderItem={(category, i)=>{
+                              const selected = category.urlKey == formState.getFieldValue('category');
+                              return (
+                                 <Touch onPress={()=>{
+                                    formState.setFieldValue('category', category.urlKey)
+                                 }}>
+                                    <View style={[
+                                       styles.input,
+                                       (selected) 
+                                          ? { backgroundColor:  'blue'} 
+                                          : { }
+                                    ]}>
+                                       <Text inverted={selected}>{category.name}</Text>
+                                    </View>
+                                 </Touch>
+                              )
+                           }}
+                           />
                         {/*
                         <Picker
                            id="tags"

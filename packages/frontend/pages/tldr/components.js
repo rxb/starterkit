@@ -218,11 +218,11 @@ export const CATEGORIES = [
 		urlKey: 'decision-tools'
 	},
 	{
-		name: 'Goals and Careers',
+		name: 'Goals & Careers',
 		urlKey: 'goals-careers'
 	},
 	{
-		name: 'Kids and Parenting',
+		name: 'Kids & Parenting',
 		urlKey: 'kids-parenting'
 	},
 	{
@@ -230,15 +230,15 @@ export const CATEGORIES = [
 		urlKey: 'finance'
 	},
 	{
-		name: 'Business and Legal',
+		name: 'Business & Legal',
 		urlKey: 'business-legal'
 	},
 	{
-		name: 'Tech and Startup',
+		name: 'Tech & Startup',
 		urlKey: 'tech-startup'
 	},
 	{
-		name: 'Fitness and Welless',
+		name: 'Fitness & Welless',
 		urlKey: 'fitness-wellness'
 	},
 	{
@@ -246,8 +246,8 @@ export const CATEGORIES = [
 		urlKey: 'bio-hacking'
 	},
 	{
-		name: 'Emergency Preparedness',
-		urlKey: 'emergency-preparedness'
+		name: 'Emergency Prep',
+		urlKey: 'emergency-prep'
 	},
 	{
 		name: 'Self-care (body)',
@@ -262,7 +262,7 @@ export const CATEGORIES = [
 		urlKey: 'social'
 	},
 	{
-		name: 'Travel and Culture',
+		name: 'Travel & Culture',
 		urlKey: 'travel-culture'
 	},
 	{
@@ -270,7 +270,7 @@ export const CATEGORIES = [
 		urlKey: 'homemaking'
 	},
 	{
-		name: 'Cooking and Food',
+		name: 'Cooking & Food',
 		urlKey: 'cooking-food'
 	},
 	{
