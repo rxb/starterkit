@@ -44,26 +44,14 @@ import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
 
 
-import {TldrCardSmall, CreateTldrCardSmall} from './components';
+import {TldrCardSmall, CreateTldrCardSmall, CATEGORIES} from './components';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 // at some point make real categories
-const categories = [
-   {name: 'Personal finance'},
-   {name: 'Health & fitness'},
-   {name: 'Social'},
-   {name: 'Travel'},
-   {name: 'Career'},
-   {name: 'Parenting'},
-   {name: 'Emergency prep'},
-   {name: 'Self-care'},
-   {name: 'Home Ec'},
-   {name: 'Cooking'},
-   {name: 'Arts'},
-];
+const categories = CATEGORIES;
 
 function TldrHome(props) {
 
@@ -102,7 +90,9 @@ function TldrHome(props) {
                                           <Sectionless>
                                              <Chunk>
                                                 <Text type="big">{item.name}</Text>
-                                                   <View style={{position: 'relative', marginRight: 10, marginBottom: 14, marginTop: 4}}>
+                                             </Chunk>
+                                             <Chunk>
+                                                   <View style={{position: 'relative', marginRight: 10, marginBottom: 18}}>
                                                       <TldrCardSmall 
                                                          tldr={tldrsData ? tldrsData[0] : {}} 
                                                          style={{marginVertical: 0, zIndex: 10, minHeight: 160}}
@@ -114,7 +104,7 @@ function TldrHome(props) {
                                                          style={{marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8}}
                                                          />   
                                                    </View>
-                                                   <Text type="small">+ 1,263 more cards</Text>
+                                                   <Text type="small" style={{textAlign: 'right'}}>+ 1,263 more cards</Text>
                                                 </Chunk>
                                              </Sectionless>
                                           </View>

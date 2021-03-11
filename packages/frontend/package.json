@@ -43,6 +43,7 @@
     "react-native-web": "0.14.10",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
+    "stopword": "^1.0.7",
     "swr": "^0.4.0",
     "uuid": "^8.3.2",
     "validator": "^13.1.17"

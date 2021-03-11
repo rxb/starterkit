@@ -207,3 +207,78 @@ export const CreateTldrCardSmall = (props) => {
 		</Card>
 	)
 }
+
+export const CATEGORIES = [
+	{
+		name: 'Better Cities',
+		urlKey: 'better-cities'
+	},
+	{
+		name: 'Decision Tools',
+		urlKey: 'decision-tools'
+	},
+	{
+		name: 'Goals and Careers',
+		urlKey: 'goals-careers'
+	},
+	{
+		name: 'Kids and Parenting',
+		urlKey: 'kids-parenting'
+	},
+	{
+		name: 'Finance',
+		urlKey: 'finance'
+	},
+	{
+		name: 'Business and Legal',
+		urlKey: 'business-legal'
+	},
+	{
+		name: 'Tech and Startup',
+		urlKey: 'tech-startup'
+	},
+	{
+		name: 'Fitness and Welless',
+		urlKey: 'fitness-wellness'
+	},
+	{
+		name: 'Biohacking',
+		urlKey: 'bio-hacking'
+	},
+	{
+		name: 'Emergency Preparedness',
+		urlKey: 'emergency-preparedness'
+	},
+	{
+		name: 'Self-care (body)',
+		urlKey: 'body-care'
+	},
+	{
+		name: 'Self-care (mental)',
+		urlKey: 'mental-care'
+	},
+	{
+		name: 'Social',
+		urlKey: 'social'
+	},
+	{
+		name: 'Travel and Culture',
+		urlKey: 'travel-culture'
+	},
+	{
+		name: 'Homemaking',
+		urlKey: 'homemaking'
+	},
+	{
+		name: 'Cooking and Food',
+		urlKey: 'cooking-food'
+	},
+	{
+		name: 'Hobby',
+		urlKey: 'hobby'
+	},
+	{
+		name: 'Industry-specific',
+		urlKey: 'industry-specific'
+	},
+];

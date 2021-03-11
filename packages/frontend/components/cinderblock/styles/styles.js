@@ -561,7 +561,7 @@ const styles = StyleSheet.create({
 	textLabel: {
 		marginTop: 4,
 		marginBottom: 0,
-		fontWeight: '500',
+		fontWeight: '600',
 
 	},
 	textError: {

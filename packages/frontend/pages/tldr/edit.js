@@ -51,15 +51,25 @@ import {METRICS, EASE} from '@/components/cinderblock/designConstants';
 
 import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
+import {CATEGORIES} from './components';
+
 
 import { authentication } from '@feathersjs/client';
 
+import stopword from 'stopword';
+
+const cleanUrlKey = (dirtyUrlKey) => {
+   return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
+            .replace(/\s+/gi,"-")
+            .replace(/[-]+/gi, "-")
+            .toLowerCase();
+}
 
 const buildUrlKey = (pieces = []) => {
-   return pieces.join(' ')
-            .replace(/[^A-Za-z0-9-\s]+/gi, "")
-            .replace(/\s+/gi,"-")
-            .toLowerCase();
+   const wordArray = pieces.join(' ').split(' ');
+   const stoplessWordArray = stopword.removeStopwords(wordArray);
+   return cleanUrlKey( stoplessWordArray.join(' ').trim() );
+            
 }
 
 const Edit = (props) => {
@@ -152,10 +162,13 @@ const Edit = (props) => {
                            </FlexItem>
                            <FlexItem flush>
                               <TextInput
+                              spellCheck={false}
                               style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}
                               id="urlKey"
                               value={formState.getFieldValue('urlKey')}
-                              onChange={e => formState.setFieldValue('urlKey', e.target.value) }
+                              onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)
+                              ) }
+
                               />
                            </FlexItem>
                         </Flex>
@@ -181,7 +194,9 @@ const Edit = (props) => {
                            value={formState.getFieldValue('tags')}
                            onChange={e => formState.setFieldValue('tags', e.target.value) }
                            >
-                           <Picker.Item value="1" label="Whatever" />
+                           { CATEGORIES.map((category, i)=>(
+                              <Picker.Item value={category.urlKey} label={category.name} />
+                           ))}
                         </Picker>
                         <FieldError error={formState.errors?.fieldErrors?.tags} />	
                      </Chunk>
