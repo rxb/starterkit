@@ -241,27 +241,17 @@ function Show(props) {
 				
 			</Head>
 
-			{/*
-				<Stripe image={showData.photoUrl} style={{backgroundColor: '#eee'}}>
-				</Stripe>
-			*/}
-
+			
 			<Stripe>
-				<Bounds>
-
+				
+			<Bounds>
 						<ImageSnap
 							image={showData.photoUrl}
 							style={{backgroundColor: swatches.shade}}
 							/>
-						<Section>
-							<View style={{
-								/*
-								borderBottomWidth: 1,
-								borderBottomColor: swatches.border
-								*/
-							}}>
-								
-								<Flex>
+		
+			<Section>
+					<Flex>
 									<FlexItem>
 										
 										<Chunk>
@@ -279,13 +269,14 @@ function Show(props) {
 									{user.id && 
 										<FlexItem
 											shrink
-											style={{justifyContent: 'flex-end'}}
+											align="center"
+											justify="center"
 											>
 											<Chunk>
 												<Button
 													href={{pathname:'/showedit', query: {showId: showData.id}}}
 													shape="Edit"
-													label="Edit show"
+													label="Edit"
 													color="secondary"
 													variant={{
 														small: 'iconOnly',
@@ -296,8 +287,13 @@ function Show(props) {
 										</FlexItem>
 									}
 								</Flex>
-							</View>
-					
+							
+					</Section>
+		
+						<Section>
+
+								
+								
 
 							<Chunk>
 								<Text>{showData.description}</Text>

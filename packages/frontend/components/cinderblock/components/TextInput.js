@@ -102,7 +102,9 @@ class TextInput extends React.Component{
 		return (
 			<View style={wrapperStyle}>
 				<TextInputWeb
-					ref={ref => this.textinput = ref}
+					ref={ (ref) => {
+						this.textinput = ref
+					}}
 					accessibilityLabel={placeholder}
 					placeholder={placeholder}
 					placeholderTextColor={swatches.textHint}

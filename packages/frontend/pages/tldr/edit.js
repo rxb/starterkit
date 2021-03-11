@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useCallback } from 'react';
+import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
 import { Animated } from '@/components/cinderblock/primitives';
 
 import {
@@ -73,6 +73,8 @@ const buildUrlKey = (pieces = []) => {
 }
 
 const Edit = (props) => {
+   const urlKeyRef = useRef();
+
    const dispatch = useDispatch(); 
    const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
@@ -97,7 +99,7 @@ const Edit = (props) => {
       <Page>
          <TldrHeader />
          <Stripe>
-            <Bounds>
+            <Bounds style={{maxWidth: 640}}>
                <Section>
                   <Chunk>
                      <Text type="pageHead">Create new card</Text>
@@ -106,7 +108,7 @@ const Edit = (props) => {
                <Section>
                   <form>
                      
-                  { (formStep >= 0) && 
+                  <RevealBlock visible={formStep >= 0} delay={300}>
                   <Chunk>
                      <Label for="title">What is your card about?</Label>
                      <TextInput
@@ -137,7 +139,6 @@ const Edit = (props) => {
                         />             
                      <FieldError error={formState.errors?.fieldErrors?.title} />	
                   </Chunk>
-                  }
 
                   { (formStep == 0) && 
                      <Chunk>
@@ -151,14 +152,18 @@ const Edit = (props) => {
                            />
                      </Chunk>
                   }
-
+                  </RevealBlock>
 
                    <RevealBlock visible={formStep >= 1} delay={150}>
                      <Chunk>
                         <Label for="title">How's this as a link for your card?</Label>
                         <Flex flush>
                            <FlexItem flush shrink justify="center" >
-                              <FakeInput label={`${user.urlKey}/`} style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, borderRight: 0}} />
+                              <View 
+                                 style={[styles.input, {borderTopRightRadius: 0, borderBottomRightRadius: 0, borderRight: 0}]}  
+                                 >
+                                 <Text color="hint">{user.urlKey}/</Text>
+                              </View>
                            </FlexItem>
                            <FlexItem flush>
                               <TextInput
@@ -168,7 +173,6 @@ const Edit = (props) => {
                               value={formState.getFieldValue('urlKey')}
                               onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)
                               ) }
-
                               />
                            </FlexItem>
                         </Flex>
@@ -189,6 +193,24 @@ const Edit = (props) => {
                   <RevealBlock visible={formStep >= 2} delay={150}>
                      <Chunk>
                         <Label for="title">Category</Label>
+                        {CATEGORIES.map((category, i)=>{
+                           const selected = category.urlKey == formState.getFieldValue('category');
+                           return (
+                              <Touch onPress={()=>{
+                                 formState.setFieldValue('category', category.urlKey)
+                              }}>
+                                 <View style={[
+                                    styles.input,
+                                    (selected) 
+                                       ? { backgroundColor:  'blue'} 
+                                       : { }
+                                 ]}>
+                                    <Text inverted={selected}>{category.name}</Text>
+                                 </View>
+                              </Touch>
+                           )
+                        })}
+                        {/*
                         <Picker
                            id="tags"
                            value={formState.getFieldValue('tags')}
@@ -198,6 +220,7 @@ const Edit = (props) => {
                               <Picker.Item value={category.urlKey} label={category.name} />
                            ))}
                         </Picker>
+                        */}
                         <FieldError error={formState.errors?.fieldErrors?.tags} />	
                      </Chunk>
                      { (formStep == 2) && 
