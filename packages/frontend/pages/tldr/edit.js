@@ -1,5 +1,7 @@
 import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
 import { Animated } from '@/components/cinderblock/primitives';
+import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/utils';
+
 
 import {
 	fetcher,
@@ -82,17 +84,26 @@ const Edit = (props) => {
    const [formStep, setFormStep] = useState(0);
 
    const formState = useFormState({
-		initialFields: {
-		},
-		toastableErrors: {
-			BadRequest: 'Something went wrong',
-			NotAuthenticated: 'Not signed in'
-		},
-		addToast: msg => dispatch(addToast(msg))
-	})
+      '__note': 'TLDR Edit',
+      initialFields: {
+      },
+      toastableErrors: {
+         BadRequest: 'Something went wrong',
+         NotAuthenticated: 'Not signed in'
+      },
+      addToast: msg => dispatch(addToast(msg))
+   }); 
 
    const submitForm = () => {
-
+      const error = runValidations(formState.fields, {
+			urlKey: {
+				 isLength: {
+					 args: {min: 1},
+					 msg: "Link can't be blank"
+				 },
+			 }
+		 });
+		formState.setError(error);
    }
 
    return (
@@ -137,7 +148,7 @@ const Edit = (props) => {
                            });
                         }}
                         />             
-                     <FieldError error={formState.errors?.fieldErrors?.title} />	
+                     <FieldError error={formState.error?.fieldErrors?.title} />	
                   </Chunk>
 
                   { (formStep == 0) && 
@@ -176,7 +187,7 @@ const Edit = (props) => {
                               />
                            </FlexItem>
                         </Flex>
-                        <FieldError error={formState.errors?.fieldErrors?.urlKey} />	
+                        <FieldError error={formState.error?.fieldErrors?.urlKey} />	
                      </Chunk>
                      { (formStep == 1) && 
                         <Chunk>
@@ -220,23 +231,14 @@ const Edit = (props) => {
                               )
                            }}
                            />
-                        {/*
-                        <Picker
-                           id="tags"
-                           value={formState.getFieldValue('tags')}
-                           onChange={e => formState.setFieldValue('tags', e.target.value) }
-                           >
-                           { CATEGORIES.map((category, i)=>(
-                              <Picker.Item value={category.urlKey} label={category.name} />
-                           ))}
-                        </Picker>
-                        */}
-                        <FieldError error={formState.errors?.fieldErrors?.tags} />	
+                        <FieldError error={formState.error?.fieldErrors?.tags} />	
                      </Chunk>
                      { (formStep == 2) && 
                         <Chunk>
                            <Button 
-                              label="Create"
+                              label="Create new card"
+                              onPress={ submitForm }
+					               isLoading={formState.loading}
                               />
                         </Chunk>
                      }

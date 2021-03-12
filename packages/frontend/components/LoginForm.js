@@ -18,6 +18,7 @@ const LoginForm = (props) => {
 	const dispatch = useDispatch();
 
 	const formState = useFormState({
+		'__note': 'LoginForm',
 		initialFields: props.initialFields
 	});
 

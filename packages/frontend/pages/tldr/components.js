@@ -180,7 +180,7 @@ export const TldrCardSmall = (props) => {
 					}}
 					>
 					<Chunk>
-						<Text type="small" color="hint">@{tldr.author?.urlKey}/{tldr.id}</Text>
+						<Text type="micro" color="hint">{tldr.author?.urlKey}/{tldr.urlKey}</Text>
 						<Text type="big">{content.title}</Text>
 						<Text color="secondary" type="small" style={{fontStyle: 'italic'}}>{content.blurb}</Text>
 					</Chunk>
@@ -201,7 +201,7 @@ export const CreateTldrCardSmall = (props) => {
 							color={swatches.tint}
 							style={{alignSelf: 'center'}}
 							/>
-						<Text type="micro" color="hint">Create card</Text>
+						<Text type="micro" color="tint">Create card</Text>
 				</View>
 			</Sectionless>
 		</Card>

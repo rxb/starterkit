@@ -26,7 +26,7 @@ const convertFeathersErrors = (originalError) => {
 }
 
 
-function useFormState ( opts = {} ) {
+const useFormState = ( opts = {} ) => {
 
 	const {
 		initialFields = {},
@@ -39,12 +39,17 @@ function useFormState ( opts = {} ) {
 	useEffect( ()=>{ handleChange() }, [fields]);
 
 	const [loading, setLoading] = useState(false);
-	const [error, setErrorDirect] = useState({});
+	const [error, setErrorDirect] = useState({timestamp: Date.now()});
 	const setError = (error = {}) => setErrorDirect(convertFeathersErrors(error));
+
+	console.log('ERROR DEBUG');
+	console.log(opts);
+	console.log(error);
+	console.log('**********');
 
 	// watch for toastable errors 
 	useEffect(()=>{
-		const message = toastableErrors[error.name];
+		const message = toastableErrors[error?.name];
 		if(message){
 			addToast(message);
 		}

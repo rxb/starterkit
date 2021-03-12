@@ -198,7 +198,7 @@ function VersionEdit(props) {
 												value={formState.getFieldValue('title')}
 												onChange={e => formState.setFieldValue('title', e.target.value) }
 												/>
-											<FieldError error={formState.errors?.fieldErrors?.title} />	
+											<FieldError error={formState.error?.fieldErrors?.title} />	
 											<TextInput
 												style={[{fontStyle: 'italic'}, inputJoinedBottom]}
 												id="blurb"
@@ -206,7 +206,7 @@ function VersionEdit(props) {
 												value={formState.getFieldValue('blurb')}
 												onChange={e => formState.setFieldValue('blurb', e.target.value) }
 												/>
-											<FieldError error={formState.errors?.fieldErrors?.blurb} />
+											<FieldError error={formState.error?.fieldErrors?.blurb} />
 										</Chunk>
 
 										<DndProvider backend={HTML5Backend}>
