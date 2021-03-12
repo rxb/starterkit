@@ -66,13 +66,34 @@ const cleanUrlKey = (dirtyUrlKey) => {
             .replace(/[-]+/gi, "-")
             .toLowerCase();
 }
-
 const buildUrlKey = (pieces = []) => {
    const wordArray = pieces.join(' ').split(' ');
    const stoplessWordArray = stopword.removeStopwords(wordArray);
    return cleanUrlKey( stoplessWordArray.join(' ').trim() );
             
 }
+const editValidations = {
+   verb: {
+      notEmpty: {
+         msg: "Verb can't be blank"
+      },
+   },
+   noun: {
+      notEmpty: {
+         msg: "Noun can't be blank"
+      },
+   },
+   urlKey: {
+      notEmpty: {
+          msg: "Link can't be blank"
+      },
+   },
+   category: { 
+      notNull: {
+         msg: "Pick a category"
+      },
+   }
+ };
 
 const Edit = (props) => {
    const urlKeyRef = useRef();
@@ -86,6 +107,10 @@ const Edit = (props) => {
    const formState = useFormState({
       '__note': 'TLDR Edit',
       initialFields: {
+         verb: '',
+         noun: '',
+         urlKey: '',
+         category: null
       },
       toastableErrors: {
          BadRequest: 'Something went wrong',
@@ -95,14 +120,7 @@ const Edit = (props) => {
    }); 
 
    const submitForm = () => {
-      const error = runValidations(formState.fields, {
-			urlKey: {
-				 isLength: {
-					 args: {min: 1},
-					 msg: "Link can't be blank"
-				 },
-			 }
-		 });
+      const error = runValidations(formState.fields, editValidations);
 		formState.setError(error);
    }
 
@@ -135,6 +153,7 @@ const Edit = (props) => {
                            });
                         }}
                         />
+
                      <TextInput
                         id="verb"
                         placeholder="noun (ex. bread, a major, Tokyo)"
@@ -147,17 +166,25 @@ const Edit = (props) => {
                               'urlKey': urlKey
                            });
                         }}
-                        />             
-                     <FieldError error={formState.error?.fieldErrors?.title} />	
+                        />
+                     <FieldError error={formState.error?.fieldErrors?.verb} />	
+                     <FieldError error={formState.error?.fieldErrors?.noun} />	
                   </Chunk>
 
                   { (formStep == 0) && 
                      <Chunk>
                         <Button 
                            onPress={ () => {
-                              const urlKey = buildUrlKey([formState.getFieldValue('verb'), formState.getFieldValue('noun')]);
-                              formState.setFieldValue('urlKey', urlKey);
-                              setFormStep(1);
+                              const error = runValidations(formState.fields, {
+                                 verb: editValidations.verb,
+                                 noun: editValidations.noun
+                              });
+                              formState.setError(error);
+                              if(!error){
+                                 const urlKey = buildUrlKey([formState.getFieldValue('verb'), formState.getFieldValue('noun')]);
+                                 formState.setFieldValue('urlKey', urlKey);
+                                 setFormStep(1);
+                              }
                            }}
                            label="Next"
                            />
@@ -178,13 +205,13 @@ const Edit = (props) => {
                            </FlexItem>
                            <FlexItem flush>
                               <TextInput
-                              spellCheck={false}
-                              style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}
-                              id="urlKey"
-                              value={formState.getFieldValue('urlKey')}
-                              onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)
-                              ) }
-                              />
+                                 spellCheck={false}
+                                 style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}
+                                 id="urlKey"
+                                 value={formState.getFieldValue('urlKey')}
+                                 onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)
+                                 ) }
+                                 />
                            </FlexItem>
                         </Flex>
                         <FieldError error={formState.error?.fieldErrors?.urlKey} />	
@@ -193,7 +220,13 @@ const Edit = (props) => {
                         <Chunk>
                            <Button 
                               onPress={ () => {
-                                 setFormStep(2);
+                                 const error = runValidations(formState.fields, {
+                                    urlKey: editValidations.urlKey
+                                 });
+                                 formState.setError(error);
+                                 if(!error){
+                                    setFormStep(2);
+                                 }
                               }}
                               label="Looks good"
                               />
@@ -231,7 +264,7 @@ const Edit = (props) => {
                               )
                            }}
                            />
-                        <FieldError error={formState.error?.fieldErrors?.tags} />	
+                        <FieldError error={formState.error?.fieldErrors?.category} />	
                      </Chunk>
                      { (formStep == 2) && 
                         <Chunk>

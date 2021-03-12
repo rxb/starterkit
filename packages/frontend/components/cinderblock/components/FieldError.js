@@ -19,7 +19,7 @@ const FieldError = (props) => {
 		return(
 			<Inline align="">
 				<Icon
-					shape="AlertTriangle"
+					shape="AlertCircle"
 					size="small"
 					color="red"
 					/>
