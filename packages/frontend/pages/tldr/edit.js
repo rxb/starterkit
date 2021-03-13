@@ -6,7 +6,7 @@ import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/util
 import {
 	fetcher,
 	patchTldr,
-	useTldr
+	postTldr
 } from '@/swr';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
@@ -119,9 +119,23 @@ const Edit = (props) => {
       addToast: msg => dispatch(addToast(msg))
    }); 
 
-   const submitForm = () => {
+   const submitForm = async () => {
       const error = runValidations(formState.fields, editValidations);
 		formState.setError(error);
+      if(!error){
+         formState.setLoading(true);
+         try{
+            const tldr = await postTldr(formState.fields, {token: authentication.accessToken})
+            const toastMessage = "Great, now you can write the first version of your card";
+            dispatch(addDelayedToast(toastMessage));
+            Router.push({pathname:'./versionedit', query: {tldrId: tldr.id}})
+         }
+         catch(error){
+            console.log(error);
+            formState.setError(error);
+            formState.setLoading(false);
+         }
+      }
    }
 
    return (

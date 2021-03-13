@@ -77,11 +77,11 @@ function VersionEdit(props) {
 
 	const dispatch = useDispatch();
 
-	const { tldr } = props
+	const { tldr } = props;
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 	const [previewVersion, setPreviewVersion] = useState({
-		version: (tldr.currentTldrVersion.version + 1),
+		version: (tldr.versionsUsedCount + 1),
 		content: tldr.draftContent
 	});
 	const [selectedTab, setSelectedTab] = useState('edit');
@@ -102,7 +102,7 @@ function VersionEdit(props) {
 	const formState = useFormState({
 		initialFields: {
 			...tldr.draftContent,
-			steps: tldr.draftContent.steps.map( (step,i) => ({...step, stepid: i}) ),
+			steps: tldr.draftContent?.steps.map( (step,i) => ({...step, stepid: i}) ) || [],
 			id: tldr.id,
 			publish: false
 		},
@@ -307,8 +307,15 @@ function VersionEdit(props) {
 											</FlexItem>
 										</Flex>
 									</Chunk>
-									</Section>
-								</form>
+
+									{/*
+									<Chunk>
+										<Text>{JSON.stringify(tldr)}</Text>
+									</Chunk>
+									*/}
+									
+								</Section>
+							</form>
 
 					</Bounds>
 				</Stripe>
@@ -319,7 +326,7 @@ function VersionEdit(props) {
 
 VersionEdit.getInitialProps = async(context) => {
 	const {store, isServer, pathname, query} = context;
-	const tldrId = query.tldrid; // query params become lowercase
+	const tldrId = query.tldrId; // query params become lowercase
 	const tldr = await fetcher(getTldrUrl(tldrId));
 	return {
 		tldrId,

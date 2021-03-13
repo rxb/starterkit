@@ -59,8 +59,7 @@ export const TldrCard = (props) => {
 								<Inline>
 									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
 									<Text type="small" inverted color="secondary">
-										{/* TODO: replace with actual data, this is fakedwha */}
-										@{tldr.author.urlKey} / {content.title.replace(/[^A-Za-z0-9-\s]+/gi, "").replace(/\s+/gi,"-").toLowerCase()}
+										@{tldr.author.urlKey} / {tldr.urlKey}
 									</Text>
 								</Inline>
 							</FlexItem>
@@ -129,6 +128,7 @@ export const TldrCard = (props) => {
 						<Touch onPress={()=>{
 							setReferences(!showReferences)
 						}}>
+							{/*
 
 							{ !showReferences &&
 								<Text color="hint">
@@ -151,6 +151,7 @@ export const TldrCard = (props) => {
 									Hide references & rationale
 								</Text>
 							}	
+							*/}
 
 						</Touch>
 					</Chunk>
