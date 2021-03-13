@@ -1,3 +1,6 @@
+const { authenticate } = require('@feathersjs/authentication').hooks;
+const { setField } = require('feathers-authentication-hooks');
+
 const populateTldrAssociations = (context) => {
   context.params.sequelize = {
     ...context.params.sequelize,
@@ -19,18 +22,22 @@ module.exports = {
       populateTldrAssociations
     ],
     create: [
+      /*
       authenticate('jwt'),
       setField({
         from: 'params.user.id',
         as: 'data.authorId'
       })
+      */
     ],
     update: [
+      /*
       authenticate('jwt'),
       setField({
         from: 'params.user.id',
         as: 'data.authorId'
       })
+      */
     ],
     patch: [
       async (context) => {
