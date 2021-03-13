@@ -22,23 +22,13 @@ module.exports = {
       populateTldrAssociations
     ],
     create: [
-      /*
       authenticate('jwt'),
       setField({
         from: 'params.user.id',
         as: 'data.authorId'
       })
-      */
     ],
-    update: [
-      /*
-      authenticate('jwt'),
-      setField({
-        from: 'params.user.id',
-        as: 'data.authorId'
-      })
-      */
-    ],
+    update: [],
     patch: [
       async (context) => {
           

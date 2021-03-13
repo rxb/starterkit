@@ -24,6 +24,7 @@ module.exports = function (app) {
       type: DataTypes.INTEGER
     },
     authorId: {
+      allowNull: false,
       type: DataTypes.INTEGER
     },
     upvotes: {

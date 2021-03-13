@@ -49,7 +49,10 @@ module.exports = function (app) {
     urlKey: {
       type: DataTypes.TEXT,
       allowNull: false,
-      unique: true,
+      unique: {
+        msg: 'Sorry, this one is taken. Try something different?',
+        fields: ['urlKey']
+      },
       validate: {
         is: /^[a-zA-Z0-9_-]*$/
       }

@@ -120,13 +120,13 @@ function VersionEdit(props) {
 		addToast: msg => dispatch(addToast(msg))
 	})
 
-	const moveStep = useCallback((dragIndex, hoverIndex) => {
+	const moveStep = (dragIndex, hoverIndex) => {
 		const dragItem = formState.getFieldValue('steps')[dragIndex];
 		const newSteps = [...formState.getFieldValue('steps')];
 		newSteps.splice(dragIndex, 1);
 		newSteps.splice(hoverIndex, 0, dragItem);
 		formState.setFieldValue('steps', newSteps);
-	}, [formState.getFieldValue('steps')]);
+	};
 
 
 	const submitForm = async(finalFields={}) => {
@@ -142,7 +142,7 @@ function VersionEdit(props) {
 
 		formState.setLoading(true);
 		try{
-			await patchTldr(tldr.id, patchFields, {token: authentication.accessToken})
+			await patchTldr(tldr.id, patchFields, authentication.accessToken)
 			const toastMessage = (patchFields.publish) ? "New TLDR version published!" : "TLDR draft saved!"
 			dispatch(addDelayedToast(toastMessage));
 			Router.push({pathname:'./tldr', query: {tldrId: tldr.id}})
@@ -228,7 +228,6 @@ function VersionEdit(props) {
 																cursor: 'pointer'
 															}}
 															/>
-															
 															<TextInput
 																style={[styles.textBig, inputJoinedTop]}
 																id={`step${i}head`}
@@ -313,7 +312,7 @@ function VersionEdit(props) {
 										<Text>{JSON.stringify(tldr)}</Text>
 									</Chunk>
 									*/}
-									
+
 								</Section>
 							</form>
 

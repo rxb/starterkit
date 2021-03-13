@@ -55,9 +55,6 @@ import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
 import {CATEGORIES} from './components';
 
-
-import { authentication } from '@feathersjs/client';
-
 import stopword from 'stopword';
 
 const cleanUrlKey = (dirtyUrlKey) => {
@@ -84,6 +81,7 @@ const editValidations = {
       },
    },
    urlKey: {
+      // TODO: add client-side uniqueness validation (server will catch it for now)
       notEmpty: {
           msg: "Link can't be blank"
       },
@@ -125,7 +123,8 @@ const Edit = (props) => {
       if(!error){
          formState.setLoading(true);
          try{
-            const tldr = await postTldr(formState.fields, {token: authentication.accessToken})
+            console.log(authentication.accessToken);
+            const tldr = await postTldr(formState.fields, authentication.accessToken)
             const toastMessage = "Great, now you can write the first version of your card";
             dispatch(addDelayedToast(toastMessage));
             Router.push({pathname:'./versionedit', query: {tldrId: tldr.id}})
@@ -292,6 +291,10 @@ const Edit = (props) => {
                   </RevealBlock> 
 
                   </form>
+
+                  <Chunk>
+                     <Text>{JSON.stringify(authentication)}</Text>
+                  </Chunk>
                </Section>
             </Bounds>
          </Stripe>

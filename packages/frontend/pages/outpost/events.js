@@ -88,7 +88,7 @@ const EventForm = (props) => {
 	const submitForm = async () => {
 		formState.setLoading(true);
 		try{
-			await postEvent( formState.fields, {token: authentication.accessToken});
+			await postEvent( formState.fields, authentication.accessToken);
 			formState.resetFields();	
 			props.onSuccess();
 		}
