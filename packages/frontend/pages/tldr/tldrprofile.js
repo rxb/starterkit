@@ -56,11 +56,10 @@ dayjs.extend(relativeTime)
 
 function TldrProfile(props) {
 
-		const { userId } = props;
-		console.log(userId);
-
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
+		const user = authentication.user || {};
+		const { userId } = props.userId || user.id;
 		
 		const {data: userData, error: userError, mutate: userMutate} = useUser(userId);
 		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs({authorId: userId});
@@ -113,20 +112,25 @@ function TldrProfile(props) {
 									}}
 									scrollItemWidth={300}
 									items={[...tldrsData, {last: true}]}
-                              renderItem={(item, i)=>(
-                                 <Chunk key={i}>
-                                    { !item.last &&
-                                       <Link href={`/tldr/tldr?tldrId=${item.id}`}>
-                                          <TldrCardSmall tldr={item} style={{minHeight: 160}} />
-                                       </Link>
-                                    }
-                                    { item.last &&
-                                       <Link href={`/tldr/edit`}>
-                                          <CreateTldrCardSmall />
-                                       </Link>
-                                    }
-                                 </Chunk>
-                              )}
+                              renderItem={(item, i)=>{
+											const href = (item.currentTldrVersion != undefined) ? 
+												`/tldr/tldr?tldrId=${item.id}` :
+												`/tldr/versionedit?tldrId=${item.id}`;
+											return (
+												<Chunk key={i}>
+													{ !item.last &&
+														<Link href={href}>
+															<TldrCardSmall tldr={item} style={{minHeight: 160}} />
+														</Link>
+													}
+													{ item.last &&
+														<Link href={`/tldr/edit`}>
+															<CreateTldrCardSmall />
+														</Link>
+													}
+												</Chunk>
+											);
+										}}
 									/>
 							</Section>
 							

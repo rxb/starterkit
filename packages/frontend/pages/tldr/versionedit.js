@@ -52,7 +52,6 @@ import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
 import {TldrCardSmall, TldrCard} from './components';
 
-import { authentication } from '@feathersjs/client';
 
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -98,11 +97,19 @@ function VersionEdit(props) {
 		}
 	};
 
+	
+	// give existing steps ids (required for drag and drop)
+	// and pad out blank steps so there are min 3
+	const initialSteps = tldr.draftContent?.steps.map((step,i) => ({...step, stepid: i}) ) || [];
+	for(let i=initialSteps.length; i<3; i++){
+		initialSteps.push({stepid: i});
+	}
+	const [stepCursor, setStepCursor] = useState(initialSteps.length);
 
 	const formState = useFormState({
 		initialFields: {
 			...tldr.draftContent,
-			steps: tldr.draftContent?.steps.map( (step,i) => ({...step, stepid: i}) ) || [],
+			steps: initialSteps,
 			id: tldr.id,
 			publish: false
 		},
@@ -145,7 +152,12 @@ function VersionEdit(props) {
 			await patchTldr(tldr.id, patchFields, authentication.accessToken)
 			const toastMessage = (patchFields.publish) ? "New TLDR version published!" : "TLDR draft saved!"
 			dispatch(addDelayedToast(toastMessage));
-			Router.push({pathname:'./tldr', query: {tldrId: tldr.id}})
+			const nextPath = ( tldr.currentVersionId == undefined && !patchFields.publish ) ? 
+				// if saving draft on a card that has never been published
+				// redirect to profile... that's the only place it lives until 1st publish
+				{pathname:'./tldrprofile', query: {userId: user.id}} :
+				{pathname:'./tldr', query: {tldrId: tldr.id}};
+			Router.push(nextPath);
 		}
 		catch(error){
 			console.log(error);
@@ -163,6 +175,11 @@ function VersionEdit(props) {
 					<title>Edit tldr</title>
 				</Head>
 				<Stripe>
+						<Bounds>
+							<Section>
+								<Text type="pageHead">Edit card</Text>
+							</Section>
+						</Bounds>
 						<Sticky>
 							<Bounds>
 								<Section>
@@ -261,8 +278,9 @@ function VersionEdit(props) {
 										<Touch onPress={()=>{
 												formState.setFieldValue('steps', [
 													...formState.getFieldValue('steps'),
-													{title: '', body: '', stepid: formState.getFieldValue('steps').length},
+													{title: '', body: '', stepid: (stepCursor + 1)},
 												])
+												setStepCursor(stepCursor + 1);
 											}}>
 											<Chunk inline>
 												<Icon shape="PlusCircle" />

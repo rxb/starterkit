@@ -7,6 +7,7 @@ import {
 	Card,
 	CheckBox,
 	Chunk,
+	Chip,
 	Flex,
 	FlexItem,
 	Header,
@@ -170,21 +171,33 @@ export const TldrCardSmall = (props) => {
 	} = props;
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
 	const content = thisVersion?.content || {};
-
+	const draft = tldr.id && tldr.currentTldrVersion == undefined;
 	return(
-			<Card style={style}>
+			<Card style={[{minHeight: 160}, style]}>
 				<Sectionless
 					style={{
 						borderTopWidth: 5,
 						borderTopColor: swatches.tint,
-						paddingTop: METRICS.space
+						paddingTop: METRICS.space,
+						flex: 1
 					}}
 					>
-					<Chunk>
-						<Text type="micro" color="hint">{tldr.author?.urlKey}/{tldr.urlKey}</Text>
-						<Text type="big">{content.title}</Text>
-						<Text color="secondary" type="small" style={{fontStyle: 'italic'}}>{content.blurb}</Text>
+					<Chunk style={{flex: 1}}>
+						<View style={{flex: 1}}>
+							<Text type="micro" color="hint">{tldr.author?.urlKey}/{tldr.urlKey}</Text>
+							<Text type="big">{content.title ? content.title : 'Untitled'}</Text>
+							<Text color="secondary" type="small" style={{fontStyle: 'italic'}}>{content.blurb}</Text>
+						</View>
+
+						{ draft &&
+							<View style={{flex: 0}}>
+								<View style={[{ backgroundColor: swatches.error, paddingHorizontal: 6, borderRadius: 4, alignItems: 'center', }]}>
+									<Text type="small" inverted>Draft, not published</Text>
+								</View>
+							</View>
+						}
 					</Chunk>
+					
 				</Sectionless>
 			</Card>
 	);

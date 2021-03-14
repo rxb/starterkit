@@ -162,7 +162,7 @@ function Tldr(props) {
 							<Flex direction="column" switchDirection="large">
 
 								<FlexItem growFactor={1}>
-									<Section style={{paddingTop: 0, paddingBottom: 0}}>
+									<Section style={{ paddingBottom: 0}}>
 										<Chunk>
 											<TldrCard tldr={tldrData} />
 										</Chunk>
@@ -384,7 +384,7 @@ function Tldr(props) {
 Tldr.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
-	const tldrId = query.tldrid || 2;
+	const tldrId = query.tldrId;
 	const isServer = !!req;	
 
 	// fetch and pass as props during SSR, using in the useSWR as intitialData

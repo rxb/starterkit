@@ -1,13 +1,21 @@
 import useSWR, { mutate }  from 'swr'
 export const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
+
 // REQUEST
 // vanilla fetch only throws js error for js problems
 // this will throw js error for js AND http problems
 // also provides some syntactic sugar for data and token 
 export function request(url, options) {
+
    const buildOptions = (options = {}) => {
-      const {data = false, token = false, headers = {}, ...rest} = options
+      const {
+         data = false, 
+         token = false, 
+         headers = {}, 
+         ...rest
+      } = options
+
       return {
          ...data && {body: JSON.stringify(data)},
          headers: {
@@ -64,11 +72,13 @@ export const buildQs = (params) => {
 export const getShowsUrl = (params) => `${apiHost}/shows/${buildQs(params)}`; 
 export const getShowUrl = (id='') => `${apiHost}/shows/${id}`; 
 
-export const useShows = (params, options) => {
-   return parsePageObj(useSWR(getShowsUrl(params), fetcher, options))
+export const useShows = (key, options) => {
+   const [params, ...rest] = [].concat(key); // optional array, like how useSWR works
+   return parsePageObj(useSWR([getShowsUrl(params), ...rest], fetcher, options))
 }
-export const useShow = (id, options) => {
-   return useSWR(getShowUrl(id), fetcher, options)
+export const useShow = (key, options) => {
+   const [id, ...rest] = [].concat(key); // optional array, like how useSWR works
+   return useSWR([getShowUrl(id), ...rest], fetcher, options)
 }
 
 export const postShow = (data, token) => {
