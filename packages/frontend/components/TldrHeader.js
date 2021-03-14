@@ -104,11 +104,15 @@ function TldrHeader (props) {
 												<Menu ref={userMenu}>
 													<Sectionless>
 														<Chunk>
-															{ ['Profile', 'Settings', 'Log out'].map((item, i)=>(
-																<Touch onPress={feathersClient.logout} key={i}>
-																	<Text color="tint" >{item}</Text>
+																<Link href={`/tldr/tldrprofile`} >
+																	<Text color="tint" >Profile</Text>
+																</Link>
+																<Touch >
+																	<Text color="tint" >Settings</Text>
 																</Touch>
-															))}
+																<Touch onPress={feathersClient.logout} >
+																	<Text color="tint" >Log out</Text>
+																</Touch>
 														</Chunk>
 													</Sectionless>
 												</Menu>

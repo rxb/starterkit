@@ -59,7 +59,7 @@ function TldrProfile(props) {
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
 		const user = authentication.user || {};
-		const { userId } = props.userId || user.id;
+		const userId  = props.userId || user.id;
 		
 		const {data: userData, error: userError, mutate: userMutate} = useUser(userId);
 		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs({authorId: userId});
@@ -177,7 +177,6 @@ TldrProfile.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
 	const userId = query.userId;
-	console.log(query);
 	const isServer = !!req;	
 
 	return {

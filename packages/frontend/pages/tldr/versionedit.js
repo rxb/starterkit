@@ -315,7 +315,7 @@ function VersionEdit(props) {
 											<FlexItem shrink>
 												<Button
 													color="primary"
-													label={`Publish as new version (v.${previewVersion.version})`}
+													label={(tldr.currentVersionId == undefined) ? 'Publish card'  : `Publish as new version (v ${previewVersion.version})`}
 													isLoading={formState.loading && formState.getFieldValue('publish')}
 													onPress={ () => {
 														submitForm({publish: true});

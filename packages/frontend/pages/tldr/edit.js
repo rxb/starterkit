@@ -292,9 +292,6 @@ const Edit = (props) => {
 
                   </form>
 
-                  <Chunk>
-                     <Text>{JSON.stringify(authentication)}</Text>
-                  </Chunk>
                </Section>
             </Bounds>
          </Stripe>
