@@ -16,7 +16,23 @@ module.exports = {
   before: {
     all: [],
     find: [
-      populateTldrAssociations
+      populateTldrAssociations,
+      (context) => {
+        if(context.params.query.self){
+          // "self" requests all of logged in user's tldrs, no limiting of drafts
+          delete context.params.query.self;
+          authenticate('jwt'),
+          setField({
+            from: 'params.user.id',
+            as: 'data.authorId'
+          })
+        }
+        else{
+          // no drafts
+          context.params.query.currentTldrVersionId = {'$ne' : null}; 
+        }
+        return context;
+      }
     ],
     get: [
       populateTldrAssociations

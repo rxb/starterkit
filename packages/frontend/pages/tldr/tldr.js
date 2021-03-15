@@ -248,7 +248,7 @@ function Tldr(props) {
 												label="Edit card"
 												width="full"
 												color="secondary"
-												href={`/tldr/versionedit?tldrid=${tldrData.id}`}
+												href={`/tldr/versionedit?tldrId=${tldrData.id}`}
 												/>
 											<Flex>
 												<FlexItem>
@@ -362,7 +362,7 @@ function Tldr(props) {
 										return(
 											<Chunk key={i}>
 												<Link 
-													href={`/tldr/tldr?tldrid=${item.id}`}
+													href={`/tldr/tldr?tldrId=${item.id}`}
 													>
 													<TldrCardSmall tldr={item} />
 												</Link>

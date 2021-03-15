@@ -171,7 +171,7 @@ export const TldrCardSmall = (props) => {
 	} = props;
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
 	const content = thisVersion?.content || {};
-	const draft = tldr.id && tldr.currentTldrVersion == undefined;
+	const draft = tldr.id && tldr.currentTldrVersionId == undefined;
 	return(
 			<Card style={[{minHeight: 160}, style]}>
 				<Sectionless
@@ -191,8 +191,8 @@ export const TldrCardSmall = (props) => {
 
 						{ draft &&
 							<View style={{flex: 0}}>
-								<View style={[{ backgroundColor: swatches.error, paddingHorizontal: 6, borderRadius: 4, alignItems: 'center', }]}>
-									<Text type="small" inverted>Draft, not published</Text>
+								<View style={[{ backgroundColor: swatches.error, paddingHorizontal: 6, borderRadius: 4, alignSelf: 'flex-start' }]}>
+									<Text type="small" inverted>Unpublished</Text>
 								</View>
 							</View>
 						}

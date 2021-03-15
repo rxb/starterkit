@@ -62,13 +62,15 @@ function TldrProfile(props) {
 		const userId  = props.userId || user.id;
 		
 		const {data: userData, error: userError, mutate: userMutate} = useUser(userId);
-		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs({authorId: userId});
+		const {data: authorTldrsData, error: authorTldrsError, mutate: authorTldrsMutate} = useTldrs({self: true});
+		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs();
+
 		
 		return (
 			<Page>
 				<TldrHeader />
 
-				{ userData && tldrsData && 
+				{ userData && authorTldrsData && tldrsData && 
 					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
 						<Bounds>
 							<Section>
@@ -95,7 +97,7 @@ function TldrProfile(props) {
 								<Flex>
 									<FlexItem justify="center">
 										<Chunk>
-											<Text type="sectionHead">Author ({tldrsData.length})</Text>
+											<Text type="sectionHead">Author ({authorTldrsData.length})</Text>
 										</Chunk>		
 									</FlexItem>
 									
@@ -111,7 +113,7 @@ function TldrProfile(props) {
 										large: 4
 									}}
 									scrollItemWidth={300}
-									items={[...tldrsData, {last: true}]}
+									items={[...authorTldrsData, {last: true}]}
                               renderItem={(item, i)=>{
 											const href = (item.currentTldrVersion != undefined) ? 
 												`/tldr/tldr?tldrId=${item.id}` :

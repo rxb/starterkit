@@ -69,6 +69,16 @@ const inputJoinedBottom = {
 	zIndex: 1
 };
 
+const parseDraftContent = (fields) => {
+	return {
+		title: fields.title,
+		blurb: fields.blurb,
+		steps: fields.steps.map(item => {
+			delete item.id
+			return item;
+		}).filter(item => (item.head && item.head.length || item.body && item.body.length) )
+	}
+};
 
 
 
@@ -84,18 +94,6 @@ function VersionEdit(props) {
 		content: tldr.draftContent
 	});
 	const [selectedTab, setSelectedTab] = useState('edit');
-
-
-	const parseDraftContent = (fields) => {
-		return {
-			title: fields.title,
-			blurb: fields.blurb,
-			steps: fields.steps.map(item => {
-				delete item.id
-				return item;
-			}).filter(item => (item.head && item.head.length || item.body && item.body.length) )
-		}
-	};
 
 	
 	// give existing steps ids (required for drag and drop)
@@ -152,7 +150,7 @@ function VersionEdit(props) {
 			await patchTldr(tldr.id, patchFields, authentication.accessToken)
 			const toastMessage = (patchFields.publish) ? "New TLDR version published!" : "TLDR draft saved!"
 			dispatch(addDelayedToast(toastMessage));
-			const nextPath = ( tldr.currentVersionId == undefined && !patchFields.publish ) ? 
+			const nextPath = ( tldr.currentTldrVersionId == undefined && !patchFields.publish ) ? 
 				// if saving draft on a card that has never been published
 				// redirect to profile... that's the only place it lives until 1st publish
 				{pathname:'./tldrprofile', query: {userId: user.id}} :
@@ -292,10 +290,12 @@ function VersionEdit(props) {
 									}
 
 									{ (selectedTab == 'preview') &&
+									<View style={{maxWidth: 800}}>
 										<TldrCard 
 											tldr={tldr}
 											thisVersion={previewVersion} 
 											/>
+									</View>
 									}	
 								</Section>
 
@@ -315,7 +315,7 @@ function VersionEdit(props) {
 											<FlexItem shrink>
 												<Button
 													color="primary"
-													label={(tldr.currentVersionId == undefined) ? 'Publish card'  : `Publish as new version (v ${previewVersion.version})`}
+													label={(tldr.currentTldrVersionId == undefined) ? 'Publish card'  : `Publish as new version (v ${previewVersion.version})`}
 													isLoading={formState.loading && formState.getFieldValue('publish')}
 													onPress={ () => {
 														submitForm({publish: true});

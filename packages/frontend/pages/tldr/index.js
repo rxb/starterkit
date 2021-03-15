@@ -63,7 +63,6 @@ function TldrHome(props) {
 		const user = authentication.user || {};
 		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs();
 		
-
 		return (
 			<Page>
             <TldrHeader />
