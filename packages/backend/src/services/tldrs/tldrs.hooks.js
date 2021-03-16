@@ -1,6 +1,10 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
 
+const {
+  allowAnonymous,
+} = require('../common_hooks.js');
+
 const populateTldrAssociations = (context) => {
   context.params.sequelize = {
     ...context.params.sequelize,
@@ -17,20 +21,18 @@ module.exports = {
     all: [],
     find: [
       populateTldrAssociations,
+      allowAnonymous(),
+      authenticate('jwt', 'anonymous'),
       (context) => {
-        if(context.params.query.self){
+        if(context.params.query.self && context.params.user){
           // "self" requests all of logged in user's tldrs, no limiting of drafts
-          delete context.params.query.self;
-          authenticate('jwt'),
-          setField({
-            from: 'params.user.id',
-            as: 'data.authorId'
-          })
+          context.params.authorId = context.params.user.id  
         }
         else{
-          // no drafts
+          // no drafts, by default
           context.params.query.currentTldrVersionId = {'$ne' : null}; 
         }
+        delete context.params.query.self;
         return context;
       }
     ],

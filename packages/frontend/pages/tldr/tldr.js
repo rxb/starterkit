@@ -1,10 +1,7 @@
 import React, {Fragment, useState} from 'react';
 
-import {
-	fetcher,
-	getTldrUrl,
-	useTldr
-} from '@/swr';
+import { request, getTldrUrl } from '@/swr';
+import useSWR, { mutate }  from 'swr';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
@@ -141,12 +138,12 @@ const DeletePrompt = (props) => {
 function Tldr(props) {
 
 		const dispatch = useDispatch(); 
-
-		const {data: tldrData, error: tldrError, mutate: tldrMutate} = useTldr(props.tldrId, {initialData: props.tldr});
-
-
 		const authentication = useSelector(state => state.authentication);
 		const user = authentication.user || {};
+
+		const {data: tldrData} = useSWR( [getTldrUrl(props.tldrId), authentication.accessToken],  {initialData: props.tldr});
+
+
 
 		if( !tldrData )
 			return <View />
@@ -388,7 +385,7 @@ Tldr.getInitialProps = async (context) => {
 	const isServer = !!req;	
 
 	// fetch and pass as props during SSR, using in the useSWR as intitialData
-	const tldr = (isServer) ? await fetcher(getTldrUrl(tldrId)) : undefined;
+	const tldr = (isServer) ? await request(getTldrUrl(tldrId)) : undefined;
 
 	return {
 		tldrId: tldrId,

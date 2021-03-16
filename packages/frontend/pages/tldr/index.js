@@ -1,13 +1,14 @@
 import React, {Fragment, useState} from 'react';
 
-import {
-	useTldrs
-} from '@/swr';
+// SWR
+import { request, parsePageObj, getTldrsUrl } from '@/swr';
+import useSWR, { mutate }  from 'swr';
 
+// REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
-
+// COMPONENTS
 import {
 	Avatar,
 	Bounds,
@@ -35,23 +36,21 @@ import {
 	useMediaContext,
 	View,	
 } from '@/components/cinderblock';
-
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import { sleep } from '@/components/cinderblock/utils';
-import { METRICS } from '@/components/cinderblock/designConstants';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
-
-
 import {TldrCardSmall, CreateTldrCardSmall, CATEGORIES} from './components';
 
+// STYLE
+import styles from '@/components/cinderblock/styles/styles';
+import swatches from '@/components/cinderblock/styles/swatches';
+import { METRICS } from '@/components/cinderblock/designConstants';
+
+// SCREEN-SPECIFIC 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
-// at some point make real categories
-const categories = CATEGORIES;
+const categories = CATEGORIES; // at some point make real categories
 
 function TldrHome(props) {
 
@@ -61,7 +60,9 @@ function TldrHome(props) {
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
 		const user = authentication.user || {};
-		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs();
+
+		const tldrs = useSWR( getTldrsUrl() );
+		const {data: tldrsData} = parsePageObj( tldrs );
 		
 		return (
 			<Page>

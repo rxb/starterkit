@@ -15,6 +15,9 @@ import {
   logInSuccess
 } from '../actions';
 
+import { SWRConfig } from 'swr';
+import { fetcher } from '@/swr';
+
 // FEATHERS CLIENT
 // just using this for auth
 // TODO: would be nice to do this without a client library at all
@@ -28,8 +31,6 @@ if (process.browser) {
 }
 feathersClient.configure(feathers.authentication(authenticationOptions));
 feathersClient.configure(feathers.rest(apiHost).fetch(fetch));
-
-
 
 
 function ThisApp(props) {
@@ -159,7 +160,11 @@ function ThisApp(props) {
 
         <MediaProvider>
           <Provider store={store}>
-              <Component {...pageProps} />
+              <SWRConfig value={{
+                  fetcher: fetcher 
+                }}>
+                <Component {...pageProps} />
+              </SWRConfig>
           </Provider>
         </MediaProvider>
 

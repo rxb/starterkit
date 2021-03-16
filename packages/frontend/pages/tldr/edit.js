@@ -1,20 +1,14 @@
 import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
-import { Animated } from '@/components/cinderblock/primitives';
-import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/utils';
 
+// SWR
+import { request, getTldrUrl } from '@/swr';
+import useSWR, { mutate }  from 'swr';
 
-import {
-	fetcher,
-	patchTldr,
-	postTldr
-} from '@/swr';
-
+// REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
-import Router from 'next/router'
-import Head from 'next/head'
-
+// COMPONENTS
 import {
 	Avatar,
 	Bounds,
@@ -46,15 +40,20 @@ import {
 	View,
 	useFormState
 } from '@/components/cinderblock';
+import Page from '@/components/Page';
+import TldrHeader from '@/components/TldrHeader';
+import Router from 'next/router'
+import Head from 'next/head'
+
+// STYLE
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
 import {METRICS, EASE} from '@/components/cinderblock/designConstants';
 
-
-import Page from '@/components/Page';
-import TldrHeader from '@/components/TldrHeader';
+// SCREEN-SPECIFIC
 import {CATEGORIES} from './components';
-
+import { Animated } from '@/components/cinderblock/primitives';
+import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/utils';
 import stopword from 'stopword';
 
 const cleanUrlKey = (dirtyUrlKey) => {
@@ -63,12 +62,14 @@ const cleanUrlKey = (dirtyUrlKey) => {
             .replace(/[-]+/gi, "-")
             .toLowerCase();
 }
+
 const buildUrlKey = (pieces = []) => {
    const wordArray = pieces.join(' ').split(' ');
    const stoplessWordArray = stopword.removeStopwords(wordArray);
    return cleanUrlKey( stoplessWordArray.join(' ').trim() );
             
 }
+
 const editValidations = {
    verb: {
       notEmpty: {
@@ -91,7 +92,7 @@ const editValidations = {
          msg: "Pick a category"
       },
    }
- };
+};
 
 const Edit = (props) => {
    const urlKeyRef = useRef();
@@ -123,8 +124,11 @@ const Edit = (props) => {
       if(!error){
          formState.setLoading(true);
          try{
-            console.log(authentication.accessToken);
-            const tldr = await postTldr(formState.fields, authentication.accessToken)
+            const tldr = await request( getTldrUrl(), {
+               method: 'POST', 
+               data: formState.fields,
+               token: authentication.accessToken
+            });
             const toastMessage = "Great, now you can write the first version of your card";
             dispatch(addDelayedToast(toastMessage));
             Router.push({pathname:'./versionedit', query: {tldrId: tldr.id}})

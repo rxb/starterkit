@@ -1,14 +1,19 @@
 import React, {Fragment, useState} from 'react';
 
+// SWR
 import {
-	useTldrs,
-	useUser
+	request,
+	parsePageObj,
+	getUserUrl,
+	getTldrsUrl,
 } from '@/swr';
+import useSWR, { mutate }  from 'swr';
 
+// REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
-
+// COMPONENTS
 import {
 	Avatar,
 	Bounds,
@@ -36,35 +41,35 @@ import {
 	useMediaContext,
 	View,	
 } from '@/components/cinderblock';
-
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import { sleep } from '@/components/cinderblock/utils';
-import { METRICS } from '@/components/cinderblock/designConstants';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/TldrHeader';
-
-
 import {TldrCardSmall, CreateTldrCardSmall} from './components';
 
-import Markdown from 'markdown-to-jsx';
+// STYLE
+import styles from '@/components/cinderblock/styles/styles';
+import swatches from '@/components/cinderblock/styles/swatches';
+import { METRICS } from '@/components/cinderblock/designConstants';
+
+// SCREEN-SPECIFIC
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
-
-
 function TldrProfile(props) {
 
 		const dispatch = useDispatch(); 
+
 		const authentication = useSelector(state => state.authentication);
 		const user = authentication.user || {};
 		const userId  = props.userId || user.id;
 		
-		const {data: userData, error: userError, mutate: userMutate} = useUser(userId);
-		const {data: authorTldrsData, error: authorTldrsError, mutate: authorTldrsMutate} = useTldrs({self: true});
-		const {data: tldrsData, error: tldrsError, mutate: tldrsMutate} = useTldrs();
+		const {data: userData} = useSWR( getUserUrl(userId) );
+		
+		const authorTldrs = useSWR( [getTldrsUrl({self: true}), authentication.accessToken ] );
+		const {data: authorTldrsData} = parsePageObj( authorTldrs );
 
+		const tldrs = useSWR( getTldrsUrl() );
+		const {data: tldrsData} = parsePageObj( tldrs );
 		
 		return (
 			<Page>
@@ -192,8 +197,6 @@ const listItemStyle = {
 	borderTopWidth: 1,
 	paddingTop: METRICS.space
 }
-
-
 
 
 export default TldrProfile;

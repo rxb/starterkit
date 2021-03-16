@@ -8,7 +8,6 @@ import {
 	updateUi
 } from '../actions';
 
-
 import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
 
 import styles from './cinderblock/styles/styles';
@@ -49,7 +48,6 @@ function TldrHeader (props) {
 	const dispatch = useDispatch(); 
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
-
 	const userMenu = useRef(null);
 
 	return (

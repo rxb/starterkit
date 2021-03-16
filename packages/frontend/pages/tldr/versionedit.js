@@ -1,17 +1,13 @@
 import React, {Fragment, useState, useCallback, useEffect, useRef} from 'react';
 
-import {
-	fetcher,
-	patchTldr,
-	getTldrUrl,
-} from '@/swr';
+// SWR
+import { request, getTldrUrl } from '@/swr';
 
+// REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
-import Router from 'next/router'
-import Head from 'next/head'
-
+// COMPONENTS
 import {
 	Avatar,
 	Bounds,
@@ -44,15 +40,18 @@ import {
 	useFormState,
 	useMediaContext
 } from '@/components/cinderblock';
+import Page from '@/components/Page';
+import TldrHeader from '@/components/TldrHeader';
+import {TldrCardSmall, TldrCard} from './components';
+import Router from 'next/router'
+import Head from 'next/head'
+
+// STYLE
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
 import {METRICS} from '@/components/cinderblock/designConstants';
 
-import Page from '@/components/Page';
-import TldrHeader from '@/components/TldrHeader';
-import {TldrCardSmall, TldrCard} from './components';
-
-
+// SCREEN-SPECIFIC
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -79,7 +78,6 @@ const parseDraftContent = (fields) => {
 		}).filter(item => (item.head && item.head.length || item.body && item.body.length) )
 	}
 };
-
 
 
 function VersionEdit(props) {
@@ -147,7 +145,11 @@ function VersionEdit(props) {
 
 		formState.setLoading(true);
 		try{
-			await patchTldr(tldr.id, patchFields, authentication.accessToken)
+			await request( getTldrUrl(tldr.id), {
+				method: 'PATCH', 
+				data: patchFields,
+				token: authentication.accessToken
+			});
 			const toastMessage = (patchFields.publish) ? "New TLDR version published!" : "TLDR draft saved!"
 			dispatch(addDelayedToast(toastMessage));
 			const nextPath = ( tldr.currentTldrVersionId == undefined && !patchFields.publish ) ? 
@@ -291,16 +293,18 @@ function VersionEdit(props) {
 
 									{ (selectedTab == 'preview') &&
 									<View style={{maxWidth: 800}}>
+										<Chunk>
 										<TldrCard 
 											tldr={tldr}
 											thisVersion={previewVersion} 
 											/>
+										</Chunk>
 									</View>
 									}	
 								</Section>
 
 								<Section>
-									<Chunk border={selectedTab == 'edit'}>
+									<Chunk border>
 										<Flex >
 											<FlexItem shrink>
 												<Button
@@ -344,7 +348,7 @@ function VersionEdit(props) {
 VersionEdit.getInitialProps = async(context) => {
 	const {store, isServer, pathname, query} = context;
 	const tldrId = query.tldrId; // query params become lowercase
-	const tldr = await fetcher(getTldrUrl(tldrId));
+	const tldr = await request( getTldrUrl(tldrId) );
 	return {
 		tldrId,
 		tldr

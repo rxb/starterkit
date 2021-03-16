@@ -7,7 +7,6 @@ export const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 // this will throw js error for js AND http problems
 // also provides some syntactic sugar for data and token 
 export function request(url, options) {
-
    const buildOptions = (options = {}) => {
       const {
          data = false, 
@@ -51,8 +50,11 @@ export function request(url, options) {
    });
 }
 
+export const fetcher = (url, token='') => request(url, {token: token});
 
-export const fetcher = (...args) => request(...args);
+export const buildQs = (params) => {
+   return (params) ? "?"+Object.keys(params).map(key => key + '=' + params[key]).join('&') : '';
+}
 
 export const parsePageObj = (swr) => {
    const {data, ...meta} = swr.data || {}; 
@@ -63,22 +65,38 @@ export const parsePageObj = (swr) => {
    }
 }
 
-export const buildQs = (params) => {
-   return (params) ? "?"+Object.keys(params).map(key => key + '=' + params[key]).join('&') : '';
-}
 
+// URL BUILDERS
 
-// SHOWS
 export const getShowsUrl = (params) => `${apiHost}/shows/${buildQs(params)}`; 
 export const getShowUrl = (id='') => `${apiHost}/shows/${id}`; 
 
-export const useShows = (key, options) => {
-   const [params, ...rest] = [].concat(key); // optional array, like how useSWR works
-   return parsePageObj(useSWR([getShowsUrl(params), ...rest], fetcher, options))
+export const getShowCommentsUrl = (params) => `${apiHost}/show_comments/${buildQs(params)}`;
+export const getShowCommentUrl = (id='') => `${apiHost}/show_comments/${id}`; 
+
+export const getTagsUrl = () => `${apiHost}/tags/`; 
+
+export const getEventsUrl = (params) => `${apiHost}/events/${buildQs(params)}`; 
+export const getEventUrl = (id='') => `${apiHost}/events/${id}`; 
+
+export const getTldrsUrl = (params) => `${apiHost}/tldrs/${buildQs(params)}`; 
+export const getTldrUrl = (id='') => `${apiHost}/tldrs/${id}`; 
+
+export const getUsersUrl = (params) => `${apiHost}/users/${buildQs(params)}`; 
+export const getUserUrl = (id='') => `${apiHost}/users/${id}`; 
+
+
+// ###################################################
+// DEPRECATED FNs
+// it's better to just do these straight
+
+
+// SHOWS
+export const useShows = (params, options) => {
+   return parsePageObj(useSWR(getShowsUrl(params), options))
 }
-export const useShow = (key, options) => {
-   const [id, ...rest] = [].concat(key); // optional array, like how useSWR works
-   return useSWR([getShowUrl(id), ...rest], fetcher, options)
+export const useShow = (id, options) => {
+   return useSWR(getShowUrl(id), options)
 }
 
 export const postShow = (data, token) => {
@@ -91,16 +109,12 @@ export const deleteShow = (id, token) => {
    return request(getShowUrl(id), {method: 'DELETE', token} );
 }
 
-
 // SHOWCOMMENTS
-export const getShowCommentsUrl = (params) => `${apiHost}/show_comments/${buildQs(params)}`;
-export const getShowCommentUrl = (id='') => `${apiHost}/show_comments/${id}`; 
-
 export const useShowComments = (params, options) => {
-   return parsePageObj(useSWR(getShowCommentsUrl(params), fetcher, options))
+   return parsePageObj(useSWR(getShowCommentsUrl(params), options))
 }
 export const useShowComment = (id, options) => {
-   return useSWR(getShowCommentUrl(id), fetcher, options)
+   return useSWR(getShowCommentUrl(id), options)
 }
 
 export const postShowComment = (data, token) => {
@@ -115,21 +129,17 @@ export const deleteShowComment = (id, token) => {
 
 
 // TAGS
-export const getTagsUrl = () => `${apiHost}/tags/`; 
 export const useTags = (options) => {
-   return parsePageObj(useSWR(getTagsUrl(), fetcher, options));
+   return parsePageObj(useSWR(getTagsUrl(), options));
 }
 
 
 // EVENTS
-export const getEventsUrl = (params) => `${apiHost}/events/${buildQs(params)}`; 
-export const getEventUrl = (id='') => `${apiHost}/events/${id}`; 
-
 export const useEvents = (params, options) => {
-   return parsePageObj(useSWR(getEventsUrl(params), fetcher, options))
+   return parsePageObj(useSWR(getEventsUrl(params), options))
 }
 export const useEvent = (id, options) => {
-   return useSWR(getEventUrl(id), fetcher, options)
+   return useSWR(getEventUrl(id), options)
 }
 
 export const postEvent = (data, token) => {
@@ -140,49 +150,4 @@ export const patchEvent = (id, data, token) => {
 }
 export const deleteEvent = (id, token) => {
    return request(getEventUrl(id), {method: 'DELETE', token} );
-}
-
-
-// TLDRS
-export const getTldrsUrl = (params) => `${apiHost}/tldrs/${buildQs(params)}`; 
-export const getTldrUrl = (id='') => `${apiHost}/tldrs/${id}`; 
-
-export const useTldrs = (params, options) => {
-   return parsePageObj(useSWR(getTldrsUrl(params), fetcher, options))
-}
-export const useTldr = (id, options) => {
-   return useSWR(getTldrUrl(id), fetcher, options)
-}
-
-export const postTldr = (data, token) => {
-   return request(getTldrUrl(), {method: 'POST', data, token} );
-}
-export const patchTldr = (id, data, token) => {
-   return request(getTldrUrl(id), {method: 'PATCH', data, token} );
-}
-export const deleteTldr = (id, token) => {
-   return request(getTldrUrl(id), {method: 'DELETE', token} );
-}
-
-// USERS
-export const getUsersUrl = (params) => `${apiHost}/users/${buildQs(params)}`; 
-export const getUserUrl = (id='') => `${apiHost}/users/${id}`; 
-
-export const useUsers = (params, options) => {
-   return parsePageObj(useSWR(getUsersUrl(params), fetcher, options))
-}
-export const useUser = (id, options) => {
-   console.log('useUser');
-   console.log(id);
-   return useSWR(getUserUrl(id), fetcher, options)
-}
-
-export const postUser = (data, token) => {
-   return request(getUserUrl(), {method: 'POST', data, token} );
-}
-export const patchUser = (id, data, token) => {
-   return request(getUserUrl(id), {method: 'PATCH', data, token} );
-}
-export const deleteUser = (id, token) => {
-   return request(getUserUrl(id), {method: 'DELETE', token} );
 }
