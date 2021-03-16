@@ -1,33 +1,19 @@
-// SHOW 
-// testing cache managers instead of redux y friends
-// see showconnect.js and showhooks.js for others
-
-
 import React, {Fragment, useEffect, useState} from 'react';
-import useSWR, { cache }  from 'swr'
 
+// SWR
 import {
-	fetcher,
+	request,
+	parsePageObj,
 	getShowUrl,
-	useShow,
-	useShowComments,
-	postShowComment,
-	deleteShowComment,
+	getShowCommentUrl,
 	getShowCommentsUrl
 } from '../swr';
+import useSWR, { cache }  from 'swr';
 
-
-// Redux
+// REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast } from '../actions';
 
-
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime'
-dayjs.extend(relativeTime)
-
-import swatches from '../components/cinderblock/styles/swatches';
-import { METRICS } from '../components/cinderblock/designConstants';
 import {
 	Avatar,
 	Bounds,
@@ -48,7 +34,6 @@ import {
 	Modal,
 	Picker,
 	Section,
-
 	Sectionless,
 	Stripe,
 	Text,
@@ -58,10 +43,17 @@ import {
 	useFormState
 } from '../components/cinderblock';
 import CinderblockPage from '../components/CinderblockPage';
-
 import Head from 'next/head';
 
+// STYLE
+import swatches from '../components/cinderblock/styles/swatches';
+import { METRICS } from '../components/cinderblock/designConstants';
 
+
+// SCREEN-SPECIFIC
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 import { 
 	runValidations, 
 	readFileAsDataUrl, 
@@ -86,7 +78,7 @@ const submitCommentForm =  async (formState, props) => {
 	formState.setError(error);
 
 	if(!error){
-		const oldShowCommentsData = cache.get(getShowCommentsUrl(props.showCommentsParams)); // get cache
+		const oldShowCommentsData = cache.get(props.showCommentsKey); // get cache
 		const oldFields = {...formState.fields};
 		const newItemData = { ...formState.fields, showId: props.showData.id };
 		props.mutate({ 
@@ -98,7 +90,11 @@ const submitCommentForm =  async (formState, props) => {
 		}, false); // optimistic mutate
 		try{
 			formState.resetFields();
-			await postShowComment(newItemData, props.authentication.accessToken) // post 
+			await request( getShowCommentUrl(), {
+				method: 'POST', 
+				data: newItemData,
+				token: props.authentication.accessToken
+			});
 			props.mutate(); // trigger refresh from server
 		} 
 		catch(error) {
@@ -167,7 +163,10 @@ const DeletePrompt = (props) => {
 					onPress={async ()=>{
 						try{
 							setLoading(true);
-							await deleteShowComment(comment.id, authentication.token);
+							await request( getShowCommentUrl(comment.id), {
+								method: 'DELETE', 
+								token: authentication.accessToken
+							});
 							props.mutate();
 							onRequestClose();
 						} 
@@ -199,28 +198,17 @@ const DeletePrompt = (props) => {
 
 
 function Show(props) {
-	
-	const { 
-		data: showData = {}, 
-		error: showError,
-		mutate: showMutate
-	} = useShow(props.showId, {initialData: props.show}); // passing in props.show from getInitialProps
 
-	const showCommentsParams = {showId: props.showId, $limit: 50};
-	const { 
-		data: showCommentsData, 
-		error: showCommentsError, 
-		mutate: showCommentsMutate,
-		meta: showCommentsMeta
-	} = useShowComments(showCommentsParams);
-
-
-	
-	// data from redux
-	// todo: remove these
 	const dispatch = useDispatch(); 
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
+
+	const show = useSWR(getShowUrl(props.showId), {initialData: props.show}); // passing from getInitialProps
+	const {data: showData = {}, error: showError, mutate: showMutate} = show;
+	
+	const showCommentsKey = getShowCommentsUrl({showId: props.showId, $limit: 50});
+	const showComments = useSWR(showCommentsKey);
+	const { data: showCommentsData, error: showCommentsError, mutate: showCommentsMutate, meta: showCommentsMeta } = parsePageObj(showComments);
 
 	// errors - do separate useEffect for each error checking
 	useEffect(()=>{
@@ -230,28 +218,23 @@ function Show(props) {
 	});
 	},[showCommentsError]);
 
-
 	return (
 		<CinderblockPage>
-
 			<Head>
 				<meta property='og:title' content={`Show: ${showData.title}`} />
 				<meta property='og:image' content={showData.photoUrl} />
 				<title>{showData.title}</title>
-				
 			</Head>
 
-			
 			<Stripe>
-				
-			<Bounds>
+				<Bounds>
 						<ImageSnap
 							image={showData.photoUrl}
 							style={{backgroundColor: swatches.shade}}
 							/>
 		
-			<Section>
-					<Flex>
+							<Section>
+								<Flex>
 									<FlexItem>
 										
 										<Chunk>
@@ -287,14 +270,8 @@ function Show(props) {
 										</FlexItem>
 									}
 								</Flex>
-							
-					</Section>
-		
+						</Section>
 						<Section>
-
-								
-								
-
 							<Chunk>
 								<Text>{showData.description}</Text>
 							</Chunk>
@@ -354,7 +331,7 @@ function Show(props) {
 										authentication={authentication}
 										user={user}
 										mutate={showCommentsMutate} 
-										showCommentsParams={showCommentsParams}
+										showCommentsKey={showCommentsKey}
 										/>
 								</Fragment>
 							}
@@ -384,7 +361,7 @@ Show.getInitialProps = async (context) => {
 	const isServer = !!req;	
 
 	// fetch and pass as props during SSR, using in the useSWR as intitialData
-	const show = (isServer) ? await fetcher(getShowUrl(showId)) : undefined;
+	const show = (isServer) ? await request( getShowUrl(showId) ) : undefined;
 
 	return {
 		isServer,

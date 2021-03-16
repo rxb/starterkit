@@ -1,21 +1,19 @@
 import React, {Fragment, useEffect, useState} from 'react';
+
+// REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';
-
 import { addToast, addPrompt } from '../../actions';
+
+// SWR
 import {
-	fetcher,
-	useEvents,
-	postEvent
-} from '../../swr';
-import AREAS from '../../data/areas';
+	request,
+	parsePageObj,
+	getEventsUrl,
+	getEventUrl,
+} from '@/swr';
+import useSWR, { mutate }  from 'swr';
 
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-dayjs.extend(relativeTime)
-dayjs.extend(localizedFormat)
 
-import Head from 'next/head'
 import {
 	Avatar,
 	Bounds,
@@ -45,11 +43,20 @@ import {
 	View,
 	useFormState
 } from '@/components/cinderblock';
-
-import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/utils';
-
+import Head from 'next/head'
 import Page from '@/components/Page';
 import OutpostHeader from '@/components/OutpostHeader';
+import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/utils';
+
+// SCREEN-SPECIFIC
+import AREAS from '../../data/areas';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+dayjs.extend(relativeTime)
+dayjs.extend(localizedFormat)
+
+// STYLE
 import swatches from '@/components/cinderblock/styles/swatches';
 import styles from '@/components/cinderblock/styles/styles';
 import { METRICS } from '@/components/cinderblock/designConstants';
@@ -70,9 +77,8 @@ const EventForm = (props) => {
 		(other event sites might work too... put the link in and give it a try!)
 	*/
 
-	const {
-		authentication
-	} = props
+	const dispatch = useDispatch();
+	const { authentication } = props
 
 	const formState = useFormState({
 		initialFields: {
@@ -80,7 +86,8 @@ const EventForm = (props) => {
 		},
 		toastableErrors: {
 			BadRequest: 'Something went wrong',
-			NotAuthenticated: 'Not signed in'
+			NotAuthenticated: 'Not signed in',
+			GeneralError: "Something went wrong and it's not your fault"
 		},
 		addToast: msg => dispatch(addToast(msg))
 	});
@@ -88,8 +95,13 @@ const EventForm = (props) => {
 	const submitForm = async () => {
 		formState.setLoading(true);
 		try{
-			await postEvent( formState.fields, authentication.accessToken);
+			const event = await request( getEventUrl(), {
+				method: 'POST', 
+				data: formState.fields,
+				token: authentication.accessToken
+			});
 			formState.resetFields();	
+			console.log(event);
 			props.onSuccess();
 		}
 		catch(error){
@@ -132,9 +144,12 @@ function Events(props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user;
 
-	const {data: eventsData, error: eventsError, mutate: eventsMutate} = useEvents();
-	const localEventsData = eventsData;
-	// also: this.props.fetchLocalEvents({radius: 80, latitude: 40.7128, longitude: -74.0060});
+	const events = useSWR( getEventsUrl() );
+	const {data: eventsData} = parsePageObj( events );
+
+	const localEvents = useSWR( getEventsUrl({radius: 80, latitude: 40.7128, longitude: -74.0060}) );
+	const {data: localEventsData} = parsePageObj( localEvents );
+
 
 	const [coords, setCoords] = useState({ latitude: 0, longitude: 0 })
 
@@ -456,10 +471,6 @@ function Events(props) {
 
 		);
 	}
-
-
-
-
 
 
 export default Events;

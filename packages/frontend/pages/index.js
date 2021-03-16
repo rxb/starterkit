@@ -1,17 +1,14 @@
 import React, {Fragment, useEffect, useState} from 'react';
-import Head from 'next/head'
 
+// REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { addToast, addPrompt } from '../actions';
+import { addToast, addPrompt } from '@/actions';
 
-import {
-	fetcher,
-	useShows,
-} from '../swr';
+// SWR
+import { request, parsePageObj, getShowsUrl } from '@/swr';
+import useSWR, { mutate }  from 'swr';
 
-
-import styles from '../components/cinderblock/styles/styles';
-import swatches from '../components/cinderblock/styles/swatches';
+// COMPONENTS
 import {
 	Bounds,
 	Button,
@@ -36,11 +33,14 @@ import {
 	Text,
 	TextInput,
 } from '../components/cinderblock';
-
 import CinderblockPage from '../components/CinderblockPage';
 import LoginForm from '../components/LoginForm';
 import ShowCard from '../components/ShowCard';
+import Head from 'next/head'
 
+// STYLE
+import styles from '../components/cinderblock/styles/styles';
+import swatches from '../components/cinderblock/styles/swatches';
 
 const FakePrompt = (props) => {
 	const {
@@ -75,11 +75,8 @@ const FakePrompt = (props) => {
 
 function Hello() {
 
-	const { 
-		data: showsData, 
-		error: showsError,
-		meta: showsMeta
-	} = useShows();
+	const shows = useSWR( getShowsUrl() );
+	const {data: showsData, error: showsError} = parsePageObj(shows);
 
 	// data from redux
 	const dispatch = useDispatch(); 

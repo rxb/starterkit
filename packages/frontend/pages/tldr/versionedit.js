@@ -2,6 +2,7 @@ import React, {Fragment, useState, useCallback, useEffect, useRef} from 'react';
 
 // SWR
 import { request, getTldrUrl } from '@/swr';
+import useSWR, { mutate }  from 'swr';
 
 // REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
@@ -130,7 +131,6 @@ function VersionEdit(props) {
 		newSteps.splice(hoverIndex, 0, dragItem);
 		formState.setFieldValue('steps', newSteps);
 	};
-
 
 	const submitForm = async(finalFields={}) => {
 		// state set is async, so while we're settings them setFields, we don't know when they'll update

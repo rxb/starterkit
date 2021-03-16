@@ -1,23 +1,19 @@
 import React, {Fragment} from 'react';
-import Router from 'next/router'
-import Head from 'next/head'
 
+// SWR
 import {
-	useShow,
-	useTags,
-	patchShow,
+	request,
+	parsePageObj,
+	getShowUrl,
+	getTagsUrl
 } from '../swr';
+import useSWR, { mutate }  from 'swr';
 
-
-// Redux
+// REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
+import { addToast, addDelayedToast } from '../actions';
 
-
-import {
-	addToast,
-} from '../actions';
-
-
+// COMPONENTS
 import {
 	Avatar,
 	Bounds,
@@ -47,11 +43,14 @@ import {
 	View,
 	useFormState
 } from '../components/cinderblock';
-
-
-import styles from '../components/cinderblock/styles/styles';
 import CinderblockPage from '../components/CinderblockPage';
+import Router from 'next/router'
+import Head from 'next/head'
 
+// STYLE
+import styles from '../components/cinderblock/styles/styles';
+
+// SCREEN-SPECFIC
 import { runValidations, readFileAsDataUrl } from '../components/cinderblock/utils';
 
 
@@ -83,7 +82,9 @@ const ShowForm = (props) => {
 	});
 
 	const submitEditForm = async ()=> {
+		console.log('submit');
 		
+
 		// client-side validations
 		// just for example here. client-side mostly makes sense for optimistic updates
 		const error = runValidations(formState.fields, {
@@ -99,6 +100,7 @@ const ShowForm = (props) => {
 			 }
 		 });
 		formState.setError(error);
+		console.log(error);
 
 		if(!error){
 			formState.setLoading(true);
@@ -110,17 +112,27 @@ const ShowForm = (props) => {
 			}
 
 			try{
-				const response = await patchShow(showFields.id, showFields, authentication.accessToken)
+				console.log('trying')
+				const response = await request( getShowUrl(showData.id), {
+					method: 'PATCH', 
+					data: showFields,
+					token: authentication.accessToken
+				});
+				console.log('after awaiting');
+				dispatch(addDelayedToast('Show saved; nice work!'));
 				Router.push({pathname:'/show', query: {showId: showData.id}})
-					.then(()=>{
-						dispatch(addToast('Show saved; nice work!'));
-					})
+				console.log('end')
 		  	}
 			catch(error){
 				formState.setError(error);
 				formState.setLoading(false);
 			}
-	}}
+		}
+		else{
+			console.log('error?')
+		}
+		console.log('end submit')
+	}
 
 	
 
@@ -250,11 +262,14 @@ const ShowForm = (props) => {
 
 
 function ShowEdit(props) {
-
-	const { data: showData, error: showError } = useShow(props.showId);
-	const { data: tagsData, error: tagsError } = useTags();
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
+
+	const show = useSWR( getShowUrl(props.showId) );
+	const { data: showData, error: showError } = show;
+	
+	const tags = useSWR( getTagsUrl() );
+	const { data: tagsData, error: tagsError } = parsePageObj(tags);
 
 		return (
 			<CinderblockPage>
