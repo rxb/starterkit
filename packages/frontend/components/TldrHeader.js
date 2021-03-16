@@ -37,9 +37,9 @@ import {
 	Stripe,
 	Text,
 	TextInput,
+	useFormState,
 	View,
 } from './cinderblock';
-
 
 
 function TldrHeader (props) {
@@ -50,81 +50,99 @@ function TldrHeader (props) {
 	const user = authentication.user || {};
 	const userMenu = useRef(null);
 
+	const formState = useFormState({
+		initialFields: {
+			search: ''
+		}
+	})
+
 	return (
-
-				<Header position="static">
-					<Flex direction="row">
-						<FlexItem
-						
-							>
-							<Link href="/tldr">
-								<Inline>
-									<Icon shape="FileText" color={swatches.tint} />
-									<Text weight="strong" color="tint" type="big">tldr</Text>
-								</Inline>
-							</Link>
-						</FlexItem>
-							<FlexItem 
-								shrink 
-								align="flex-end" 
-								>
-								<Link href="/tldr/edit">
-									<Inline nowrap>
-										<Button
-											label="Create"
-											size="xsmall"
-											color="secondary"
-											/>
-									</Inline>
-								</Link>
-							</FlexItem>
-							<FlexItem 
-								shrink 
-								align="flex-end"
-								>
-									
+			<Header position="static">
+				<Flex direction="row">
+					<FlexItem shrink justify="center">
+						<Link href="/tldr">
+							<Inline nowrap>
+								<Icon shape="FileText" color={swatches.tint} />
+								<Text weight="strong" color="tint" type="big">tldr</Text>
+							</Inline>
+						</Link>
+					</FlexItem>
+					<FlexItem justify="center">
+						<TextInput 
+							style={{
+								paddingVertical: 6,
+								borderRadius: 20,
+							}}
+							spellCheck={false}
+							clearButtonMode="while-editing"
+							keyboard="web-search"
+							onChange={e => formState.setFieldValue('search', e.target.value) }
+							value={formState.getFieldValue('search')}
+							/>
+					</FlexItem>
+					<FlexItem 
+						shrink 
+						align="flex-end"
+						justify="center" 
+						>
+						<Link href="/tldr/edit">
+							<Inline nowrap>
+								<Button
+									label="Create"
+									size="xsmall"
+									color="secondary"
+									/>
+							</Inline>
+						</Link>
+					</FlexItem>
+					<FlexItem 
+						shrink 
+						align="flex-end"
+						justify="center"
+						>
+							
+							<Fragment>
+								{user.id &&
 									<Fragment>
-										{user.id &&
-											<Fragment>
-												<Touch onPress={()=> userMenu.current.toggle()}>
-													<Inline nowrap>
-														<Avatar
-															source={{uri: user.photoUrl}}
-															size="small"
-															/>
-														<Icon 
-															shape="ChevronDown" 
-															size="small" color={swatches.hint} 
-															/>
-													</Inline>
-												</Touch>
+										<Touch onPress={()=> userMenu.current.toggle()}>
+											<Inline nowrap>
+												<Avatar
+													source={{uri: user.photoUrl}}
+													size="small"
+													/>
+												<Icon 
+													shape="ChevronDown" 
+													size="small" color={swatches.hint} 
+													/>
+											</Inline>
+										</Touch>
 
-												<Menu ref={userMenu}>
-													<Sectionless>
-														<Chunk>
-																<Link href={`/tldr/tldrprofile`} >
-																	<Text color="tint" >Profile</Text>
-																</Link>
-																<Touch >
-																	<Text color="tint" >Settings</Text>
-																</Touch>
-																<Touch onPress={feathersClient.logout} >
-																	<Text color="tint" >Log out</Text>
-																</Touch>
-														</Chunk>
-													</Sectionless>
-												</Menu>
+										<Menu ref={userMenu}>
+											<Sectionless>
+												<Chunk>
+														<Link href={`/tldr/tldrprofile`} >
+															<Text color="tint" >Profile</Text>
+														</Link>
+														<Touch >
+															<Text color="tint" >Settings</Text>
+														</Touch>
+														<Touch onPress={feathersClient.logout} >
+															<Text color="tint" >Log out</Text>
+														</Touch>
+												</Chunk>
+											</Sectionless>
+										</Menu>
 
-											</Fragment>
-										}
-
-										{!user.id &&
-											<Touch onPress={()=>{
-												dispatch(updateUi({logInModalVisible: true}))
-											}}><Text color="tint" nowrap>Log in</Text></Touch>
-										}
 									</Fragment>
-							</FlexItem>
+								}
+
+								{!user.id &&
+									<Touch onPress={()=>{
+										dispatch(updateUi({logInModalVisible: true}))
+									}}><Text color="tint" nowrap>Log in</Text></Touch>
+								}
+							</Fragment>
+						</FlexItem>
 					</Flex>
 				</Header>
 

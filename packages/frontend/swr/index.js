@@ -8,7 +8,8 @@ export const getShowUrl = (id='') => `${apiHost}/shows/${id}`;
 export const getShowCommentsUrl = (params) => `${apiHost}/show_comments/${buildQs(params)}`;
 export const getShowCommentUrl = (id='') => `${apiHost}/show_comments/${id}`; 
 
-export const getTagsUrl = () => `${apiHost}/tags/`; 
+export const getTagsUrl = (params) => `${apiHost}/tags/${buildQs(params)}`;
+export const getTagUrl = (id) => `${apiHost}/tags/${id}`;  
 
 export const getEventsUrl = (params) => `${apiHost}/events/${buildQs(params)}`; 
 export const getEventUrl = (id='') => `${apiHost}/events/${id}`; 
