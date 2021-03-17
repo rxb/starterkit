@@ -41,7 +41,7 @@ import {
 	useFormState
 } from '@/components/cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from '@/components/TldrHeader';
+import TldrHeader from './TldrHeader';
 import Router from 'next/router'
 import Head from 'next/head'
 

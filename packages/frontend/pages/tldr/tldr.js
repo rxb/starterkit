@@ -39,7 +39,7 @@ import swatches from '@/components/cinderblock/styles/swatches';
 import { sleep } from '@/components/cinderblock/utils';
 import { METRICS } from '@/components/cinderblock/designConstants';
 import Page from '@/components/Page';
-import TldrHeader from '@/components/TldrHeader';
+import TldrHeader from './TldrHeader';
 
 import {TldrCardSmall, TldrCard} from './components';
 

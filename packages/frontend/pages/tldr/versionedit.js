@@ -42,7 +42,7 @@ import {
 	useMediaContext
 } from '@/components/cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from '@/components/TldrHeader';
+import TldrHeader from './TldrHeader';
 import {TldrCardSmall, TldrCard} from './components';
 import Router from 'next/router'
 import Head from 'next/head'

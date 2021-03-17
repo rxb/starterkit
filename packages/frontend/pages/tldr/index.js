@@ -37,7 +37,7 @@ import {
 	View,	
 } from '@/components/cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from '@/components/TldrHeader';
+import TldrHeader from './TldrHeader';
 import {TldrCardSmall, CreateTldrCardSmall, CATEGORIES} from './components';
 
 // STYLE
