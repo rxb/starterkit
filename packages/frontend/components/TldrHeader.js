@@ -1,4 +1,6 @@
 import React, {Fragment, useState, useEffect, useRef} from 'react';
+
+// REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	addToast,
@@ -8,10 +10,7 @@ import {
 	updateUi
 } from '../actions';
 
-import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
-
-import styles from './cinderblock/styles/styles';
-import swatches from './cinderblock/styles/swatches';
+// COMPONENTS
 import {
 	Avatar,
 	Bounds,
@@ -40,6 +39,12 @@ import {
 	useFormState,
 	View,
 } from './cinderblock';
+import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
+
+// STYLES
+import styles from './cinderblock/styles/styles';
+import swatches from './cinderblock/styles/swatches';
+import {METRICS} from '@/components/cinderblock/designConstants';
 
 
 function TldrHeader (props) {
@@ -50,6 +55,8 @@ function TldrHeader (props) {
 	const user = authentication.user || {};
 	const userMenu = useRef(null);
 
+	const [searchFocus, setSearchFocus] = useState(false);
+ 
 	const formState = useFormState({
 		initialFields: {
 			search: ''
@@ -68,6 +75,7 @@ function TldrHeader (props) {
 						</Link>
 					</FlexItem>
 					<FlexItem justify="center">
+						<View style={{flex: 1}}>
 						<TextInput 
 							style={{
 								paddingVertical: 6,
@@ -78,7 +86,40 @@ function TldrHeader (props) {
 							keyboard="web-search"
 							onChange={e => formState.setFieldValue('search', e.target.value) }
 							value={formState.getFieldValue('search')}
+							onFocus={()=>{
+								setSearchFocus(true);
+							}}
+							onBlur={()=>{
+								setSearchFocus(false);
+							}}
 							/>
+							<View
+								style={{
+									backgroundColor: 'white',
+									borderColor: swatches.border,
+									borderWidth: 1,
+									top: '100%',
+									left: 16, right: 16,
+									position: 'absolute',
+									display: (searchFocus) ? 'block' : 'none',
+								}}
+								>
+									<Sectionless>
+										<Chunk>
+											<Text>one</Text>
+										</Chunk>
+										<Chunk>
+											<Text>two</Text>
+										</Chunk>
+										<Chunk>
+											<Text>three</Text>
+										</Chunk>
+										<Chunk>
+											<Text>four</Text>
+										</Chunk>
+									</Sectionless>
+							</View>
+							</View>
 					</FlexItem>
 					<FlexItem 
 						shrink 
