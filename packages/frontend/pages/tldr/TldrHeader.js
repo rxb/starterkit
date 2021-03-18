@@ -172,7 +172,7 @@ function TldrHeader (props) {
 											{ searchResults.map((item, i) => (
 												<Chunk key={i}>
 													<Link 
-														href={`/tldr?urlKey=${item.urlKey}`}
+														href={`?urlKey=${item.urlKey}`}
 														onPress={()=>{
 															setSearchFocus(false);
 														}}

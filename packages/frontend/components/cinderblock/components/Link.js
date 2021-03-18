@@ -19,6 +19,7 @@ class Link extends React.Component {
 		const {
 			href,
 			children,
+			onPress = () => {},
 			...other
 		} = this.props;
 
@@ -28,6 +29,7 @@ class Link extends React.Component {
 					href={href}
 					onPress={(event)=>{
 						event.preventDefault();
+						onPress();
 						if(!this.props.target){ // if opening new window, don't use router
 							Router.push(href).then(()=>{window.scroll(0,0)}); // TODO: maybe use next/Link ?
 						}
