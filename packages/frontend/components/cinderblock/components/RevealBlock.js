@@ -5,12 +5,18 @@ import {METRICS, EASE} from '@/components/cinderblock/designConstants';
 
 const RevealBlock = (props) => {
 
-   const { delay = 0 } = props;
+   const { 
+      delay = 0, 
+      duration = 250,
+      offset = 100,
+      fromTop = false,
+      style
+   } = props;
    const [blockValue, setBlockValue] = useState('none');
    const [visibilityValue, setVisibilityValue] = useState(new Animated.Value(0));
+   const directionMultiplier = (fromTop) ? -1 : 1;
 
    useEffect(()=>{
-      const duration = 250;
       if(props.visible){
          setBlockValue('flex');
          Animated.timing(
@@ -38,16 +44,16 @@ const RevealBlock = (props) => {
 
    return(
       <Animated.View
-         style={{
+         style={[{
             display: blockValue,
             opacity: visibilityValue,
             transform: [{
                translateY: visibilityValue.interpolate({
                inputRange: [0, 1],
-               outputRange: [100, 0]
+               outputRange: [(offset * directionMultiplier), 0]
                }),
             }]
-         }}
+         }, style]}
          >
          {props.children}
       </Animated.View>

@@ -54,8 +54,8 @@ const categories = CATEGORIES; // at some point make real categories
 
 function TldrHome(props) {
 
-      const { categoryId } = props
-      const category = categories[categoryId];
+      const { urlKey } = props
+      const category = categories.find( cat => (cat.urlKey == urlKey) );
 
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
@@ -68,7 +68,7 @@ function TldrHome(props) {
 			<Page>
             <TldrHeader />
 
-				{ !categoryId && 
+				{ !urlKey && 
                   <Stripe>
                      <Bounds>
                         <Section>
@@ -85,7 +85,7 @@ function TldrHome(props) {
                               items={categories}
                               renderItem={(item, i)=>(
                                  <Chunk key={i}>
-                                    <Link href={`/tldr/?categoryId=${i}`}>
+                                    <Link href={`/tldr/?urlKey=${item.urlKey}`}>
                                        <View style={{backgroundColor: swatches.backgroundShade}}>
                                           <Sectionless>
                                              <Chunk>
@@ -117,7 +117,7 @@ function TldrHome(props) {
                </Stripe>
 				}
 
-            { (categoryId && tldrsData) && 
+            { (urlKey && tldrsData) && 
 
                <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                   <Bounds>
@@ -170,11 +170,11 @@ function TldrHome(props) {
 TldrHome.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
-   const {categoryId} = query;
+   const {urlKey} = query;
 	const isServer = !!req;	
 
 	return {
-      categoryId,
+      urlKey,
       isServer,
 	}
 }
