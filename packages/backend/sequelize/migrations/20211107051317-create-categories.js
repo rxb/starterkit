@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
-      label: {
+      name: {
         type: Sequelize.TEXT
       },
       description: {

@@ -76,6 +76,10 @@ module.exports = function (app) {
       foreignKey: 'authorId',
       as: "author"
     });
+    tldrs.belongsTo(models.users, {
+      foreignKey: 'categoryId',
+      as: "category"
+    });
     tldrs.hasMany(models.tldr_versions);
     tldrs.hasOne(models.tldr_versions, { 
       sourceKey: "currentTldrVersionId",

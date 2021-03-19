@@ -7,6 +7,7 @@ const showsTags = require('./shows_tags/shows_tags.service.js');
 const events = require('./events/events.service.js');
 const tldrs = require('./tldrs/tldrs.service.js');
 const tldrVersions = require('./tldr_versions/tldr_versions.service.js');
+const categories = require('./categories/categories.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(shows);
@@ -18,4 +19,5 @@ module.exports = function (app) {
   app.configure(events);
   app.configure(tldrs);
   app.configure(tldrVersions);
+  app.configure(categories);
 };
