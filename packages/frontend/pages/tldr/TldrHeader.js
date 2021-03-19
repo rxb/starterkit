@@ -169,10 +169,15 @@ function TldrHeader (props) {
 									}}
 									>
 										<Sectionless>
+											{ formState.getFieldValue('search') &&
+												<Chunk>
+													<Text>Search "{formState.getFieldValue('search')}"</Text>
+												</Chunk>
+											}
 											{ searchResults.map((item, i) => (
 												<Chunk key={i}>
 													<Link 
-														href={`?urlKey=${item.urlKey}`}
+														href={`/tldr?urlKey=${item.urlKey}`}
 														onPress={()=>{
 															setSearchFocus(false);
 														}}
