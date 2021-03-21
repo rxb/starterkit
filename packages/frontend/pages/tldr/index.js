@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from 'react';
 
 // SWR
-import { request, parsePageObj, getTldrsUrl, getCategoriesUrl } from '@/swr';
+import { request, parsePageObj, getTldrsUrl, getCategoriesUrl, getCategoryUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX
@@ -52,18 +52,21 @@ dayjs.extend(relativeTime)
 
 function TldrHome(props) {
 
-      const { urlKey } = props
+      const { categoryId } = props;
+      const isCategory = categoryId != undefined;
 
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
 		const user = authentication.user || {};
 
-      const categories = useSWR( getCategoriesUrl({'$limit': 1000}) );
-      const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
-      const category = categoriesData.find( cat => (cat.urlKey == urlKey) );
+      const category = useSWR( isCategory ? getCategoryUrl(categoryId) : null ); 
+      const {data: categoryData} = category; 
+      
+      const tldrs = useSWR( isCategory ? getTldrsUrl({categoryId: categoryId, '$limit': 1000}) : null );
+      const {data: tldrsData} = parsePageObj( tldrs );
 
-		const tldrs = useSWR( getTldrsUrl() );
-		const {data: tldrsData} = parsePageObj( tldrs );
+      const categories = useSWR( !isCategory ? getCategoriesUrl({'$limit': 1000}) : null );
+      const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
 		
 
 
@@ -71,9 +74,7 @@ function TldrHome(props) {
 			<Page>
             <TldrHeader />
 
-           
-
-				{ !urlKey && 
+				{ !categoryId && 
                   <Stripe>
                      <Bounds>
                         <Section>
@@ -90,7 +91,7 @@ function TldrHome(props) {
                               items={categoriesData}
                               renderItem={(item, i)=>(
                                  <Chunk key={i}>
-                                    <Link href={`/tldr/?urlKey=${item.urlKey}`}>
+                                    <Link href={`/tldr/?categoryId=${item.id}`}>
                                        <View style={{backgroundColor: swatches.backgroundShade}}>
                                           <Sectionless>
                                              <Chunk>
@@ -119,23 +120,18 @@ function TldrHome(props) {
                                  />
                         </Section>
                         <Section>
-                        <Chunk>
-                           <Text>
-                              {JSON.stringify(categoriesData,null, 2)}
-                           </Text>
-                        </Chunk>
                      </Section>
                   </Bounds>
                </Stripe>
 				}
 
-            { (urlKey && tldrsData) && 
+            { (categoryId && tldrsData) && 
 
                <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                   <Bounds>
                      <Section>
                         <Chunk>
-                           <Text type="pageHead">{category.name}</Text>
+                           <Text type="pageHead">{categoryData.name}</Text>
                         </Chunk>
                      </Section>
                      <Section border>
@@ -182,11 +178,11 @@ function TldrHome(props) {
 TldrHome.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
-   const {urlKey} = query;
+   const {categoryId} = query;
 	const isServer = !!req;	
 
 	return {
-      urlKey,
+      categoryId,
       isServer,
 	}
 }
