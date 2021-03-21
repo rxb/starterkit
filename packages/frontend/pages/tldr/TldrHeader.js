@@ -1,6 +1,10 @@
 import React, {Fragment, useState, useEffect, useRef, useCallback} from 'react';
 import ReactDOM from 'react-dom';
 
+// SWR
+import { request, parsePageObj, getCategoriesUrl } from '@/swr';
+import useSWR, { mutate }  from 'swr';
+
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -51,7 +55,7 @@ import {METRICS} from '@/components/cinderblock/designConstants';
 
 import {CATEGORIES} from './components';
 
-const catMatch = (s) => {
+const catMatch = (s, categoriesData) => {
 	const p = Array.from(s).reduce((a, v, i) => `${a}[^${s.substr(i)}]*?${v}`, '');
 	const re = RegExp(p, 'i');
 	return CATEGORIES.filter(v => v.name.match(re));
@@ -66,11 +70,13 @@ function TldrHeader (props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	const categories = CATEGORIES;	
+	//const categories = CATEGORIES;	
+	const categories = useSWR( getCategoriesUrl({'$limit': 1000}) );
+	const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
 
 	const userMenu = useRef(null);
 
-	const [searchResults, setSearchResults] = useState(categories);
+	const [searchResults, setSearchResults] = useState(categoriesData);
 
 	// AUTOCOMPLETE
 	// hide/show of autocomplete
@@ -143,7 +149,7 @@ function TldrHeader (props) {
 							keyboard="web-search"
 							onChange={e => {
 								formState.setFieldValue('search', e.target.value)
-								setSearchResults(catMatch(e.target.value));
+								setSearchResults(catMatch(e.target.value, categoriesData));
 							}}
 							value={formState.getFieldValue('search')}
 							onFocus={()=>{
