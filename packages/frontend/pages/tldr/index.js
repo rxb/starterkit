@@ -63,12 +63,11 @@ function TldrHome(props) {
       const {data: categoryData} = category; 
       
       const tldrs = useSWR( isCategory ? getTldrsUrl({categoryId: categoryId, '$limit': 1000}) : null );
-      const {data: tldrsData} = parsePageObj( tldrs );
+      const {data: tldrsData} = tldrs.data ? parsePageObj( tldrs ) : {data: []};
 
       const categories = useSWR( !isCategory ? getCategoriesUrl({'$limit': 1000}) : null );
       const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
 		
-
 
 		return (
 			<Page>
@@ -125,7 +124,7 @@ function TldrHome(props) {
                </Stripe>
 				}
 
-            { (categoryId && tldrsData) && 
+            { (categoryId && categoryData) && 
 
                <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                   <Bounds>
