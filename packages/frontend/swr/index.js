@@ -20,6 +20,9 @@ export const getTldrUrl = (id='') => `${apiHost}/tldrs/${id}`;
 export const getUsersUrl = (params) => `${apiHost}/users/${buildQs(params)}`; 
 export const getUserUrl = (id='') => `${apiHost}/users/${id}`; 
 
+export const getCategoriesUrl = (params) => `${apiHost}/categories/${buildQs(params)}`; 
+export const getCategoryUrl = (id='') => `${apiHost}/categories/${id}`; 
+
 
 // REQUEST
 // Vanilla fetch only throws js error for js problems.

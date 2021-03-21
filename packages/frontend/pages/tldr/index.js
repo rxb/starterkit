@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from 'react';
 
 // SWR
-import { request, parsePageObj, getTldrsUrl } from '@/swr';
+import { request, parsePageObj, getTldrsUrl, getCategoriesUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX
@@ -50,23 +50,28 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
-const categories = CATEGORIES; // at some point make real categories
-
 function TldrHome(props) {
 
       const { urlKey } = props
-      const category = categories.find( cat => (cat.urlKey == urlKey) );
 
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
 		const user = authentication.user || {};
 
+      const categories = useSWR( getCategoriesUrl({'$limit': 1000}) );
+      const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
+      const category = categoriesData.find( cat => (cat.urlKey == urlKey) );
+
 		const tldrs = useSWR( getTldrsUrl() );
 		const {data: tldrsData} = parsePageObj( tldrs );
 		
+
+
 		return (
 			<Page>
             <TldrHeader />
+
+           
 
 				{ !urlKey && 
                   <Stripe>
@@ -82,7 +87,7 @@ function TldrHome(props) {
                                  large: 3
                               }}
                               scrollItemWidth={300}
-                              items={categories}
+                              items={categoriesData}
                               renderItem={(item, i)=>(
                                  <Chunk key={i}>
                                     <Link href={`/tldr/?urlKey=${item.urlKey}`}>
@@ -94,7 +99,7 @@ function TldrHome(props) {
                                              <Chunk>
                                                    <View style={{position: 'relative', marginRight: 10, marginBottom: 18}}>
                                                       <TldrCardSmall 
-                                                         tldr={tldrsData ? tldrsData[0] : {}} 
+                                                         tldr={item.tldrs ? item.tldrs[0] : {}} 
                                                          style={{marginVertical: 0, zIndex: 10, minHeight: 160}}
                                                          />
                                                       <Card 
@@ -113,6 +118,13 @@ function TldrHome(props) {
                                  )}
                                  />
                         </Section>
+                        <Section>
+                        <Chunk>
+                           <Text>
+                              {JSON.stringify(categoriesData,null, 2)}
+                           </Text>
+                        </Chunk>
+                     </Section>
                   </Bounds>
                </Stripe>
 				}
