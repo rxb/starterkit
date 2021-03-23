@@ -53,30 +53,28 @@ import swatches from '@/components/cinderblock/styles/swatches';
 import {METRICS} from '@/components/cinderblock/designConstants';
 
 
-import {CATEGORIES} from './components';
-
-const catMatch = (s, categoriesData) => {
+const catMatch = (s, categories) => {
 	const p = Array.from(s).reduce((a, v, i) => `${a}[^${s.substr(i)}]*?${v}`, '');
 	const re = RegExp(p, 'i');
-	return CATEGORIES.filter(v => v.name.match(re));
+	return categories.filter(v => {
+		return (v.name && v.name.match(re)) || (v.keywords && v.keywords.match(re));
+	});
 }
 
 
-
-function TldrHeader (props) {
+function TldrSearch (props) {
 	
-	// data from redux
-	const dispatch = useDispatch(); 
-	const authentication = useSelector(state => state.authentication);
-	const user = authentication.user || {};
-
-	//const categories = CATEGORIES;	
-	const categories = useSWR( getCategoriesUrl({'$limit': 1000}) );
-	const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
-
-	const userMenu = useRef(null);
-
-	const [searchResults, setSearchResults] = useState(categoriesData);
+	// not going to use SWR for this one
+	const [categories, setCategories] = useState([]);
+	const [searchResults, setSearchResults] = useState([]);
+	let categoriesData = [];
+	useEffect(()=>{
+		request( getCategoriesUrl({'$limit': 1000, '$sort[name]': 1}))
+		.then(response => {
+			setSearchResults(response.data)
+			setCategories(response.data)
+		})
+	}, [])
 
 	// AUTOCOMPLETE
 	// hide/show of autocomplete
@@ -109,13 +107,97 @@ function TldrHeader (props) {
 		return cleanup;
 	}, [searchFocus]);
 
-	
-
 	const formState = useFormState({
 		initialFields: {
 			search: ''
 		}
 	})
+
+	return (
+		<View 
+		ref={searchOuter}
+		>
+	<TextInput 
+		style={{
+			paddingVertical: 6,
+			borderRadius: 20,
+			marginVertical: 0
+		}}
+		wrapperStyle={{
+			// for autocomplete, maybe should be ported back
+			zIndex: 2,
+			backgroundColor: 'white',
+			marginVertical: METRICS.pseudoLineHeight
+		}}
+		spellCheck={false}
+		clearButtonMode="while-editing"
+		keyboard="web-search"
+		onChange={e => {
+			formState.setFieldValue('search', e.target.value)
+			setSearchResults(catMatch(e.target.value, categories));
+		}}
+		value={formState.getFieldValue('search')}
+		onFocus={()=>{
+			setSearchFocus(true);
+		}}
+		/>
+		<RevealBlock 
+			visible={searchFocus}
+			duration={60}
+			delay={10}
+			offset={20}
+			fromTop
+			>
+			<View
+				style={{
+					backgroundColor: 'white',
+					borderColor: swatches.border,
+					borderWidth: 1,
+					top: '100%',
+					marginTop: -7,
+					left: 16, right: 16,
+					position: 'absolute',
+				}}
+				>
+					<Sectionless>
+						{ formState.getFieldValue('search') &&
+							<Chunk>
+								<Text>Search "{formState.getFieldValue('search')}"</Text>
+							</Chunk>
+						}
+						{ searchResults.map((item, i) => (
+							<Chunk key={i}>
+								<Link 
+									href={`/tldr?categoryId=${item.id}`}
+									onPress={()=>{
+										setSearchFocus(false);
+									}}
+									>
+									<Text>{item.name}</Text>
+									<Text type="micro" color="hint">{item.keywords}</Text>
+								</Link>
+							</Chunk>									
+						))}
+					</Sectionless>
+			</View>
+		</RevealBlock>
+	</View>
+
+	);
+
+}
+
+
+function TldrHeader (props) {
+	
+	// data from redux
+	const dispatch = useDispatch(); 
+	const authentication = useSelector(state => state.authentication);
+	const user = authentication.user || {};
+	
+	const userMenu = useRef(null);
+
+	
 
 	return (
 			<Header position="static">
@@ -129,73 +211,7 @@ function TldrHeader (props) {
 						</Link>
 					</FlexItem>
 					<FlexItem justify="center">
-						<View 
-							ref={searchOuter}
-							>
-						<TextInput 
-							style={{
-								paddingVertical: 6,
-								borderRadius: 20,
-								marginVertical: 0
-							}}
-							wrapperStyle={{
-								// for autocomplete, maybe should be ported back
-								zIndex: 2,
-								backgroundColor: 'white',
-								marginVertical: METRICS.pseudoLineHeight
-							}}
-							spellCheck={false}
-							clearButtonMode="while-editing"
-							keyboard="web-search"
-							onChange={e => {
-								formState.setFieldValue('search', e.target.value)
-								setSearchResults(catMatch(e.target.value, categoriesData));
-							}}
-							value={formState.getFieldValue('search')}
-							onFocus={()=>{
-								setSearchFocus(true);
-							}}
-							/>
-							<RevealBlock 
-								visible={searchFocus}
-								duration={60}
-								delay={10}
-								offset={20}
-								fromTop
-								>
-								<View
-									style={{
-										backgroundColor: 'white',
-										borderColor: swatches.border,
-										borderWidth: 1,
-										top: '100%',
-										marginTop: -7,
-										left: 16, right: 16,
-										position: 'absolute',
-									}}
-									>
-										<Sectionless>
-											{ formState.getFieldValue('search') &&
-												<Chunk>
-													<Text>Search "{formState.getFieldValue('search')}"</Text>
-												</Chunk>
-											}
-											{ searchResults.map((item, i) => (
-												<Chunk key={i}>
-													<Link 
-														href={`/tldr?categoryId=${item.id}`}
-														onPress={()=>{
-															setSearchFocus(false);
-														}}
-														>
-														<Text>{item.name}</Text>
-													</Link>
-												</Chunk>									
-											))}
-										</Sectionless>
-								</View>
-							</RevealBlock>
-						</View>
+						<TldrSearch />
 					</FlexItem>
 					<FlexItem 
 						shrink 
@@ -264,8 +280,8 @@ function TldrHeader (props) {
 				</Header>
 
 	);
-
 }
+
 
 
 

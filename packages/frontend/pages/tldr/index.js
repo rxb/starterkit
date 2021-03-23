@@ -38,7 +38,7 @@ import {
 } from '@/components/cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from './TldrHeader';
-import {TldrCardSmall, CreateTldrCardSmall, CATEGORIES} from './components';
+import {TldrCardSmall, CreateTldrCardSmall} from './components';
 
 // STYLE
 import styles from '@/components/cinderblock/styles/styles';
@@ -91,17 +91,29 @@ function TldrHome(props) {
                               renderItem={(item, i)=>(
                                  <Chunk key={i}>
                                     <Link href={`/tldr/?categoryId=${item.id}`}>
-                                       <View style={{backgroundColor: swatches.backgroundShade}}>
+                                       <View style={{backgroundColor: swatches.backgroundShade, borderRadius: METRICS.cardBorderRadius}}>
                                           <Sectionless>
                                              <Chunk>
-                                                <Text type="big">{item.name}</Text>
-                                             </Chunk>
-                                             <Chunk>
                                                    <View style={{position: 'relative', marginRight: 10, marginBottom: 18}}>
-                                                      <TldrCardSmall 
-                                                         tldr={item.tldrs ? item.tldrs[0] : {}} 
-                                                         style={{marginVertical: 0, zIndex: 10, minHeight: 160}}
-                                                         />
+                                                      <Card 
+                                                         style={{
+                                                            marginVertical: 0, 
+                                                            zIndex: 10,
+                                                            minHeight: 165,
+                                                            
+                                                         }}
+                                                         >
+                                                         <Sectionless style={{flex: 1}}>
+                                                            <Chunk style={{flex: 0}}>
+                                                               <Text type="big">{item.name}</Text>
+                                                               <Text type="small" color="hint">voting, civic engagement, mutual aid</Text>
+                                                            </Chunk>
+                                                            <View style={{flex: 1}} />
+                                                            <Chunk style={{flex: 0}}>
+                                                               <Text type="small" style={{textAlign: 'right'}}>1,263 cards</Text>
+                                                            </Chunk>
+                                                         </Sectionless>
+                                                      </Card>
                                                       <Card 
                                                          style={{marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
                                                          />
@@ -109,7 +121,7 @@ function TldrHome(props) {
                                                          style={{marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8}}
                                                          />   
                                                    </View>
-                                                   <Text type="small" style={{textAlign: 'right'}}>+ 1,263 more cards</Text>
+                                                  
                                                 </Chunk>
                                              </Sectionless>
                                           </View>

@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
 
 // SWR
-import { request, getTldrUrl } from '@/swr';
+import { request, parsePageObj, getTldrUrl, getCategoriesUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX
@@ -51,7 +51,6 @@ import swatches from '@/components/cinderblock/styles/swatches';
 import {METRICS, EASE} from '@/components/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
-import {CATEGORIES} from './components';
 import { Animated } from '@/components/cinderblock/primitives';
 import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/utils';
 import stopword from 'stopword';
@@ -101,6 +100,9 @@ const Edit = (props) => {
    const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
+   const categories = useSWR(  getCategoriesUrl({'$limit': 1000})  );
+   const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
+   
    const [formStep, setFormStep] = useState(0);
 
    const formState = useFormState({
@@ -109,7 +111,7 @@ const Edit = (props) => {
          verb: '',
          noun: '',
          urlKey: '',
-         category: null
+         categoryId: null
       },
       toastableErrors: {
          BadRequest: 'Something went wrong',
@@ -262,12 +264,12 @@ const Edit = (props) => {
                               medium: 2,
                               large: 3
                            }}
-                           items={CATEGORIES}
+                           items={categoriesData}
                            renderItem={(category, i)=>{
-                              const selected = category.urlKey == formState.getFieldValue('category');
+                              const selected = category.id == formState.getFieldValue('categoryId');
                               return (
                                  <Touch onPress={()=>{
-                                    formState.setFieldValue('category', category.urlKey)
+                                    formState.setFieldValue('categoryId', category.id)
                                  }}>
                                     <View style={[
                                        styles.input,
@@ -281,7 +283,7 @@ const Edit = (props) => {
                               )
                            }}
                            />
-                        <FieldError error={formState.error?.fieldErrors?.category} />	
+                        <FieldError error={formState.error?.fieldErrors?.categoryId} />	
                      </Chunk>
                      { (formStep == 2) && 
                         <Chunk>
