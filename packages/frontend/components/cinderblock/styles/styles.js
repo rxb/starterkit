@@ -291,6 +291,7 @@ const styles = StyleSheet.create({
 		borderColor: swatches.border,
 		overflow: 'hidden'
 	},
+
 	'card--shadow': {
 		borderWidth: 0,
 		shadowRadius: 16,
@@ -393,7 +394,6 @@ const styles = StyleSheet.create({
 		minWidth: 'auto',
 		maxWidth: 'auto'
 	},
-
 
 	prompt: {
 		marginHorizontal: '5%',

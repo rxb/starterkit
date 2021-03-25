@@ -197,8 +197,6 @@ function TldrHeader (props) {
 	
 	const userMenu = useRef(null);
 
-	
-
 	return (
 			<Header position="static">
 				<Flex direction="row">
@@ -233,7 +231,6 @@ function TldrHeader (props) {
 						align="flex-end"
 						justify="center"
 						>
-							
 							<Fragment>
 								{user.id &&
 									<Fragment>
@@ -249,7 +246,7 @@ function TldrHeader (props) {
 													/>
 											</Inline>
 										</Touch>
-
+										
 										<Menu ref={userMenu}>
 											<Sectionless>
 												<Chunk>

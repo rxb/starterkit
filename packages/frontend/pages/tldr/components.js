@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 
 import {
 	Avatar,
@@ -17,6 +17,7 @@ import {
 	Label,
 	List,
 	Link,
+	Menu,
 	Modal,
 	Picker,
 	Section,
@@ -173,11 +174,20 @@ export const TldrCardSmall = (props) => {
 	const content = thisVersion?.content || {};
 	const draft = tldr.id && tldr.currentTldrVersionId == undefined;
 	return(
-			<Card style={[{minHeight: 160}, style]}>
+			<Card style={[{
+					minHeight: 160,
+					overflow: 'visible' 
+				}, style]}>
+				{/* overflow and top-stripe done this way to allow menu within cards */}
+				<View style={{
+						height: 5,
+						backgroundColor: swatches.tint,
+						borderTopRightRadius: METRICS.cardBorderRadius,
+						borderTopLeftRadius: METRICS.cardBorderRadius,
+					}}
+					/>
 				<Sectionless
 					style={{
-						borderTopWidth: 5,
-						borderTopColor: swatches.tint,
 						paddingTop: METRICS.space,
 						flex: 1
 					}}
@@ -195,6 +205,10 @@ export const TldrCardSmall = (props) => {
 									<Text type="small" inverted>Unpublished</Text>
 								</View>
 							</View>
+						}
+
+						{ true &&  
+							<TldrCardContextMenu tldr={tldr} />
 						}
 					</Chunk>
 					
@@ -244,5 +258,41 @@ export const CategoryCardSmall = (props) => {
 			</Chunk>
 		</Sectionless>
 		</Card>
+	);
+}
+
+
+export const TldrCardContextMenu = (props) => {
+	const thisMenu = useRef(null);
+	
+	return(
+		<>
+			<Touch onPress={(e) => {
+					e.preventDefault();
+					thisMenu.current.toggle() 
+				}}>
+				<Icon 
+					shape="MoreHorizontal" 
+					color={swatches.hint} 
+					/>
+			</Touch>
+
+			<Menu ref={thisMenu}>
+				<Sectionless>
+					<Chunk>
+						<Link href={``} >
+							<Text color="tint">Edit card</Text>
+						</Link>
+						<Link href={``} >
+							<Text color="tint">Settings</Text>
+						</Link>
+						<Touch  >
+							<Text color="tint">Delete</Text>
+						</Touch>
+					</Chunk>
+				</Sectionless>
+			</Menu>
+
+		</>
 	);
 }
