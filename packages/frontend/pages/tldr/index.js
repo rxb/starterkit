@@ -38,7 +38,7 @@ import {
 } from '@/components/cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from './TldrHeader';
-import {TldrCardSmall, CreateTldrCardSmall} from './components';
+import {TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall} from './components';
 
 // STYLE
 import styles from '@/components/cinderblock/styles/styles';
@@ -95,25 +95,7 @@ function TldrHome(props) {
                                           <Sectionless>
                                              <Chunk>
                                                    <View style={{position: 'relative', marginRight: 10, marginBottom: 18}}>
-                                                      <Card 
-                                                         style={{
-                                                            marginVertical: 0, 
-                                                            zIndex: 10,
-                                                            minHeight: 165,
-                                                            
-                                                         }}
-                                                         >
-                                                         <Sectionless style={{flex: 1}}>
-                                                            <Chunk style={{flex: 0}}>
-                                                               <Text type="big">{item.name}</Text>
-                                                               <Text type="small" color="hint">voting, civic engagement, mutual aid</Text>
-                                                            </Chunk>
-                                                            <View style={{flex: 1}} />
-                                                            <Chunk style={{flex: 0}}>
-                                                               <Text type="small" style={{textAlign: 'right'}}>1,263 cards</Text>
-                                                            </Chunk>
-                                                         </Sectionless>
-                                                      </Card>
+                                                      <CategoryCardSmall category={item} />
                                                       <Card 
                                                          style={{marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
                                                          />

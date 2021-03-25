@@ -222,3 +222,27 @@ export const CreateTldrCardSmall = (props) => {
 	)
 }
 
+export const CategoryCardSmall = (props) => {
+	const {category} = props;
+	return (
+		<Card 
+		style={{
+			marginVertical: 0, 
+			zIndex: 10,
+			minHeight: 165,
+			
+		}}
+		>
+		<Sectionless style={{flex: 1}}>
+			<Chunk style={{flex: 0}}>
+				<Text type="big">{category.name}</Text>
+				<Text type="small" color="hint">voting, civic engagement, mutual aid</Text>
+			</Chunk>
+			<View style={{flex: 1}} />
+			<Chunk style={{flex: 0}}>
+				<Text type="small" style={{textAlign: 'left'}}>1,263 cards</Text>
+			</Chunk>
+		</Sectionless>
+		</Card>
+	);
+}
