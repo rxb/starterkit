@@ -208,7 +208,9 @@ export const TldrCardSmall = (props) => {
 						}
 
 						{ true &&  
-							<TldrCardContextMenu tldr={tldr} />
+							<View style={{alignSelf: 'flex-end'}}>
+								<TldrCardContextMenu tldr={tldr} />
+							</View>
 						}
 					</Chunk>
 					
@@ -281,7 +283,7 @@ export const TldrCardContextMenu = (props) => {
 				<Sectionless>
 					<Chunk>
 						<Link href={``} >
-							<Text color="tint">Edit card</Text>
+							<Text color="tint">Edit</Text>
 						</Link>
 						<Link href={``} >
 							<Text color="tint">Settings</Text>
