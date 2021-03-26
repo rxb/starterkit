@@ -156,29 +156,29 @@ function TldrSearch (props) {
 					top: '100%',
 					marginTop: -7,
 					left: 16, right: 16,
-					position: 'absolute',
+					position: 'absolute'
 				}}
 				>
-					<Sectionless>
-						{ formState.getFieldValue('search') &&
-							<Chunk>
-								<Text>Search "{formState.getFieldValue('search')}"</Text>
-							</Chunk>
-						}
-						{ searchResults.map((item, i) => (
-							<Chunk key={i}>
-								<Link 
-									href={`/tldr?categoryId=${item.id}`}
-									onPress={()=>{
-										setSearchFocus(false);
-									}}
-									>
-									<Text>{item.name}</Text>
-									<Text type="micro" color="hint">{item.keywords}</Text>
-								</Link>
-							</Chunk>									
-						))}
-					</Sectionless>
+				<Sectionless>
+					{ formState.getFieldValue('search') != '' &&
+						<Chunk>
+							{ <Text>Search "{formState.getFieldValue('search')}"</Text> }
+						</Chunk>
+					}
+					{ searchResults.map((item, i) => (
+						<Chunk key={i}>
+							<Link 
+								href={`/tldr?categoryId=${item.id}`}
+								onPress={()=>{
+									setSearchFocus(false);
+								}}
+								>
+								<Text>{item.name}</Text>
+								<Text type="micro" color="hint">{item.keywords}</Text>
+							</Link>
+						</Chunk>									
+					)) }
+				</Sectionless>
 			</View>
 		</RevealBlock>
 	</View>
@@ -246,7 +246,7 @@ function TldrHeader (props) {
 													/>
 											</Inline>
 										</Touch>
-										
+
 										<Menu ref={userMenu}>
 											<Sectionless>
 												<Chunk>

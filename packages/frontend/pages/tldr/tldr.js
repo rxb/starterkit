@@ -41,7 +41,7 @@ import { METRICS } from '@/components/cinderblock/designConstants';
 import Page from '@/components/Page';
 import TldrHeader from './TldrHeader';
 
-import {TldrCardSmall, TldrCard} from './components';
+import {TldrCardSmall, TldrCard, DeletePrompt} from './components';
 
 
 import dayjs from 'dayjs';
@@ -105,34 +105,7 @@ const DownVotePrompt = (props) => {
 };
 
 
-const DeletePrompt = (props) => {
-	const {
-		onRequestClose
-	} = props;
-	return (
-		<Section>
-			<Chunk>
-				<Text type="sectionHead">Delete this card?</Text>
-			</Chunk>
-			<Chunk>
-				<Text>Something something about deleting cards</Text>
-			</Chunk>
-			<Chunk>
-				<Button
-					onPress={onRequestClose}
-					label="Delete card"
-					width="full"
-					/>
-				<Button
-					onPress={onRequestClose}
-					color="secondary"
-					label="Never mind"
-					width="full"
-					/>
-			</Chunk>
-		</Section>
-	);
-};
+
 
 
 function Tldr(props) {
@@ -316,7 +289,7 @@ function Tldr(props) {
 													</Link>
 														<Text type="small" color="hint"> </Text>
 													<Touch onPress={() => { 
-														dispatch(addPrompt(<DeletePrompt/>))
+														dispatch(addPrompt(<DeletePrompt tldr={tldrData} />))
 													}}>
 														<Text type="small" color="hint">Delete</Text>		
 													</Touch>

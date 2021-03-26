@@ -275,17 +275,17 @@ export const TldrCardContextMenu = (props) => {
 				}}>
 				<Icon 
 					shape="MoreHorizontal" 
-					color={swatches.hint} 
+					color={swatches.textHint} 
 					/>
 			</Touch>
 
 			<Menu ref={thisMenu}>
 				<Sectionless>
 					<Chunk>
-						<Link href={``} >
+						<Link href={`/tldr/versionedit?tldrId=${props.tldr.id}`} >
 							<Text color="tint">Edit</Text>
 						</Link>
-						<Link href={``} >
+						<Link href={`/tldr/edit?tldrId=${props.tldr.id}`} >
 							<Text color="tint">Settings</Text>
 						</Link>
 						<Touch  >
@@ -298,3 +298,33 @@ export const TldrCardContextMenu = (props) => {
 		</>
 	);
 }
+
+export const DeletePrompt = (props) => {
+	const {
+		tldr,
+		onRequestClose
+	} = props;
+	return (
+		<Section>
+			<Chunk>
+				<Text type="sectionHead">Delete this card?</Text>
+			</Chunk>
+			<Chunk>
+				<Text>Something something about deleting cards</Text>
+			</Chunk>
+			<Chunk>
+				<Button
+					onPress={onRequestClose}
+					label="Delete card"
+					width="full"
+					/>
+				<Button
+					onPress={onRequestClose}
+					color="secondary"
+					label="Never mind"
+					width="full"
+					/>
+			</Chunk>
+		</Section>
+	);
+};

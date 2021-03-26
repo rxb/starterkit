@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { View } from '../primitives';
+import RevealBlock from './RevealBlock';
 import styles from '../styles/styles';
 import ReactDOM from 'react-dom';
 
@@ -22,7 +23,7 @@ class Menu extends React.Component {
 	render(){
 		return(
 			<View style={styles['menu-container']}>
-				{ this.state.visible &&
+				{ this.state.visible && 
 					<MenuComponent
 						{...this.props}
 						onRequestClose={this.toggle}
