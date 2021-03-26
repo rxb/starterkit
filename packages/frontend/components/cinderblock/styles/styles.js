@@ -284,12 +284,10 @@ const styles = StyleSheet.create({
 	// CARD
 	card: {
 		borderRadius: cardBorderRadius,
-		//shadowRadius: 12,
-		//shadowColor: 'rgba(0,0,0,.25)',
 		backgroundColor: 'white',
 		borderWidth: 1,
 		borderColor: swatches.border,
-		overflow: 'hidden'
+		overflow: 'hidden',
 	},
 
 	'card--shadow': {
@@ -408,7 +406,8 @@ const styles = StyleSheet.create({
 	'menu-container': {
 		width: '100%',
 		height: 0,
-		backgroundColor: 'red' // shouldn't be able to see this
+		backgroundColor: 'red', // shouldn't be able to see this
+		
 	},
 	menu: {
 		position: 'absolute',

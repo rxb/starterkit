@@ -1,5 +1,9 @@
 import React, {useState, useRef} from 'react';
 
+// REDUX
+import {connect, useDispatch, useSelector} from 'react-redux';
+import { addPrompt, addToast, addDelayedToast } from '@/actions';
+
 import {
 	Avatar,
 	Bounds,
@@ -33,6 +37,7 @@ import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
 import { METRICS } from '@/components/cinderblock/designConstants';
 
+import Router from 'next/router'
 import Markdown from 'markdown-to-jsx';
 
 
@@ -266,7 +271,8 @@ export const CategoryCardSmall = (props) => {
 
 export const TldrCardContextMenu = (props) => {
 	const thisMenu = useRef(null);
-	
+	const {tldr} = props;
+	const dispatch = useDispatch();
 	return(
 		<>
 			<Touch onPress={(e) => {
@@ -278,17 +284,30 @@ export const TldrCardContextMenu = (props) => {
 					color={swatches.textHint} 
 					/>
 			</Touch>
-
 			<Menu ref={thisMenu}>
 				<Sectionless>
 					<Chunk>
-						<Link href={`/tldr/versionedit?tldrId=${props.tldr.id}`} >
+						{/* can't nest urls, so all links need to push router */}
+						<Touch 
+							onPress={(e)=>{
+								e.preventDefault()
+								Router.push({pathname:'./versionedit', query: {tldrId: tldr.id}})
+							}}
+							>
 							<Text color="tint">Edit</Text>
-						</Link>
-						<Link href={`/tldr/edit?tldrId=${props.tldr.id}`} >
+						</Touch>
+						<Touch 
+							onPress={(e)=>{
+								e.preventDefault()
+								Router.push({pathname:'./edit', query: {tldrId: tldr.id}})
+							}}
+							>
 							<Text color="tint">Settings</Text>
-						</Link>
-						<Touch  >
+						</Touch>
+						<Touch onPress={(e) => { 
+								e.preventDefault()
+								dispatch(addPrompt(<DeletePrompt tldr={tldr} />))
+							}}>
 							<Text color="tint">Delete</Text>
 						</Touch>
 					</Chunk>
@@ -301,7 +320,7 @@ export const TldrCardContextMenu = (props) => {
 
 export const DeletePrompt = (props) => {
 	const {
-		tldr,
+		tldr, 
 		onRequestClose
 	} = props;
 	return (
