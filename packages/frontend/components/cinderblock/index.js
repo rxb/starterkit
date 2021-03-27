@@ -5,6 +5,7 @@ import CheckBox from './components/CheckBox';
 import Chip from './components/Chip';
 import Chunk from './components/Chunk';
 import Button from './components/Button';
+import {Dropdowner, DropdownTouch} from './components/Dropdowner';
 import FakeInput from './components/FakeInput';
 import FieldError from './components/FieldError';
 import FileInput from './components/FileInput';
@@ -48,6 +49,8 @@ export {
 	CheckBox,
 	Chip,
 	Chunk,
+	DropdownTouch,
+	Dropdowner,
 	FakeInput,
 	FileInput,
 	FieldError,

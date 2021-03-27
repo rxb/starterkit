@@ -47,6 +47,7 @@ import {
 import LoginForm from './LoginForm';
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
+import ConnectedDropdowner from './ConnectedDropdowner';
 import { addToastableErrors } from './cinderblock/utils';
 
 
@@ -133,7 +134,7 @@ function Page (props) {
 			
 			<ConnectedToaster />
 			<ConnectedPrompter />
-		
+			<ConnectedDropdowner />
 
 		</View>
 	);

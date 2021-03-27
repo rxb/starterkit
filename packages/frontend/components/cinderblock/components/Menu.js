@@ -14,15 +14,31 @@ class Menu extends React.Component {
 		super(props);
 		this.state = {
 			visible: false,
+			coords: {x: 0, y: 0}
 		}
 		this.toggle = this.toggle.bind(this);
+		this.handleLayout = this.handleLayout.bind(this);
 	}
 	toggle(){
-		this.setState({visible: !this.state.visible})
+		this.setState({visible: !this.state.visible});
+		this.handleLayout();
+	}
+	handleLayout(){
+		console.log('measure');
+		this.menuContainer.measure( (fx, fy, width, height, px, py) => {
+			console.log('Component width is: ' + width)
+			console.log('Component height is: ' + height)
+			console.log('X offset to page: ' + px)
+			console.log('Y offset to page: ' + py)
+		 })
 	}
 	render(){
 		return(
-			<View style={styles['menu-container']}>
+			<View 
+				ref={ ref => this.menuContainer = ref }
+				style={styles['menu-container']} 
+				onLayout={this.handleLayout}
+				>
 				{ this.state.visible && 
 					<MenuComponent
 						{...this.props}

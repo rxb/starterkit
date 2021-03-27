@@ -2,7 +2,11 @@ import React, {useState, useRef} from 'react';
 
 // REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast, addDelayedToast } from '@/actions';
+import { addDropdown, addPrompt, addToast, addDelayedToast } from '@/actions';
+
+// SWR
+import { request, parsePageObj, getTldrUrl } from '@/swr';
+
 
 import {
 	Avatar,
@@ -269,60 +273,89 @@ export const CategoryCardSmall = (props) => {
 }
 
 
+const TldrCardContextDropdown = (props) => {
+	const {tldr} = props;
+	return(
+		<Sectionless>
+			<Chunk>
+				{/* can't nest urls, so all links need to push router */}
+				<Touch 
+					onPress={(e)=>{
+						e.preventDefault()
+						Router.push({pathname:'./versionedit', query: {tldrId: tldr.id}})
+					}}
+					>
+					<Text color="tint">Edit</Text>
+				</Touch>
+				<Touch 
+					onPress={(e)=>{
+						e.preventDefault()
+						Router.push({pathname:'./edit', query: {tldrId: tldr.id}})
+					}}
+					>
+					<Text color="tint">Settings</Text>
+				</Touch>
+				<Touch onPress={(e) => { 
+						e.preventDefault()
+						dispatch(addPrompt(<DeletePrompt tldr={tldr} />))
+					}}>
+					<Text color="tint">Delete</Text>
+				</Touch>
+			</Chunk>
+		</Sectionless>
+	)
+}
+
 export const TldrCardContextMenu = (props) => {
-	const thisMenu = useRef(null);
 	const {tldr} = props;
 	const dispatch = useDispatch();
 	return(
-		<>
 			<Touch onPress={(e) => {
 					e.preventDefault();
-					thisMenu.current.toggle() 
+					dispatch(addDropdown(<TldrCardContextDropdown tldr={tldr} />));
 				}}>
 				<Icon 
 					shape="MoreHorizontal" 
 					color={swatches.textHint} 
 					/>
 			</Touch>
-			<Menu ref={thisMenu}>
-				<Sectionless>
-					<Chunk>
-						{/* can't nest urls, so all links need to push router */}
-						<Touch 
-							onPress={(e)=>{
-								e.preventDefault()
-								Router.push({pathname:'./versionedit', query: {tldrId: tldr.id}})
-							}}
-							>
-							<Text color="tint">Edit</Text>
-						</Touch>
-						<Touch 
-							onPress={(e)=>{
-								e.preventDefault()
-								Router.push({pathname:'./edit', query: {tldrId: tldr.id}})
-							}}
-							>
-							<Text color="tint">Settings</Text>
-						</Touch>
-						<Touch onPress={(e) => { 
-								e.preventDefault()
-								dispatch(addPrompt(<DeletePrompt tldr={tldr} />))
-							}}>
-							<Text color="tint">Delete</Text>
-						</Touch>
-					</Chunk>
-				</Sectionless>
-			</Menu>
-
-		</>
 	);
 }
 
 export const DeletePrompt = (props) => {
+
 	const {
 		tldr, 
 		onRequestClose
 	} = props;
+
+	const formState = useFormState( {
+		toastableErrors: {
+			BadRequest: 'Something went wrong',
+			NotAuthenticated: 'Not signed in'
+		},
+		addToast: msg => dispatch(addToast(msg))
+	});
+
+	// TODO: from the detail page, it will need to redirect, but from a listing page, probably not. maybe just pass in an onDelete fn?
+	const authentication = useSelector(state => state.authentication);
+	const user = authentication.user || {};
+	const deleteTldr = async () => {
+		try{
+			formState.setLoading(true);
+			await request(getTldrUrl(tldr.id), {
+				method: 'DELETE', 
+				token: authentication.accessToken
+			});
+			onRequestClose();
+		}
+		catch(error){
+			console.log(error);
+			formState.setError(error);
+			formState.setLoading(false);
+		}
+	}
+
 	return (
 		<Section>
 			<Chunk>
@@ -333,9 +366,10 @@ export const DeletePrompt = (props) => {
 			</Chunk>
 			<Chunk>
 				<Button
-					onPress={onRequestClose}
+					onPress={deleteTldr}
 					label="Delete card"
 					width="full"
+					isLoading={formState.loading}
 					/>
 				<Button
 					onPress={onRequestClose}

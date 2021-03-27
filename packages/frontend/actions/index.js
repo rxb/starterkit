@@ -108,3 +108,29 @@ export const removePrompt = (id) => ({
 	  id: id,
 	}
 });
+
+
+// DROPDOWNS
+export const addDropdown = (message, options = {}) => ({
+	type: 'ADD_DROPDOWN',
+	payload: {
+		message: message,
+		id: uuid(),
+		visible: true,
+		...options
+	}
+});
+
+export const hideDropdown = (id) => ({
+	type: 'HIDE_DROPDOWN',
+	payload: {
+	  id: id,
+	}
+});
+
+export const removeDropdown = (id) => ({
+	type: 'HIDE_DROPDOWN',
+	payload: {
+	  id: id,
+	}
+});
