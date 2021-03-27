@@ -16,7 +16,6 @@ import {
 	CheckBox,
 	Chunk,
 	Chip,
-	DropdownTouch,
 	Flex,
 	FlexItem,
 	Header,
@@ -38,6 +37,7 @@ import {
 	useMediaContext,
 	View,	
 } from '@/components/cinderblock';
+import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
 import { METRICS } from '@/components/cinderblock/designConstants';
@@ -311,17 +311,12 @@ export const TldrCardContextMenu = (props) => {
 	const {tldr} = props;
 	const dispatch = useDispatch();
 	return(
-			<DropdownTouch 
-				addDropdown={(position)=>{
-					const thisDropdown = <TldrCardContextDropdown tldr={tldr} />;
-					dispatch(addDropdown(thisDropdown, {position : position})); 
-				}}
-				>
+			<ConnectedDropdownTouch dropdown={<TldrCardContextDropdown tldr={tldr} />}>
 				<Icon 
 					shape="MoreHorizontal" 
 					color={swatches.textHint} 
 					/>
-			</DropdownTouch>
+			</ConnectedDropdownTouch>
 	);
 }
 

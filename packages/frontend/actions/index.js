@@ -129,8 +129,12 @@ export const hideDropdown = (id) => ({
 });
 
 export const removeDropdown = (id) => ({
-	type: 'HIDE_DROPDOWN',
+	type: 'REMOVE_DROPDOWN',
 	payload: {
 	  id: id,
 	}
 });
+
+export const clearDropdowns = () => ({
+	type: 'CLEAR_DROPDOWNS',
+})

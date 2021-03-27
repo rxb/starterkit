@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	addToast,
 	showToast,
+	clearDropdowns,
 	showDelayedToasts,
 	logIn,
 	logInFailure,
@@ -77,9 +78,12 @@ function Page (props) {
 	// router-related UI config	
 	useEffect(()=>{
 		NProgress.configure({ trickle: true, trickleSpeed: 400, showSpinner: false });
-		Router.onRouteChangeStart = (url) => NProgress.start();
+		Router.onRouteChangeStart = (url) => {
+			NProgress.start();
+		}
 		Router.onRouteChangeComplete = () => {
 			NProgress.done();
+			dispatch(clearDropdowns());
 			setTimeout(() => dispatch(showDelayedToasts()), 500);
 		}
 		Router.onRouteChangeError = () => NProgress.done();

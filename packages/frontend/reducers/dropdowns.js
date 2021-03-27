@@ -19,6 +19,8 @@ const dropdowns = (state = [], action) => {
         newDropdowns.splice(index, 1);
       }
       return newDropdowns;
+    case 'CLEAR_DROPDOWNS':
+      return [];
     default:
       return state;
   }

@@ -9,8 +9,9 @@ import Touch from './Touch';
 import Text from './Text';
 import styles from '../styles/styles';
 import ReactDOM from 'react-dom';
+import swatches from '@/components/cinderblock/styles/swatches';
+import { METRICS } from '@/components/cinderblock/designConstants';
 import {v4 as uuid} from 'uuid';
-
 
 export const Dropdowner = (props) => {
 	const {dropdowns, ...other} = props;
@@ -20,7 +21,8 @@ export const Dropdowner = (props) => {
 				return <Dropdown
 							key={dropdown.id}
 							content={dropdown.content}
-							position={dropdown.position}
+							x={dropdown.x}
+							y={dropdown.y}
 							id={dropdown.id}
 							{...other}
 							/>
@@ -32,28 +34,41 @@ export const Dropdowner = (props) => {
 export const DropdownTouch = (props) => {
 	const {
 		children,
-		addDropdown = () => { console.error('pass in addDropdown fn') }
-		//hideDropdown = () => { console.error('pass in hideDropdown fn') }
+		dropdown,
+		addDropdown,
+		hideDropdown,
+		dropdowns,
+		style
 	} = props;
 
 	const touchRef = useRef(null);
-	const {touchActive, setTouchActive} = useState(false);
+	const [touchActive, setTouchActive] = useState(false);
+	const [dropdownId, setDropdownId] = useState();
+
+	useEffect(()=>{
+		// active is set by whether the dropdown exists in redux
+		setTouchActive( dropdowns.find( element => element.id == dropdownId ) );
+	}, [dropdowns]);
 
 	const measureAndAddDropdown = useCallback(() => {
 		touchRef.current.measure((fx, fy, width, height, px, py) => {
 			const x = px;
-			const y = py + height;
-			console.log(`x${x} y${y} height${height}`);
-			addDropdown({x, y});
+			const y = py + height + window.pageYOffset;
+			const id = uuid();
+			setDropdownId(id);
+			addDropdown(dropdown, {x, y, id: id});
 		});
 	})
 
 	return(
-		<View ref={touchRef}>
+		<View ref={touchRef} style={style}>
 		<Touch
 			onPress={(e)=>{
 				e.preventDefault();
-				measureAndAddDropdown();
+				if(!touchActive){
+					// the outclick handles closing
+					measureAndAddDropdown();
+				}
 			}}
 			>
 			{children}
@@ -68,7 +83,7 @@ export const Dropdown = (props) => {
 	const { 
 		hideDropdown,
 		removeDropdown,
-		position,
+		x, y,
 		content,
 		id
 	} = props;
@@ -93,7 +108,7 @@ export const Dropdown = (props) => {
 		if(ReactDOM.findDOMNode(outerRef.current).contains(e.target)){
 			return false;
 		}
-		onRequestClose();
+		onCompleteClose();
 	});
 	useEffect(()=>{
 		document.addEventListener('click', handleClick, false)
@@ -106,14 +121,16 @@ export const Dropdown = (props) => {
 		<View 
 			style={{
 				position: 'absolute',
-				left: position.x,
-				top: position.y,
+				left: x,
+				top: y,
 				zIndex: 100,
-				backgroundColor: 'white'
+				backgroundColor: 'white',
+				borderWidth: 1,
+				borderColor: swatches.border,
+				borderRadius: METRICS.borderRadius
 			}} 
 			ref={ outerRef }
 			>
-			<Text>{JSON.stringify(position)}</Text>
 			{content}
 		</View>
 	)
