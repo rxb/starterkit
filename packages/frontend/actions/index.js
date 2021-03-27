@@ -111,10 +111,10 @@ export const removePrompt = (id) => ({
 
 
 // DROPDOWNS
-export const addDropdown = (message, options = {}) => ({
+export const addDropdown = (content, options = {}) => ({
 	type: 'ADD_DROPDOWN',
 	payload: {
-		message: message,
+		content: content,
 		id: uuid(),
 		visible: true,
 		...options

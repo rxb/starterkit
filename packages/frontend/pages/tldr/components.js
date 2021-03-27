@@ -16,6 +16,7 @@ import {
 	CheckBox,
 	Chunk,
 	Chip,
+	DropdownTouch,
 	Flex,
 	FlexItem,
 	Header,
@@ -310,15 +311,17 @@ export const TldrCardContextMenu = (props) => {
 	const {tldr} = props;
 	const dispatch = useDispatch();
 	return(
-			<Touch onPress={(e) => {
-					e.preventDefault();
-					dispatch(addDropdown(<TldrCardContextDropdown tldr={tldr} />));
-				}}>
+			<DropdownTouch 
+				addDropdown={(position)=>{
+					const thisDropdown = <TldrCardContextDropdown tldr={tldr} />;
+					dispatch(addDropdown(thisDropdown, {position : position})); 
+				}}
+				>
 				<Icon 
 					shape="MoreHorizontal" 
 					color={swatches.textHint} 
 					/>
-			</Touch>
+			</DropdownTouch>
 	);
 }
 

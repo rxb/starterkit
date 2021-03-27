@@ -6,6 +6,7 @@
 import React, {useState, useRef, useCallback, useEffect} from 'react';
 import { View } from '../primitives';
 import Touch from './Touch';
+import Text from './Text';
 import styles from '../styles/styles';
 import ReactDOM from 'react-dom';
 import {v4 as uuid} from 'uuid';
@@ -15,20 +16,12 @@ export const Dropdowner = (props) => {
 	const {dropdowns, ...other} = props;
 	return(
 		<View style={styles.dropdowner}>
-			<View 
-				style={{
-					position: 'absolute',
-					top: 0,
-					left: 0,
-					width: 100,
-					height: 100,
-					backgroundColor: 'blue'
-				}}
-				/>
 			{dropdowns.map((dropdown, i)=>{
 				return <Dropdown
 							key={dropdown.id}
-							dropdown={dropdown}
+							content={dropdown.content}
+							position={dropdown.position}
+							id={dropdown.id}
 							{...other}
 							/>
 			})}
@@ -44,40 +37,28 @@ export const DropdownTouch = (props) => {
 	} = props;
 
 	const touchRef = useRef(null);
-	const {dropdownId, setDropdownId} = useState();
 	const {touchActive, setTouchActive} = useState(false);
 
-	const measureAndAddDropdown = () => {
+	const measureAndAddDropdown = useCallback(() => {
 		touchRef.current.measure((fx, fy, width, height, px, py) => {
 			const x = px;
 			const y = py + height;
-			//const id = uuid();
-			setDropdownId(id);
-			addDropdown({x, y/*, id*/});
+			console.log(`x${x} y${y} height${height}`);
+			addDropdown({x, y});
 		});
-	}
-
-	const toggle = () => {
-		if(!touchActive){
-			setTouchActive(true);
-			measureAndAddDropdown();
-		}
-		/*
-		// already, clicking outside dropdown closes dropdown
-		else{
-			setTouchActive(false);
-			hideDropdown(dropdownId);
-		}
-		*/
-	}
+	})
 
 	return(
+		<View ref={touchRef}>
 		<Touch
-			ref={touchRef}
-			onPress={toggle}
+			onPress={(e)=>{
+				e.preventDefault();
+				measureAndAddDropdown();
+			}}
 			>
 			{children}
 		</Touch>
+		</View>
 	)
 }
 
@@ -85,24 +66,25 @@ export const DropdownTouch = (props) => {
 export const Dropdown = (props) => {
 	
 	const { 
-		dropdown,
 		hideDropdown,
 		removeDropdown,
-		children 
+		position,
+		content,
+		id
 	} = props;
 
 	const onRequestClose = useCallback(()=> {
 		if(props.onRequestClose){
 			props.onRequestClose()
 		}
-		hideDropdown(dropdown.id);
+		hideDropdown(id);
 	});
 	
 	const onCompleteClose = useCallback(()=> {
 		if(props.onCompleteClose){
 			props.onCompleteClose()
 		}
-		removeDropdown(dropdown.id);
+		removeDropdown(id);
 	});
 
 	// clicking outside dropdown closes dropdown
@@ -120,22 +102,19 @@ export const Dropdown = (props) => {
 		};
 	}, []);
 
-	console.log('dropdown render');
-
 	return (
 		<View 
 			style={{
 				position: 'absolute',
-				top: 0,
-				left: 0,
+				left: position.x,
+				top: position.y,
 				zIndex: 100,
-				width: 100,
-				height: 100,
-				backgroundColor: 'red'
+				backgroundColor: 'white'
 			}} 
 			ref={ outerRef }
 			>
-			{children}
+			<Text>{JSON.stringify(position)}</Text>
+			{content}
 		</View>
 	)
 }
