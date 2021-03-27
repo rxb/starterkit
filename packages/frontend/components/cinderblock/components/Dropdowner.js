@@ -14,7 +14,17 @@ import {v4 as uuid} from 'uuid';
 export const Dropdowner = (props) => {
 	const {dropdowns, ...other} = props;
 	return(
-		<View>
+		<View style={styles.dropdowner}>
+			<View 
+				style={{
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					width: 100,
+					height: 100,
+					backgroundColor: 'blue'
+				}}
+				/>
 			{dropdowns.map((dropdown, i)=>{
 				return <Dropdown
 							key={dropdown.id}
@@ -110,13 +120,18 @@ export const Dropdown = (props) => {
 		};
 	}, []);
 
+	console.log('dropdown render');
+
 	return (
 		<View 
 			style={{
 				position: 'absolute',
-				flex: 0,
 				top: 0,
-				left: 0
+				left: 0,
+				zIndex: 100,
+				width: 100,
+				height: 100,
+				backgroundColor: 'red'
 			}} 
 			ref={ outerRef }
 			>

@@ -608,7 +608,14 @@ const styles = StyleSheet.create({
 	},
 
 
-
+	// DROPDOWN
+	dropdowner: {
+		position: 'fixed',
+		top: 0,
+		left: 0,
+		right: 0,
+		zIndex: 3,
+	},
 
 	// TOASTER
 	toaster: {
