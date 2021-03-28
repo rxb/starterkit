@@ -4,13 +4,14 @@
 // but maybe you should be using native components there for menus anyhow
 
 import React, {useState, useRef, useCallback, useEffect} from 'react';
+import { Animated } from '@/components/cinderblock/primitives';
 import { View } from '../primitives';
 import Touch from './Touch';
 import Text from './Text';
 import styles from '../styles/styles';
 import ReactDOM from 'react-dom';
 import swatches from '@/components/cinderblock/styles/swatches';
-import { METRICS } from '@/components/cinderblock/designConstants';
+import { METRICS, EASE } from '@/components/cinderblock/designConstants';
 import {v4 as uuid} from 'uuid';
 
 export const Dropdowner = (props) => {
@@ -24,6 +25,7 @@ export const Dropdowner = (props) => {
 							x={dropdown.x}
 							y={dropdown.y}
 							id={dropdown.id}
+							visible={dropdown.visible}
 							{...other}
 							/>
 			})}
@@ -88,6 +90,35 @@ export const Dropdown = (props) => {
 		id
 	} = props;
 
+   const [visibilityValue, setVisibilityValue] = useState(new Animated.Value(0));
+
+	useEffect(()=>{
+		const duration = 100;
+		const delay = 0;
+      if(props.visible){
+         Animated.timing(
+            visibilityValue,{
+               toValue: 1,
+               easing: EASE,
+               duration,
+               delay
+            }
+         ).start()
+      }
+      else{
+         Animated.timing(
+            visibilityValue,{
+               toValue: 0,
+               easing: EASE,
+               duration,
+               delay
+            }
+         ).start(()=>{
+				onCompleteClose();
+			})
+      }
+   }, [props.visible]);
+
 	const onRequestClose = useCallback(()=> {
 		if(props.onRequestClose){
 			props.onRequestClose()
@@ -108,7 +139,7 @@ export const Dropdown = (props) => {
 		if(ReactDOM.findDOMNode(outerRef.current).contains(e.target)){
 			return false;
 		}
-		onCompleteClose();
+		onRequestClose();
 	});
 	useEffect(()=>{
 		document.addEventListener('click', handleClick, false)
@@ -117,8 +148,11 @@ export const Dropdown = (props) => {
 		};
 	}, []);
 
+	const offset = METRICS.space;
+	const directionMultiplier = -1;
+
 	return (
-		<View 
+		<Animated.View 
 			style={{
 				position: 'absolute',
 				left: x,
@@ -127,11 +161,18 @@ export const Dropdown = (props) => {
 				backgroundColor: 'white',
 				borderWidth: 1,
 				borderColor: swatches.border,
-				borderRadius: METRICS.borderRadius
+				borderRadius: METRICS.borderRadius,
+				opacity: visibilityValue,
+            transform: [{
+               translateY: visibilityValue.interpolate({
+               inputRange: [0, 1],
+               outputRange: [(offset * directionMultiplier), 0]
+               }),
+            }]
 			}} 
 			ref={ outerRef }
 			>
 			{content}
-		</View>
+		</Animated.View>
 	)
 }
