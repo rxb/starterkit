@@ -13,6 +13,7 @@ import {
 	Card,
 	CheckBox,
 	Chunk,
+	FakeInput,
 	Flex,
 	FlexItem,
 	Header,
@@ -49,31 +50,6 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 
-const ConnectedHeader = (props) => {
-
-	const media = useMediaContext();
-
-	return(
-		<Header position="static">
-			<Flex direction="row">
-				<FlexItem>
-						<Link href="./tldr">
-							<Text type={ media.medium ? 'sectionHead' : 'big'} color="tint" style={{fontWeight: 700}}>tldr</Text>
-						</Link>
-				</FlexItem>
-				<FlexItem shrink justify="center">
-						<Touch onPress={()=>{
-							alert('TODO: like, a menu or something');
-						}}>
-							<Icon shape="Menu" color={swatches.tint} />
-						</Touch>
-				</FlexItem>
-			</Flex>
-		</Header>
-	);
-};
-
-
 
 const DownVotePrompt = (props) => {
 	const {
@@ -105,7 +81,62 @@ const DownVotePrompt = (props) => {
 };
 
 
+const SharePrompt = (props) => {
+	const {
+		shareData,
+		onRequestClose
+	} = props;
+	return (
+		<Section>
+			<Chunk>
+				<Text type="sectionHead">Let's share this thing</Text>
+				<Text>Sharing is caring</Text>
+			</Chunk>
+			<Chunk>
+					<FakeInput label={shareData.url} onPress={()=>{
+						try{
+							navigator.clipboard.writeText(shareData.url)
+							alert('Url copied'); // make this a toast	or inline message
+						}
+						catch(err){
+							console.error(err);
+						}
+					}} />
+			</Chunk>
+			<Chunk>
+				<Button
+					onPress={onRequestClose}
+					label="Twitter"
+					width="full"
+					/>		
+				<Button
+					onPress={onRequestClose}
+					label="Facebook"
+					width="full"
+					/>									
+				<Button
+					onPress={onRequestClose}
+					color="secondary"
+					label="Cancel"
+					width="full"
+					/>
+			</Chunk>
+		</Section>
+	);
+};
 
+const share = async (shareData, dispatchSharePrompt) => {
+	if(navigator.share){
+		try {
+			await navigator.share(shareData)
+		} catch(err) {
+			console.error(err)
+		}
+	}	
+	else{
+		dispatchSharePrompt();
+	}													
+}
 
 
 function Tldr(props) {
@@ -226,6 +257,17 @@ function Tldr(props) {
 															shape="Share2" 
 															color="secondary" 
 															width="full"
+															onPress={()=>{
+																const shareData = {
+																	title: tldrData.currentTldrVersion.content.title,
+																	text: tldrData.currentTldrVersion.content.blurb,
+																	url: `tldr.cards/${tldrData.urlKey}`,
+																}
+																const dispatchSharePrompt = () => {
+																	dispatch(addPrompt(<SharePrompt shareData={shareData} />))
+																};
+																share(shareData, dispatchSharePrompt);
+															}}
 															/>
 															<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Share</Text>
 												</FlexItem>

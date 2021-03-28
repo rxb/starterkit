@@ -53,7 +53,7 @@ dayjs.extend(relativeTime)
 const CategoryItem = (props) => {
    const {item} = props;
    return (
-      <View style={{backgroundColor: '#eaf2fc' /*swatches.backgroundShade*/, borderRadius: METRICS.cardBorderRadius}}>
+      <View style={{backgroundColor: swatches.backgroundShade, borderRadius: METRICS.cardBorderRadius}}>
          <Sectionless>
             <Chunk>
                <View style={{position: 'relative', marginRight: 10, marginBottom: 18}}>

@@ -270,9 +270,11 @@ export const CategoryCardSmall = (props) => {
 			<Chunk style={{flex: 0}}>
 				<Text type="big" >{category.name}</Text>
 				<Text type="small" color="hint">voting, civic engagement, mutual aid</Text>
+			{/*
 			</Chunk>
 			<View style={{flex: 1}} />
 			<Chunk style={{flex: 0}}>
+			*/}
 				<Text type="small" style={{textAlign: 'left'}} >1,263 cards</Text>
 			</Chunk>
 		</Sectionless>
