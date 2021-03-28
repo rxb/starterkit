@@ -41,6 +41,7 @@ import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import styles from '@/components/cinderblock/styles/styles';
 import swatches from '@/components/cinderblock/styles/swatches';
 import { METRICS } from '@/components/cinderblock/designConstants';
+const smallCardMinHeight = 220;
 
 import Router from 'next/router'
 import Markdown from 'markdown-to-jsx';
@@ -185,21 +186,15 @@ export const TldrCardSmall = (props) => {
 	const draft = tldr.id && tldr.currentTldrVersionId == undefined;
 	return(
 			<Card style={[{
-					minHeight: 160,
-					overflow: 'visible' 
+					minHeight: smallCardMinHeight,
 				}, style]}>
-				{/* overflow and top-stripe done this way to allow menu within cards */}
-				<View style={{
-						height: 5,
-						backgroundColor: swatches.tint,
-						borderTopRightRadius: METRICS.cardBorderRadius,
-						borderTopLeftRadius: METRICS.cardBorderRadius,
-					}}
-					/>
+				
 				<Sectionless
 					style={{
 						paddingTop: METRICS.space,
-						flex: 1
+						flex: 1,
+						borderTopWidth: 5,
+						borderTopColor: swatches.tint
 					}}
 					>
 					<Chunk style={{flex: 1}}>
@@ -219,7 +214,15 @@ export const TldrCardSmall = (props) => {
 
 						{ true &&  
 							<View style={{alignSelf: 'flex-end'}}>
-								<TldrCardContextMenu tldr={tldr} />
+								<ConnectedDropdownTouch 
+									dropdown={<TldrCardContextDropdown 
+									tldr={tldr} />}
+									>
+									<Icon 
+										shape="MoreHorizontal" 
+										color={swatches.textHint} 
+										/>
+								</ConnectedDropdownTouch>
 							</View>
 						}
 					</Chunk>
@@ -232,7 +235,7 @@ export const TldrCardSmall = (props) => {
 
 export const CreateTldrCardSmall = (props) => {
 	return(
-		<Card style={{minHeight: 160, borderStyle: 'dashed', backgroundColor: 'transparent'}}>
+		<Card style={{minHeight: smallCardMinHeight, borderStyle: 'dashed', backgroundColor: 'transparent'}}>
 			<Sectionless style={{flex: 1}}>
 				<View style={styles.absoluteCenter}>
 						<Icon 
@@ -255,7 +258,36 @@ export const CategoryCardSmall = (props) => {
 		style={{
 			marginVertical: 0, 
 			zIndex: 10,
-			minHeight: 165,
+			minHeight: 190,
+		}}
+		>
+		<Sectionless style={{
+				paddingTop: METRICS.space,
+				flex: 1,
+				borderTopWidth: 5,
+				borderTopColor: swatches.tint
+			}}>
+			<Chunk style={{flex: 0}}>
+				<Text type="big" >{category.name}</Text>
+				<Text type="small" color="hint">voting, civic engagement, mutual aid</Text>
+			</Chunk>
+			<View style={{flex: 1}} />
+			<Chunk style={{flex: 0}}>
+				<Text type="small" style={{textAlign: 'left'}} >1,263 cards</Text>
+			</Chunk>
+		</Sectionless>
+		</Card>
+	);
+}
+
+export const CategoryCardSmallWhite = (props) => {
+	const {category} = props;
+	return (
+		<Card 
+		style={{
+			marginVertical: 0, 
+			zIndex: 10,
+			minHeight: smallCardMinHeight,
 			
 		}}
 		>
@@ -274,6 +306,7 @@ export const CategoryCardSmall = (props) => {
 }
 
 
+
 const TldrCardContextDropdown = (props) => {
 	const {tldr} = props;
 	return(
@@ -283,7 +316,7 @@ const TldrCardContextDropdown = (props) => {
 				<Touch 
 					onPress={(e)=>{
 						e.preventDefault()
-						Router.push({pathname:'./versionedit', query: {tldrId: tldr.id}})
+						Router.push({pathname:'/tldr/versionedit', query: {tldrId: tldr.id}})
 					}}
 					>
 					<Text color="tint">Edit</Text>
@@ -291,7 +324,7 @@ const TldrCardContextDropdown = (props) => {
 				<Touch 
 					onPress={(e)=>{
 						e.preventDefault()
-						Router.push({pathname:'./edit', query: {tldrId: tldr.id}})
+						Router.push({pathname:'/tldr/edit', query: {tldrId: tldr.id}})
 					}}
 					>
 					<Text color="tint">Settings</Text>
@@ -307,18 +340,7 @@ const TldrCardContextDropdown = (props) => {
 	)
 }
 
-export const TldrCardContextMenu = (props) => {
-	const {tldr} = props;
-	const dispatch = useDispatch();
-	return(
-			<ConnectedDropdownTouch dropdown={<TldrCardContextDropdown tldr={tldr} />}>
-				<Icon 
-					shape="MoreHorizontal" 
-					color={swatches.textHint} 
-					/>
-			</ConnectedDropdownTouch>
-	);
-}
+
 
 export const DeletePrompt = (props) => {
 

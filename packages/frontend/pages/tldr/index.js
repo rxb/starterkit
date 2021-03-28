@@ -50,6 +50,27 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
+const CategoryItem = (props) => {
+   const {item} = props;
+   return (
+      <View style={{backgroundColor: '#eaf2fc' /*swatches.backgroundShade*/, borderRadius: METRICS.cardBorderRadius}}>
+         <Sectionless>
+            <Chunk>
+               <View style={{position: 'relative', marginRight: 10, marginBottom: 18}}>
+                  <CategoryCardSmall category={item} />
+                  <Card 
+                     style={{marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
+                     />
+                  <Card 
+                     style={{marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8}}
+                     />   
+               </View>
+            </Chunk>
+         </Sectionless>
+      </View>
+   )
+}
+
 function TldrHome(props) {
 
       const { categoryId } = props;
@@ -82,33 +103,18 @@ function TldrHome(props) {
                                  small: 'grid',
                               }}
                               itemsInRow={{
-                                 small: 1,
+                                 small: 2,
                                  medium: 2,
-                                 large: 3
+                                 large: 4
                               }}
                               scrollItemWidth={300}
                               items={categoriesData}
                               renderItem={(item, i)=>(
                                  <Chunk key={i}>
                                     <Link href={`/tldr/?categoryId=${item.id}`}>
-                                       <View style={{backgroundColor: swatches.backgroundShade, borderRadius: METRICS.cardBorderRadius}}>
-                                          <Sectionless>
-                                             <Chunk>
-                                                   <View style={{position: 'relative', marginRight: 10, marginBottom: 18}}>
-                                                      <CategoryCardSmall category={item} />
-                                                      <Card 
-                                                         style={{marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
-                                                         />
-                                                      <Card 
-                                                         style={{marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8}}
-                                                         />   
-                                                   </View>
-                                                  
-                                                </Chunk>
-                                             </Sectionless>
-                                          </View>
-                                       </Link>
-                                    </Chunk>
+                                       <CategoryItem item={item} />   
+                                    </Link>
+                                 </Chunk>
                                  )}
                                  />
                         </Section>
@@ -144,7 +150,7 @@ function TldrHome(props) {
                                  <Chunk key={i}>
                                     { !item.last &&
                                        <Link href={`/tldr/tldr?tldrId=${item.id}`}>
-                                          <TldrCardSmall tldr={item} style={{minHeight: 160}} />
+                                          <TldrCardSmall tldr={item}  />
                                        </Link>
                                     }
                                     { item.last &&

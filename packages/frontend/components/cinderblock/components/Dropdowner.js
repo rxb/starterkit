@@ -154,6 +154,7 @@ export const Dropdown = (props) => {
 	return (
 		<Animated.View 
 			style={{
+				maxWidth: '50vw',
 				position: 'absolute',
 				left: x,
 				top: y,

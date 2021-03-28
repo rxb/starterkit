@@ -127,7 +127,7 @@ function TldrProfile(props) {
 												<Chunk key={i}>
 													{ !item.last &&
 														<Link href={href}>
-															<TldrCardSmall tldr={item} style={{minHeight: 160}} />
+															<TldrCardSmall tldr={item}  />
 														</Link>
 													}
 													{ item.last &&
