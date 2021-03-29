@@ -1,6 +1,6 @@
 import React, {Fragment, useState} from 'react';
 
-import { request, getTldrUrl } from '@/swr';
+import { request, buildQs, getTldrUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
@@ -82,10 +82,35 @@ const DownVotePrompt = (props) => {
 
 
 const SharePrompt = (props) => {
+
 	const {
 		shareData,
 		onRequestClose
 	} = props;
+
+	const openShareUrl = ( shareUrl ) => {
+		window.open(shareUrl, '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+	}
+
+	const shareTwitter = (shareData) => {
+		const encodedText = encodeURIComponent(`${shareData.title} ${shareData.url}`);
+      const shareUrl = `https://twitter.com/intent/tweet?text=${encodedText}`; 
+      openShareUrl(shareUrl);
+	}
+
+	const shareFacebook = (shareData) => {
+		const encodedUrl = encodeURIComponent(shareData.url);
+      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`; 
+      openShareUrl(shareUrl);
+	}
+
+	const shareReddit = (shareData) => {
+		const encodedUrl = encodeURIComponent(shareData.url);
+		const encodedTitle = encodeURIComponent(shareData.title);
+      const shareUrl = `https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`; 
+      openShareUrl(shareUrl);
+	}
+
 	return (
 		<Section>
 			<Chunk>
@@ -93,7 +118,10 @@ const SharePrompt = (props) => {
 				<Text>Sharing is caring</Text>
 			</Chunk>
 			<Chunk>
-					<FakeInput label={shareData.url} onPress={()=>{
+				<FakeInput 
+					label={shareData.url}
+					shape="Copy" 
+					onPress={()=>{
 						try{
 							navigator.clipboard.writeText(shareData.url)
 							alert('Url copied'); // make this a toast	or inline message
@@ -101,19 +129,32 @@ const SharePrompt = (props) => {
 						catch(err){
 							console.error(err);
 						}
-					}} />
-			</Chunk>
-			<Chunk>
+					}}
+					/>
 				<Button
-					onPress={onRequestClose}
+					onPress={()=>{
+						shareTwitter(shareData)
+					}}
+					shape="Twitter"
+					width="full"
 					label="Twitter"
-					width="full"
-					/>		
+					/>	
 				<Button
-					onPress={onRequestClose}
-					label="Facebook"
+					onPress={()=>{
+						shareFacebook(shareData)
+					}}
+					shape="Facebook"
 					width="full"
-					/>									
+					label="Facebook"
+					/>	
+				<Button
+					onPress={()=>{
+						shareReddit(shareData)
+					}}
+					shape="Link"
+					width="full"
+					label="Reddit"
+					/>						
 				<Button
 					onPress={onRequestClose}
 					color="secondary"
