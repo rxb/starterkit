@@ -258,24 +258,27 @@ export const CategoryCardSmall = (props) => {
 			marginVertical: 0, 
 			zIndex: 10,
 			minHeight: 220,
+			backgroundColor: swatches.tint,
 		}}
 		>
+		<View style={{
+			height: 100,
+			backgroundColor: 'rgb(159, 168, 255)',
+		}}/>
 		<Sectionless style={{
-			
 				paddingTop: METRICS.space,
 				flex: 1,
-				borderTopWidth: 5,
-				borderTopColor: swatches.tint
 			}}>
+			
 			<Chunk style={{flex: 0}}>
-				<Text type="big" >{category.name}</Text>
-				<Text color="hint">voting, civic engagement, mutual aid</Text>
+				<Text type="big" inverted>{category.name}</Text>
+				<Text color="hint" inverted>voting, civic engagement, mutual aid</Text>
 			{/*
 			</Chunk>
 			<View style={{flex: 1}} />
 			<Chunk style={{flex: 0}}>
 			*/}
-				<Text type="small" style={{textAlign: 'left'}} >1,263 cards</Text>
+				<Text type="small" style={{textAlign: 'left'}} inverted>1,263 cards</Text>
 			</Chunk>
 		</Sectionless>
 		</Card>
