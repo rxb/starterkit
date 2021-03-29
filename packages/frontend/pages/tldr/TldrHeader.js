@@ -45,6 +45,7 @@ import {
 	useFormState,
 	View,
 } from '@/components/cinderblock';
+import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import feathersClient from '@/components/FeathersClient'; // already instantiated so we can share
 
 // STYLES
@@ -188,14 +189,31 @@ function TldrSearch (props) {
 }
 
 
+const UserDropdown = () => {
+	return(
+	<Sectionless>
+		<Chunk>
+				<Link href={`/tldr/tldrprofile`} >
+					<Text color="tint" >Profile</Text>
+				</Link>
+				<Touch >
+					<Text color="tint" >Settings</Text>
+				</Touch>
+				<Touch onPress={feathersClient.logout} >
+					<Text color="tint" >Log out</Text>
+				</Touch>
+		</Chunk>
+	</Sectionless>
+	);
+}
+
 function TldrHeader (props) {
 	
 	// data from redux
 	const dispatch = useDispatch(); 
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
-	
-	const userMenu = useRef(null);
+
 
 	return (
 			<Header position="static">
@@ -233,8 +251,7 @@ function TldrHeader (props) {
 						>
 							<Fragment>
 								{user.id &&
-									<Fragment>
-										<Touch onPress={()=> userMenu.current.toggle()}>
+										<ConnectedDropdownTouch dropdown={<UserDropdown />} >
 											<Inline nowrap>
 												<Avatar
 													source={{uri: user.photoUrl}}
@@ -245,25 +262,7 @@ function TldrHeader (props) {
 													size="small" color={swatches.hint} 
 													/>
 											</Inline>
-										</Touch>
-
-										<Menu ref={userMenu}>
-											<Sectionless>
-												<Chunk>
-														<Link href={`/tldr/tldrprofile`} >
-															<Text color="tint" >Profile</Text>
-														</Link>
-														<Touch >
-															<Text color="tint" >Settings</Text>
-														</Touch>
-														<Touch onPress={feathersClient.logout} >
-															<Text color="tint" >Log out</Text>
-														</Touch>
-												</Chunk>
-											</Sectionless>
-										</Menu>
-
-									</Fragment>
+										</ConnectedDropdownTouch>
 								}
 
 								{!user.id &&

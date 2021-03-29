@@ -25,6 +25,7 @@ export const Dropdowner = (props) => {
 							x={dropdown.x}
 							y={dropdown.y}
 							id={dropdown.id}
+							side={dropdown.side}
 							visible={dropdown.visible}
 							{...other}
 							/>
@@ -54,11 +55,12 @@ export const DropdownTouch = (props) => {
 
 	const measureAndAddDropdown = useCallback(() => {
 		touchRef.current.measure((fx, fy, width, height, px, py) => {
-			const x = px;
+			const side = (px + (width/2) <= window.innerWidth / 2) ? 'left' : 'right';
+			const x = (side == 'left') ? px : (window.innerWidth - px - width);
 			const y = py + height + window.pageYOffset;
 			const id = uuid();
 			setDropdownId(id);
-			addDropdown(dropdown, {x, y, id: id});
+			addDropdown(dropdown, {x, y, id, side});
 		});
 	})
 
@@ -86,6 +88,7 @@ export const Dropdown = (props) => {
 		hideDropdown,
 		removeDropdown,
 		x, y,
+		side = 'left',
 		content,
 		id
 	} = props;
@@ -93,7 +96,7 @@ export const Dropdown = (props) => {
    const [visibilityValue, setVisibilityValue] = useState(new Animated.Value(0));
 
 	useEffect(()=>{
-		const duration = 100;
+		const duration = 85;
 		const delay = 0;
       if(props.visible){
          Animated.timing(
@@ -156,7 +159,7 @@ export const Dropdown = (props) => {
 			style={{
 				maxWidth: '50vw',
 				position: 'absolute',
-				left: x,
+				[side]: x,
 				top: y,
 				zIndex: 100,
 				backgroundColor: 'white',

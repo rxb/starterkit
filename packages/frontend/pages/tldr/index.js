@@ -53,8 +53,11 @@ dayjs.extend(relativeTime)
 const CategoryItem = (props) => {
    const {item} = props;
    return (
+      <>
+      {/*
       <View style={{backgroundColor: swatches.backgroundShade, borderRadius: METRICS.cardBorderRadius}}>
          <Sectionless>
+         */}
             <Chunk>
                <View style={{position: 'relative', marginRight: 10, marginBottom: 18}}>
                   <CategoryCardSmall category={item} />
@@ -66,8 +69,11 @@ const CategoryItem = (props) => {
                      />   
                </View>
             </Chunk>
+            {/*
          </Sectionless>
       </View>
+      */}
+      </>
    )
 }
 
@@ -105,7 +111,7 @@ function TldrHome(props) {
                               itemsInRow={{
                                  small: 2,
                                  medium: 2,
-                                 large: 4
+                                 large: 3
                               }}
                               scrollItemWidth={300}
                               items={categoriesData}
@@ -142,7 +148,7 @@ function TldrHome(props) {
                               itemsInRow={{
                                  small: 1,
                                  medium: 2,
-                                 large: 4
+                                 large: 3
                               }}
                               scrollItemWidth={300}
                               items={[...tldrsData, {last: true}]}
