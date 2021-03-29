@@ -90,6 +90,16 @@ function Page (props) {
 	}, []);
 
 
+	// dismiss dropdowns on window resize
+	useEffect(() => {
+		function handleResize(){
+			dispatch(clearDropdowns());
+		}
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	 }, []); 
+	 
+
 	// dismiss modal on login
 	const prevUser = usePrevious(user);
 	useEffect(()=>{
