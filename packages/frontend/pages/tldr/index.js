@@ -101,14 +101,14 @@ function TldrHome(props) {
             <TldrHeader />
 
 				{ !categoryId && 
-                  <Stripe>
+                  <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                      <Bounds>
                      <Section>
                         <Chunk>
-                           <Text type="pageHead">Categories </Text>
+                           <Text type="pageHead">Browse categories </Text>
                         </Chunk>
                      </Section>
-                     <Section border>
+                     <Section >
                            <List
                               variant={{
                                  small: 'grid',
@@ -116,7 +116,8 @@ function TldrHome(props) {
                               itemsInRow={{
                                  small: 2,
                                  medium: 3,
-                                 large: 5
+                                 large: 4,
+                                 xlarge: 5
                               }}
                               scrollItemWidth={300}
                               items={categoriesData}
