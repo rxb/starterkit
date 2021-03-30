@@ -103,7 +103,12 @@ function TldrHome(props) {
 				{ !categoryId && 
                   <Stripe>
                      <Bounds>
-                        <Section>
+                     <Section>
+                        <Chunk>
+                           <Text type="pageHead">Categories </Text>
+                        </Chunk>
+                     </Section>
+                     <Section border>
                            <List
                               variant={{
                                  small: 'grid',
@@ -148,7 +153,7 @@ function TldrHome(props) {
                               itemsInRow={{
                                  small: 1,
                                  medium: 2,
-                                 large: 3
+                                 large: 4
                               }}
                               scrollItemWidth={300}
                               items={[...tldrsData, {last: true}]}

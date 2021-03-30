@@ -201,7 +201,7 @@ export const TldrCardSmall = (props) => {
 						<View style={{flex: 1}}>
 							<Text type="micro" color="hint">{tldr.author?.urlKey}/{tldr.urlKey}</Text>
 							<Text type="big">{content.title ? content.title : 'Untitled'}</Text>
-							<Text color="secondary" type="small" style={{fontStyle: 'italic'}}>{content.blurb}</Text>
+							<Text color="secondary" style={{marginTop: 3}} type="small" color="secondary" numberOfLines={3}>{content.blurb}</Text>
 						</View>
 
 						{ draft &&
