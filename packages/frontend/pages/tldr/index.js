@@ -110,8 +110,8 @@ function TldrHome(props) {
                               }}
                               itemsInRow={{
                                  small: 2,
-                                 medium: 2,
-                                 large: 3
+                                 medium: 3,
+                                 large: 5
                               }}
                               scrollItemWidth={300}
                               items={categoriesData}
