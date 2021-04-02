@@ -7,6 +7,8 @@ import { addDropdown, addPrompt, addToast, addDelayedToast } from '@/actions';
 // SWR
 import { request, parsePageObj, getTldrUrl } from '@/swr';
 
+// URLS
+import {getTldrEditPageUrl, getVersionEditPageUrl} from './urls';
 
 import {
 	Avatar,
@@ -34,6 +36,7 @@ import {
 	Text,
 	TextInput,
 	Touch,
+	useFormState,
 	useMediaContext,
 	View,	
 } from '@/components/cinderblock';
@@ -179,6 +182,9 @@ export const TldrCardSmall = (props) => {
 
 	const {
 		tldr,
+		dispatch,
+		mutate,
+		color = swatches.tint,
 		style
 	} = props;
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
@@ -193,8 +199,8 @@ export const TldrCardSmall = (props) => {
 					style={{
 						paddingTop: METRICS.space,
 						flex: 1,
-						borderTopWidth: 5,
-						borderTopColor: swatches.tint
+						borderTopWidth: 10,
+						borderTopColor: color
 					}}
 					>
 					<Chunk style={{flex: 1}}>
@@ -215,7 +221,11 @@ export const TldrCardSmall = (props) => {
 						{ true &&  
 							<View style={{alignSelf: 'flex-end'}}>
 								<ConnectedDropdownTouch 
-									dropdown={<TldrCardContextDropdown tldr={tldr} />}
+									dropdown={<TldrCardContextDropdown 
+														tldr={tldr} 
+														dispatch={dispatch} 
+														mutate={mutate}
+														/>}
 									>
 									<Icon 
 										shape="MoreHorizontal" 
@@ -250,102 +260,18 @@ export const CreateTldrCardSmall = (props) => {
 	)
 }
 
-export const CategoryCardSmall = (props) => {
-	const {category} = props;
-	return (
-		<Card 
-		style={{
-			marginVertical: 0, 
-			zIndex: 10,
-			minHeight: 180,
-			backgroundColor: swatches.tint,
-		}}
-		>
-		<View style={{
-			height: 60,
-			backgroundColor: 'rgb(159, 168, 255)',
-		}}/>
-		<Sectionless style={{
-				paddingTop: METRICS.space,
-				flex: 1,
-			}}>
-			
-			<Chunk style={{flex: 0}}>
-				<Text type="big" inverted>{category.name}</Text>
-				{/*
-				<Text color="hint" inverted>voting, civic engagement, mutual aid</Text>
-			
-			</Chunk>
-			<View style={{flex: 1}} />
-			<Chunk style={{flex: 0}}>
-			*/}
-				<Text type="small" style={{textAlign: 'left'}} inverted>1,263 cards</Text>
-			</Chunk>
-		</Sectionless>
-		</Card>
-	);
-}
 
-export const CategoryCardSmallAlt1 = (props) => {
-	const {category} = props;
-	return (
-		<Card 
-		style={{
-			marginVertical: 0, 
-			zIndex: 10,
-			minHeight: 190,
-		}}
-		>
-		<Sectionless style={{
-				paddingTop: METRICS.space,
-				flex: 1,
-				borderTopWidth: 5,
-				borderTopColor: swatches.tint
-			}}>
-			<Chunk style={{flex: 0}}>
-				<Text type="big" >{category.name}</Text>
-				<Text type="small" color="hint">voting, civic engagement, mutual aid</Text>
-			{/*
-			</Chunk>
-			<View style={{flex: 1}} />
-			<Chunk style={{flex: 0}}>
-			*/}
-				<Text type="small" style={{textAlign: 'left'}} >1,263 cards</Text>
-			</Chunk>
-		</Sectionless>
-		</Card>
-	);
-}
-
-export const CategoryCardSmallWhite = (props) => {
-	const {category} = props;
-	return (
-		<Card 
-		style={{
-			marginVertical: 0, 
-			zIndex: 10,
-			minHeight: smallCardMinHeight,
-			
-		}}
-		>
-		<Sectionless style={{flex: 1}}>
-			<Chunk style={{flex: 0}}>
-				<Text type="big">{category.name}</Text>
-				<Text type="small" color="hint">voting, civic engagement, mutual aid</Text>
-			</Chunk>
-			<View style={{flex: 1}} />
-			<Chunk style={{flex: 0}}>
-				<Text type="small" style={{textAlign: 'left'}}>1,263 cards</Text>
-			</Chunk>
-		</Sectionless>
-		</Card>
-	);
-}
 
 
 
 const TldrCardContextDropdown = (props) => {
-	const {tldr} = props;
+	const {
+		tldr,
+		dispatch,
+		mutate,
+		onRequestClose,
+		onCompleteClose
+	} = props;
 	return(
 		<Sectionless>
 			<Chunk>
@@ -353,7 +279,7 @@ const TldrCardContextDropdown = (props) => {
 				<Touch 
 					onPress={(e)=>{
 						e.preventDefault()
-						Router.push({pathname:'/tldr/versionedit', query: {tldrId: tldr.id}})
+						Router.push({pathname: getVersionEditPageUrl(), query: {tldrId: tldr.id}})
 					}}
 					>
 					<Text color="tint">Edit</Text>
@@ -361,14 +287,18 @@ const TldrCardContextDropdown = (props) => {
 				<Touch 
 					onPress={(e)=>{
 						e.preventDefault()
-						Router.push({pathname:'/tldr/edit', query: {tldrId: tldr.id}})
+						Router.push({pathname: getTldrEditPageUrl(), query: {tldrId: tldr.id}})
 					}}
 					>
 					<Text color="tint">Settings</Text>
 				</Touch>
 				<Touch onPress={(e) => { 
-						e.preventDefault()
-						dispatch(addPrompt(<DeletePrompt tldr={tldr} />))
+						e.preventDefault();
+						onCompleteClose();
+						dispatch(addPrompt(<DeletePrompt tldr={tldr} onSuccess={()=>{
+							mutate();
+							dispatch(addToast('Card deleted!'))
+						}} />))
 					}}>
 					<Text color="tint">Delete</Text>
 				</Touch>
@@ -383,7 +313,9 @@ export const DeletePrompt = (props) => {
 
 	const {
 		tldr, 
-		onRequestClose
+		onRequestClose = () => {},
+		onSuccess = () => {},
+		dispatch
 	} = props;
 
 	const formState = useFormState( {
@@ -404,6 +336,7 @@ export const DeletePrompt = (props) => {
 				method: 'DELETE', 
 				token: authentication.accessToken
 			});
+			onSuccess();
 			onRequestClose();
 		}
 		catch(error){

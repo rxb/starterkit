@@ -8,6 +8,9 @@ import useSWR, { mutate }  from 'swr';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
+// URLS
+import {getProfilePageUrl, getTldrPageUrl} from './urls';
+
 // COMPONENTS
 import {
 	Avatar,
@@ -155,8 +158,8 @@ function VersionEdit(props) {
 			const nextPath = ( tldr.currentTldrVersionId == undefined && !patchFields.publish ) ? 
 				// if saving draft on a card that has never been published
 				// redirect to profile... that's the only place it lives until 1st publish
-				{pathname:'./tldrprofile', query: {userId: user.id}} :
-				{pathname:'./tldr', query: {tldrId: tldr.id}};
+				{pathname: getProfilePageUrl(), query: {userId: user.id}} :
+				{pathname: getTldrPageUrl(), query: {tldrId: tldr.id}};
 			Router.push(nextPath);
 		}
 		catch(error){

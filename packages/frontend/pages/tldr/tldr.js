@@ -1,11 +1,17 @@
 import React, {Fragment, useState} from 'react';
 
+// SWR
 import { request, buildQs, getTldrUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
+// REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast } from '@/actions';
+import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
+// URLS
+import {getProfilePageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl} from './urls';
+
+// COMPONENTS
 import {
 	Avatar,
 	Bounds,
@@ -34,17 +40,17 @@ import {
 	useMediaContext,
 	View,	
 } from '@/components/cinderblock';
-
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import { sleep } from '@/components/cinderblock/utils';
-import { METRICS } from '@/components/cinderblock/designConstants';
 import Page from '@/components/Page';
 import TldrHeader from './TldrHeader';
+import Router from 'next/router'
 
+// STYLES
+import styles from '@/components/cinderblock/styles/styles';
+import swatches from '@/components/cinderblock/styles/swatches';
+import { METRICS } from '@/components/cinderblock/designConstants';
+
+// SCREEN-SPECIFIC
 import {TldrCardSmall, TldrCard, DeletePrompt} from './components';
-
-
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
@@ -290,7 +296,7 @@ function Tldr(props) {
 												label="Edit card"
 												width="full"
 												color="secondary"
-												href={`/tldr/versionedit?tldrId=${tldrData.id}`}
+												href={ getVersionEditPageUrl({tldrId: tldrData.id}) }
 												/>
 											<Flex>
 												<FlexItem>
@@ -351,7 +357,7 @@ function Tldr(props) {
 											</Chunk>
 											
 											<Chunk border>
-												<Link href={`/tldr/tldrprofile?userId=${tldrData.author.id}`}>
+												<Link href={ getProfilePageUrl({userId: tldrData.author.id}) }>
 													<Flex>
 														<FlexItem>
 															<Text weight="strong">Maintainer</Text>
@@ -367,12 +373,20 @@ function Tldr(props) {
 											</Chunk>
 											<Chunk border>
 												<Inline>
-													<Link href={`/tldr/edit?tldrId=${tldrData.id}`}>
+													<Link href={ getTldrEditPageUrl({tldrId: tldrData.id}) }>
 														<Text type="small" color="hint">Settings</Text>
 													</Link>
 														<Text type="small" color="hint"> </Text>
 													<Touch onPress={() => { 
-														dispatch(addPrompt(<DeletePrompt tldr={tldrData} />))
+														const prompt = <DeletePrompt 
+															dipatch={dispatch}
+															tldr={tldrData} 
+															onSuccess={()=>{
+																dispatch(addDelayedToast('Card deleted!'));
+																Router.push( getProfilePageUrl() );
+															}} 
+															/>
+														dispatch(addPrompt(prompt))
 													}}>
 														<Text type="small" color="hint">Delete</Text>		
 													</Touch>
@@ -415,7 +429,7 @@ function Tldr(props) {
 										return(
 											<Chunk key={i}>
 												<Link 
-													href={`/tldr/tldr?tldrId=${item.id}`}
+													href={ getTldrPageUrl({tldrId: item.id}) }
 													>
 													<TldrCardSmall tldr={item} />
 												</Link>

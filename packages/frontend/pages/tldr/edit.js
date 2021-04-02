@@ -8,6 +8,9 @@ import useSWR, { mutate }  from 'swr';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
+// URLS
+import {getTldrPageUrl, getVersionEditPageUrl} from './urls';
+
 // COMPONENTS
 import {
 	Avatar,
@@ -194,7 +197,7 @@ const Edit = (props) => {
                });
                const toastMessage = "Settings updated!";
                dispatch(addDelayedToast(toastMessage));
-               Router.push({pathname:'./tldr', query: {tldrId: tldr.id}})  
+               Router.push({pathname: getTldrPageUrl(), query: {tldrId: tldr.id}})  
             }
             else{
                const tldr = await request( getTldrUrl(), {
@@ -204,7 +207,7 @@ const Edit = (props) => {
                });
                const toastMessage = "Great, now you can write the first version of your card";
                dispatch(addDelayedToast(toastMessage));
-               Router.push({pathname:'./versionedit', query: {tldrId: tldr.id}})   
+               Router.push({pathname: getVersionEditPageUrl(), query: {tldrId: tldr.id}})   
             }
          }
          catch(error){
@@ -379,10 +382,12 @@ Edit.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
    const isServer = !!req;	
-	const tldrId = query.tldrId;
+   const categoryId = query.categoryId;
+   const tldrId = query.tldrId;
    const tldr = (tldrId != undefined) ? await request( getTldrUrl(tldrId) ) : undefined;
 
 	return {
+      categoryId,
 		isServer,
       tldrId,
       tldr

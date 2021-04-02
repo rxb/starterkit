@@ -151,6 +151,11 @@ export const Dropdown = (props) => {
 		};
 	}, []);
 
+	const dropdownContent = React.cloneElement(content, {
+		onRequestClose: onRequestClose,
+		onCompleteClose: onCompleteClose
+	});
+
 	const offset = METRICS.space;
 	const directionMultiplier = -1;
 
@@ -176,7 +181,7 @@ export const Dropdown = (props) => {
 			}} 
 			ref={ outerRef }
 			>
-			{content}
+			{dropdownContent}
 		</Animated.View>
 	)
 }

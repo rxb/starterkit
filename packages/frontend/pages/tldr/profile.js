@@ -13,6 +13,9 @@ import useSWR, { mutate }  from 'swr';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
+// URLS
+import { getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl } from './urls';
+
 // COMPONENTS
 import {
 	Avatar,
@@ -121,8 +124,8 @@ function TldrProfile(props) {
 									items={[...authorTldrsData, {last: true}]}
                               renderItem={(item, i)=>{
 											const href = (item.currentTldrVersion != undefined) ? 
-												`/tldr/tldr?tldrId=${item.id}` :
-												`/tldr/versionedit?tldrId=${item.id}`;
+												getTldrPageUrl({tldrId: item.id}) :
+												getVersionEditPageUrl({tldrId: item.id});
 											return (
 												<Chunk key={i}>
 													{ !item.last &&
@@ -131,7 +134,7 @@ function TldrProfile(props) {
 														</Link>
 													}
 													{ item.last &&
-														<Link href={`/tldr/edit`}>
+														<Link href={ getTldrEditPageUrl() }>
 															<CreateTldrCardSmall />
 														</Link>
 													}
@@ -163,7 +166,7 @@ function TldrProfile(props) {
 									items={tldrsData}
 									renderItem={(item, i)=>(
 										<Chunk key={i}>
-											<Link href={`./tldr?tldrId=${item.id}`}>
+											<Link href={ getTldrPageUrl({tldrId: item.id}) }>
 												<TldrCardSmall tldr={item} />
 											</Link>
 										</Chunk>

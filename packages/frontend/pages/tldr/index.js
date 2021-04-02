@@ -8,6 +8,9 @@ import useSWR, { mutate }  from 'swr';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
+// URLS
+import {getIndexPageUrl, getCategoryPageUrl, getTldrPageUrl, getTldrEditPageUrl} from './urls';
+
 // COMPONENTS
 import {
 	Avatar,
@@ -49,18 +52,41 @@ import { METRICS } from '@/components/cinderblock/designConstants';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
+import {TESTCOLORS1 as TESTCOLORS} from './testcolors';
 
 const CategoryItem = (props) => {
-   const {item} = props;
+   const {
+      category,
+      color = swatches.tint
+   } = props;
    return (
-      <>
-      {/*
-      <View style={{backgroundColor: swatches.backgroundShade, borderRadius: METRICS.cardBorderRadius}}>
-         <Sectionless>
-         */}
+    
+
             <Chunk>
                <View style={{position: 'relative', marginRight: 10, marginBottom: 18}}>
-                  <CategoryCardSmall category={item} />
+               <Card 
+                  style={{
+                     marginVertical: 0, 
+                     zIndex: 10,
+                     minHeight: 180,
+                     backgroundColor: color,
+                  }}
+                  >
+                  <View style={{
+                     height: 60,
+                     backgroundColor: 'rgba(255, 255, 255, .35)',
+                  }}/>
+                  <Sectionless style={{
+                        paddingTop: METRICS.space,
+                        flex: 1,
+                     }}>
+                     
+                     <Chunk style={{flex: 0}}>
+                        <Text type="big" inverted>{category.name}</Text>
+                        <Text type="small" style={{textAlign: 'left'}} inverted>1,263 cards</Text>
+                     </Chunk>
+                  </Sectionless>
+                  </Card>
                   <Card 
                      style={{marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9}}
                      />
@@ -69,11 +95,7 @@ const CategoryItem = (props) => {
                      />   
                </View>
             </Chunk>
-            {/*
-         </Sectionless>
-      </View>
-      */}
-      </>
+           
    )
 }
 
@@ -90,7 +112,7 @@ function TldrHome(props) {
       const {data: categoryData} = category; 
       
       const tldrs = useSWR( isCategory ? getTldrsUrl({categoryId: categoryId, '$limit': 1000}) : null );
-      const {data: tldrsData} = tldrs.data ? parsePageObj( tldrs ) : {data: []};
+      const {data: tldrsData, mutate: tldrsMutate} = tldrs.data ? parsePageObj( tldrs ) : {data: []};
 
       const categories = useSWR( !isCategory ? getCategoriesUrl({'$limit': 1000}) : null );
       const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
@@ -103,11 +125,13 @@ function TldrHome(props) {
 				{ !categoryId && 
                   <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                      <Bounds>
+                        {/*
                      <Section>
                         <Chunk>
-                           <Text type="pageHead">Browse categories </Text>
+                           <Text type="pageHead">Categories</Text>
                         </Chunk>
                      </Section>
+                        */} 
                      <Section >
                            <List
                               variant={{
@@ -121,10 +145,10 @@ function TldrHome(props) {
                               }}
                               scrollItemWidth={300}
                               items={categoriesData}
-                              renderItem={(item, i)=>(
+                              renderItem={(category, i)=>(
                                  <Chunk key={i}>
-                                    <Link href={`/tldr/?categoryId=${item.id}`}>
-                                       <CategoryItem item={item} />   
+                                    <Link href={ getCategoryPageUrl({categoryId: category.id}) }>
+                                       <CategoryItem category={category} color={TESTCOLORS[category.id - 2%TESTCOLORS.length]} />   
                                     </Link>
                                  </Chunk>
                                  )}
@@ -161,12 +185,16 @@ function TldrHome(props) {
                               renderItem={(item, i)=>(
                                  <Chunk key={i}>
                                     { !item.last &&
-                                       <Link href={`/tldr/tldr?tldrId=${item.id}`}>
-                                          <TldrCardSmall tldr={item}  />
+                                       <Link href={ getTldrPageUrl({tldrId: item.id}) }>
+                                          <TldrCardSmall 
+                                             tldr={item} 
+                                             dispatch={dispatch} 
+                                             mutate={tldrsMutate}
+                                             />
                                        </Link>
                                     }
                                     { item.last &&
-                                       <Link href={`/tldr/edit`}>
+                                       <Link href={ getTldrEditPageUrl() }>
                                           <CreateTldrCardSmall />
                                          
                                        </Link>

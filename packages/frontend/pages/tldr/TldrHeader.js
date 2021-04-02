@@ -15,6 +15,9 @@ import {
 	updateUi
 } from '@/actions';
 
+// URLS
+import {getProfilePageUrl, getTldrEditPageUrl, getIndexPageUrl, getCategoryPageUrl} from './urls';
+
 // COMPONENTS
 import {
 	Avatar,
@@ -169,7 +172,7 @@ function TldrSearch (props) {
 					{ searchResults.map((item, i) => (
 						<Chunk key={i}>
 							<Link 
-								href={`/tldr?categoryId=${item.id}`}
+								href={ getCategoryPageUrl({categoryId: item.id}) }
 								onPress={()=>{
 									setSearchFocus(false);
 								}}
@@ -193,7 +196,7 @@ const UserDropdown = () => {
 	return(
 	<Sectionless>
 		<Chunk>
-				<Link href={`/tldr/tldrprofile`} >
+				<Link href={ getProfilePageUrl() } >
 					<Text color="tint" >Profile</Text>
 				</Link>
 				<Touch >
@@ -219,7 +222,7 @@ function TldrHeader (props) {
 			<Header position="static">
 				<Flex direction="row">
 					<FlexItem shrink justify="center">
-						<Link href="/tldr">
+						<Link href={ getIndexPageUrl() }>
 							<Inline nowrap>
 								<Icon shape="FileText" color={swatches.tint} />
 								<Text weight="strong" color="tint" type="big">tldr</Text>
@@ -234,7 +237,7 @@ function TldrHeader (props) {
 						align="flex-end"
 						justify="center" 
 						>
-						<Link href="/tldr/edit">
+						<Link href={ getTldrEditPageUrl() }>
 							<Inline nowrap>
 								<Button
 									label="Create"
