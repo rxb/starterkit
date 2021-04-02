@@ -194,7 +194,7 @@ function TldrHome(props) {
                                        </Link>
                                     }
                                     { item.last &&
-                                       <Link href={ getTldrEditPageUrl() }>
+                                       <Link href={ getTldrEditPageUrl({categoryId: categoryData.id}) }>
                                           <CreateTldrCardSmall />
                                          
                                        </Link>

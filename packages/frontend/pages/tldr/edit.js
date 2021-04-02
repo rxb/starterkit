@@ -154,7 +154,7 @@ const CategoryField = (props) => {
 
 
 const Edit = (props) => {
-   const {tldrId, tldr} = props;
+   const {tldrId, tldr, categoryId} = props;
 
    const urlKeyRef = useRef();
 
@@ -172,7 +172,7 @@ const Edit = (props) => {
          verb: '',
          noun: '',
          urlKey: '',
-         categoryId: null,
+         categoryId: categoryId || null,
          ...tldr
       },
       toastableErrors: {
