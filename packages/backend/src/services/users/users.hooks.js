@@ -11,6 +11,22 @@ const {
   saveAndGetNewImageReference
 } = require('../common_hooks.js');
 
+const checkForSelf = (options) => {
+
+  return async(context) => {
+    if (context.id == "self") {
+      if(context.params.user){
+        context.id = context.params.user.id;
+      }
+      else{
+        throw new Error("Need to log in to get your user info");
+      }
+    }
+    return context;
+  }
+
+}
+
 module.exports = {
   before: {
     all: [
@@ -20,18 +36,7 @@ module.exports = {
     get: [
       allowAnonymous(),
       authenticate('jwt', 'anonymous'),
-      async (context) => {
-        if (context.id == "self") {
-          if(context.params.user){
-            context.id = context.params.user.id;
-          }
-          else{
-            throw new Error("Need to log in to get your user info");
-          }
-        }
-        return context;
-      }
-
+      checkForSelf(),
     ],
     create: [
       hashPassword('password'),
@@ -40,15 +45,18 @@ module.exports = {
     update: [
       hashPassword('password'),
       authenticate('jwt'),
+      checkForSelf(),
       saveAndGetNewImageReference(),
     ],
     patch: [
       hashPassword('password'),
       authenticate('jwt'),
+      checkForSelf(),
       saveAndGetNewImageReference(),
     ],
     remove: [
-      authenticate('jwt')
+      authenticate('jwt'),
+      checkForSelf(),
     ]
   },
 

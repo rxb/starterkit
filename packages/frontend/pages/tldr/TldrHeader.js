@@ -16,7 +16,7 @@ import {
 } from '@/actions';
 
 // URLS
-import {getProfilePageUrl, getTldrEditPageUrl, getIndexPageUrl, getCategoryPageUrl} from './urls';
+import {getProfilePageUrl, getProfileEditPageUrl, getTldrEditPageUrl, getIndexPageUrl, getCategoryPageUrl} from './urls';
 
 // COMPONENTS
 import {
@@ -192,20 +192,29 @@ function TldrSearch (props) {
 }
 
 
-const UserDropdown = () => {
+const UserDropdown = (props) => {
+	const {onRequestClose} = props;
+	const [loading, setLoading] = useState(false);
 	return(
 	<Sectionless>
+		<LoadingBlock isLoading={loading}>
 		<Chunk>
 				<Link href={ getProfilePageUrl() } >
 					<Text color="tint" >Profile</Text>
 				</Link>
-				<Touch >
+				<Link href={ getProfileEditPageUrl() } >
 					<Text color="tint" >Settings</Text>
-				</Touch>
-				<Touch onPress={feathersClient.logout} >
+				</Link>
+				<Touch onPress={async ()=>{
+						setLoading(true);
+						await feathersClient.logout();
+						onRequestClose();
+						setLoading(false);
+					}}>
 					<Text color="tint" >Log out</Text>
 				</Touch>
 		</Chunk>
+		</LoadingBlock>
 	</Sectionless>
 	);
 }

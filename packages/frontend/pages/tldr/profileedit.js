@@ -9,7 +9,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import {getTldrPageUrl, getVersionEditPageUrl} from './urls';
+import {getProfilePageUrl} from './urls';
 
 // COMPONENTS
 import {
@@ -59,20 +59,6 @@ import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/util
 
 
 
-const editValidations = {
-   urlKey: {
-      // TODO: add client-side uniqueness validation 
-      // (server will catch it for now)
-      notEmpty: {
-          msg: "Link can't be blank"
-      },
-   },
-   category: { 
-      notNull: {
-         msg: "Pick a category"
-      },
-   }
-};
 
 const cleanUrlKey = (dirtyUrlKey) => {
    return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
@@ -92,7 +78,8 @@ const EditProfile = (props) => {
          name: '',
          urlKey: '',
          email: '',
-         password: '',
+         photoUrl: '',
+			photoId: '',
       },
       toastableErrors: {
          BadRequest: 'Something went wrong',
@@ -115,32 +102,52 @@ const EditProfile = (props) => {
    }, [authentication.accessToken]);
 
    const submitForm = async () => {
-      const error = runValidations(formState.fields, editValidations);
+      
+      const submitFields = {...formState.fields};
+
+      //only include password if not empty
+      if( submitFields.password && submitFields.password.trim().length == 0){
+         delete submitFields.password
+      }
+
+      const error = runValidations(formState.fields, {
+         urlKey: {
+            // TODO: add client-side uniqueness validation 
+            // (server will catch it for now)
+            notEmpty: {
+                msg: "Username can't be blank"
+            },
+            is: {
+               args: /^[a-zA-Z0-9-]*$/,
+               msg: "Username can only include letters, numbers, and dashes"
+            }
+         },
+         name: {
+            notEmpty: {
+                msg: "Name can't be blank"
+            }
+         },
+         email: {
+            notEmpty: {
+                msg: "Email can't be blank"
+            },
+            isEmail: {
+               msg: "Email must be a valid email address"
+            }
+         },
+      });
 		formState.setError(error);
       if(!error){
          formState.setLoading(true);
          try{
-            // PATCH or POST
-            if(tldrId != undefined){
-               const tldr = await request( getTldrUrl(tldrId), {
-                  method: 'PATCH', 
-                  data: formState.fields,
-                  token: authentication.accessToken
-               });
-               const toastMessage = "Settings updated!";
-               dispatch(addDelayedToast(toastMessage));
-               Router.push({pathname: getTldrPageUrl(), query: {tldrId: tldr.id}})  
-            }
-            else{
-               const tldr = await request( getTldrUrl(), {
-                  method: 'POST', 
-                  data: formState.fields,
-                  token: authentication.accessToken
-               });
-               const toastMessage = "Great, now you can write the first version of your card";
-               dispatch(addDelayedToast(toastMessage));
-               Router.push({pathname: getVersionEditPageUrl(), query: {tldrId: tldr.id}})   
-            }
+            const user = await request( getUserUrl("self"), {
+               method: 'PATCH', 
+               data: formState.fields,
+               token: authentication.accessToken
+            });
+            const toastMessage = "Settings updated!";
+            dispatch(addDelayedToast(toastMessage));
+            Router.push({pathname: getProfilePageUrl()})  
          }
          catch(error){
             console.log(error);
@@ -236,7 +243,7 @@ const EditProfile = (props) => {
                            value={formState.getFieldValue('email')}
                            onChange={e => formState.setFieldValue('email', e.target.value) }
                            />
-                        <FieldError error={formState.error?.fieldErrors?.urlKey} />	
+                        <FieldError error={formState.error?.fieldErrors?.email} />	
                      </Chunk>
                      <Chunk>
                         <Label for="password">Set a new password</Label>
@@ -256,7 +263,7 @@ const EditProfile = (props) => {
                            value={formState.getFieldValue('confirm-password')}
                            onChange={e => formState.setFieldValue('confirm-password', e.target.value) }
                            />
-                        <FieldError error={formState.error?.fieldErrors?.urlKey} />	
+                        <FieldError error={formState.error?.fieldErrors?.password} />	
                      </Chunk>
                      <Chunk>
                         <Button 
