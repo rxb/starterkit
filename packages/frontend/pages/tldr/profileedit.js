@@ -173,13 +173,14 @@ const EditProfile = (props) => {
                         <FieldError error={formState.error?.fieldErrors?.name} />	
                      </Chunk>
                      <Chunk>
-                        <Label for="urlKey">URL</Label>
+                        <Label for="urlKey">Username</Label>
                         <TextInput
                            spellCheck={false}
                            id="urlKey"
                            value={formState.getFieldValue('urlKey')}
                            onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)) }
                            />
+                        <Text color="hint" type="small">Only letters, numbers, and dashes (-)</Text>
                         <FieldError error={formState.error?.fieldErrors?.urlKey} />	
                      </Chunk>
                      <Chunk>
@@ -190,11 +191,11 @@ const EditProfile = (props) => {
                                  id="photo"
                                  placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
                                  onChangeFile={(file)=>{
-                                    // comes from server, doesn't get sent back to server
+                                    /* comes from server, doesn't get sent back to server */
                                     formState.setFieldValue('photoUrl', URL.createObjectURL(file))
-                                    // comes from server, gets sent back to server
+                                    /* comes from server, gets sent back to server */
                                     formState.setFieldValue('photoId', false)
-                                    // only exists client -> server
+                                    /* only exists client -> server */
                                     formState.setFieldValue('photoNewFile', file)
                                  }}
                                  />
@@ -224,7 +225,6 @@ const EditProfile = (props) => {
                               </FlexItem>
                            }
                         </Flex>
-			
                      </Chunk>
                      <Chunk>
                         <Label for="email">Email</Label>
