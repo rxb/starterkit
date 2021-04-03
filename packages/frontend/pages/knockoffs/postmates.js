@@ -4,10 +4,10 @@ import {
 	fetcher,
 	getTldrUrl,
 	useTldr
-} from '@/swr/index';
+} from 'swr/index';
 
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast } from '@/actions/index';
+import { addPrompt, addToast } from 'actions/index';
 
 
 import {

@@ -29,7 +29,7 @@ import {
 	Touch,
 	View,
 	useFormState
-} from '@/components/cinderblock';
+} from 'components/cinderblock';
 
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'

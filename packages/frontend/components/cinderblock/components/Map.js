@@ -1,5 +1,6 @@
-import React, {Fragment, View} from 'react';
+import React, {Fragment} from 'react';
 import Text from './Text';
+import {View} from '../primitives';
 
 const Map = () => <View />;
 export default Map;
