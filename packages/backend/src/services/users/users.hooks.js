@@ -13,23 +13,25 @@ const {
 
 module.exports = {
   before: {
-    all: [],
+    all: [
+      protect('password')
+    ],
     find: [],
     get: [
-      
-      // anyone can get a user, but authenticated users can get 'self'
       allowAnonymous(),
       authenticate('jwt', 'anonymous'),
-      (context) => {
-        // this probably should fail in a redirect way
-        // if you try to "self" a non-logged in request
-        if (context.id == 'self') {
+      async (context) => {
+        if (context.id == "self") {
           if(context.params.user){
             context.id = context.params.user.id;
           }
+          else{
+            throw new Error("Need to log in to get your user info");
+          }
         }
         return context;
-      },
+      }
+
     ],
     create: [
       hashPassword('password'),

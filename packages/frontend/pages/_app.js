@@ -5,7 +5,7 @@ import {useStore} from '../store';
 
 // design
 import swatches from '../components/cinderblock/styles/swatches';
-import { MEDIA_QUERIES, BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
+import { METRICS, MEDIA_QUERIES, BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
 import { initMediaProvider } from '../components/cinderblock/components/UseMediaContext';
 const MediaProvider = initMediaProvider(MEDIA_QUERIES);
 
@@ -118,7 +118,13 @@ function ThisApp(props) {
               
               }
 
-              /* remove autofill styles (might be evil, but let's try it) */
+              /* weird autofill font sizes */
+              input:-webkit-autofill::first-line{
+                font-size: ${METRICS.bodySize}px;
+                font-family: ${METRICS.fontFamily};
+              }
+
+              /* remove autofill styles (might be evil, but let's try it) 
               @-webkit-keyframes autofill {
                   to {
                       background: ${swatches.notwhite};
@@ -136,6 +142,7 @@ function ThisApp(props) {
               input:-webkit-autofill:focus {
                   -webkit-animation-name: autofillfocus;
               }
+              */
 
             `}}
           />
