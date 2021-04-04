@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useCallback } from 'react';
+import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
 import { Animated, Text, View } from 'modules/cinderblock/primitives';
 import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
@@ -14,7 +14,7 @@ const RevealBlock = (props) => {
       style
    } = props;
    const [blockValue, setBlockValue] = useState('none');
-   const [visibilityValue, setVisibilityValue] = useState(new Animated.Value(0));
+   const visibilityValue = useRef(new Animated.Value(0)).current;
    const directionMultiplier = (fromTop) ? -1 : 1;
 
    useEffect(()=>{
@@ -45,8 +45,8 @@ const RevealBlock = (props) => {
 
    return(
       <>
-      <Text>{JSON.stringify(props.visible)} - {JSON.stringify(visibilityValue._value)}</Text>
-      {/* <Animated.View
+      <Text>{JSON.stringify(visible)} - {JSON.stringify(visibilityValue)}</Text>
+         <Animated.View
          style={[{
             display: blockValue,
             opacity: visibilityValue,
@@ -56,16 +56,9 @@ const RevealBlock = (props) => {
                outputRange: [(offset * directionMultiplier), 0]
                }),
             }]
-         }, style]}
-         > */}
-         { visibilityValue._value > 0 && 
-         <View>
+         }, style]}>
             {props.children}
-         </View>
-         }
-         {/*
       </Animated.View>
-      */}
       </>
    );
    
