@@ -7,12 +7,12 @@ import {v4 as uuid} from 'uuid';
 
 import {
 	//logInAndFetchUser,
-	reauthenticate,
-	setUser,
-	logIn,
+	//reauthenticate,
+	//setUser,
+	//logIn,
 	//logOut,
 	addPrompt
-} from '../actions';
+} from 'actions';
 
 
 import {
@@ -39,10 +39,10 @@ import {
 	Text,
 	TextInput,
 	Touch
-} from '../components/cinderblock';
+} from '../modules/cinderblock';
 
 
-import styles from '../components/cinderblock/styles/styles';
+import styles from '../modules/cinderblock/styles/styles';
 import Page from '../components/Page';
 import LoginForm from '../components/LoginForm';
 
@@ -171,7 +171,7 @@ class Auth extends React.Component {
 
 		const {
 			user,
-			logIn,
+			//logIn,
 			authentication
 		} = this.props;
 		const {
@@ -227,7 +227,7 @@ class Auth extends React.Component {
 														<LoginForm
 															onSubmit={(fields)=>{
 																//this.loginLocal(fields);
-																logIn(),
+																//logIn(),
 																feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
 															}}
 															isLoading={(authentication.loading || authentication.token)}
@@ -315,9 +315,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionCreators = {
 	addPrompt,
-	reauthenticate,
-	setUser,
-	logIn
+	//reauthenticate,
+	//setUser,
+	//logIn
 	//logOut
 };
 

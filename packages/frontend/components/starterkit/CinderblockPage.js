@@ -1,4 +1,4 @@
-import Page from './Page';
+import Page from 'components/Page';
 import CinderblockHeader from './CinderblockHeader';
 
 const CinderblockPage = (props) => {

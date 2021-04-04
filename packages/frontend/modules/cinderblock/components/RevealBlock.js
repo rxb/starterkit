@@ -1,15 +1,16 @@
 import React, {Fragment, useState, useEffect, useCallback } from 'react';
-import { Animated } from '@/components/cinderblock/primitives';
-import {METRICS, EASE} from '@/components/cinderblock/designConstants';
+import { Animated, Text, View } from 'modules/cinderblock/primitives';
+import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
 
 const RevealBlock = (props) => {
 
    const { 
       delay = 0, 
-      duration = 250,
+      duration = 2000,
       offset = 100,
       fromTop = false,
+      visible = false,
       style
    } = props;
    const [blockValue, setBlockValue] = useState('none');
@@ -40,10 +41,12 @@ const RevealBlock = (props) => {
             setBlockValue('none');
          })
       }
-   }, [props.visible]);
+   }, [visible]);
 
    return(
-      <Animated.View
+      <>
+      <Text>{JSON.stringify(props.visible)} - {JSON.stringify(visibilityValue._value)}</Text>
+      {/* <Animated.View
          style={[{
             display: blockValue,
             opacity: visibilityValue,
@@ -54,9 +57,16 @@ const RevealBlock = (props) => {
                }),
             }]
          }, style]}
-         >
-         {props.children}
+         > */}
+         { visibilityValue._value > 0 && 
+         <View>
+            {props.children}
+         </View>
+         }
+         {/*
       </Animated.View>
+      */}
+      </>
    );
    
 

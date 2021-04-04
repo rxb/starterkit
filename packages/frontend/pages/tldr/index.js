@@ -9,7 +9,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
 // URLS
-import {getIndexPageUrl, getCategoryPageUrl, getTldrPageUrl, getTldrEditPageUrl} from './urls';
+import {getIndexPageUrl, getCategoryPageUrl, getTldrPageUrl, getTldrEditPageUrl} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -38,21 +38,21 @@ import {
 	Touch,
 	useMediaContext,
 	View,	
-} from '@/components/cinderblock';
+} from 'modules/cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from './TldrHeader';
-import {TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall} from './components';
+import TldrHeader from '../../components/tldr/TldrHeader';
+import {TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall} from '../../components/tldr/components';
 
 // STYLE
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import { METRICS } from '@/components/cinderblock/designConstants';
+import styles from 'modules/cinderblock/styles/styles';
+import swatches from 'modules/cinderblock/styles/swatches';
+import { METRICS } from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
-import {TESTCOLORS1 as TESTCOLORS} from './testcolors';
+import {TESTCOLORS1 as TESTCOLORS} from '../../components/tldr/testcolors';
 
 const CategoryItem = (props) => {
    const {
@@ -120,7 +120,11 @@ function TldrHome(props) {
 
 		return (
 			<Page>
-            <TldrHeader />
+            
+            <TldrHeader 
+               dispatch={dispatch} 
+               authentication={authentication}  
+               />
 
 				{ !categoryId && 
                   <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>

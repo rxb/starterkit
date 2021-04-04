@@ -39,11 +39,11 @@ import {
 	useFormState,
 	useMediaContext,
 	View,	
-} from '@/components/cinderblock';
+} from 'modules/cinderblock';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import { METRICS } from '@/components/cinderblock/designConstants';
+import styles from 'modules/cinderblock/styles/styles';
+import swatches from 'modules/cinderblock/styles/swatches';
+import { METRICS } from 'modules/cinderblock/designConstants';
 const smallCardMinHeight = 220;
 
 import Router from 'next/router'

@@ -4,14 +4,14 @@
 // but maybe you should be using native components there for menus anyhow
 
 import React, {useState, useRef, useCallback, useEffect} from 'react';
-import { Animated } from '@/components/cinderblock/primitives';
+import { Animated } from 'modules/cinderblock/primitives';
 import { View } from '../primitives';
 import Touch from './Touch';
 import Text from './Text';
 import styles from '../styles/styles';
 import ReactDOM from 'react-dom';
-import swatches from '@/components/cinderblock/styles/swatches';
-import { METRICS, EASE } from '@/components/cinderblock/designConstants';
+import swatches from 'modules/cinderblock/styles/swatches';
+import { METRICS, EASE } from 'modules/cinderblock/designConstants';
 import {v4 as uuid} from 'uuid';
 
 export const Dropdowner = (props) => {

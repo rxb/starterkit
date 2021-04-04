@@ -21,7 +21,14 @@ module.exports = function (app) {
     },
     password: {
       type: DataTypes.STRING,
-      //allowNull: false
+      min:{
+        args:8,
+        msg: "Password must be at least 8 characters long"
+      },
+      max: {
+        args:255,
+        msg: "Password must be at less that 255 characters long"
+      }
     },
     name: {
       type: DataTypes.STRING,

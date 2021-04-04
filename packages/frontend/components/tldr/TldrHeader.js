@@ -6,12 +6,8 @@ import { request, parsePageObj, getCategoriesUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX
-import { useDispatch, useSelector } from 'react-redux';
 import {
 	addToast,
-	showToast,
-	showDelayedToasts,
-	logOut,
 	updateUi
 } from '@/actions';
 
@@ -47,14 +43,14 @@ import {
 	TextInput,
 	useFormState,
 	View,
-} from '@/components/cinderblock';
+} from 'modules/cinderblock';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import feathersClient from '@/components/FeathersClient'; // already instantiated so we can share
 
 // STYLES
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import {METRICS} from '@/components/cinderblock/designConstants';
+import styles from 'modules/cinderblock/styles/styles';
+import swatches from 'modules/cinderblock/styles/swatches';
+import {METRICS} from 'modules/cinderblock/designConstants';
 
 
 const catMatch = (s, categories) => {
@@ -145,6 +141,7 @@ function TldrSearch (props) {
 			setSearchFocus(true);
 		}}
 		/>
+		
 		<RevealBlock 
 			visible={searchFocus}
 			duration={60}
@@ -220,12 +217,14 @@ const UserDropdown = (props) => {
 }
 
 function TldrHeader (props) {
-	
-	// data from redux
-	const dispatch = useDispatch(); 
-	const authentication = useSelector(state => state.authentication);
-	const user = authentication.user || {};
 
+	const {
+		dispatch, 
+		authentication = {} 
+	} = props;
+
+	// data from redux
+	const user = authentication.user || {};
 
 	return (
 			<Header position="static">
@@ -279,6 +278,7 @@ function TldrHeader (props) {
 
 								{!user.id &&
 									<Touch onPress={()=>{
+										dispatch(addToast("test toast"));
 										dispatch(updateUi({logInModalVisible: true}))
 									}}><Text color="tint" nowrap>Log in</Text></Touch>
 								}

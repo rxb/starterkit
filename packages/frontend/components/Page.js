@@ -15,8 +15,8 @@ import Router from 'next/router'
 
 import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
 
-import styles from './cinderblock/styles/styles';
-import swatches from './cinderblock/styles/swatches';
+import styles from '../modules/cinderblock/styles/styles';
+import swatches from '../modules/cinderblock/styles/swatches';
 import {
 	Avatar,
 	Bounds,
@@ -43,13 +43,13 @@ import {
 	Text,
 	TextInput,
 	View,
-} from './cinderblock';
+} from '../modules/cinderblock';
 
 import LoginForm from './LoginForm';
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
-import { addToastableErrors } from './cinderblock/utils';
+import { addToastableErrors } from '../modules/cinderblock/utils';
 
 
 // usePrevious hook
@@ -74,7 +74,6 @@ function Page (props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	
 	// router-related UI config	
 	useEffect(()=>{
 		NProgress.configure({ trickle: true, trickleSpeed: 400, showSpinner: false });

@@ -11,7 +11,7 @@ import {
 	removeDropdown
 } from '../actions';
 
-import{ Dropdowner } from './cinderblock';
+import{ Dropdowner } from '../modules/cinderblock';
 
 const ConnectedDropdowner = (props) => ( <Dropdowner {...props} />);
 const mapStateToProps = (state, ownProps) => ({ dropdowns: state.dropdowns });

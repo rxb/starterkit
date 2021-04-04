@@ -9,7 +9,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import {getTldrPageUrl, getVersionEditPageUrl} from './urls';
+import {getTldrPageUrl, getVersionEditPageUrl} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -42,20 +42,20 @@ import {
 	Touch,
 	View,
 	useFormState
-} from '@/components/cinderblock';
+} from 'modules/cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from './TldrHeader';
+import TldrHeader from '../../components/tldr/TldrHeader';
 import Router from 'next/router'
 import Head from 'next/head'
 
 // STYLE
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import {METRICS, EASE} from '@/components/cinderblock/designConstants';
+import styles from 'modules/cinderblock/styles/styles';
+import swatches from 'modules/cinderblock/styles/swatches';
+import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
-import { Animated } from '@/components/cinderblock/primitives';
-import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/utils';
+import { Animated } from 'modules/cinderblock/primitives';
+import { runValidations, readFileAsDataUrl } from 'modules/cinderblock/utils';
 import stopword from 'stopword';
 
 const cleanUrlKey = (dirtyUrlKey) => {

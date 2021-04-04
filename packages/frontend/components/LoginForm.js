@@ -8,7 +8,7 @@ import {
 	Text,
 	TextInput,
 	useFormState,
-} from './cinderblock';
+} from '../modules/cinderblock';
 
 import feathersClient from '../components/FeathersClient';
 

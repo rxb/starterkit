@@ -9,7 +9,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import {getProfilePageUrl, getTldrPageUrl} from './urls';
+import {getProfilePageUrl, getTldrPageUrl} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -43,17 +43,17 @@ import {
 	View,
 	useFormState,
 	useMediaContext
-} from '@/components/cinderblock';
+} from 'modules/cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from './TldrHeader';
-import {TldrCardSmall, TldrCard} from './components';
+import TldrHeader from '../../components/tldr/TldrHeader';
+import {TldrCardSmall, TldrCard} from '../../components/tldr/components';
 import Router from 'next/router'
 import Head from 'next/head'
 
 // STYLE
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import {METRICS} from '@/components/cinderblock/designConstants';
+import styles from 'modules/cinderblock/styles/styles';
+import swatches from 'modules/cinderblock/styles/swatches';
+import {METRICS} from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
 import { DndProvider } from 'react-dnd'

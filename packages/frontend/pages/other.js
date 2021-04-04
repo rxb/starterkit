@@ -23,9 +23,9 @@ import {
 	TextInput,
 	Touch,
 	useFormState
-} from '../components/cinderblock';
+} from '../modules/cinderblock';
 
-import styles from '../components/cinderblock/styles/styles';
+import styles from '../modules/cinderblock/styles/styles';
 import Page from '../components/Page';
 
 const OtherForm = (props) => {

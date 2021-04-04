@@ -6,13 +6,13 @@ import {
 	showDelayedToasts,
 	logOut,
 	updateUi
-} from '../actions';
+} from '../../actions';
 
 
-import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
+import feathersClient from '../FeathersClient'; // already instantiated so we can share
 
-import styles from './cinderblock/styles/styles';
-import swatches from './cinderblock/styles/swatches';
+import styles from '../../modules/cinderblock/styles/styles';
+import swatches from '../../modules/cinderblock/styles/swatches';
 import {
 	Avatar,
 	Bounds,
@@ -39,7 +39,7 @@ import {
 	Text,
 	TextInput,
 	View,
-} from './cinderblock';
+} from '../../modules/cinderblock';
 
 
 

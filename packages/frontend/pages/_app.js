@@ -1,19 +1,18 @@
 import Head from 'next/head';
 import React from 'react';
+import { AppRegistry } from 'react-native-web';
+
+// REDUX
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import {useStore} from '../store';
+import { logOut, fetchUser, logInSuccess } from '../actions';
 
-// design
-import swatches from '../components/cinderblock/styles/swatches';
-import { METRICS, MEDIA_QUERIES, BREAKPOINT_SIZES } from '../components/cinderblock/designConstants';
-import { initMediaProvider } from '../components/cinderblock/components/UseMediaContext';
+// STYLE
+import swatches from '../modules/cinderblock/styles/swatches';
+import { METRICS, MEDIA_QUERIES, BREAKPOINT_SIZES } from '../modules/cinderblock/designConstants';
+import { initMediaProvider } from '../modules/cinderblock/components/UseMediaContext';
 const MediaProvider = initMediaProvider(MEDIA_QUERIES);
 
-import {
-  logOut,
-  fetchUser,
-  logInSuccess
-} from '../actions';
 
 import { SWRConfig } from 'swr';
 import { fetcher } from '@/swr';
@@ -148,7 +147,6 @@ function ThisApp(props) {
           />
 
           <link rel='stylesheet' type='text/css' href='/static/nprogress.css' />
-          <link rel='stylesheet' type='text/css' href='/static/simplemde.min.css' />
 
         </Head>
 

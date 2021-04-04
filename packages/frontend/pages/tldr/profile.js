@@ -14,7 +14,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
 // URLS
-import { getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl } from './urls';
+import { getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl } from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -43,15 +43,15 @@ import {
 	Touch,
 	useMediaContext,
 	View,	
-} from '@/components/cinderblock';
+} from 'modules/cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from './TldrHeader';
-import {TldrCardSmall, CreateTldrCardSmall} from './components';
+import TldrHeader from '../../components/tldr/TldrHeader';
+import {TldrCardSmall, CreateTldrCardSmall} from '../../components/tldr/components';
 
 // STYLE
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import { METRICS } from '@/components/cinderblock/designConstants';
+import styles from 'modules/cinderblock/styles/styles';
+import swatches from 'modules/cinderblock/styles/swatches';
+import { METRICS } from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
 import dayjs from 'dayjs';

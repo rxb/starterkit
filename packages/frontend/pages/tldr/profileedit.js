@@ -9,7 +9,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import {getProfilePageUrl} from './urls';
+import {getProfilePageUrl} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -42,20 +42,20 @@ import {
 	Touch,
 	View,
 	useFormState
-} from '@/components/cinderblock';
+} from 'modules/cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from './TldrHeader';
+import TldrHeader from '../../components/tldr/TldrHeader';
 import Router from 'next/router'
 import Head from 'next/head'
 
 // STYLE
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import {METRICS, EASE} from '@/components/cinderblock/designConstants';
+import styles from 'modules/cinderblock/styles/styles';
+import swatches from 'modules/cinderblock/styles/swatches';
+import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
 //import { Animated } from '@/components/cinderblock/primitives';
-import { runValidations, readFileAsDataUrl } from '@/components/cinderblock/utils';
+import { runValidations, readFileAsDataUrl } from 'modules/cinderblock/utils';
 
 
 
@@ -66,6 +66,7 @@ const cleanUrlKey = (dirtyUrlKey) => {
             .replace(/[-]+/gi, "-")
             .toLowerCase();
 }
+
 
 
 const EditProfile = (props) => {
@@ -135,6 +136,12 @@ const EditProfile = (props) => {
                msg: "Email must be a valid email address"
             }
          },
+         password: {
+            min:{
+              args:8,
+              msg: "Password must be at least 8 characters long"
+            }
+          },
       });
 		formState.setError(error);
       if(!error){

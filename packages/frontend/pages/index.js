@@ -32,15 +32,15 @@ import {
 	Stripe,
 	Text,
 	TextInput,
-} from '../components/cinderblock';
-import CinderblockPage from '../components/CinderblockPage';
+} from '../modules/cinderblock';
+import CinderblockPage from '../components/starterkit/CinderblockPage';
 import LoginForm from '../components/LoginForm';
-import ShowCard from '../components/ShowCard';
+import ShowCard from '../components/starterkit/ShowCard';
 import Head from 'next/head'
 
 // STYLE
-import styles from '../components/cinderblock/styles/styles';
-import swatches from '../components/cinderblock/styles/swatches';
+import styles from '../modules/cinderblock/styles/styles';
+import swatches from '../modules/cinderblock/styles/swatches';
 
 const FakePrompt = (props) => {
 	const {

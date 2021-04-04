@@ -29,7 +29,7 @@ import {
 	Touch,
 	View,
 	useFormState
-} from 'components/cinderblock';
+} from 'modules/cinderblock';
 
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -80,8 +80,9 @@ const Scratch = (props) => {
 
 
    return (
-      
+         
          <Stripe>
+            {/*
             <Bounds>
                <Section>
                   <Chunk>
@@ -102,6 +103,7 @@ const Scratch = (props) => {
                   </DndProvider>
                </Section>
             </Bounds>
+                     */}
          </Stripe>
    );
 }

@@ -9,7 +9,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import {getProfilePageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl} from './urls';
+import {getProfilePageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -39,18 +39,18 @@ import {
 	Touch,
 	useMediaContext,
 	View,	
-} from '@/components/cinderblock';
+} from 'modules/cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from './TldrHeader';
+import TldrHeader from '../../components/tldr/TldrHeader';
 import Router from 'next/router'
 
 // STYLES
-import styles from '@/components/cinderblock/styles/styles';
-import swatches from '@/components/cinderblock/styles/swatches';
-import { METRICS } from '@/components/cinderblock/designConstants';
+import styles from 'modules/cinderblock/styles/styles';
+import swatches from 'modules/cinderblock/styles/swatches';
+import { METRICS } from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
-import {TldrCardSmall, TldrCard, DeletePrompt} from './components';
+import {TldrCardSmall, TldrCard, DeletePrompt} from '../../components/tldr/components';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)

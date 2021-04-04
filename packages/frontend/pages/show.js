@@ -41,13 +41,13 @@ import {
 	Touch,
 	View,
 	useFormState
-} from '../components/cinderblock';
-import CinderblockPage from '../components/CinderblockPage';
+} from '../modules/cinderblock';
+import CinderblockPage from '../components/starterkit/CinderblockPage';
 import Head from 'next/head';
 
 // STYLE
-import swatches from '../components/cinderblock/styles/swatches';
-import { METRICS } from '../components/cinderblock/designConstants';
+import swatches from '../modules/cinderblock/styles/swatches';
+import { METRICS } from '../modules/cinderblock/designConstants';
 
 
 // SCREEN-SPECIFIC
@@ -58,7 +58,7 @@ import {
 	runValidations, 
 	readFileAsDataUrl, 
 	addToastableErrors 
-} from '../components/cinderblock/utils';
+} from '../modules/cinderblock/utils';
 
 // keep big functions outside of render
 
