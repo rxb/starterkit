@@ -36,7 +36,7 @@ class Toast extends React.Component {
 	}
 
 
-	componentWillReceiveProps(nextProps){
+	UNSAFE_componentWillReceiveProps(nextProps){
 		if (this.props.visible != nextProps.visible){
 			if(nextProps.visible){
 				this.show();
