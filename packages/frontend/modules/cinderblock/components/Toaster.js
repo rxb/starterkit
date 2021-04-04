@@ -35,11 +35,10 @@ class Toast extends React.Component {
 		}
 	}
 
-
-	UNSAFE_componentWillReceiveProps(nextProps){
-		if (this.props.visible != nextProps.visible){
-			if(nextProps.visible){
-				this.show();
+	componentDidUpdate(prevProps){
+		if(this.props.visible != prevProps.visible){
+			if(this.props.visible){
+				this.open();
 			}
 			else{
 				this.hide();

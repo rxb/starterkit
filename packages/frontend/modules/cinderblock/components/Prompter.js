@@ -63,12 +63,14 @@ class Prompt extends React.Component{
 		}
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps){
-		if(nextProps.showable){
-			this.open();
-		}
-		else{
-			this.close();
+	componentDidUpdate(prevProps){
+		if(this.props.showable != prevProps.showable){
+			if(this.props.showable){
+				this.open();
+			}
+			else{
+				this.close();
+			}
 		}
 	}
 

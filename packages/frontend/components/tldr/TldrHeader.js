@@ -6,10 +6,9 @@ import { request, parsePageObj, getCategoriesUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX
-import {
-	addToast,
-	updateUi
-} from '@/actions';
+// REDUX
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { addToast, updateUi} from '@/actions';
 
 // URLS
 import {getProfilePageUrl, getProfileEditPageUrl, getTldrEditPageUrl, getIndexPageUrl, getCategoryPageUrl} from './urls';
@@ -217,13 +216,16 @@ const UserDropdown = (props) => {
 }
 
 function TldrHeader (props) {
-
+	/*
 	const {
 		dispatch, 
 		authentication = {} 
 	} = props;
+	*/
 
 	// data from redux
+	const dispatch = useDispatch(); 
+	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
 	return (
@@ -278,7 +280,6 @@ function TldrHeader (props) {
 
 								{!user.id &&
 									<Touch onPress={()=>{
-										dispatch(addToast("test toast"));
 										dispatch(updateUi({logInModalVisible: true}))
 									}}><Text color="tint" nowrap>Log in</Text></Touch>
 								}

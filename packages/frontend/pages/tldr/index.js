@@ -121,22 +121,19 @@ function TldrHome(props) {
 		return (
 			<Page>
             
-            <TldrHeader 
-               dispatch={dispatch} 
-               authentication={authentication}  
-               />
+            <TldrHeader />
 
 				{ !categoryId && 
                   <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                      <Bounds>
                         {/*
-                     <Section>
-                        <Chunk>
-                           <Text type="pageHead">Categories</Text>
-                        </Chunk>
-                     </Section>
+                        <Section>
+                           <Chunk>
+                              <Text type="pageHead">Categories</Text>
+                           </Chunk>
+                        </Section>
                         */} 
-                     <Section >
+                        <Section >
                            <List
                               variant={{
                                  small: 'grid',

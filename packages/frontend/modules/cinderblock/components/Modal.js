@@ -104,12 +104,24 @@ class Modal extends React.Component{
 		}
 	}
 
+	/*
 	UNSAFE_componentWillReceiveProps(nextProps){
 		if(nextProps.visible){
 			this.open();
 		}
 		else{
 			this.close();
+		}
+	}
+	*/
+	componentDidUpdate(prevProps){
+		if(this.props.visible != prevProps.visible){
+			if(this.props.visible){
+				this.open();
+			}
+			else{
+				this.close();
+			}
 		}
 	}
 
