@@ -295,7 +295,7 @@ function VersionEdit(props) {
 									}
 
 									{ (selectedTab == 'preview') &&
-									<View style={{maxWidth: 800, marginHorizontal: 'auto'}}>
+									<View style={{maxWidth: 640, marginHorizontal: 'auto'}}>
 										<Chunk>
 										<TldrCard 
 											tldr={tldr}

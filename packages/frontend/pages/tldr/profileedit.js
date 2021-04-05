@@ -55,7 +55,7 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
 //import { Animated } from '@/components/cinderblock/primitives';
-import { runValidations, readFileAsDataUrl } from 'modules/cinderblock/utils';
+import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
 
 
 
@@ -106,12 +106,10 @@ const EditProfile = (props) => {
       
       const submitFields = {...formState.fields};
 
-      //only include password if not empty
-      if( submitFields.password && submitFields.password.trim().length == 0){
-         delete submitFields.password
-      }
 
-      const error = runValidations(formState.fields, {
+
+      // 
+      let error = runValidations(submitFields, {
          urlKey: {
             // TODO: add client-side uniqueness validation 
             // (server will catch it for now)
@@ -121,7 +119,7 @@ const EditProfile = (props) => {
             is: {
                args: /^[a-zA-Z0-9-]*$/,
                msg: "Username can only include letters, numbers, and dashes"
-            }
+            },
          },
          name: {
             notEmpty: {
@@ -137,12 +135,23 @@ const EditProfile = (props) => {
             }
          },
          password: {
-            min:{
-              args:8,
+            len:{
+               args: [8, undefined],
               msg: "Password must be at least 8 characters long"
             }
           },
       });
+      
+      // custom frontend password confirmation match
+      if(submitFields["password"] != submitFields["confirm-password"]){
+         error = pushError(error, "password", "Your passwords don't match")
+      }
+
+      //only include password if not empty
+      if( submitFields.password && submitFields.password.trim().length == 0){
+         delete submitFields.password
+      }
+
 		formState.setError(error);
       if(!error){
          formState.setLoading(true);
@@ -271,6 +280,7 @@ const EditProfile = (props) => {
                            onChange={e => formState.setFieldValue('confirm-password', e.target.value) }
                            />
                         <FieldError error={formState.error?.fieldErrors?.password} />	
+                        <Text type="small" color="hint">Must be at least 8 characters long</Text>
                      </Chunk>
                      <Chunk>
                         <Button 

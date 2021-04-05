@@ -18,6 +18,12 @@ export const runValidations = (fields, validators) => {
   return (errors.length) ? {name: 'BadRequest', errors} : false;
 }
 
+export const pushError = (errorObj, fKey, msg) =>{
+  const errors = errorObj.errors || [];
+  errors.push({path: fKey, message: msg})
+  return {name: 'BadRequest', errors};
+}
+
 export const readFileAsDataUrl = (inputFile) => {
   const temporaryFileReader = new FileReader();
   return new Promise((resolve, reject) => {
