@@ -14,7 +14,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
 // URLS
-import { getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl } from '../../components/tldr/urls';
+import { getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl, getProfileEditPageUrl} from 'components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -97,7 +97,14 @@ function TldrProfile(props) {
 											<Text>{userData.name}</Text>
 										</Chunk>
 									</FlexItem>
-									
+									<FlexItem />
+									<FlexItem shrink justify="flex-end">
+										<Chunk>
+											<Link href={getProfileEditPageUrl()}> 
+												<Button color="secondary" label="Settings" />
+											</Link>
+										</Chunk>
+									</FlexItem>
 								</Flex>
 								
 							</Section>

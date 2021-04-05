@@ -85,7 +85,8 @@ const Reorderable = ({ id, children, index, moveItem }) => {
    });
 
    const [{ isDragging }, drag] = useDrag({
-      item: { type: ItemTypes.REORDERABLE, id, index },
+      type: ItemTypes.REORDERABLE,
+      item: { id, index },
       collect: (monitor) => ({
           isDragging: monitor.isDragging(),
       }),
