@@ -58,8 +58,6 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
 
 
-
-
 const cleanUrlKey = (dirtyUrlKey) => {
    return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
             .replace(/\s+/gi,"-")
@@ -68,8 +66,7 @@ const cleanUrlKey = (dirtyUrlKey) => {
 }
 
 
-
-const EditProfile = (props) => {
+const Register = (props) => {
 
    const dispatch = useDispatch(); 
    const authentication = useSelector(state => state.authentication);
@@ -301,7 +298,7 @@ const EditProfile = (props) => {
    
 }
 
-EditProfile.getInitialProps = async (context) => {
+Register.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
    const isServer = !!req;	
@@ -311,7 +308,7 @@ EditProfile.getInitialProps = async (context) => {
 }
 
 
-export default EditProfile;
+export default Register;
 
 
 

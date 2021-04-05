@@ -16,22 +16,29 @@ module.exports = function (app) {
       //allowNull: false,
       //unique: true,
       validate: {
-        isEmail: true
-      }
+        isEmail: true,
+        notEmpty: {
+          msg: "Email can't be blank"
+        }
+      },
+      
     },
     password: {
       type: DataTypes.STRING,
-      min:{
-        args:8,
-        msg: "Password must be at least 8 characters long"
-      },
-      max: {
-        args:255,
-        msg: "Password must be at less that 255 characters long"
+      validate: {
+        len:{
+          args: [8, 255],
+          msg: "Password must be at least 8 characters long"
+        }
       }
     },
     name: {
       type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: "Name can't be blank"
+        }
+      }
     },
     photoId: {
       type: DataTypes.STRING,
