@@ -7,59 +7,79 @@ const RevealBlock = (props) => {
 
    const { 
       delay = 0, 
-      duration = 2000,
+      duration = 180,
       offset = 100,
       fromTop = false,
       visible = false,
       style
    } = props;
-   const [blockValue, setBlockValue] = useState('none');
-   const visibilityValue = useRef(new Animated.Value(0)).current;
    const directionMultiplier = (fromTop) ? -1 : 1;
 
+   const [visibilityValue, setVisibilityValue] = useState(new Animated.Value(0));
+   const [added, setAdded] = useState(false);
+
+   const add = () => {
+      setAdded(true);
+   }
+
+   const show = () => {
+      Animated.timing(
+         visibilityValue,{
+            toValue: 1,
+            easing: EASE,
+            duration,
+            delay
+         }
+      ).start();
+   }
+
+   const hide = () => {
+      Animated.timing(
+         visibilityValue,{
+            toValue: 0,
+            easing: EASE,
+            duration,
+            delay
+         }
+      ).start( remove );
+   }
+
+   const remove = () => {
+
+      setAdded(false);
+   }
+
    useEffect(()=>{
-      if(props.visible){
-         setBlockValue('flex');
-         Animated.timing(
-            visibilityValue,{
-               toValue: 1,
-               easing: EASE,
-               duration,
-               delay
-            }
-         ).start()
+      if(visible){
+         add();
       }
       else{
-         Animated.timing(
-            visibilityValue,{
-               toValue: 0,
-               easing: EASE,
-               duration,
-               delay
-            }
-         ).start(()=>{
-            setBlockValue('none');
-         })
+         hide();
       }
    }, [visible]);
 
+   useEffect(()=>{
+      if(added){
+         show();
+      }
+   }, [added]);
+
    return(
-      <>
-      <Text>{JSON.stringify(visible)} - {JSON.stringify(visibilityValue)}</Text>
+      <View style={{ display: (added) ? 'flex' : 'none' }}>
+         {/* can't mix animated style properties and directly controlled style properties*/}
          <Animated.View
-         style={[{
-            display: blockValue,
-            opacity: visibilityValue,
-            transform: [{
-               translateY: visibilityValue.interpolate({
-               inputRange: [0, 1],
-               outputRange: [(offset * directionMultiplier), 0]
-               }),
-            }]
-         }, style]}>
-            {props.children}
-      </Animated.View>
-      </>
+            style={[{           
+               opacity: visibilityValue,
+               transform: [{
+                  translateY: visibilityValue.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [(offset * directionMultiplier), 0]
+                  }),
+               }]
+            }]}>
+               {props.children}
+         </Animated.View>
+      </View>
    );
    
 
