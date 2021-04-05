@@ -17,14 +17,14 @@ const FieldError = (props) => {
 	}
 	else{
 		return(
-			<Inline align="">
+			<Inline>
 				<Icon
-					shape="AlertCircle"
+					shape="ArrowUpCircle"
 					size="small"
 					color="red"
 					/>
 				<Text
-					kind="small"
+					type="small"
 					style={[styles['textError'], style]}
 					{...other}
 					>

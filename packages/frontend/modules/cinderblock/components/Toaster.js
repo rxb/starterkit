@@ -38,7 +38,7 @@ class Toast extends React.Component {
 	componentDidUpdate(prevProps){
 		if(this.props.visible != prevProps.visible){
 			if(this.props.visible){
-				this.open();
+				this.show();
 			}
 			else{
 				this.hide();

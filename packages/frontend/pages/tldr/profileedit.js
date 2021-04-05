@@ -194,8 +194,8 @@ const EditProfile = (props) => {
                            value={formState.getFieldValue('urlKey')}
                            onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)) }
                            />
-                        <Text color="hint" type="small">Only letters, numbers, and dashes (-)</Text>
                         <FieldError error={formState.error?.fieldErrors?.urlKey} />	
+                        <Text color="hint" type="small">Only letters, numbers, and dashes (-)</Text>
                      </Chunk>
                      <Chunk>
                         <Label for="photo">Photo</Label>
