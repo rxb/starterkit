@@ -341,68 +341,15 @@ const EditProfile = (props) => {
                      <form>
                      <Chunk>
                            <Label for="name">Name</Label>
-                           <TextInput
-                              spellCheck={false}
-                              id="name"
-                              value={formState.getFieldValue('name')}
-                              onChange={e => formState.setFieldValue('name', e.target.value) }
-                              />
-                           <FieldError error={formState.error?.fieldErrors?.name} />	
+                           <NameField formState={formState} />
                         </Chunk>
                         <Chunk>
                            <Label for="urlKey">Username</Label>
-                           <TextInput
-                              spellCheck={false}
-                              id="urlKey"
-                              value={formState.getFieldValue('urlKey')}
-                              onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)) }
-                              />
-                           <FieldError error={formState.error?.fieldErrors?.urlKey} />	
-                           <Text color="hint" type="small">Only letters, numbers, and dashes (-)</Text>
+                           <UrlKeyField formState={formState} />
                         </Chunk>
                         <Chunk>
                            <Label for="photo">Photo</Label>
-                           <Flex>
-                              <FlexItem>
-                                 <FileInput
-                                    id="photo"
-                                    placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
-                                    onChangeFile={(file)=>{
-                                       /* comes from server, doesn't get sent back to server */
-                                       formState.setFieldValue('photoUrl', URL.createObjectURL(file))
-                                       /* comes from server, gets sent back to server */
-                                       formState.setFieldValue('photoId', false)
-                                       /* only exists client -> server */
-                                       formState.setFieldValue('photoNewFile', file)
-                                    }}
-                                    />
-                                 { formState.getFieldValue('photoUrl') &&
-                                    <FakeInput
-                                       label="Remove photo"
-                                       shape="X"
-                                       onPress={()=>{
-                                          formState.setFieldValue('photoId', false)
-                                          formState.setFieldValue('photoUrl', false)
-                                       }}
-                                       />
-                                 }
-                              </FlexItem>
-                              { formState.getFieldValue('photoUrl') &&
-                                 <FlexItem shrink>
-                                    <Image
-                                       source={{uri: formState.getFieldValue('photoUrl') }}
-                                       style={[{
-                                             width: 120,
-                                             flex: 1,
-                                             resizeMode: 'cover',
-                                             borderRadius: 4,
-                                             boxSizing: 'content-box'
-                                       }, styles.pseudoLineHeight]}
-                                       />
-                                 </FlexItem>
-                              }
-                              {formState.getFieldValue('photoUrl')}
-                           </Flex>
+                           <PhotoField formState={formState} />
                         </Chunk>
                      
                      { !isSignup && 
