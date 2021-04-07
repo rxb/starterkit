@@ -48,6 +48,7 @@ import TldrHeader from '../../components/tldr/TldrHeader';
 import Router from 'next/router'
 import Head from 'next/head'
 
+
 // STYLE
 import styles from 'modules/cinderblock/styles/styles';
 import swatches from 'modules/cinderblock/styles/swatches';
@@ -56,6 +57,7 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 // SCREEN-SPECIFIC
 //import { Animated } from '@/components/cinderblock/primitives';
 import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
+import feathersClient from 'components/FeathersClient';
 
 
 const cleanUrlKey = (dirtyUrlKey) => {
@@ -68,16 +70,12 @@ const cleanUrlKey = (dirtyUrlKey) => {
 
 const Register = (props) => {
 
-   const dispatch = useDispatch(); 
-   const authentication = useSelector(state => state.authentication);
-   
+	const dispatch = useDispatch();
+
    const formState = useFormState({
       initialFields: {
-         name: '',
-         urlKey: '',
-         email: '',
-         photoUrl: '',
-			photoId: '',
+         email: null,
+         password: null,
       },
       toastableErrors: {
          BadRequest: 'Something went wrong',
@@ -86,27 +84,13 @@ const Register = (props) => {
       addToast: msg => dispatch(addToast(msg))
    }); 
 
-   // load user, one time (unless auth changes), reinitialize the form
-   // on first load, feathersclient may not have put the auth into the store yet
-   const [user, setUser] = useState();
-   useEffect(()=>{
-      if(authentication.accessToken){
-         request( getUserUrl("self"), {token: authentication.accessToken} )
-            .then( (user) => {
-               setUser(user);
-               formState.setFieldValues(user);
-            });
-      }
-   }, [authentication.accessToken]);
-
+   
    const submitForm = async () => {
       
       const submitFields = {...formState.fields};
 
-
-
-      // 
       let error = runValidations(submitFields, {
+         /*
          urlKey: {
             // TODO: add client-side uniqueness validation 
             // (server will catch it for now)
@@ -123,6 +107,7 @@ const Register = (props) => {
                 msg: "Name can't be blank"
             }
          },
+         */
          email: {
             notEmpty: {
                 msg: "Email can't be blank"
@@ -144,21 +129,23 @@ const Register = (props) => {
          error = pushError(error, "password", "Your passwords don't match")
       }
 
-      //only include password if not empty
-      if( submitFields.password && submitFields.password.trim().length == 0){
-         delete submitFields.password
-      }
-
 		formState.setError(error);
       if(!error){
          formState.setLoading(true);
          try{
-            const user = await request( getUserUrl("self"), {
-               method: 'PATCH', 
-               data: formState.fields,
-               token: authentication.accessToken
+            // create user
+            const user = await request( getUserUrl(), {
+               method: 'POST', 
+               data: submitFields
             });
-            const toastMessage = "Settings updated!";
+            // feathers client auth
+            feathersClient.authenticate({
+               strategy: 'local', 
+               email: submitFields.email, 
+               password: submitFields.password
+            })
+            // toast and redirect
+            const toastMessage = "Registered!";
             dispatch(addDelayedToast(toastMessage));
             Router.push({pathname: getProfilePageUrl()})  
          }
@@ -177,81 +164,18 @@ const Register = (props) => {
             <Bounds style={{maxWidth: 640}}>
                <Section>
                   <Chunk>
-                     <Text type="pageHead">Profile settings</Text>
+                     <Text type="pageHead">Register</Text>
                   </Chunk>
                </Section>
                <Section>
                   <form>
-                  <Chunk>
-                        <Label for="name">Name</Label>
-                        <TextInput
-                           spellCheck={false}
-                           id="name"
-                           value={formState.getFieldValue('name')}
-                           onChange={e => formState.setFieldValue('name', e.target.value) }
-                           />
-                        <FieldError error={formState.error?.fieldErrors?.name} />	
-                     </Chunk>
-                     <Chunk>
-                        <Label for="urlKey">Username</Label>
-                        <TextInput
-                           spellCheck={false}
-                           id="urlKey"
-                           value={formState.getFieldValue('urlKey')}
-                           onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)) }
-                           />
-                        <FieldError error={formState.error?.fieldErrors?.urlKey} />	
-                        <Text color="hint" type="small">Only letters, numbers, and dashes (-)</Text>
-                     </Chunk>
-                     <Chunk>
-                        <Label for="photo">Photo</Label>
-                        <Flex>
-                           <FlexItem>
-                              <FileInput
-                                 id="photo"
-                                 placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
-                                 onChangeFile={(file)=>{
-                                    /* comes from server, doesn't get sent back to server */
-                                    formState.setFieldValue('photoUrl', URL.createObjectURL(file))
-                                    /* comes from server, gets sent back to server */
-                                    formState.setFieldValue('photoId', false)
-                                    /* only exists client -> server */
-                                    formState.setFieldValue('photoNewFile', file)
-                                 }}
-                                 />
-                              { formState.getFieldValue('photoUrl') &&
-                                 <FakeInput
-                                    label="Remove photo"
-                                    shape="X"
-                                    onPress={()=>{
-                                       formState.setFieldValue('photoId', false)
-                                       formState.setFieldValue('photoUrl', false)
-                                    }}
-                                    />
-                              }
-                           </FlexItem>
-                           { formState.getFieldValue('photoUrl') &&
-                              <FlexItem shrink>
-                                 <Image
-                                    source={{uri: formState.getFieldValue('photoUrl') }}
-                                    style={[{
-                                          width: 120,
-                                          flex: 1,
-                                          resizeMode: 'cover',
-                                          borderRadius: 4,
-                                          boxSizing: 'content-box'
-                                    }, styles.pseudoLineHeight]}
-                                    />
-                              </FlexItem>
-                           }
-                        </Flex>
-                     </Chunk>
+                     
                      <Chunk>
                         <Label for="email">Email</Label>
                         <TextInput
-                           spellCheck={false}
                            id="email"
                            autoCompleteType="email"
+                           textContentType="emailAddress"
                            keyboardType="email-address"
                            value={formState.getFieldValue('email')}
                            onChange={e => formState.setFieldValue('email', e.target.value) }
@@ -259,7 +183,7 @@ const Register = (props) => {
                         <FieldError error={formState.error?.fieldErrors?.email} />	
                      </Chunk>
                      <Chunk>
-                        <Label for="password">Set a new password</Label>
+                        <Label for="password">Password</Label>
                         <TextInput
                            id="password"
                            placeholder="New password"
@@ -281,11 +205,12 @@ const Register = (props) => {
                      </Chunk>
                      <Chunk>
                         <Button 
-                           label="Save"
+                           label="Register"
                            onPress={ submitForm }
                            isLoading={formState.loading}
                            />
                      </Chunk>
+                     
                   </form>
                   
                </Section>

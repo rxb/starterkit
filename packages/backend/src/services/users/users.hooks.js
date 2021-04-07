@@ -11,6 +11,10 @@ const {
   saveAndGetNewImageReference
 } = require('../common_hooks.js');
 
+const uid = function(){
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
 const checkForSelf = (options) => {
 
   return async(context) => {
@@ -41,6 +45,19 @@ module.exports = {
     create: [
       hashPassword('password'),
       saveAndGetNewImageReference(),
+      async (context) => {
+        const tempId = uid();
+
+        // add temp name if no name
+        if(!context.data.name){
+          context.data.name =  `User ${tempId}`;
+        }
+        // add temp urlkey if not urlkey
+        if(!context.data.urlKey){
+          context.data.urlKey =  `user-${tempId}`;
+        }
+        return context
+      },
     ],
     update: [
       hashPassword('password'),

@@ -158,7 +158,7 @@ const EditProfile = (props) => {
          try{
             const user = await request( getUserUrl("self"), {
                method: 'PATCH', 
-               data: formState.fields,
+               data: submitFields,
                token: authentication.accessToken
             });
             const toastMessage = "Settings updated!";

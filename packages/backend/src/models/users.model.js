@@ -25,6 +25,7 @@ module.exports = function (app) {
     },
     password: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         len:{
           args: [8, 255],
