@@ -38,7 +38,7 @@ module.exports = function (app) {
       // https://sequelize-guides.netlify.com/virtual-columns/
       type: DataTypes.VIRTUAL,
       get () {
-        return `http://localhost:3030/photos/${this.getDataValue('photoId')}`
+        return this.getDataValue('photoId') ? `http://localhost:3030/photos/${this.getDataValue('photoId')}` : null;
       }
     },
   },

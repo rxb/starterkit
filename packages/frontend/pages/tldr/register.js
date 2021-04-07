@@ -9,7 +9,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import {getProfilePageUrl} from '../../components/tldr/urls';
+import { getProfileEditPageUrl} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -117,6 +117,9 @@ const Register = (props) => {
             }
          },
          password: {
+            notEmpty: {
+               msg: "Password can't be blank"
+            },
             len:{
                args: [8, undefined],
                msg: "Password must be at least 8 characters long"
@@ -147,7 +150,7 @@ const Register = (props) => {
             // toast and redirect
             const toastMessage = "Registered!";
             dispatch(addDelayedToast(toastMessage));
-            Router.push({pathname: getProfilePageUrl()})  
+            Router.push({pathname: getProfileEditPageUrl(), query: {isSignup: true}})  
          }
          catch(error){
             console.log(error);
@@ -169,7 +172,6 @@ const Register = (props) => {
                </Section>
                <Section>
                   <form>
-                     
                      <Chunk>
                         <Label for="email">Email</Label>
                         <TextInput

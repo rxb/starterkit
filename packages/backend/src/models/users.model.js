@@ -14,7 +14,10 @@ module.exports = function (app) {
     email: {
       type: DataTypes.STRING,
       //allowNull: false,
-      //unique: true,
+      unique: {
+        msg: 'Looks like this email address is already registered',
+        fields: ['email']
+      },
       validate: {
         isEmail: true,
         notEmpty: {
@@ -49,7 +52,7 @@ module.exports = function (app) {
       // https://sequelize-guides.netlify.com/virtual-columns/
       type: DataTypes.VIRTUAL,
       get:  function() {
-        return `http://localhost:3030/photos/${this.getDataValue('photoId')}`
+        return this.getDataValue('photoId') ? `http://localhost:3030/photos/${this.getDataValue('photoId')}` : null;
       }
     },
     facebookId: {

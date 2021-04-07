@@ -57,9 +57,6 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 //import { Animated } from '@/components/cinderblock/primitives';
 import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
 
-
-
-
 const cleanUrlKey = (dirtyUrlKey) => {
    return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
             .replace(/\s+/gi,"-")
@@ -67,13 +64,95 @@ const cleanUrlKey = (dirtyUrlKey) => {
             .toLowerCase();
 }
 
+const NameField = (props) => {
+   const {formState} = props;
+   return(
+      <>
+      <TextInput
+         spellCheck={false}
+         id="name"
+         value={formState.getFieldValue('name')}
+         onChange={e => formState.setFieldValue('name', e.target.value) }
+         />
+      <FieldError error={formState.error?.fieldErrors?.name} />
+      </>	      
+   );
+}
+
+const UrlKeyField = (props) => {
+   const {formState} = props;
+   return(
+      <>
+       <TextInput
+            spellCheck={false}
+            id="urlKey"
+            value={formState.getFieldValue('urlKey')}
+            onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)) }
+            />
+         <FieldError error={formState.error?.fieldErrors?.urlKey} />	
+         <Text color="hint" type="small">Only letters, numbers, and dashes (-)</Text>
+      </>
+   );
+}
+
+const PhotoField = (props) => {
+   const {formState} = props;
+   return(
+      <>
+         <Flex>
+            <FlexItem>
+               <FileInput
+                  id="photo"
+                  placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
+                  onChangeFile={(file)=>{
+                     /* comes from server, doesn't get sent back to server */
+                     formState.setFieldValue('photoUrl', URL.createObjectURL(file))
+                     /* comes from server, gets sent back to server */
+                     formState.setFieldValue('photoId', false)
+                     /* only exists client -> server */
+                     formState.setFieldValue('photoNewFile', file)
+                  }}
+                  />
+               { formState.getFieldValue('photoUrl') &&
+                  <FakeInput
+                     label="Remove photo"
+                     shape="X"
+                     onPress={()=>{
+                        formState.setFieldValue('photoId', false)
+                        formState.setFieldValue('photoUrl', false)
+                     }}
+                     />
+               }
+            </FlexItem>
+            { formState.getFieldValue('photoUrl') &&
+               <FlexItem shrink>
+                  <Image
+                     source={{uri: formState.getFieldValue('photoUrl') }}
+                     style={[{
+                           width: 120,
+                           flex: 1,
+                           resizeMode: 'cover',
+                           borderRadius: 4,
+                           boxSizing: 'content-box'
+                     }, styles.pseudoLineHeight]}
+                     />
+               </FlexItem>
+            }
+         </Flex>      
+      </>
+   );
+}
 
 
 const EditProfile = (props) => {
 
+   const {isSignup} = props;
+
    const dispatch = useDispatch(); 
    const authentication = useSelector(state => state.authentication);
-   
+   const [formStep, setFormStep] = useState(0);
+
+
    const formState = useFormState({
       initialFields: {
          name: '',
@@ -106,9 +185,6 @@ const EditProfile = (props) => {
       
       const submitFields = {...formState.fields};
 
-
-
-      // 
       let error = runValidations(submitFields, {
          urlKey: {
             // TODO: add client-side uniqueness validation 
@@ -173,140 +249,228 @@ const EditProfile = (props) => {
       }
    }
 
-   return (
-      <Page>
-         <TldrHeader />
-         <Stripe>
-            <Bounds style={{maxWidth: 640}}>
-               <Section>
-                  <Chunk>
-                     <Text type="pageHead">Profile settings</Text>
-                  </Chunk>
-               </Section>
-               <Section>
-                  <form>
-                  <Chunk>
-                        <Label for="name">Name</Label>
-                        <TextInput
-                           spellCheck={false}
-                           id="name"
-                           value={formState.getFieldValue('name')}
-                           onChange={e => formState.setFieldValue('name', e.target.value) }
-                           />
-                        <FieldError error={formState.error?.fieldErrors?.name} />	
-                     </Chunk>
+   if( isSignup ){
+      return (
+         <Page>
+            <TldrHeader />
+            <Stripe>
+               <Bounds style={{maxWidth: 640}}>
+                  <Section>
                      <Chunk>
-                        <Label for="urlKey">Username</Label>
-                        <TextInput
-                           spellCheck={false}
-                           id="urlKey"
-                           value={formState.getFieldValue('urlKey')}
-                           onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)) }
-                           />
-                        <FieldError error={formState.error?.fieldErrors?.urlKey} />	
-                        <Text color="hint" type="small">Only letters, numbers, and dashes (-)</Text>
+                        <Text type="pageHead">Welcome!</Text>
                      </Chunk>
-                     <Chunk>
-                        <Label for="photo">Photo</Label>
-                        <Flex>
-                           <FlexItem>
-                              <FileInput
-                                 id="photo"
-                                 placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
-                                 onChangeFile={(file)=>{
-                                    /* comes from server, doesn't get sent back to server */
-                                    formState.setFieldValue('photoUrl', URL.createObjectURL(file))
-                                    /* comes from server, gets sent back to server */
-                                    formState.setFieldValue('photoId', false)
-                                    /* only exists client -> server */
-                                    formState.setFieldValue('photoNewFile', file)
-                                 }}
+                  </Section>
+                  <Section>
+                     <form>
+                     <RevealBlock visible={formStep >= 0}>
+                        <Chunk>
+                           <Label for="name">What's your name?</Label>
+                           <NameField formState={formState} />
+                        </Chunk>
+                        { (formStep == 0) &&
+                           <Chunk>
+                              <Button 
+                                 label="Next"
+                                 onPress={ ()=> {
+                                 setFormStep(1) 
+                                 } }
                                  />
-                              { formState.getFieldValue('photoUrl') &&
-                                 <FakeInput
-                                    label="Remove photo"
-                                    shape="X"
-                                    onPress={()=>{
+                           </Chunk>
+                        }
+                     </RevealBlock>
+                     <RevealBlock visible={formStep >= 1}>
+                        <Chunk>
+                           <Label for="urlKey">Pick a username</Label>
+                           <UrlKeyField formState={formState} />
+                        </Chunk>
+                        { (formStep == 1) &&
+                           <Chunk>
+                              <Button 
+                                 label="Next"
+                                 onPress={ ()=> {
+                                 setFormStep(2) 
+                                 } }
+                                 />
+                           </Chunk>
+                        }
+                     </RevealBlock>
+                     <RevealBlock visible={formStep >= 2}>
+                        <Chunk>
+                           <Label for="photo">Pick a profile photo</Label>
+                           <PhotoField formState={formState} />
+                        </Chunk>
+                        <Chunk>
+                           <Button 
+                              label="Save"
+                              onPress={ submitForm }
+                              isLoading={formState.loading}
+                              />
+                        </Chunk>
+                     </RevealBlock>   
+                  
+                     </form>
+                     
+                  </Section>
+
+               </Bounds>
+            </Stripe>
+         </Page>
+      );
+   
+   }
+   else{
+      return (
+         <Page>
+            <TldrHeader />
+            <Stripe>
+               <Bounds style={{maxWidth: 640}}>
+                  <Section>
+                     { isSignup && 
+                        <Chunk>
+                           <Text type="pageHead">Welcome!</Text>
+                           <Text>Fill out your profile to get started</Text>
+                        </Chunk>
+                     }
+                     { !isSignup && 
+                        <Chunk>
+                           <Text type="pageHead">Profile settings</Text>
+                        </Chunk>
+                     }
+                  </Section>
+                  <Section>
+                     <form>
+                     <Chunk>
+                           <Label for="name">Name</Label>
+                           <TextInput
+                              spellCheck={false}
+                              id="name"
+                              value={formState.getFieldValue('name')}
+                              onChange={e => formState.setFieldValue('name', e.target.value) }
+                              />
+                           <FieldError error={formState.error?.fieldErrors?.name} />	
+                        </Chunk>
+                        <Chunk>
+                           <Label for="urlKey">Username</Label>
+                           <TextInput
+                              spellCheck={false}
+                              id="urlKey"
+                              value={formState.getFieldValue('urlKey')}
+                              onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)) }
+                              />
+                           <FieldError error={formState.error?.fieldErrors?.urlKey} />	
+                           <Text color="hint" type="small">Only letters, numbers, and dashes (-)</Text>
+                        </Chunk>
+                        <Chunk>
+                           <Label for="photo">Photo</Label>
+                           <Flex>
+                              <FlexItem>
+                                 <FileInput
+                                    id="photo"
+                                    placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
+                                    onChangeFile={(file)=>{
+                                       /* comes from server, doesn't get sent back to server */
+                                       formState.setFieldValue('photoUrl', URL.createObjectURL(file))
+                                       /* comes from server, gets sent back to server */
                                        formState.setFieldValue('photoId', false)
-                                       formState.setFieldValue('photoUrl', false)
+                                       /* only exists client -> server */
+                                       formState.setFieldValue('photoNewFile', file)
                                     }}
                                     />
-                              }
-                           </FlexItem>
-                           { formState.getFieldValue('photoUrl') &&
-                              <FlexItem shrink>
-                                 <Image
-                                    source={{uri: formState.getFieldValue('photoUrl') }}
-                                    style={[{
-                                          width: 120,
-                                          flex: 1,
-                                          resizeMode: 'cover',
-                                          borderRadius: 4,
-                                          boxSizing: 'content-box'
-                                    }, styles.pseudoLineHeight]}
-                                    />
+                                 { formState.getFieldValue('photoUrl') &&
+                                    <FakeInput
+                                       label="Remove photo"
+                                       shape="X"
+                                       onPress={()=>{
+                                          formState.setFieldValue('photoId', false)
+                                          formState.setFieldValue('photoUrl', false)
+                                       }}
+                                       />
+                                 }
                               </FlexItem>
-                           }
-                        </Flex>
-                     </Chunk>
-                     <Chunk>
-                        <Label for="email">Email</Label>
-                        <TextInput
-                           spellCheck={false}
-                           id="email"
-                           autoCompleteType="email"
-                           keyboardType="email-address"
-                           value={formState.getFieldValue('email')}
-                           onChange={e => formState.setFieldValue('email', e.target.value) }
-                           />
-                        <FieldError error={formState.error?.fieldErrors?.email} />	
-                     </Chunk>
-                     <Chunk>
-                        <Label for="password">Set a new password</Label>
-                        <TextInput
-                           id="password"
-                           placeholder="New password"
-                           secureTextEntry={true}
-                           autoCompleteType="new-password"
-                           value={formState.getFieldValue('password')}
-                           onChange={e => formState.setFieldValue('password', e.target.value) }
-                           />
-                        <TextInput
-                           id="confirm-password"
-                           placeholder="Retype new password to confirm"
-                           secureTextEntry={true}
-                           autoCompleteType="new-password"
-                           value={formState.getFieldValue('confirm-password')}
-                           onChange={e => formState.setFieldValue('confirm-password', e.target.value) }
-                           />
-                        <FieldError error={formState.error?.fieldErrors?.password} />	
-                        <Text type="small" color="hint">Must be at least 8 characters long</Text>
-                     </Chunk>
-                     <Chunk>
-                        <Button 
-                           label="Save"
-                           onPress={ submitForm }
-                           isLoading={formState.loading}
-                           />
-                     </Chunk>
-                  </form>
+                              { formState.getFieldValue('photoUrl') &&
+                                 <FlexItem shrink>
+                                    <Image
+                                       source={{uri: formState.getFieldValue('photoUrl') }}
+                                       style={[{
+                                             width: 120,
+                                             flex: 1,
+                                             resizeMode: 'cover',
+                                             borderRadius: 4,
+                                             boxSizing: 'content-box'
+                                       }, styles.pseudoLineHeight]}
+                                       />
+                                 </FlexItem>
+                              }
+                              {formState.getFieldValue('photoUrl')}
+                           </Flex>
+                        </Chunk>
+                     
+                     { !isSignup && 
+                        <>
+                        <Chunk>
+                           <Label for="email">Email</Label>
+                           <TextInput
+                              spellCheck={false}
+                              id="email"
+                              autoCompleteType="email"
+                              keyboardType="email-address"
+                              value={formState.getFieldValue('email')}
+                              onChange={e => formState.setFieldValue('email', e.target.value) }
+                              />
+                           <FieldError error={formState.error?.fieldErrors?.email} />	
+                        </Chunk>
+                        <Chunk>
+                           <Label for="password">Set a new password</Label>
+                           <TextInput
+                              id="password"
+                              placeholder="New password"
+                              secureTextEntry={true}
+                              autoCompleteType="new-password"
+                              value={formState.getFieldValue('password')}
+                              onChange={e => formState.setFieldValue('password', e.target.value) }
+                              />
+                           <TextInput
+                              id="confirm-password"
+                              placeholder="Retype new password to confirm"
+                              secureTextEntry={true}
+                              autoCompleteType="new-password"
+                              value={formState.getFieldValue('confirm-password')}
+                              onChange={e => formState.setFieldValue('confirm-password', e.target.value) }
+                              />
+                           <FieldError error={formState.error?.fieldErrors?.password} />	
+                           <Text type="small" color="hint">Must be at least 8 characters long</Text>
+                        </Chunk>
+                     </>
+                     }
+                        <Chunk>
+                           <Button 
+                              label="Save"
+                              onPress={ submitForm }
+                              isLoading={formState.loading}
+                              />
+                        </Chunk>
                   
-               </Section>
+                     </form>
+                     
+                  </Section>
 
-            </Bounds>
-         </Stripe>
-      </Page>
-   );
-  
+               </Bounds>
+            </Stripe>
+         </Page>
+      );
    
+   }
+
 }
 
 EditProfile.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
+   const isSignup = query.isSignup;
    const isServer = !!req;	
 	return {
 		isServer,
+      isSignup
 	}
 }
 
