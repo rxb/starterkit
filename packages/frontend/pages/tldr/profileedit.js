@@ -216,7 +216,7 @@ const EditProfile = (props) => {
    const dispatch = useDispatch(); 
    const authentication = useSelector(state => state.authentication);
    const [formStep, setFormStep] = useState(0);
-
+   const [buttonAttempt, setButtonAttempt] = useState();
 
    const formState = useFormState({
       initialFields: {
@@ -249,8 +249,9 @@ const EditProfile = (props) => {
 
    const submitForm = async () => {
       
-      const submitFields = {...formState.fields};
+      const {photoNewFile, ...submitFields} = {...formState.fields};
 
+      // run basic validations
       let error = runValidations(submitFields, profileEditValidations);
       
       // custom frontend password confirmation match
@@ -263,10 +264,19 @@ const EditProfile = (props) => {
          delete submitFields.password
       }
 
+      // display errors that exist
 		formState.setError(error);
-      console.log(error)
+
+      // if no errors, let's submit
       if(!error){
+
          formState.setLoading(true);
+
+         // photo process
+         if(photoNewFile){
+            submitFields.uri = await readFileAsDataUrl(photoNewFile);
+         }
+
          try{
             const user = await request( getUserUrl("self"), {
                method: 'PATCH', 
@@ -355,8 +365,11 @@ const EditProfile = (props) => {
                            <Button 
                               color="secondary"
                               label="Skip"
-                              onPress={ submitForm }
-                              isLoading={formState.loading}
+                              onPress={()=>{
+                                 setButtonAttempt('skip');
+                                 submitForm()
+                              }}
+                              isLoading={formState.loading && buttonAttempt == 'skip'}
                               />
                            <Button 
                               label="Upload"
@@ -370,10 +383,11 @@ const EditProfile = (props) => {
                                  });
                                  formState.setError(error);
                                  if(!error){
+                                    setButtonAttempt('upload');
                                     submitForm();
                                  } 
                               }}
-                              isLoading={formState.loading}
+                              isLoading={formState.loading && buttonAttempt == 'upload'}
                               />
                            </Inline>
                         </Chunk>
