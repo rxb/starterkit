@@ -31,6 +31,14 @@ const checkForSelf = (options) => {
 
 }
 
+const getFullModel = (options) => {
+  return async(context) => {
+    // .dispatch is the optional return without protected fields, like password
+    context.dispatch = await context.service.get(context.result.id, context.params);
+    return context;
+  }
+}
+
 module.exports = {
   before: {
     all: [
@@ -85,9 +93,15 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
-    update: [],
-    patch: [],
+    create: [
+      getFullModel()
+    ],
+    update: [
+      getFullModel()
+    ],
+    patch: [
+      getFullModel()
+    ],
     remove: []
   },
 

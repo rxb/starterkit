@@ -13,6 +13,11 @@ export const logOut = () => ({
 	type: 'LOG_OUT'
 });
 
+export const updateUser = (user) => ({
+	type: 'UPDATE_USER',
+	payload: user
+});
+
 
 /*
 // MODALS

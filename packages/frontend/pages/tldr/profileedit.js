@@ -6,7 +6,7 @@ import useSWR, { mutate }  from 'swr';
 
 // REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast, addDelayedToast } from '@/actions';
+import { addPrompt, addToast, addDelayedToast, updateUser } from '@/actions';
 
 // URLS
 import {getProfilePageUrl} from '../../components/tldr/urls';
@@ -55,8 +55,9 @@ import swatches from 'modules/cinderblock/styles/swatches';
 import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
-//import { Animated } from '@/components/cinderblock/primitives';
 import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
+import feathersClient from 'components/FeathersClient';
+
 
 const cleanUrlKey = (dirtyUrlKey) => {
    return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
@@ -226,11 +227,16 @@ const EditProfile = (props) => {
          }
 
          try{
-            const user = await request( getUserUrl("self"), {
+            const newUser = await request( getUserUrl("self"), {
                method: 'PATCH', 
                data: submitFields,
                token: authentication.accessToken
             });
+            
+            // update any user changes to redux
+            dispatch(updateUser(newUser));
+
+            // toast and push
             const toastMessage = "Settings updated!";
             dispatch(addDelayedToast(toastMessage));
             Router.push({pathname: getProfilePageUrl()})  
