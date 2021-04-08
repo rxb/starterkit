@@ -80,7 +80,7 @@ const NameField = (props) => {
 }
 
 const UrlKeyField = (props) => {
-   const {formState} = props;
+   const {formState, suggestion} = props;
    return(
       <>
        <TextInput
@@ -90,7 +90,13 @@ const UrlKeyField = (props) => {
             onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)) }
             />
          <FieldError error={formState.error?.fieldErrors?.urlKey} />	
-         <Text color="hint" type="small">Only letters, numbers, and dashes (-)</Text>
+         <Text color="hint" type="small"> Only letters, numbers, and dashes 
+         { suggestion &&
+            <Touch onPress={()=> formState.setFieldValue('urlKey', suggestion)}>
+               <Text color="hint" type="small">. How about <Text type="small" color="tint">{suggestion}</Text>?</Text>
+            </Touch>
+         }
+         </Text>
       </>
    );
 }
@@ -143,6 +149,39 @@ const PhotoField = (props) => {
    );
 }
 
+const profileEditValidations = {
+   urlKey: {
+      // TODO: add client-side uniqueness validation 
+      // (server will catch it for now)
+      notEmpty: {
+          msg: "Username can't be blank"
+      },
+      is: {
+         args: /^[a-zA-Z0-9-]*$/,
+         msg: "Username can only include letters, numbers, and dashes"
+      },
+   },
+   name: {
+      notEmpty: {
+          msg: "Name can't be blank"
+      }
+   },
+   email: {
+      notEmpty: {
+          msg: "Email can't be blank"
+      },
+      isEmail: {
+         msg: "Email must be a valid email address"
+      }
+   },
+   password: {
+      len:{
+         args: [8, undefined],
+         msg: "Password must be at least 8 characters long"
+      }
+    },
+};
+
 
 const EditProfile = (props) => {
 
@@ -157,7 +196,7 @@ const EditProfile = (props) => {
       initialFields: {
          name: '',
          urlKey: '',
-         email: '',
+         ...(isSignup ? false : {email: ''}),
          photoUrl: '',
 			photoId: '',
       },
@@ -172,7 +211,8 @@ const EditProfile = (props) => {
    // on first load, feathersclient may not have put the auth into the store yet
    const [user, setUser] = useState();
    useEffect(()=>{
-      if(authentication.accessToken){
+      // on signup flow, we don't want to expose the temp names and urlkeys
+      if(!isSignup && authentication.accessToken){
          request( getUserUrl("self"), {token: authentication.accessToken} )
             .then( (user) => {
                setUser(user);
@@ -185,38 +225,7 @@ const EditProfile = (props) => {
       
       const submitFields = {...formState.fields};
 
-      let error = runValidations(submitFields, {
-         urlKey: {
-            // TODO: add client-side uniqueness validation 
-            // (server will catch it for now)
-            notEmpty: {
-                msg: "Username can't be blank"
-            },
-            is: {
-               args: /^[a-zA-Z0-9-]*$/,
-               msg: "Username can only include letters, numbers, and dashes"
-            },
-         },
-         name: {
-            notEmpty: {
-                msg: "Name can't be blank"
-            }
-         },
-         email: {
-            notEmpty: {
-                msg: "Email can't be blank"
-            },
-            isEmail: {
-               msg: "Email must be a valid email address"
-            }
-         },
-         password: {
-            len:{
-               args: [8, undefined],
-               msg: "Password must be at least 8 characters long"
-            }
-          },
-      });
+      let error = runValidations(submitFields, profileEditValidations);
       
       // custom frontend password confirmation match
       if(submitFields["password"] != submitFields["confirm-password"]){
@@ -229,6 +238,7 @@ const EditProfile = (props) => {
       }
 
 		formState.setError(error);
+      console.log(error)
       if(!error){
          formState.setLoading(true);
          try{
@@ -272,7 +282,13 @@ const EditProfile = (props) => {
                               <Button 
                                  label="Next"
                                  onPress={ ()=> {
-                                 setFormStep(1) 
+                                    const error = runValidations(formState.fields, {
+                                       name: profileEditValidations.name
+                                    });
+                                    formState.setError(error);
+                                    if(!error){
+                                        setFormStep(1) 
+                                    }
                                  } }
                                  />
                            </Chunk>
@@ -281,14 +297,23 @@ const EditProfile = (props) => {
                      <RevealBlock visible={formStep >= 1}>
                         <Chunk>
                            <Label for="urlKey">Pick a username</Label>
-                           <UrlKeyField formState={formState} />
+                           <UrlKeyField 
+                              formState={formState} 
+                              suggestion={cleanUrlKey(formState.getFieldValue('name'))}
+                              />
                         </Chunk>
                         { (formStep == 1) &&
                            <Chunk>
                               <Button 
                                  label="Next"
                                  onPress={ ()=> {
-                                 setFormStep(2) 
+                                    const error = runValidations(formState.fields, {
+                                       urlKey: profileEditValidations.urlKey
+                                    });
+                                    formState.setError(error);
+                                    if(!error){
+                                        setFormStep(2) 
+                                    }
                                  } }
                                  />
                            </Chunk>
