@@ -33,6 +33,7 @@ import {
 	List,
 	Link,
 	Modal,
+	PhotoInput,
 	Picker,
 	Section,
 	Sectionless,
@@ -183,48 +184,18 @@ const ShowForm = (props) => {
 			</Chunk>
 			<Chunk>
 				<Label>Your photo</Label>
-				<Flex>
-					<FlexItem>
-						<FileInput
-							id="photo"
-							placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
-							onChangeFile={(fileState)=>{
-								formState.setFieldValues({
-									/* comes from server, doesn't get sent back to server */
-									photoUrl: fileState.filepreview,
-									/* comes from server, gets sent back to server */
-									photoId: false,
-									/* only exists client -> server */
-									photoNewFile: fileState.file
-								});
-							}}
-							/>
-						{ formState.getFieldValue('photoUrl') &&
-							<FakeInput
-								label="Remove photo"
-								shape="X"
-								onPress={()=>{
-									formState.setFieldValue('photoId', false)
-									formState.setFieldValue('photoUrl', false)
-								}}
-								/>
-						}
-					</FlexItem>
-					{ formState.getFieldValue('photoUrl') &&
-						<FlexItem shrink>
-							<Image
-							    source={{uri: formState.getFieldValue('photoUrl') }}
-							    style={[{
-							          width: 120,
-							          flex: 1,
-							          resizeMode: 'cover',
-							          borderRadius: 4,
-							          boxSizing: 'content-box'
-							    }, styles.pseudoLineHeight]}
-							    />
-						</FlexItem>
-					}
-				</Flex>
+				<PhotoInput onChangeFile={(fileState)=>(
+					formState.setFieldValues({
+						/* comes from server, doesn't get sent back to server */
+						photoUrl: fileState.filepreview,
+						/* comes from server, gets sent back to server */
+						photoId: false,
+						/* only exists client -> server */
+						photoNewFile: fileState.file
+					}))}
+					/>
+				<FieldError error={formState.error?.fieldErrors?.photoUrl} />
+
 			</Chunk>
 
 			<Chunk>
