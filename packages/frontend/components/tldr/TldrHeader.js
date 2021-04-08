@@ -227,6 +227,8 @@ function TldrHeader (props) {
 	const dispatch = useDispatch(); 
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
+	console.log('tldrheader');
+	console.log("url: "+user.photoUrl);
 
 	return (
 			<Header position="static">

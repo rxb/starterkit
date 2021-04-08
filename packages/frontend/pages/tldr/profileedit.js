@@ -233,8 +233,8 @@ const EditProfile = (props) => {
                token: authentication.accessToken
             });
             
-            // update any user changes to redux
-            dispatch(updateUser(newUser));
+            // force reauthenticate to update user 
+            feathersClient.reAuthenticate(true);
 
             // toast and push
             const toastMessage = "Settings updated!";

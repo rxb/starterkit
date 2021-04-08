@@ -1,9 +1,8 @@
 const authentication = (state = {}, action) => {
   switch (action.type) {
     case 'LOG_IN_SUCCESS':
+      console.log('log_in_success');
       return { ...action.payload };
-    case 'UPDATE_USER':
-      return { ...state, user: action.payload };
     case 'LOG_OUT':
       return {};
     default:
