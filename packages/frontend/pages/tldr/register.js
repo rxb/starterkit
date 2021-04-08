@@ -58,7 +58,7 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 //import { Animated } from '@/components/cinderblock/primitives';
 import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
 import feathersClient from 'components/FeathersClient';
-
+const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
 const cleanUrlKey = (dirtyUrlKey) => {
    return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
@@ -171,6 +171,17 @@ const Register = (props) => {
                <Section>
                   <Chunk>
                      <Text type="pageHead">Register</Text>
+                  </Chunk>
+               </Section>
+               <Section>
+                  <Chunk>
+                     <Button
+                        width="full"
+                        label="Log in with Google"
+                        onPress={()=>{
+                           location.href=`${apiHost}/oauth/google/`
+                        }}
+                        />
                   </Chunk>
                </Section>
                <Section>

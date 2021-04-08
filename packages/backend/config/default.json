@@ -26,6 +26,14 @@
     "local": {
       "usernameField": "email",
       "passwordField": "password"
+    },
+    "oauth": {
+      "redirect": "http://localhost:3000/tldr",
+      "google": {
+        "key": "STARTERKIT_GOOGLE_KEY",
+        "secret": "STARTERKIT_GOOGLE_SECRET",
+        "scope": ["openid", "profile", "email"]
+      }
     }
   },
   "postgres": "postgres://richard@localhost:5432/starterkit"
