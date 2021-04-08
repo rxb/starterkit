@@ -16,7 +16,6 @@ const uid = function(){
 }
 
 const checkForSelf = (options) => {
-
   return async(context) => {
     if (context.id == "self") {
       if(context.params.user){
@@ -28,7 +27,6 @@ const checkForSelf = (options) => {
     }
     return context;
   }
-
 }
 
 const getFullModel = (options) => {
@@ -93,15 +91,9 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [
-      getFullModel()
-    ],
-    update: [
-      getFullModel()
-    ],
-    patch: [
-      getFullModel()
-    ],
+    create: [],
+    update: [],
+    patch: [],
     remove: []
   },
 

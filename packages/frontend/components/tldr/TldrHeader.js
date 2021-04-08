@@ -216,19 +216,11 @@ const UserDropdown = (props) => {
 }
 
 function TldrHeader (props) {
-	/*
-	const {
-		dispatch, 
-		authentication = {} 
-	} = props;
-	*/
 
 	// data from redux
 	const dispatch = useDispatch(); 
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
-	console.log('tldrheader');
-	console.log("url: "+user.photoUrl);
 
 	return (
 			<Header position="static">
@@ -292,8 +284,5 @@ function TldrHeader (props) {
 
 	);
 }
-
-
-
 
 export default TldrHeader;

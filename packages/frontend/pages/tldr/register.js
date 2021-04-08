@@ -71,6 +71,7 @@ const cleanUrlKey = (dirtyUrlKey) => {
 const Register = (props) => {
 
 	const dispatch = useDispatch();
+   const [passwordMasked, setPasswordMasked] = useState(true);
 
    const formState = useFormState({
       initialFields: {
@@ -127,10 +128,12 @@ const Register = (props) => {
           },
       });
       
+      /*
       // custom frontend password confirmation match
       if(submitFields["password"] != submitFields["confirm-password"]){
          error = pushError(error, "password", "Your passwords don't match")
       }
+      */
 
 		formState.setError(error);
       if(!error){
@@ -185,15 +188,25 @@ const Register = (props) => {
                         <FieldError error={formState.error?.fieldErrors?.email} />	
                      </Chunk>
                      <Chunk>
-                        <Label for="password">Password</Label>
+                        <Label for="password">Pick a password</Label>
+                        { passwordMasked &&
                         <TextInput
                            id="password"
-                           placeholder="New password"
                            secureTextEntry={true}
                            autoCompleteType="new-password"
                            value={formState.getFieldValue('password')}
                            onChange={e => formState.setFieldValue('password', e.target.value) }
                            />
+                        }
+                        { !passwordMasked &&
+                        <TextInput
+                           id="password"
+                           autoCompleteType="new-password"
+                           value={formState.getFieldValue('password')}
+                           onChange={e => formState.setFieldValue('password', e.target.value) }
+                           />
+                        }
+                        {/*
                         <TextInput
                            id="confirm-password"
                            placeholder="Retype new password to confirm"
@@ -202,8 +215,19 @@ const Register = (props) => {
                            value={formState.getFieldValue('confirm-password')}
                            onChange={e => formState.setFieldValue('confirm-password', e.target.value) }
                            />
+                        */}
                         <FieldError error={formState.error?.fieldErrors?.password} />	
-                        <Text type="small" color="hint">Must be at least 8 characters long</Text>
+                        <Text type="small" color="hint">
+                           Must be at least 8 characters long
+                           { formState.getFieldValue('password').length &&
+                              <>
+                              <Text type="small" color="hint">. </Text>
+                              <Touch onPress={()=>{
+                                 setPasswordMasked(!passwordMasked);
+                              }}><Text type="small" color="tint">{passwordMasked  ? 'Unhide password' : 'Hide password'}</Text></Touch>
+                              </>
+                           }
+                        </Text>
                      </Chunk>
                      <Chunk>
                         <Button 
