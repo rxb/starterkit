@@ -222,7 +222,7 @@ const EditProfile = (props) => {
 
          // photo process
          if(photoNewFile){
-            submitFields.uri = await readFileAsDataUrl(photoNewFile);
+            submitFields.dataUri = await readFileAsDataUrl(photoNewFile);
          }
 
          try{

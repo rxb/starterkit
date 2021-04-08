@@ -83,7 +83,6 @@ const ShowForm = (props) => {
 	});
 
 	const submitEditForm = async ()=> {
-		console.log('submit');
 		
 
 		// client-side validations
@@ -109,20 +108,17 @@ const ShowForm = (props) => {
 			// photo process
 			const {photoNewFile, ...showFields} = formState.fields;
 			if(photoNewFile){
-				showFields.uri = await readFileAsDataUrl(photoNewFile);
+				showFields.dataUri = await readFileAsDataUrl(photoNewFile);
 			}
 
 			try{
-				console.log('trying')
 				const response = await request( getShowUrl(showData.id), {
 					method: 'PATCH', 
 					data: showFields,
 					token: authentication.accessToken
 				});
-				console.log('after awaiting');
 				dispatch(addDelayedToast('Show saved; nice work!'));
 				Router.push({pathname:'/show', query: {showId: showData.id}})
-				console.log('end')
 		  	}
 			catch(error){
 				formState.setError(error);

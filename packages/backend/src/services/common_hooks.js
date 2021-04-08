@@ -45,6 +45,7 @@ module.exports = {
         const upload = await context.app.service('uploads').create(data, params);
         context.data[opts.foreignPhotoKey] = upload.id;
       }
+     
       return context;
     }
   }
