@@ -16,15 +16,51 @@ class FileInput extends React.Component {
 	constructor(props){
 		super(props);
             this.state ={}
+            this.handleChange = this.handleChange.bind(this);
 	}
 
+      componentDidUpdate(prevProps){
+            if(prevProps.inputKey != this.props.inputKey){
+                  this.setState({
+                        file: undefined,
+                        filepreview: undefined,
+                        filename: undefined
+                  });
+            }
+      }
+
+      handleChange(e){
+            const file = e.target.files[0];
+            const reader = new FileReader()
+            if(file){
+                  const self = this;
+                  reader.addEventListener("load", function () {
+                        const fileState = {
+                              file: file,
+                              filepreview: reader.result,
+                              filename: e.target.value.split(/(\\|\/)/g).pop(),
+                        };
+                        self.setState(fileState)
+                        self.props.onChangeFile(fileState);
+                  }, false);
+                  reader.readAsDataURL(file);
+            }
+            else{
+                  this.setState({
+                        file: undefined,
+                        filepreview: undefined,
+                        filename: undefined
+                  })
+            }
+            this.props.onChange(e);
+      }
 
 	render() {
             const {
-                  onChange,
-                  onChangeFile,
                   placeholder,
+                  shape = "ChevronDown",
                   style,
+                  inputKey,
                   ...other
             } = this.props;
 
@@ -39,7 +75,7 @@ class FileInput extends React.Component {
                               <Fragment>
                                     <Text color="hint">{placeholder}</Text>
                                     <View style={styles['input-icon']}>
-                                          <Icon shape="ChevronDown" color={swatches.textHint} />
+                                          <Icon shape={shape} color={swatches.textHint} />
                                     </View>
                               </Fragment>
                         }
@@ -47,13 +83,14 @@ class FileInput extends React.Component {
                               <Fragment>
                                     <Text color="primary">{this.state.filename}</Text>
                                     <View style={styles['input-icon']}>
-                                          <Icon shape="ChevronDown" color={swatches.textHint} />
+                                          <Icon shape={shape} color={swatches.textHint} />
                                     </View>
                               </Fragment>
                         }
 
 
                         <input
+                              key={inputKey}
                               type="file"
                               onFocus={()=>{
                                     this.setState({hasFocus: true})
@@ -61,26 +98,7 @@ class FileInput extends React.Component {
                               onBlur={()=>{
                                     this.setState({hasFocus: false})
                               }}
-                              onChange={(e)=>{
-                                    const file = e.target.files[0];
-                                    if(file){
-                                          this.setState({
-                                                file: file,
-                                                filepreview: URL.createObjectURL(file),
-                                                filename: e.target.value.split(/(\\|\/)/g).pop(),
-                                          })
-                                          onChangeFile(file);
-                                    }
-                                    else{
-                                          this.setState({
-                                                file: undefined,
-                                                filepreview: undefined,
-                                                filename: undefined
-                                          })
-                                    }
-                                    onChange(e);
-
-                              }}
+                              onChange={this.handleChange}
                               style={{
                                     position: 'absolute',
                                     opacity: 0,
@@ -88,7 +106,6 @@ class FileInput extends React.Component {
                                     width: '100%',
                                     height: '100%'
                               }}
-                              {...other}
                               />
                   </View>
             );

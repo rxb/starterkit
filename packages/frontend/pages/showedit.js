@@ -188,13 +188,15 @@ const ShowForm = (props) => {
 						<FileInput
 							id="photo"
 							placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
-							onChangeFile={(file)=>{
-								// comes from server, doesn't get sent back to server
-								formState.setFieldValue('photoUrl', URL.createObjectURL(file))
-								// comes from server, gets sent back to server
-								formState.setFieldValue('photoId', false)
-								// only exists client -> server
-								formState.setFieldValue('photoNewFile', file)
+							onChangeFile={(fileState)=>{
+								formState.setFieldValues({
+									/* comes from server, doesn't get sent back to server */
+									photoUrl: fileState.filepreview,
+									/* comes from server, gets sent back to server */
+									photoId: false,
+									/* only exists client -> server */
+									photoNewFile: fileState.file
+								});
 							}}
 							/>
 						{ formState.getFieldValue('photoUrl') &&

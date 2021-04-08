@@ -23,6 +23,7 @@ import LoadingBlock from './components/LoadingBlock';
 import Map from './components/Map';
 import Menu from './components/Menu';
 import Modal from './components/Modal';
+import PhotoInput from './components/PhotoInput';
 import Picker from './components/Picker';
 import Picture from './components/Picture';
 import Prompter from './components/Prompter';
@@ -69,6 +70,7 @@ export {
 	Map,
 	Menu,
 	Modal,
+	PhotoInput,
 	Picker,
 	Picture,
 	Prompter,

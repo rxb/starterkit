@@ -31,6 +31,7 @@ import {
 	List,
 	Link,
 	Modal,
+   PhotoInput,
 	Picker,
 	Reorderable,
    RevealBlock,
@@ -101,22 +102,27 @@ const UrlKeyField = (props) => {
    );
 }
 
-const PhotoField = (props) => {
+
+const PhotoField2 = (props) => {
    const {formState} = props;
    return(
+
       <>
          <Flex>
             <FlexItem>
                <FileInput
+                  shape="Camera"
                   id="photo"
                   placeholder={(formState.getFieldValue('photoUrl')) ? 'Select a new file' : 'Select a file'}
-                  onChangeFile={(file)=>{
-                     /* comes from server, doesn't get sent back to server */
-                     formState.setFieldValue('photoUrl', URL.createObjectURL(file))
-                     /* comes from server, gets sent back to server */
-                     formState.setFieldValue('photoId', false)
-                     /* only exists client -> server */
-                     formState.setFieldValue('photoNewFile', file)
+                  onChangeFile={(fileState)=>{
+                     formState.setFieldValues({
+                        /* comes from server, doesn't get sent back to server */
+                        photoUrl: fileState.filepreview,
+                        /* comes from server, gets sent back to server */
+                        photoId: false,
+                        /* only exists client -> server */
+                        photoNewFile: fileState.file
+                     });
                   }}
                   />
                { formState.getFieldValue('photoUrl') &&
@@ -129,6 +135,7 @@ const PhotoField = (props) => {
                      }}
                      />
                }
+               <FieldError error={formState.error?.fieldErrors?.photoUrl} />	
             </FlexItem>
             { formState.getFieldValue('photoUrl') &&
                <FlexItem shrink>
@@ -147,6 +154,25 @@ const PhotoField = (props) => {
          </Flex>      
       </>
    );
+}
+
+const PhotoField = (props) => {
+   const {formState} = props;
+   return(
+      <>
+      <PhotoInput onChangeFile={(fileState)=>(
+         formState.setFieldValues({
+            /* comes from server, doesn't get sent back to server */
+            photoUrl: fileState.filepreview,
+            /* comes from server, gets sent back to server */
+            photoId: false,
+            /* only exists client -> server */
+            photoNewFile: fileState.file
+         }))}
+         />
+      <FieldError error={formState.error?.fieldErrors?.photoUrl} />
+      </>
+   )
 }
 
 const profileEditValidations = {
@@ -325,11 +351,31 @@ const EditProfile = (props) => {
                            <PhotoField formState={formState} />
                         </Chunk>
                         <Chunk>
+                           <Inline>
                            <Button 
-                              label="Save"
+                              color="secondary"
+                              label="Skip"
                               onPress={ submitForm }
                               isLoading={formState.loading}
                               />
+                           <Button 
+                              label="Upload"
+                              onPress={ ()=>{
+                                 const error = runValidations(formState.fields, {
+                                    photoUrl: {
+                                       notEmpty: {
+                                          msg: "Select a photo to upload"
+                                       }
+                                    }
+                                 });
+                                 formState.setError(error);
+                                 if(!error){
+                                    submitForm();
+                                 } 
+                              }}
+                              isLoading={formState.loading}
+                              />
+                           </Inline>
                         </Chunk>
                      </RevealBlock>   
                   
