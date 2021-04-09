@@ -160,7 +160,7 @@ const profileEditValidations = {
 
 const EditProfile = (props) => {
 
-   const {isSignup} = props;
+   const {isSignup, fromOauth} = props;
 
    const dispatch = useDispatch(); 
    const authentication = useSelector(state => state.authentication);
@@ -187,11 +187,12 @@ const EditProfile = (props) => {
    const [user, setUser] = useState();
    useEffect(()=>{
       // on signup flow, we don't want to expose the temp names and urlkeys
-      if(!isSignup && authentication.accessToken){
+      if( (fromOauth || !isSignup) && authentication.accessToken){
          request( getUserUrl("self"), {token: authentication.accessToken} )
             .then( (user) => {
                setUser(user);
-               formState.setFieldValues(user);
+               const {urlKey, ...populatableUser} = user;
+               formState.setFieldValues(populatableUser);
             });
       }
    }, [authentication.accessToken]);
@@ -208,10 +209,13 @@ const EditProfile = (props) => {
          error = pushError(error, "password", "Your passwords don't match")
       }
 
-      //only include password if not empty
+      // only include password if not empty
       if( submitFields.password && submitFields.password.trim().length == 0){
          delete submitFields.password
       }
+
+      // profileComplete if you've done this flow even once
+      submitFields.profileComplete = true;
 
       // display errors that exist
 		formState.setError(error);
@@ -262,7 +266,7 @@ const EditProfile = (props) => {
                   </Section>
                   <Section>
                      <form>
-                     <RevealBlock visible={formStep >= 0}>
+                     <RevealBlock visible={formStep >= 0} delay={300}>
                         <Chunk>
                            <Label for="name">What's your name?</Label>
                            <NameField formState={formState} />
@@ -452,11 +456,12 @@ const EditProfile = (props) => {
 EditProfile.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
-   const isSignup = query.isSignup;
+   const {isSignup, fromOauth} = query;
    const isServer = !!req;	
 	return {
 		isServer,
-      isSignup
+      isSignup,
+      fromOauth
 	}
 }
 

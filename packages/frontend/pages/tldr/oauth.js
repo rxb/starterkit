@@ -1,4 +1,5 @@
 import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import { ActivityIndicator } from 'react-native';
 
 // SWR
 import { request, parsePageObj, getUserUrl } from '@/swr';
@@ -9,7 +10,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import { getProfileEditPageUrl} from '../../components/tldr/urls';
+import { getIndexPageUrl, getProfileEditPageUrl} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -56,21 +57,37 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
 const Oauth = (props) => {
 
-   // newly-minted user, redirect to profile edit flow 
+   const dispatch = useDispatch(); 
+   const authentication = useSelector(state => state.authentication);
+   const user = authentication.user;
 
-   // redirect to a valid redirect
-
-   // send back home
+   useEffect(()=>{
+      if(user){
+         if(user.profileComplete){
+            // send back home
+            Router.push({pathname: getIndexPageUrl()}) 
+         }
+         else{
+            Router.push({pathname: getProfileEditPageUrl(), query: {isSignup: true, fromOauth: true}}) 
+         }   
+      }
+   }, [user]);
+   
 
    return(
       <Page>
          <TldrHeader />
-         <Stripe>
-            <Bounds>
-               <Section>
-                  <Chunk>
-                     <Text>Redirecting...</Text>
-                  </Chunk>
+         <Stripe style={{flex: 1}}>
+            <Bounds style={{flex: 1}}>
+               <Section style={{flex: 1}}>
+                  <View style={styles.absoluteCenter}>
+                     <Chunk>
+                        <ActivityIndicator
+                           size="large"
+                           color={swatches.textHint}
+                           />
+                     </Chunk>
+                  </View>
                </Section>
             </Bounds>
          </Stripe>
