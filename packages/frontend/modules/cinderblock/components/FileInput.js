@@ -23,7 +23,7 @@ class FileInput extends React.Component {
             if(prevProps.inputKey != this.props.inputKey){
                   this.setState({
                         file: undefined,
-                        filepreview: undefined,
+                        preview: undefined,
                         filename: undefined
                   });
             }
@@ -37,7 +37,7 @@ class FileInput extends React.Component {
                   reader.addEventListener("load", function () {
                         const fileState = {
                               file: file,
-                              filepreview: reader.result,
+                              preview: reader.result,
                               filename: e.target.value.split(/(\\|\/)/g).pop(),
                         };
                         self.setState(fileState)
@@ -48,7 +48,7 @@ class FileInput extends React.Component {
             else{
                   this.setState({
                         file: undefined,
-                        filepreview: undefined,
+                        preview: undefined,
                         filename: undefined
                   })
             }

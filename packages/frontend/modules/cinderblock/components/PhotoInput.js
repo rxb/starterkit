@@ -9,26 +9,10 @@ import FakeInput from './FakeInput';
 import styles from '../styles/styles';
 import swatches from '../styles/swatches';
 
-const Test = (props) => (
-	<>
-	<PhotoInput onChangeFile={(fileState)=>(
-		formState.setFieldValues({
-			/* comes from server, doesn't get sent back to server */
-			photoUrl: fileState.filepreview,
-			/* comes from server, gets sent back to server */
-			photoId: false,
-			/* only exists client -> server */
-			photoNewFile: fileState.file
-		}))}
-		/>
-	<FieldError error={formState.error?.fieldErrors?.photoUrl} />
-	</>	
-);
 
 const PhotoInput = (props) => {
 
-	const { onChangeFile, style } = props;
-	const [fileState, setFileState] = useState({});
+	const { onChangeFile, fileState, style } = props;
 	const [inputKey, setInputKey] = useState(0); // new key resets/rerenders file input
 
 	return(
@@ -39,28 +23,26 @@ const PhotoInput = (props) => {
 						inputKey={inputKey}
 						shape="Camera"
 						id="photo"
-						placeholder={ fileState.filepreview ? 'Select a new file' : 'Select a file'}
+						placeholder={ fileState.preview ? 'Select a new file' : 'Select a file'}
 						onChangeFile={ fileState => {
-							setFileState(fileState);
 							onChangeFile(fileState);
 						}}
 						/>
-					{ fileState.filepreview &&
+					{ fileState.preview &&
 						<FakeInput
 						label="Remove photo"
 						shape="X"
 						onPress={ ()=>{
-							setFileState({});
 							onChangeFile({});
 							setInputKey((inputKey+1));
 						}}
 						/>
 					}
 				</FlexItem>
-				{ fileState.filepreview &&
+				{ fileState.preview &&
 					<FlexItem shrink>
 						<Image
-						source={{uri: fileState.filepreview }}
+						source={{uri: fileState.preview }}
 						style={[{
 							width: 120,
 							flex: 1,

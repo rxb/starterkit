@@ -180,15 +180,21 @@ const ShowForm = (props) => {
 			</Chunk>
 			<Chunk>
 				<Label>Your photo</Label>
-				<PhotoInput onChangeFile={(fileState)=>(
-					formState.setFieldValues({
-						/* comes from server, doesn't get sent back to server */
-						photoUrl: fileState.filepreview,
-						/* comes from server, gets sent back to server */
-						photoId: false,
-						/* only exists client -> server */
-						photoNewFile: fileState.file
-					}))}
+				<PhotoInput 
+					fileState={{
+						preview: formState.getFieldValue('photoUrl'),
+						file: formState.getFieldValue('photoNewFile')
+					}}
+					onChangeFile={(fileState)=>(
+						formState.setFieldValues({
+							/* comes from server, doesn't get sent back to server */
+							photoUrl: fileState.filepreview,
+							/* comes from server, gets sent back to server */
+							photoId: false,
+							/* only exists client -> server */
+							photoNewFile: fileState.file
+						})
+					)}
 					/>
 				<FieldError error={formState.error?.fieldErrors?.photoUrl} />
 

@@ -109,15 +109,20 @@ const PhotoField = (props) => {
    const {formState} = props;
    return(
       <>
-      <PhotoInput onChangeFile={(fileState)=>(
-         formState.setFieldValues({
-            /* comes from server, doesn't get sent back to server */
-            photoUrl: fileState.filepreview,
-            /* comes from server, gets sent back to server */
-            photoId: false,
-            /* only exists client -> server */
-            photoNewFile: fileState.file
-         }))}
+      <PhotoInput 
+         fileState={{
+            preview: formState.getFieldValue('photoUrl'),
+            file: formState.getFieldValue('photoNewFile')
+         }}
+         onChangeFile={(fileState)=>(
+            formState.setFieldValues({
+               /* comes from server, doesn't get sent back to server */
+               photoUrl: fileState.preview,
+               /* comes from server, gets sent back to server */
+               photoId: false,
+               /* only exists client -> server */
+               photoNewFile: fileState.file
+            }))}
          />
       <FieldError error={formState.error?.fieldErrors?.photoUrl} />
       </>
@@ -319,6 +324,12 @@ const EditProfile = (props) => {
                            <PhotoField formState={formState} />
                         </Chunk>
                         <Chunk>
+                           <Button 
+                              label="Next"
+                              onPress={ submitForm }
+                              isLoading={formState.loading && buttonAttempt == 'upload'}
+                              />
+                           {/*
                            <Inline>
                            <Button 
                               color="secondary"
@@ -348,6 +359,7 @@ const EditProfile = (props) => {
                               isLoading={formState.loading && buttonAttempt == 'upload'}
                               />
                            </Inline>
+                           */}
                         </Chunk>
                      </RevealBlock>   
                   
