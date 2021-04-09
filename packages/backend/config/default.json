@@ -28,7 +28,7 @@
       "passwordField": "password"
     },
     "oauth": {
-      "redirect": "http://localhost:3000/tldr",
+      "redirect": "http://localhost:3000/tldr/oauth",
       "google": {
         "key": "STARTERKIT_GOOGLE_KEY",
         "secret": "STARTERKIT_GOOGLE_SECRET",
