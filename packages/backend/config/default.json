@@ -33,6 +33,11 @@
         "key": "STARTERKIT_GOOGLE_KEY",
         "secret": "STARTERKIT_GOOGLE_SECRET",
         "scope": ["openid", "profile", "email"]
+      },
+      "apple": {
+        "key": "STARTERKIT_APPLE_CLIENT_ID",
+        "secret": "!!CLIENT_SECRET_GETS_GENERATED_IN_AUTHENTICATION_JS!!",
+        "scope": ["name", "email"]
       }
     }
   },

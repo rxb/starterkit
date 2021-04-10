@@ -43,8 +43,8 @@ import {
 	View,
 	useFormState
 } from 'modules/cinderblock';
-import Page from '@/components/Page';
-import TldrHeader from '../../components/tldr/TldrHeader';
+import Page from 'components/Page';
+import TldrHeader from 'components/tldr/TldrHeader';
 import Router from 'next/router'
 import Head from 'next/head'
 
@@ -58,7 +58,7 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 //import { Animated } from '@/components/cinderblock/primitives';
 import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
 import feathersClient from 'components/FeathersClient';
-const apiHost = process.env.NEXT_PUBLIC_API_HOST;
+import { OauthButtons } from 'components/tldr/components';
 
 const cleanUrlKey = (dirtyUrlKey) => {
    return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
@@ -167,24 +167,18 @@ const Register = (props) => {
       <Page>
          <TldrHeader />
          <Stripe>
-            <Bounds style={{maxWidth: 640}}>
+            <Bounds style={{maxWidth: 480}}>
                <Section>
                   <Chunk>
-                     <Text type="pageHead">Register</Text>
+                     <Text type="pageHead">Sign up</Text>
                   </Chunk>
                </Section>
                <Section>
                   <Chunk>
-                     <Button
-                        width="full"
-                        label="Log in with Google"
-                        onPress={()=>{
-                           location.href=`${apiHost}/oauth/google/`
-                        }}
-                        />
+                     <OauthButtons />
                   </Chunk>
                </Section>
-               <Section>
+               <Section border>
                   <form>
                      <Chunk>
                         <Label for="email">Email</Label>
@@ -242,7 +236,7 @@ const Register = (props) => {
                      </Chunk>
                      <Chunk>
                         <Button 
-                           label="Register"
+                           label="Sign up with email"
                            onPress={ submitForm }
                            isLoading={formState.loading}
                            />

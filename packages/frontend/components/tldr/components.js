@@ -48,7 +48,29 @@ const smallCardMinHeight = 220;
 
 import Router from 'next/router'
 import Markdown from 'markdown-to-jsx';
+const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
+
+export const OauthButtons = () => {
+	return(
+		<>
+		<Button
+			width="full"
+			label="Sign in with Google"
+			onPress={()=>{
+				location.href=`${apiHost}/oauth/google/`
+			}}
+			/>
+		<Button
+			width="full"
+			label="Sign in with Apple"
+			onPress={()=>{
+				location.href=`${apiHost}/oauth/apple/`
+			}}
+			/>
+		</>
+	);
+}
 
 export const TldrCard = (props) => {
 

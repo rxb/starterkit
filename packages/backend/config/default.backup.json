@@ -44,13 +44,9 @@
         "authorize_url": "https://www.reddit.com/api/v1/authorize.compact"
       },
       "apple": {
-        "authorize_url": "https://appleid.apple.com/auth/authorize",
-        "access_url": "https://appleid.apple.com/auth/token",
-        "oauth": 2,
-        "key": "OAUTH_CLIENT_ID",
-        "secret": "OAUTH_CLIENT_SECRET",
+        "key": "STARTERKIT_APPLE_CLIENT_ID",
+        "secret": "!!CLIENT_SECRET_GETS_GENERATED_IN_AUTHENTICATION_JS!!",
         "scope": ["authorization_code"],
-        "nonce": true
       }
     }
   },

@@ -49,7 +49,8 @@ import LoginForm from './LoginForm';
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
-import { addToastableErrors } from '../modules/cinderblock/utils';
+import { addToastableErrors } from 'modules/cinderblock/utils';
+import { OauthButtons } from 'components/tldr/components';
 
 
 // usePrevious hook
@@ -135,8 +136,9 @@ function Page (props) {
 						<Chunk>
 							<Text type="pageHead">Log in</Text>
 						</Chunk>
-					</Section>
-					<Section>
+						<Chunk>
+							<OauthButtons />
+						</Chunk>
 						<LoginForm />
 					</Section>
 					

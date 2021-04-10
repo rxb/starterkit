@@ -64,7 +64,6 @@ const Oauth = (props) => {
    useEffect(()=>{
       if(user){
          if(user.profileComplete){
-            // send back home
             Router.push({pathname: getIndexPageUrl()}) 
          }
          else{
