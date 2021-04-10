@@ -11,7 +11,7 @@ const getAppleClientSecret = () => {
    typ: undefined // is there another way to remove type?
   }
   const claims = {
-   'iss': process.env.TEAM_ID,
+   'iss': process.env.STARTERKIT_APPLE_TEAM_ID,
    'aud': 'https://appleid.apple.com',
    'sub': process.env.STARTERKIT_APPLE_CLIENT_ID,
   }
@@ -22,6 +22,7 @@ const getAppleClientSecret = () => {
   });
  return token
  }
+
 
 module.exports = {
    "authentication": {

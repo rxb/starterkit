@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next",
+    "https": "node server",
     "build": "next build",
     "start": "next start",
     "stats": "next build --stats",
