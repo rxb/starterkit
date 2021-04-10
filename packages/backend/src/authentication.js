@@ -4,28 +4,7 @@ const { expressOauth, OAuthStrategy } = require('@feathersjs/authentication-oaut
 
 const makeRandomPassword = () => Math.random().toString(36).substr(10);
 
-// sign in with apple
-// https://medium.com/techulus/how-to-setup-sign-in-with-apple-9e142ce498d4
-var jwt = require('jsonwebtoken');
-const getAppleClientSecret = () => {
-  // sign with RSA SHA256
-  const privateKey = process.env.STARTERKIT_APPLE_PRIVATE_KEY;
-  const headers = {
-   kid: process.env.STARTERKIT_APPLE_KEY_ID,
-   typ: undefined // is there another way to remove type?
-  }
-  const claims = {
-   'iss': process.env.TEAM_ID,
-   'aud': 'https://appleid.apple.com',
-   'sub': process.env.STARTERKIT_APPLE_CLIENT_ID,
-  }
- token = jwt.sign(claims, privateKey, {
-   algorithm: 'ES256',
-   header: headers,
-   expiresIn: '24h'
-  });
- return token
- }
+
 
 class AnonymousStrategy extends AuthenticationBaseStrategy {
   async authenticate(authentication, params) {
@@ -58,14 +37,6 @@ class GoogleStrategy extends OAuthStrategy {
 
 
 class AppleStrategy extends OAuthStrategy {
-  async authenticate(authentication, originalParams) {
-    // generate the client_secret and insert it
-    originalParams.secret = getAppleClientSecret();
-    console.log(originalParams);
-    const baseData = await super.authenticate(authentication, originalParams);
-    return baseData;
-  }
-
   async getEntityData(profile) {
     const baseData = await super.getEntityData(profile);
     console.log(baseData);
