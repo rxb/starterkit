@@ -38,9 +38,23 @@ class GoogleStrategy extends OAuthStrategy {
 
 class AppleStrategy extends OAuthStrategy {
   async getEntityData(profile) {
+    console.log('getEntityData 1');
+
+    // this will set 'googleId'
     const baseData = await super.getEntityData(profile);
+    console.log('getEntityData 2');
     console.log(baseData);
-    return baseData;
+
+    // this will grab the picture and email address of the Google profile
+    const newData = {
+      ...baseData,
+      name: profile.firstName +" "+profile.lastName,
+      email: profile.email,
+      password: makeRandomPassword()
+    };
+    console.log('getEntityData 3');
+
+    return newData;
   }
 }
 

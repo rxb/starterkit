@@ -9,8 +9,9 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
      await queryInterface.addColumn(
-      'users', 'profileComplete', {
-        type: Sequelize.BOOLEAN,
+      'users', 'appleId', {
+        type: Sequelize.STRING,
+        defaultValue: true
       });
   },
 
@@ -20,7 +21,8 @@ module.exports = {
      *
      * Example:
      * await queryInterface.dropTable('users');
+     * 
      */
-     await queryInterface.removeColumn('tldrs', 'categoryId'); 
+     await queryInterface.removeColumn('users', 'appleId'); 
   }
 };

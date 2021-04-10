@@ -64,6 +64,9 @@ module.exports = function (app) {
     redditId: {
       type: DataTypes.STRING,
     },
+    appleId: {
+      type: DataTypes.STRING,
+    },
     profileComplete: {
       type: DataTypes.BOOLEAN,
     },
