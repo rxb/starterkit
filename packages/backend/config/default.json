@@ -30,7 +30,9 @@
     },
     "oauth": {
       "defaults": {
-        "origin": "https://api.tldr.cards"
+        "transport": "session",
+        "origin": "https://api.tldr.cards",
+        "response": null
       },
       "redirect": "https://tldr.cards:3000/tldr/oauth",
       "google": {

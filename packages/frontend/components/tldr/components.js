@@ -54,7 +54,6 @@ const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 export const OauthButtons = () => {
 	return(
 		<>
-		<Text>{apiHost}</Text>
 		<Button
 			width="full"
 			color="secondary"
