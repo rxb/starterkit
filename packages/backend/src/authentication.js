@@ -23,7 +23,8 @@ class GoogleStrategy extends OAuthStrategy {
       name: profile.name,
       email: profile.email,
       url: profile.picture,
-      profileComplete: false // can't be sure of all info, have the user review it
+      fillTempValues: true,   // fill semi-required things that are missing
+      profileComplete: false  // have the user review it
     };
     return newData;
   }
@@ -51,7 +52,8 @@ class AppleStrategy extends OAuthStrategy {
     const newData = {
       ...baseData,
       email: profle.email,
-      profileComplete: false // missing profile info, have the user review it
+      fillTempValues: true,   // fill semi-required things that are missing
+      profileComplete: false  // have the user review it
     };
     return newData;
   }

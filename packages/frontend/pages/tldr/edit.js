@@ -183,7 +183,8 @@ const Edit = (props) => {
    }); 
 
    const submitForm = async () => {
-      const error = runValidations(formState.fields, editValidations);
+      const submitFields = {...formState.fields};
+      const error = runValidations(submitFields, editValidations);
 		formState.setError(error);
       if(!error){
          formState.setLoading(true);
@@ -192,7 +193,7 @@ const Edit = (props) => {
             if(tldrId != undefined){
                const tldr = await request( getTldrUrl(tldrId), {
                   method: 'PATCH', 
-                  data: formState.fields,
+                  data: submitFields,
                   token: authentication.accessToken
                });
                const toastMessage = "Settings updated!";
@@ -202,7 +203,7 @@ const Edit = (props) => {
             else{
                const tldr = await request( getTldrUrl(), {
                   method: 'POST', 
-                  data: formState.fields,
+                  data: submitFields,
                   token: authentication.accessToken
                });
                const toastMessage = "Great, now you can write the first version of your card";

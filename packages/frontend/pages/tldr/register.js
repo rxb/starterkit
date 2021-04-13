@@ -88,27 +88,9 @@ const Register = (props) => {
    
    const submitForm = async () => {
       
-      const submitFields = {...formState.fields};
+      const submitFields = {...formState.fields, fillTempValues: true};
 
       let error = runValidations(submitFields, {
-         /*
-         urlKey: {
-            // TODO: add client-side uniqueness validation 
-            // (server will catch it for now)
-            notEmpty: {
-                msg: "Username can't be blank"
-            },
-            is: {
-               args: /^[a-zA-Z0-9-]*$/,
-               msg: "Username can only include letters, numbers, and dashes"
-            },
-         },
-         name: {
-            notEmpty: {
-                msg: "Name can't be blank"
-            }
-         },
-         */
          email: {
             notEmpty: {
                 msg: "Email can't be blank"
