@@ -43,8 +43,12 @@ class AppleStrategy extends OAuthStrategy {
     for( let i=0; i<keys.length; i++ ){
       try{
         const pem = jwkToPem(keys[i]);
-        const profile = jwt.verify(data.id_token, pem);
-        return profile;
+        const tokenData = jwt.verify(data.id_token, pem);
+        const user = data.user || {}
+        return {
+          ...tokenData,
+          user
+        };
       }
       catch(error){
         // nothing needed
@@ -56,9 +60,10 @@ class AppleStrategy extends OAuthStrategy {
   async getEntityData(profile) {
 
     const baseData = await super.getEntityData(profile);
+    const name = profile.user.name ? (profile.user.name.firstName+" "+profile.user.name.lastName) : false
     const newData = {
       ...baseData,
-      email: profile.email,
+      name,
       password: makeRandomPassword()
     };
 
