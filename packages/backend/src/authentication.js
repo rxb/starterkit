@@ -5,9 +5,6 @@ const jwt = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
 const axios = require('axios').default;
 
-const makeRandomPassword = () => Math.random().toString(36).substr(10);
-
-
 class AnonymousStrategy extends AuthenticationBaseStrategy {
   async authenticate(authentication, params) {
     return {
@@ -20,17 +17,13 @@ class AnonymousStrategy extends AuthenticationBaseStrategy {
 ///https://docs.feathersjs.com/cookbook/authentication/google.html#using-the-data-returned-from-the-google-app-through-a-custom-oauth-strategy
 class GoogleStrategy extends OAuthStrategy {
   async getEntityData(profile) {
-
-    // this will set 'googleId'
     const baseData = await super.getEntityData(profile);
-
-    // this will grab the picture and email address of the Google profile
     const newData = {
       ...baseData,
       name: profile.name,
       email: profile.email,
       url: profile.picture,
-      password: makeRandomPassword()
+      profileComplete: false // can't be sure of all info, have the user review it
     };
     return newData;
   }
@@ -44,11 +37,7 @@ class AppleStrategy extends OAuthStrategy {
       try{
         const pem = jwkToPem(keys[i]);
         const tokenData = jwt.verify(data.id_token, pem);
-        const user = data.user || {}
-        return {
-          ...tokenData,
-          user
-        };
+        return tokenData;
       }
       catch(error){
         // nothing needed
@@ -58,15 +47,12 @@ class AppleStrategy extends OAuthStrategy {
   }
 
   async getEntityData(profile) {
-
     const baseData = await super.getEntityData(profile);
-    const name = profile.user.name ? (profile.user.name.firstName+" "+profile.user.name.lastName) : false
     const newData = {
       ...baseData,
-      name,
-      password: makeRandomPassword()
+      email: profle.email,
+      profileComplete: false // missing profile info, have the user review it
     };
-
     return newData;
   }
   

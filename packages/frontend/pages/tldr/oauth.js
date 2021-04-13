@@ -63,11 +63,11 @@ const Oauth = (props) => {
 
    useEffect(()=>{
       if(user){
-         if(user.profileComplete){
-            Router.push({pathname: getIndexPageUrl()}) 
+         if(!user.profileComplete){
+            Router.push({pathname: getProfileEditPageUrl(), query: {isSignup: true}})
          }
          else{
-            Router.push({pathname: getProfileEditPageUrl(), query: {isSignup: true, fromOauth: true}}) 
+            Router.push({pathname: getIndexPageUrl()}) 
          }   
       }
    }, [user]);

@@ -68,7 +68,10 @@ module.exports = function (app) {
       type: DataTypes.STRING,
     },
     profileComplete: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.BOOLEAN
+    },
+    tempValues: {
+      type: DataTypes.JSONB,
     },
     urlKey: {
       type: DataTypes.TEXT,

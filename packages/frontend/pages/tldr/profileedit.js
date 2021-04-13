@@ -165,7 +165,7 @@ const profileEditValidations = {
 
 const EditProfile = (props) => {
 
-   const {isSignup, fromOauth} = props;
+   const {isSignup} = props;
 
    const dispatch = useDispatch(); 
    const authentication = useSelector(state => state.authentication);
@@ -176,9 +176,9 @@ const EditProfile = (props) => {
       initialFields: {
          name: '',
          urlKey: '',
-         ...(isSignup ? false : {email: ''}),
          photoUrl: '',
 			photoId: '',
+         ...(isSignup ? false : {email: ''}) // don't need to patch fields that aren't shown
       },
       toastableErrors: {
          BadRequest: 'Something went wrong',
@@ -189,15 +189,19 @@ const EditProfile = (props) => {
 
    // load user, one time (unless auth changes), reinitialize the form
    // on first load, feathersclient may not have put the auth into the store yet
-   const [user, setUser] = useState();
    useEffect(()=>{
-      // on signup flow, we don't want to expose the temp names and urlkeys
-      if( (fromOauth || !isSignup) && authentication.accessToken){
+      
+      if(authentication.accessToken){
          request( getUserUrl("self"), {token: authentication.accessToken} )
             .then( (user) => {
-               setUser(user);
-               const {urlKey, ...populatableUser} = user;
-               formState.setFieldValues(populatableUser);
+               // in signUp flow, do not populate fields listed in tempValues 
+               // in full edit, let them see everything
+               if(isSignup && Array.isArray(user.tempValues)){
+                  user.tempValues.forEach((key, i) => {
+                     delete user[key];
+                  });
+               }               
+               formState.setFieldValues(user);   
             });
       }
    }, [authentication.accessToken]);
@@ -219,8 +223,9 @@ const EditProfile = (props) => {
          delete submitFields.password
       }
 
-      // profileComplete if you've done this flow even once
+      // profile is complete if you've done this flow even once
       submitFields.profileComplete = true;
+      submitFields.tempValues = [];
 
       // display errors that exist
 		formState.setError(error);

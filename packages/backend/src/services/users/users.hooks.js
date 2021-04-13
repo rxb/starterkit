@@ -11,9 +11,9 @@ const {
   saveAndGetNewImageReference
 } = require('../common_hooks.js');
 
-const uid = function(){
-  return Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
+const uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
+const makeRandomPassword = () => Math.random().toString(36).substr(10);
+
 
 const checkForSelf = (options) => {
   return async(context) => {
@@ -49,21 +49,33 @@ module.exports = {
       checkForSelf(),
     ],
     create: [
-      hashPassword('password'),
-      saveAndGetNewImageReference(),
       async (context) => {
-        const tempId = uid();
-
-        // add temp name if no name
-        if(!context.data.name){
-          context.data.name =  `User ${tempId}`;
-        }
-        // add temp urlkey if not urlkey
-        if(!context.data.urlKey){
-          context.data.urlKey =  `user-${tempId}`;
+        // for multistep registration
+        // sometimes we need to temporarily fill fields we'll re-ask for later
+        if(context.data.fillTempValues){
+          const tempId = uid();
+          const tempValues = [];
+          // add temp name if no name
+          if(!context.data.name){
+            context.data.name =  `User ${tempId}`;
+            tempValues.push("name");
+          }
+          // add temp urlkey if not urlkey
+          if(!context.data.urlKey){
+            context.data.urlKey =  `user-${tempId}`;
+            tempValues.push("urlKey");
+          }
+          // add temp password if no password
+          if(!context.data.urlKey){
+            context.data.password =  makeRandomPassword();
+            // password doesn't need to be pushed to tempValues, that's a password reset
+          }
+          context.data.tempValues = tempValues;
         }
         return context
       },
+      hashPassword('password'),
+      saveAndGetNewImageReference()
     ],
     update: [
       hashPassword('password'),
