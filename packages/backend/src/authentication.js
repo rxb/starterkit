@@ -1,9 +1,12 @@
 const { AuthenticationService, AuthenticationBaseStrategy, JWTStrategy } = require('@feathersjs/authentication');
 const { LocalStrategy } = require('@feathersjs/authentication-local');
 const { expressOauth, OAuthStrategy } = require('@feathersjs/authentication-oauth');
+
+/*
 const jwt = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
 const axios = require('axios').default;
+*/
 
 class AnonymousStrategy extends AuthenticationBaseStrategy {
   async authenticate(authentication, params) {
@@ -16,6 +19,10 @@ class AnonymousStrategy extends AuthenticationBaseStrategy {
 // GOOGLE STRATEGY
 ///https://docs.feathersjs.com/cookbook/authentication/google.html#using-the-data-returned-from-the-google-app-through-a-custom-oauth-strategy
 class GoogleStrategy extends OAuthStrategy {
+  async getProfile (data, _params) {
+    return data.profile;
+  }
+
   async getEntityData(profile) {
     const baseData = await super.getEntityData(profile);
     const newData = {
@@ -31,6 +38,7 @@ class GoogleStrategy extends OAuthStrategy {
 }
 
 class AppleStrategy extends OAuthStrategy {
+  /*
   async getProfile (data, _params) {
     const response = await axios.get('https://appleid.apple.com/auth/keys');
     const keys = response.data.keys;
@@ -46,12 +54,17 @@ class AppleStrategy extends OAuthStrategy {
     }
     return false;    
   }
+  */
+
+  async getProfile (data, _params) {
+    return data.jwt.id_token.payload;
+  }
 
   async getEntityData(profile) {
     const baseData = await super.getEntityData(profile);
     const newData = {
       ...baseData,
-      email: profle.email,
+      email: profile.email,
       fillTempValues: true,   // fill semi-required things that are missing
       profileComplete: false  // have the user review it
     };

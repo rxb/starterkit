@@ -11,7 +11,7 @@ const {
   saveAndGetNewImageReference
 } = require('../common_hooks.js');
 
-const uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 const makeRandomPassword = () => Math.random().toString(36).substr(10);
 
 
@@ -66,7 +66,7 @@ module.exports = {
             tempValues.push("urlKey");
           }
           // add temp password if no password
-          if(!context.data.urlKey){
+          if(!context.data.password){
             context.data.password =  makeRandomPassword();
             // password doesn't need to be pushed to tempValues, that's a password reset
           }
