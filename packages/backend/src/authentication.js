@@ -23,9 +23,9 @@ async function authenticateCustom (authentication, originalParams) {
   const existingEntity = await this.findEntity(profile, params)
     || await this.getCurrentEntity(params);
 
-  // instead of update, just get
+  // don't update user entity with new oauth info (why would anyone do that?)
   const authEntity = !existingEntity ? await this.createEntity(profile, params)
-    : await this.updateEntity(existingEntity, profile, params);
+    : existingEntity;
 
   return {
     authentication: { strategy: this.name },
@@ -55,7 +55,7 @@ class GoogleStrategy extends OAuthStrategy {
   }
 
   async authenticate(authentication, originalParams){
-    return await authenticateCustom(authentication, originalParams);
+    return await authenticateCustom.call(this, authentication, originalParams);
   }
 }
 
@@ -97,7 +97,7 @@ class AppleStrategy extends OAuthStrategy {
   }
 
   async authenticate(authentication, originalParams){
-    return await authenticateCustom(authentication, originalParams);
+    return await authenticateCustom.call(this, authentication, originalParams);
   }
   
 }
