@@ -16,6 +16,24 @@ class AnonymousStrategy extends AuthenticationBaseStrategy {
   }
 }
 
+async function authenticateCustom (authentication, originalParams) {
+  const entity = this.configuration.entity;
+  const { provider, ...params } = originalParams;
+  const profile = await this.getProfile(authentication, params);
+  const existingEntity = await this.findEntity(profile, params)
+    || await this.getCurrentEntity(params);
+
+  // instead of update, just get
+  const authEntity = !existingEntity ? await this.createEntity(profile, params)
+    : await this.updateEntity(existingEntity, profile, params);
+
+  return {
+    authentication: { strategy: this.name },
+    [entity]: await this.getEntity(authEntity, originalParams)
+  };
+}
+
+
 // GOOGLE STRATEGY
 ///https://docs.feathersjs.com/cookbook/authentication/google.html#using-the-data-returned-from-the-google-app-through-a-custom-oauth-strategy
 class GoogleStrategy extends OAuthStrategy {
@@ -34,6 +52,10 @@ class GoogleStrategy extends OAuthStrategy {
       profileComplete: false  // have the user review it
     };
     return newData;
+  }
+
+  async authenticate(authentication, originalParams){
+    return await authenticateCustom(authentication, originalParams);
   }
 }
 
@@ -61,6 +83,9 @@ class AppleStrategy extends OAuthStrategy {
   }
 
   async getEntityData(profile) {
+    // this seems to update local info even if it already exists
+    // that's not great
+  
     const baseData = await super.getEntityData(profile);
     const newData = {
       ...baseData,
@@ -69,6 +94,10 @@ class AppleStrategy extends OAuthStrategy {
       profileComplete: false  // have the user review it
     };
     return newData;
+  }
+
+  async authenticate(authentication, originalParams){
+    return await authenticateCustom(authentication, originalParams);
   }
   
 }

@@ -3,7 +3,9 @@
 const Sequelize = require('sequelize');
 const DataTypes = Sequelize.DataTypes;
 
+
 module.exports = function (app) {
+  const serverUrl = app.get('protocol')+"://"+app.get('host');
   const sequelizeClient = app.get('sequelizeClient');
   const shows = sequelizeClient.define('shows', {
     id: {
@@ -38,7 +40,7 @@ module.exports = function (app) {
       // https://sequelize-guides.netlify.com/virtual-columns/
       type: DataTypes.VIRTUAL,
       get () {
-        return this.getDataValue('photoId') ? `http://localhost:3030/photos/${this.getDataValue('photoId')}` : null;
+        return this.getDataValue('photoId') ? `${serverUrl}/photos/${this.getDataValue('photoId')}` : null;
       }
     },
   },

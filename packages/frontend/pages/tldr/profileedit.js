@@ -208,24 +208,19 @@ const EditProfile = (props) => {
 
    const submitForm = async () => {
       
-      const {photoNewFile, ...submitFields} = {...formState.fields};
-
-      // run basic validations
+      const {photoNewFile, ...submitFields} = {
+         ...formState.fields,
+         profileComplete: true,  // profile is complete if you've done this flow even once
+         tempValues: []
+      };
       let error = runValidations(submitFields, profileEditValidations);
       
+      /*
       // custom frontend password confirmation match
       if(submitFields["password"] != submitFields["confirm-password"]){
          error = pushError(error, "password", "Your passwords don't match")
       }
-
-      // only include password if not empty
-      if( submitFields.password && submitFields.password.trim().length == 0){
-         delete submitFields.password
-      }
-
-      // profile is complete if you've done this flow even once
-      submitFields.profileComplete = true;
-      submitFields.tempValues = [];
+      */
 
       // display errors that exist
 		formState.setError(error);
@@ -234,6 +229,11 @@ const EditProfile = (props) => {
       if(!error){
 
          formState.setLoading(true);
+
+         // only include password if not empty
+         if( submitFields.password && submitFields.password.trim().length == 0){
+            delete submitFields.password
+         }
 
          // photo process
          if(photoNewFile){
@@ -332,7 +332,7 @@ const EditProfile = (props) => {
                            <Button 
                               label="Next"
                               onPress={ submitForm }
-                              isLoading={formState.loading && buttonAttempt == 'upload'}
+                              isLoading={formState.loading}
                               />
                            {/*
                            <Inline>
