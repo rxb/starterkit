@@ -8,6 +8,7 @@ const events = require('./events/events.service.js');
 const tldrs = require('./tldrs/tldrs.service.js');
 const tldrVersions = require('./tldr_versions/tldr_versions.service.js');
 const categories = require('./categories/categories.service.js');
+const mailer = require('./mailer/mailer.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(shows);
@@ -20,4 +21,5 @@ module.exports = function (app) {
   app.configure(tldrs);
   app.configure(tldrVersions);
   app.configure(categories);
+  app.configure(mailer);
 };

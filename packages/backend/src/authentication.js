@@ -60,32 +60,12 @@ class GoogleStrategy extends OAuthStrategy {
 }
 
 class AppleStrategy extends OAuthStrategy {
-  /*
-  async getProfile (data, _params) {
-    const response = await axios.get('https://appleid.apple.com/auth/keys');
-    const keys = response.data.keys;
-    for( let i=0; i<keys.length; i++ ){
-      try{
-        const pem = jwkToPem(keys[i]);
-        const tokenData = jwt.verify(data.id_token, pem);
-        return tokenData;
-      }
-      catch(error){
-        // nothing needed
-      }
-    }
-    return false;    
-  }
-  */
-
+  
   async getProfile (data, _params) {
     return data.jwt.id_token.payload;
   }
 
-  async getEntityData(profile) {
-    // this seems to update local info even if it already exists
-    // that's not great
-  
+  async getEntityData(profile) {  
     const baseData = await super.getEntityData(profile);
     const newData = {
       ...baseData,
