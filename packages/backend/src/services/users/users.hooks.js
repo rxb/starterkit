@@ -40,7 +40,7 @@ const getFullModel = (options) => {
 module.exports = {
   before: {
     all: [
-      protect('password')
+      protect('password', 'verifyToken', 'verifyShortToken', 'verifyExpires', 'verifyChanges', 'resetToken', 'resetShortToken', 'resetExpires')
     ],
     find: [],
     get: [

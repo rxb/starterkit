@@ -35,6 +35,7 @@ process.env.STARTERKIT_APPLE_SECRET = getAppleClientSecret();
 
 const config = {
   "authentication": {
+	 "secret": "STARTERKIT_AUTHENTICATION_SECRET",
     "oauth": {
       "google": {
         "key": "STARTERKIT_GOOGLE_KEY",

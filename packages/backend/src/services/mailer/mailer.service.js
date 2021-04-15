@@ -5,7 +5,6 @@ const sendgridTransport = require('nodemailer-sendgrid-transport');
 module.exports = async function (app) {
 
 	// Register the service, see below for an example
-	console.log(process.env.STARTERKIT_SENDGRID_KEY);
 	app.use('mailer', mailer(sendgridTransport({
 		auth: {
 			api_key: process.env.STARTERKIT_SENDGRID_KEY

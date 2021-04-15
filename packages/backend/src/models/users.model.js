@@ -84,7 +84,34 @@ module.exports = function (app) {
       validate: {
         is: /^[a-zA-Z0-9_-]*$/
       }
-    },    
+    }, 
+    isVerified: {
+      type: DataTypes.BOOLEAN
+    },
+    verifyToken: {
+      type: DataTypes.STRING
+    },
+    verifyShortToken: {
+      type: DataTypes.STRING
+    }, 
+    verifyExpires: {
+      type: DataTypes.DATE
+    },   
+    verifyChanges: {
+      type: DataTypes.STRING
+    },   
+    resetToken: {
+      type: DataTypes.STRING
+    }, 
+    resetShortToken: {
+      type: DataTypes.STRING
+    },  
+    resetExpires: {
+      type: DataTypes.DATE
+    },  
+    resetAttempts: {
+      type: DataTypes.INTEGER
+    },                          
   }, {
     hooks: {
       beforeCount(options) {
