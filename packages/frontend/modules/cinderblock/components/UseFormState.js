@@ -44,7 +44,7 @@ const useFormState = ( opts = {} ) => {
 
 	// watch for toastable errors 
 	useEffect(()=>{
-		const message = toastableErrors[error?.name];
+		const message = error?.message || toastableErrors[error?.name] || false;
 		if(message){
 			addToast(message);
 		}

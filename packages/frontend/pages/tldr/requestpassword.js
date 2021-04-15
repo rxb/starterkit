@@ -128,31 +128,45 @@ const PasswordRequest = (props) => {
                   </Section>
                   <Section>
                      <form>
-                         <Chunk>
-                           <Label for="email">Email address</Label>
-                           <TextInput
-                              spellCheck={false}
-                              id="email"
-                              autoCompleteType="email"
-                              keyboardType="email-address"
-                              value={formState.getFieldValue('email')}
-                              onChange={e => formState.setFieldValue('email', e.target.value) }
-                              />
-                           <FieldError error={formState.error?.fieldErrors?.email} />	
-                        </Chunk>
-                        <Chunk>
-                           <Button 
-                              label="Submit"
-                              onPress={ submitForm }
-                              isLoading={formState.loading}
-                              />
-                        </Chunk>
 
-                        { requestSentTo &&
+                       {!requestSentTo && 
+                           <>
                            <Chunk>
-                              <Text color="tint">Email sent to {requestSentTo}</Text>
+                              <Label for="email">Email address</Label>
+                              <TextInput
+                                 spellCheck={false}
+                                 id="email"
+                                 autoCompleteType="email"
+                                 keyboardType="email-address"
+                                 value={formState.getFieldValue('email')}
+                                 onChange={e => formState.setFieldValue('email', e.target.value) }
+                                 />
+                              <FieldError error={formState.error?.fieldErrors?.email} />	
                            </Chunk>
+                           <Chunk>
+                              <Button 
+                                 label="Submit"
+                                 onPress={ submitForm }
+                                 isLoading={formState.loading}
+                                 />
+                           </Chunk>
+                           </>
                         }
+
+                        <RevealBlock visible={requestSentTo}>
+                           <Chunk>
+                              <Text>Email sent to {requestSentTo}.</Text>
+                              <Text>Go click the link in the email to reset your password.</Text>
+                           </Chunk>
+                           <Chunk>
+                              <Button 
+                                 color="secondary"
+                                 onPress={()=>setRequestSentTo(null)}
+                                 label="Resend email"
+                                 />
+                           </Chunk>
+                        </RevealBlock>
+
                      </form>
                   </Section>
                </Bounds>

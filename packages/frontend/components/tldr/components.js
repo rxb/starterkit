@@ -52,21 +52,28 @@ const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
 
 export const OauthButtons = () => {
+	const [loadingGoogle, setLoadingGoogle] = useState(false);
+	const [loadingApple, setLoadingApple] = useState(false);
+
 	return(
 		<>
 		<Button
+			isLoading={loadingGoogle}
 			width="full"
 			color="secondary"
 			label="Sign in with Google"
 			onPress={()=>{
+				setLoadingGoogle(true);
 				location.href=`${apiHost}/oauth/google/`
 			}}
 			/>
 		<Button
+			isLoading={loadingApple}
 			width="full"
 			color="secondary"
 			label="Sign in with Apple"
 			onPress={()=>{
+				setLoadingApple(true);
 				location.href=`${apiHost}/oauth/apple/`
 			}}
 			/>

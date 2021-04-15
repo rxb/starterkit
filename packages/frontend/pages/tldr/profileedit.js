@@ -386,8 +386,7 @@ const EditProfile = (props) => {
                <Bounds style={{maxWidth: 640}}>
                   <Section>
                      <Chunk>
-                        <Text type="pageHead">Welcome!</Text>
-                        <Text>Fill out your profile to get started</Text>
+                        <Text type="pageHead">Settings</Text>
                      </Chunk>
                   </Section>
                   <Section>
