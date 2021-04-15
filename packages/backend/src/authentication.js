@@ -2,11 +2,6 @@ const { AuthenticationService, AuthenticationBaseStrategy, JWTStrategy } = requi
 const { LocalStrategy } = require('@feathersjs/authentication-local');
 const { expressOauth, OAuthStrategy } = require('@feathersjs/authentication-oauth');
 
-/*
-const jwt = require('jsonwebtoken');
-const jwkToPem = require('jwk-to-pem');
-const axios = require('axios').default;
-*/
 
 class AnonymousStrategy extends AuthenticationBaseStrategy {
   async authenticate(authentication, params) {
@@ -82,6 +77,19 @@ class AppleStrategy extends OAuthStrategy {
   
 }
 
+/*
+class RedditStrategy extends OAuthStrategy {
+  async getEntityData(profile) {
+    // this will set 'redditId'
+    const baseData = await super.getEntityData(profile);
+    return {
+      ...baseData,
+      name: profile.name,
+      url: profile.icon_img
+    }
+  }
+}
+*/
 
 module.exports = app => {
   const authentication = new AuthenticationService(app);
@@ -90,6 +98,7 @@ module.exports = app => {
   authentication.register('anonymous', new AnonymousStrategy());
   authentication.register('google', new GoogleStrategy());
   authentication.register('apple', new AppleStrategy());
+  // authentication.register('reddit', new RedditStrategy());
 
   app.use('/authentication', authentication);
   app.configure(expressOauth());

@@ -1,5 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { iff } = require('feathers-hooks-common');
+const { iff, isProvider } = require('feathers-hooks-common');
 const { queryWithCurrentUser } = require('feathers-authentication-hooks');
 const {
   hashPassword,
@@ -84,10 +84,10 @@ module.exports = {
       saveAndGetNewImageReference(),
     ],
     patch: [
-      hashPassword('password'),
+      iff(isProvider('external'), hashPassword('password')), // authManagement pre-hashes
       authenticate('jwt'),
       checkForSelf(),
-      saveAndGetNewImageReference(),
+      saveAndGetNewImageReference()
     ],
     remove: [
       authenticate('jwt'),

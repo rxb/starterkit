@@ -7,6 +7,7 @@ import {
 	LoadingBlock,
 	Text,
 	TextInput,
+	Touch,
 	useFormState,
 } from '../modules/cinderblock';
 import feathersClient from '../components/FeathersClient';
@@ -59,6 +60,13 @@ const LoginForm = (props) => {
 						placeholder="password"
 						onSubmitEditing={onSubmit}
 						/>
+					<Touch onPress={()=>{
+						// here's the reset
+						// https://api.tldr.cards/authManagement
+						// {"action": "sendResetPwd", "value": {"email": "boenigk@gmail.com"}}
+					}}>
+						<Text type="small" color="tint" style={{textAlign: 'right'}}>Forgot password</Text>
+					</Touch>
 				</Chunk>
 				<Chunk>
 					<Button

@@ -4,6 +4,7 @@
   "protocol": "https",
   "public": "./public/",
   "fromEmail": "info@tldr.cards",
+  "clientServer": "https://tldr.cards:3000",
   "paginate": {
     "default": 10,
     "max": 50
@@ -19,7 +20,7 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://yourdomain.com",
+      "audience": "https://tldr.cards",
       "issuer": "feathers",
       "algorithm": "HS256",
       "expiresIn": "1d"

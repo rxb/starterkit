@@ -215,12 +215,12 @@ const EditProfile = (props) => {
       };
       let error = runValidations(submitFields, profileEditValidations);
       
-      /*
+      
       // custom frontend password confirmation match
       if(submitFields["password"] != submitFields["confirm-password"]){
          error = pushError(error, "password", "Your passwords don't match")
       }
-      */
+      
 
       // display errors that exist
 		formState.setError(error);
@@ -385,21 +385,14 @@ const EditProfile = (props) => {
             <Stripe>
                <Bounds style={{maxWidth: 640}}>
                   <Section>
-                     { isSignup && 
-                        <Chunk>
-                           <Text type="pageHead">Welcome!</Text>
-                           <Text>Fill out your profile to get started</Text>
-                        </Chunk>
-                     }
-                     { !isSignup && 
-                        <Chunk>
-                           <Text type="pageHead">Profile settings</Text>
-                        </Chunk>
-                     }
+                     <Chunk>
+                        <Text type="pageHead">Welcome!</Text>
+                        <Text>Fill out your profile to get started</Text>
+                     </Chunk>
                   </Section>
                   <Section>
                      <form>
-                     <Chunk>
+                        <Chunk>
                            <Label for="name">Name</Label>
                            <NameField formState={formState} />
                         </Chunk>
@@ -410,10 +403,7 @@ const EditProfile = (props) => {
                         <Chunk>
                            <Label for="photo">Photo</Label>
                            <PhotoField formState={formState} />
-                        </Chunk>
-                     
-                     { !isSignup && 
-                        <>
+                        </Chunk>                     
                         <Chunk>
                            <Label for="email">Email</Label>
                            <TextInput
@@ -447,8 +437,7 @@ const EditProfile = (props) => {
                            <FieldError error={formState.error?.fieldErrors?.password} />	
                            <Text type="small" color="hint">Must be at least 8 characters long</Text>
                         </Chunk>
-                     </>
-                     }
+                   
                         <Chunk>
                            <Button 
                               label="Save"

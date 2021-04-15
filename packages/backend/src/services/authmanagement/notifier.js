@@ -1,13 +1,16 @@
 module.exports = function(app) {
-   const serverUrl = app.get('protocol')+"://"+app.get('host');
-   const fromEmail = app.get('fromEmail');
+   // i think this needs to get sent to the client
+   // that then posts it to the backend
+   var serverUrl = app.get('clientServer');
+   var fromEmail = app.get('fromEmail');
 
    function getLink(type, hash) {
-     const url = serverUrl + '/' + type + '?token=' + hash
+     const url = serverUrl + '/tldr/' + type + '?token=' + hash
      return url
    }
  
    function sendEmail(email) {
+      console.log('mail stuff');
      return app.service('mailer').create(email).then(function (result) {
        console.log('Sent email', result)
      }).catch(err => {
@@ -23,7 +26,7 @@ module.exports = function(app) {
          case 'resendVerifySignup': //sending the user the verification email
            tokenLink = getLink('verify', user.verifyToken)
            email = {
-              from: process.env.FROM_EMAIL,
+              from: fromEmail,
               to: user.email,
               subject: 'Verify Signup',
               html: tokenLink
@@ -34,7 +37,7 @@ module.exports = function(app) {
          case 'verifySignup': // confirming verification
            tokenLink = getLink('verify', user.verifyToken)
            email = {
-              from: process.env.FROM_EMAIL,
+              from: fromEmail,
               to: user.email,
               subject: 'Confirm Signup',
               html: 'Thanks for verifying your email'
@@ -43,14 +46,23 @@ module.exports = function(app) {
            break
  
          case 'sendResetPwd':
-           tokenLink = getLink('reset', user.resetToken)
-           email = {}
+           tokenLink = getLink('password', user.resetToken)
+           email = {
+            from: fromEmail,
+            to: user.email,
+            subject: 'Reset your password',
+            html: `Here you go: ${tokenLink}`
+           }
            return sendEmail(email)
            break
  
          case 'resetPwd':
-           tokenLink = getLink('reset', user.resetToken)
-           email = {}
+           email = {
+              from: fromEmail,
+              to: user.email,
+              subject: 'Your password was reset',
+              html: `Hope you were the one who did it`
+            }
            return sendEmail(email)
            break
  
