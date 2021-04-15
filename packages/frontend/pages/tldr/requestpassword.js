@@ -8,9 +8,6 @@ import useSWR, { mutate }  from 'swr';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast, updateUser } from '@/actions';
 
-// URLS
-import {getIndexPageUrl} from 'components/tldr/urls';
-
 // COMPONENTS
 import {
 	Avatar,
@@ -59,14 +56,12 @@ import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderbloc
 import feathersClient from 'components/FeathersClient';
 
 
-
-
-const PasswordReset = (props) => {
-
-   const {token} = props;
+const PasswordRequest = (props) => {
 
    const dispatch = useDispatch(); 
-   const authentication = useSelector(state => state.authentication);
+
+   const [requestSentTo, setRequestSentTo] = useState();
+
 
    const formState = useFormState({
       initialFields: {
@@ -79,21 +74,17 @@ const PasswordReset = (props) => {
    }); 
 
    const submitForm = async () => {
-      
       const submitFields = { ...formState.fields};
       let error = runValidations(submitFields, {
-         password: {
-            len:{
-               args: [8, undefined],
-               msg: "Password must be at least 8 characters long"
+         email: {
+            notEmpty: {
+                msg: "Email can't be blank"
+            },
+            isEmail: {
+               msg: "Email must be a valid email address"
             }
-          },
+         },
       });
-      
-      // custom frontend password confirmation match
-      if(submitFields["password"] != submitFields["confirm-password"]){
-         error = pushError(error, "password", "Your passwords don't match")
-      }
       
       // display errors that exist
 		formState.setError(error);
@@ -104,28 +95,17 @@ const PasswordReset = (props) => {
          try{
 
             // update password
-            const newUser = await request( getAuthManagmentUrl(), {
+            const requestUser = await request( getAuthManagmentUrl(), {
                method: 'POST', 
                data: {
-                  action: 'resetPwdLong',
+                  action: 'sendResetPwd',
                   value: {
-                     token: token,
-                     password: submitFields.password
+                     email: submitFields.email
                   }
                }
             });
-            
-            // log in with that new password
-            feathersClient.authenticate({
-               strategy: 'local', 
-               email: newUser.email, 
-               password: submitFields.password
-            })
-
-            // toast and push
-            const toastMessage = "Password updated!";
-            dispatch(addDelayedToast(toastMessage));
-            Router.push({pathname: getIndexPageUrl()})  
+            formState.setLoading(false);
+            setRequestSentTo(submitFields.email);
          }
          catch(error){
             console.log(error);
@@ -149,34 +129,30 @@ const PasswordReset = (props) => {
                   <Section>
                      <form>
                          <Chunk>
-                           <Label for="password">Set a new password</Label>
+                           <Label for="email">Email address</Label>
                            <TextInput
-                              id="password"
-                              placeholder="New password"
-                              secureTextEntry={true}
-                              autoCompleteType="new-password"
-                              value={formState.getFieldValue('password')}
-                              onChange={e => formState.setFieldValue('password', e.target.value) }
+                              spellCheck={false}
+                              id="email"
+                              autoCompleteType="email"
+                              keyboardType="email-address"
+                              value={formState.getFieldValue('email')}
+                              onChange={e => formState.setFieldValue('email', e.target.value) }
                               />
-                           <TextInput
-                              id="confirm-password"
-                              placeholder="Retype new password to confirm"
-                              secureTextEntry={true}
-                              autoCompleteType="new-password"
-                              value={formState.getFieldValue('confirm-password')}
-                              onChange={e => formState.setFieldValue('confirm-password', e.target.value) }
-                              />
-                           <FieldError error={formState.error?.fieldErrors?.password} />	
-                           <Text type="small" color="hint">Must be at least 8 characters long</Text>
+                           <FieldError error={formState.error?.fieldErrors?.email} />	
                         </Chunk>
                         <Chunk>
                            <Button 
-                              label="Save"
+                              label="Submit"
                               onPress={ submitForm }
                               isLoading={formState.loading}
                               />
                         </Chunk>
 
+                        { requestSentTo &&
+                           <Chunk>
+                              <Text color="tint">Email sent to {requestSentTo}</Text>
+                           </Chunk>
+                        }
                      </form>
                   </Section>
                </Bounds>
@@ -186,7 +162,7 @@ const PasswordReset = (props) => {
    
 }
 
-PasswordReset.getInitialProps = async (context) => {
+PasswordRequest.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
    const {token} = query;
@@ -198,7 +174,7 @@ PasswordReset.getInitialProps = async (context) => {
 }
 
 
-export default PasswordReset;
+export default PasswordRequest;
 
 
 

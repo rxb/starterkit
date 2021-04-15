@@ -46,7 +46,7 @@ module.exports = function(app) {
            break
  
          case 'sendResetPwd':
-           tokenLink = getLink('password', user.resetToken)
+           tokenLink = getLink('resetpassword', user.resetToken)
            email = {
             from: fromEmail,
             to: user.email,

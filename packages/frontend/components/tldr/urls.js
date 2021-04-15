@@ -11,3 +11,5 @@ export const getProfileEditPageUrl = (options) => buildUrl('/profileedit', optio
 export const getTldrPageUrl = (options) => buildUrl('/tldr', options);
 export const getTldrEditPageUrl = (options) => buildUrl('/edit', options);
 export const getVersionEditPageUrl = (options) => buildUrl('/versionedit', options);
+export const getRequestPasswordPageUrl = (options) => buildUrl('/requestpassword', options);
+export const getResetPasswordPageUrl = (options) => buildUrl('/resetpassword', options);

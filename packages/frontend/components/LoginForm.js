@@ -1,6 +1,10 @@
 import React, {Fragment} from 'react';
-import { useDispatch } from 'react-redux';
 
+// REDUX
+import { useDispatch } from 'react-redux';
+import { addPrompt, addToast, addDelayedToast, updateUi} from '@/actions';
+
+// COMPONENTS
 import {
 	Button,
 	Chunk,
@@ -10,7 +14,13 @@ import {
 	Touch,
 	useFormState,
 } from '../modules/cinderblock';
+
+// COMPONENT-SPECIFIC
 import feathersClient from '../components/FeathersClient';
+import Router from 'next/router'
+
+// URLS
+import {getRequestPasswordPageUrl} from 'components/tldr/urls';
 
 
 const LoginForm = (props) => {
@@ -60,15 +70,7 @@ const LoginForm = (props) => {
 						placeholder="password"
 						onSubmitEditing={onSubmit}
 						/>
-					<Touch onPress={()=>{
-						// here's the reset
-						// https://api.tldr.cards/authManagement
-						// {"action": "sendResetPwd", "value": {"email": "boenigk@gmail.com"}}
-					}}>
-						<Text type="small" color="tint" style={{textAlign: 'right'}}>Forgot password</Text>
-					</Touch>
-				</Chunk>
-				<Chunk>
+					
 					<Button
 						onPress={onSubmit}
 						accessibilityRole="submit"
@@ -76,6 +78,14 @@ const LoginForm = (props) => {
 						label="Log in"
 						width="full"
 						/>
+					<Touch onPress={()=>{
+						dispatch(updateUi({logInModalVisible: false}))
+						Router.push({pathname: getRequestPasswordPageUrl()})  
+					}}
+					style={{marginTop: 16}}
+					>
+						<Text type="small" color="hint" style={{textAlign: 'center'}}>Forgot password?</Text>
+					</Touch>
 				</Chunk>
 			</form>
 			</LoadingBlock>
