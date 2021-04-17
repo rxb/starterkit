@@ -76,11 +76,12 @@ function TldrProfile(props) {
 			swr.isLoadingInitialData = !swr.data && !swr.error;
 			swr.isLoadingMore =
 			  swr.isLoadingInitialData ||
-			  (swr.size > 0 && swr.data && typeof swr.data[swr.size - 1] === "undefined");
-			swr.isEmpty = swr.data?.[0]?.length === 0;
+			  (swr.size > 0 && swr.res && typeof swr.res[swr.size - 1] === "undefined");
+			swr.isEmpty = swr.res?.[0]?.data.length === 0;
+			swr.pageSize = swr.res?.[0]?.limit || 0;
 			swr.isReachingEnd =
-			  swr.isEmpty || (swr.data && swr.data[swr.data.length - 1]?.length < PAGE_SIZE);
-			swr.isRefreshing = swr.isValidating && swr.data && swr.data.length === swr.size;
+			  swr.isEmpty || (swr.res && swr.res[swr.res.length - 1]?.data.length < swr.pageSize);
+			swr.isRefreshing = swr.isValidating && swr.res && swr.res.length === swr.size;
 			return swr;
 		}
 		const PAGE_SIZE = 4;
@@ -90,7 +91,6 @@ function TldrProfile(props) {
 		));
 		
 	
-		
 
 		/*
 		const authorTldrs = useSWR( [getTldrsUrl({self: true}), authentication.accessToken ] );
@@ -192,6 +192,7 @@ function TldrProfile(props) {
 											);
 										}}
 									/>
+									{ !authorTldrs.isReachingEnd && 
 									<Button
 										isLoading={authorTldrs.isLoadingMore}
 										color="secondary"
@@ -200,6 +201,13 @@ function TldrProfile(props) {
 										}}
 										label="Load more"
 										/>
+									}
+
+									{ authorTldrs.isReachingEnd &&
+										<Text>That's all folks</Text>
+									}
+
+									<Text>{authorTldrs.pageSize}</Text>
 							</Section>
 							
 							<Section border>
