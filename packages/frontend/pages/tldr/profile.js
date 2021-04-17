@@ -3,6 +3,7 @@ import React, {Fragment, useState} from 'react';
 // SWR
 import {
 	request,
+	swrSugar,
 	parsePageObj,
 	getUserUrl,
 	getTldrsUrl,
@@ -68,37 +69,17 @@ function TldrProfile(props) {
 		
 		const {data: userData} = useSWR( getUserUrl(userId) );
 		
-		// PAGINATION TEST
-		const swrSugar = (swr) => {
-			// feathers returns a data key in a paginated response and 
-			// tldrs.data.data is too weird
-			swr.res = swr.data;
-			swr.isLoadingInitialData = !swr.data && !swr.error;
-			swr.isLoadingMore =
-			  swr.isLoadingInitialData ||
-			  (swr.size > 0 && swr.res && typeof swr.res[swr.size - 1] === "undefined");
-			swr.isEmpty = swr.res?.[0]?.data.length === 0;
-			swr.pageSize = swr.res?.[0]?.limit || 0;
-			swr.isReachingEnd =
-			  swr.isEmpty || (swr.res && swr.res[swr.res.length - 1]?.data.length < swr.pageSize);
-			swr.isRefreshing = swr.isValidating && swr.res && swr.res.length === swr.size;
-			return swr;
-		}
-		const PAGE_SIZE = 4;
-		//{ data: res, error, mutate, size, setSize, isValidating }
+		const PAGE_SIZE = 12;
+
 		const authorTldrs = swrSugar(useSWRInfinite(
-			index => [getTldrsUrl({self: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
+			(index) => [getTldrsUrl({self: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
 		));
 		
+		const tldrs = swrSugar(useSWRInfinite(
+			(index) => [getTldrsUrl({$limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
+		));
+
 	
-
-		/*
-		const authorTldrs = useSWR( [getTldrsUrl({self: true}), authentication.accessToken ] );
-		const {data: authorTldrsData} = parsePageObj( authorTldrs );
-		*/
-
-		const tldrs = useSWR( getTldrsUrl() );
-		const {data: tldrsData} = parsePageObj( tldrs );
 		
 		return (
 			<Page>
@@ -120,7 +101,7 @@ function TldrProfile(props) {
 				</Flex>
 				*/}
 
-				{ userData && authorTldrs.res && tldrsData && 
+				{ userData && authorTldrs.res && tldrs.res && 
 					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
 						<Bounds>
 							<Section>
@@ -203,9 +184,7 @@ function TldrProfile(props) {
 										/>
 									}
 
-									{ authorTldrs.isReachingEnd &&
-										<Text>That's all folks</Text>
-									}
+						
 
 									<Text>{authorTldrs.pageSize}</Text>
 							</Section>
@@ -214,7 +193,7 @@ function TldrProfile(props) {
 								<Flex>
 									<FlexItem justify="center">
 										<Chunk>
-											<Text type="sectionHead">Saved ({tldrsData.length})</Text>
+											<Text type="sectionHead">Saved ({tldrs.res[0].total})</Text>
 										</Chunk>		
 									</FlexItem>
 								</Flex>
@@ -229,7 +208,8 @@ function TldrProfile(props) {
 										large: 4
 									}}
 									scrollItemWidth={300}
-									items={tldrsData}
+									items={tldrs.res}
+									paginated={true}
 									renderItem={(item, i)=>(
 										<Chunk key={i}>
 											<Link href={ getTldrPageUrl({tldrId: item.id}) }>
@@ -238,6 +218,17 @@ function TldrProfile(props) {
 										</Chunk>
 									)}
 									/>
+
+									{ !tldrs.isReachingEnd && 
+									<Button
+										isLoading={tldrs.isLoadingMore}
+										color="secondary"
+										onPress={()=>{
+											tldrs.setSize(tldrs.size+1)
+										}}
+										label="Load more"
+										/>
+									}
 							</Section>
 							
 					</Bounds>

@@ -96,3 +96,24 @@ export const parsePageObj = (swr) => {
       meta: meta
    }
 }
+
+// SWRSUGAR
+// aliases swr.data to swr.res because feathers also returns .data and data[0].data is confusing
+// adds attributes that pagination UI will likely need
+// { data: res, error, mutate, size, setSize, isValidating, isLoadingInitialData, isLoadingMore, isEmpty, pageSize, isReachingEnd, isRefreshing }
+// TODO: make version for nonpaginated swr (replace parsePageObj)
+export const swrSugar = (swr) => {
+   // feathers returns a data key in a paginated response and 
+   // tldrs.data.data is too weird
+   swr.res = swr.data;
+   swr.isLoadingInitialData = !swr.data && !swr.error;
+   swr.isLoadingMore =
+     swr.isLoadingInitialData ||
+     (swr.size > 0 && swr.res && typeof swr.res[swr.size - 1] === "undefined");
+   swr.isEmpty = swr.res?.[0]?.data.length === 0;
+   swr.pageSize = swr.res?.[0]?.limit || 0;
+   swr.isReachingEnd =
+     swr.isEmpty || (swr.res && swr.res[swr.res.length - 1]?.data.length < swr.pageSize);
+   swr.isRefreshing = swr.isValidating && swr.res && swr.res.length === swr.size;
+   return swr;
+}
