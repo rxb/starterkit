@@ -11,6 +11,7 @@ const combineStyles = (styleKeys) => styleKeys.map((key, i)=>{
 });
 
 
+
 const List = (props) => {
 
 	const {
@@ -22,6 +23,7 @@ const List = (props) => {
 		renderItem = item => item,
 		style,
 		itemStyle,
+		paginated = false,
 		...other
 	} = props;
 
@@ -46,24 +48,29 @@ const List = (props) => {
 	]);
 	const scrollItemWidthStyle = (currentVariant == 'scroll' && scrollItemWidth) ? {width: scrollItemWidth} : undefined;
 
+	// render items
+	const renderItems = (items, pageKey=0) => (items.map((item, i)=>{
+		const firstChildStyle = (i == 0) ? styles[`${itemBaseClass}--firstChild`] : undefined;
+		return (
+			<View
+				key={`${pageKey}-${i}`}
+				accessibilityRole='listitem'
+				style={[ ...combinedItemStyles, scrollItemWidthStyle, itemStyle, firstChildStyle ]}
+				>
+				{ currentRenderItem(item, i) }
+			</View>
+		);
+	}));
+
+
 	return(
 		<View style={styles[`${baseClass}-wrap`]}>
 			<View
 				accessibilityRole='list'
 				style={[ ...combinedStyles, style ]}
 				>
-				{ items.map((item, i)=>{
-					const firstChildStyle = (i == 0) ? styles[`${itemBaseClass}--firstChild`] : undefined;
-					return (
-						<View
-							key={i}
-							accessibilityRole='listitem'
-							style={[ ...combinedItemStyles, scrollItemWidthStyle, itemStyle, firstChildStyle ]}
-							>
-							{ currentRenderItem(item, i) }
-						</View>
-					);
-				})}
+				{ paginated && items.map( (page, i) => renderItems(page.data, i) )}
+				{ !paginated && renderItems(items) }
 				{children}
 			</View>
 		</View>
