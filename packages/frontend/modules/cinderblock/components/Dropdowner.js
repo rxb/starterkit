@@ -39,6 +39,7 @@ export const DropdownTouch = (props) => {
 		children,
 		dropdown,
 		addDropdown,
+		clearDropdowns,
 		hideDropdown,
 		dropdowns,
 		style
@@ -69,6 +70,7 @@ export const DropdownTouch = (props) => {
 		<Touch
 			onPress={(e)=>{
 				e.preventDefault();
+				clearDropdowns();
 				if(!touchActive){
 					// the outclick handles closing
 					measureAndAddDropdown();

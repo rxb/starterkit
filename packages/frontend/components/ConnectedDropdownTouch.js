@@ -8,12 +8,13 @@ import { connect } from 'react-redux';
 import {
 	addDropdown,
 	hideDropdown,
-	removeDropdown
+	removeDropdown,
+	clearDropdowns
 } from '../actions';
 
 import{ DropdownTouch } from '../modules/cinderblock';
 
 const ConnectedDropdownTouch = (props) => ( <DropdownTouch {...props} />);
 const mapStateToProps = (state, ownProps) => ({ dropdowns: state.dropdowns });
-const actionCreators = { addDropdown, hideDropdown, removeDropdown }
+const actionCreators = { addDropdown, hideDropdown, removeDropdown, clearDropdowns }
 export default connect( mapStateToProps, actionCreators )(ConnectedDropdownTouch);
