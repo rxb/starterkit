@@ -3,7 +3,7 @@ import React, {Fragment} from 'react';
 // SWR
 import {
 	request,
-	parsePageObj,
+	pageHelper,
 	getShowUrl,
 	getTagsUrl
 } from '../swr';
@@ -244,7 +244,7 @@ function ShowEdit(props) {
 	const { data: showData, error: showError } = show;
 	
 	const tags = useSWR( getTagsUrl() );
-	const { data: tagsData, error: tagsError } = parsePageObj(tags);
+	const tagsData = tags.data ? tags.data.items : [];
 
 		return (
 			<CinderblockPage>

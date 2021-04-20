@@ -5,7 +5,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addToast, addPrompt } from '@/actions';
 
 // SWR
-import { request, parsePageObj, getShowsUrl } from '@/swr';
+import { request, pageHelper, getShowsUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // COMPONENTS
@@ -75,8 +75,7 @@ const FakePrompt = (props) => {
 
 function Hello() {
 
-	const shows = useSWR( getShowsUrl() );
-	const {data: showsData, error: showsError} = parsePageObj(shows);
+	const shows = pageHelper(useSWR( getShowsUrl() ));
 
 	// data from redux
 	const dispatch = useDispatch(); 
@@ -152,13 +151,13 @@ function Hello() {
 
 									</Section>
 									<Section>
-										{!showsData && !showsError &&
+										{!shows.data && shows.error && 
 											<Chunk>
 												<Text>Loading...</Text>
 											</Chunk>
 										}
 
-										{showsData &&
+										{shows.data &&
 											<List
 												variant={{
 													small: "scroll",
@@ -176,7 +175,7 @@ function Hello() {
 													medium: _renderItemCard
 												}}
 												scrollItemWidth={300}
-												items={[...showsData, ...showsData]}
+												items={[...shows.data.items, ...shows.data.items]}
 												/>
 										}
 

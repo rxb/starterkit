@@ -7,7 +7,7 @@ import { addToast, addPrompt } from '../../actions';
 // SWR
 import {
 	request,
-	parsePageObj,
+	pageHelper,
 	getEventsUrl,
 	getEventUrl,
 } from '@/swr';
@@ -144,11 +144,9 @@ function Events(props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user;
 
-	const events = useSWR( getEventsUrl() );
-	const {data: eventsData} = parsePageObj( events );
+	const events = pageHelper(useSWR( getEventsUrl() ));
 
-	const localEvents = useSWR( getEventsUrl({radius: 80, latitude: 40.7128, longitude: -74.0060}) );
-	const {data: localEventsData} = parsePageObj( localEvents );
+	const localEvents = pageHelper(useSWR( getEventsUrl({radius: 80, latitude: 40.7128, longitude: -74.0060}) ));
 
 
 	const [coords, setCoords] = useState({ latitude: 0, longitude: 0 })
@@ -263,8 +261,9 @@ function Events(props) {
 							</FlexItem>
 
 							<FlexItem growFactor={3}>
+								{ localEvents.data && 
 								<List
-									items={localEventsData}
+									items={localEvents.data.items}
 									variant="grid"
 									itemsInRow={{
 										small: 1
@@ -344,6 +343,8 @@ function Events(props) {
 									}}
 		
 									/>
+
+									}
 
 									{/* suggest next */}
 									<Chunk>

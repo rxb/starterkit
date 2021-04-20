@@ -3,7 +3,7 @@ import React, {Fragment, useEffect, useState} from 'react';
 // SWR
 import {
 	request,
-	parsePageObj,
+	pageHelper,
 	getShowUrl,
 	getShowCommentUrl,
 	getShowCommentsUrl
@@ -83,7 +83,7 @@ const submitCommentForm =  async (formState, props) => {
 		const newItemData = { ...formState.fields, showId: props.showData.id };
 		props.mutate({ 
 			...oldShowCommentsData, 
-			data: [...oldShowCommentsData.data, {
+			data: [...oldShowCommentsData.items, {
 				...newItemData, 
 				user: props.user
 			}] 
@@ -206,17 +206,18 @@ function Show(props) {
 	const show = useSWR(getShowUrl(props.showId), {initialData: props.show}); // passing from getInitialProps
 	const {data: showData = {}, error: showError, mutate: showMutate} = show;
 	
+	// TODO: implement pagination
 	const showCommentsKey = getShowCommentsUrl({showId: props.showId, $limit: 50});
-	const showComments = useSWR(showCommentsKey);
-	const { data: showCommentsData, error: showCommentsError, mutate: showCommentsMutate, meta: showCommentsMeta } = parsePageObj(showComments);
+	const showComments = pageHelper(useSWR(showCommentsKey));
+
 
 	// errors - do separate useEffect for each error checking
 	useEffect(()=>{
-		addToastableErrors(dispatch, showCommentsError, {
+		addToastableErrors(dispatch, showComments.error, {
 			BadRequest: 'Something went wrong',
 			GeneralError: 'Something went wrong (GeneralError)',
 	});
-	},[showCommentsError]);
+	},[showComments.error]);
 
 	return (
 		<CinderblockPage>
@@ -279,10 +280,9 @@ function Show(props) {
 						<Section>
 							<Chunk>
 								<Text type="sectionHead">Comments</Text>
-								<Text>{JSON.stringify(showCommentsMeta)}</Text>
 							</Chunk>
 
-							{showCommentsData && showCommentsData.map((comment, i)=>{
+							{showComments.data && showComments.data.items.map((comment, i)=>{
 
 								comment.user = comment.user || {};
 								return (
@@ -308,7 +308,7 @@ function Show(props) {
 																	<DeletePrompt
 																		authentication={authentication}
 																		comment={comment}
-																		mutate={showCommentsMutate}
+																		mutate={showComments.mutate}
 																		/>
 																));
 															}}>
@@ -326,11 +326,10 @@ function Show(props) {
 							{user.id &&
 								<Fragment>
 									<CommentForm 
-										showCommentsData={showCommentsData}
 										showData={showData}
 										authentication={authentication}
 										user={user}
-										mutate={showCommentsMutate} 
+										mutate={showComments.mutate} 
 										showCommentsKey={showCommentsKey}
 										/>
 								</Fragment>

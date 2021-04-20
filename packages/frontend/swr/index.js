@@ -85,18 +85,6 @@ export const buildQs = (params) => {
    return (params) ? "?"+Object.keys(params).map(key => key + '=' + params[key]).join('&') : '';
 }
 
-// DEPRECATED ALREADY
-// PARSEPAGEOBJ
-// reorganizes pagination objects returned by feathers and outputted by useSWR
-// into something a little flatter and easier to use 
-export const parsePageObj = (swr) => {
-   const {items, ...meta} = swr.data || {}; 
-   return { 
-      ...swr,
-      data: items, 
-      meta: meta
-   }
-}
 
 // PAGEHELPER
 // aliases .data to .res because feathers returns .data for paginated objs. data[0].data is confusing
