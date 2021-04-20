@@ -1,8 +1,8 @@
 import React, {Fragment, useState} from 'react';
 
 // SWR
-import { request, parsePageObj, getTldrsUrl, getCategoriesUrl, getCategoryUrl } from '@/swr';
-import useSWR, { mutate }  from 'swr';
+import { request, pageHelper, getTldrsUrl, getCategoriesUrl, getCategoryUrl } from '@/swr';
+import useSWR, { useSWRInfinite, mutate }  from 'swr';
 
 // REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
@@ -110,12 +110,15 @@ function TldrHome(props) {
 
       const category = useSWR( isCategory ? getCategoryUrl(categoryId) : null ); 
       const {data: categoryData} = category; 
-      
-      const tldrs = useSWR( isCategory ? getTldrsUrl({categoryId: categoryId, '$limit': 1000}) : null );
-      const {data: tldrsData, mutate: tldrsMutate} = tldrs.data ? parsePageObj( tldrs ) : {data: []};
 
-      const categories = useSWR( !isCategory ? getCategoriesUrl({'$limit': 1000}) : null );
-      const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
+      const PAGE_SIZE = 12;
+      const tldrs = pageHelper(useSWRInfinite( isCategory ?
+			(index) => [getTldrsUrl({categoryId, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index})] : null	
+		));
+
+      const categories = pageHelper(useSWR( !isCategory ? 
+         getCategoriesUrl({'$limit': 1000}) : null 
+      ));
 		
 
 		return (
@@ -123,7 +126,7 @@ function TldrHome(props) {
             
             <TldrHeader />
 
-				{ !categoryId && 
+				{ !categoryId && categories.res &&
                   <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                      <Bounds>
                         {/*
@@ -145,7 +148,7 @@ function TldrHome(props) {
                                  xlarge: 5
                               }}
                               scrollItemWidth={300}
-                              items={categoriesData}
+                              items={categories.data.items}
                               renderItem={(category, i)=>(
                                  <Chunk key={i}>
                                     <Link href={ getCategoryPageUrl({categoryId: category.id}) }>
@@ -161,7 +164,7 @@ function TldrHome(props) {
                </Stripe>
 				}
 
-            { (categoryId && categoryData) && 
+            { (categoryId && categoryData && tldrs.res ) && 
 
                <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                   <Bounds>
@@ -182,7 +185,8 @@ function TldrHome(props) {
                                  large: 4
                               }}
                               scrollItemWidth={300}
-                              items={[...tldrsData, {last: true}]}
+                              items={tldrs.data}
+                              paginated={true}
                               renderItem={(item, i)=>(
                                  <Chunk key={i}>
                                     { !item.last &&
@@ -190,7 +194,7 @@ function TldrHome(props) {
                                           <TldrCardSmall 
                                              tldr={item} 
                                              dispatch={dispatch} 
-                                             mutate={tldrsMutate}
+                                             mutate={tldrs.mutate}
                                              />
                                        </Link>
                                     }
@@ -203,6 +207,18 @@ function TldrHome(props) {
                                  </Chunk>
                               )}
                               />
+
+                              { !tldrs.isReachingEnd && 
+                              <Button
+                                 isLoading={tldrs.isLoadingMore}
+                                 color="secondary"
+                                 onPress={()=>{
+                                    tldrs.setSize(tldrs.size+1)
+                                 }}
+                                 label="Load more"
+                                 />
+                              }
+
                         </Chunk>
                      </Section>
                   </Bounds>

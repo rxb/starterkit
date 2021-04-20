@@ -2,7 +2,7 @@ import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react'
 import { ActivityIndicator } from 'react-native';
 
 // SWR
-import { request, parsePageObj, getUserUrl } from '@/swr';
+import { request, getUserUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX

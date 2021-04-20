@@ -2,7 +2,7 @@ import React, {Fragment, useState, useEffect, useRef, useCallback} from 'react';
 import ReactDOM from 'react-dom';
 
 // SWR
-import { request, parsePageObj, getCategoriesUrl } from '@/swr';
+import { request, getCategoriesUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX

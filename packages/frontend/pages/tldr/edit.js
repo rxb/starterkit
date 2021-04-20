@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
 
 // SWR
-import { request, parsePageObj, getTldrUrl, getCategoriesUrl } from '@/swr';
+import { request, getTldrUrl, getCategoriesUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX
@@ -163,7 +163,7 @@ const Edit = (props) => {
 	const user = authentication.user || {};
 
    const categories = useSWR(  getCategoriesUrl({'$limit': 1000})  );
-   const {data: categoriesData} = categories.data ? parsePageObj( categories ) : {data: []};
+   const categoriesData = categories.data ? categories.data.items : [];
    
    const [formStep, setFormStep] = useState(0);
 

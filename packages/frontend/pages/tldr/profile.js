@@ -3,8 +3,7 @@ import React, {Fragment, useState} from 'react';
 // SWR
 import {
 	request,
-	swrSugar,
-	parsePageObj,
+	pageHelper,
 	getUserUrl,
 	getTldrsUrl,
 } from '@/swr';
@@ -71,16 +70,16 @@ function TldrProfile(props) {
 		
 		const PAGE_SIZE = 12;
 
-		const authorTldrs = swrSugar(useSWRInfinite(
-			(index) => [getTldrsUrl({self: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
+		const authorTldrs = pageHelper(useSWRInfinite(
+			(index) => [getTldrsUrl({self: true, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
 		));
 		
-		const tldrs = swrSugar(useSWRInfinite(
+		// TODO: updated to saved cards
+		const tldrs = pageHelper(useSWRInfinite(
 			(index) => [getTldrsUrl({$limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
 		));
 
 	
-		
 		return (
 			<Page>
 				<TldrHeader />
@@ -152,7 +151,7 @@ function TldrProfile(props) {
 									}}
 									scrollItemWidth={300}
 									paginated={true}
-									items={authorTldrs.res}
+									items={authorTldrs.data}
                               renderItem={(item, i)=>{
 											const href = (item.currentTldrVersion != undefined) ? 
 												getTldrPageUrl({tldrId: item.id}) :
@@ -184,9 +183,6 @@ function TldrProfile(props) {
 										/>
 									}
 
-						
-
-									<Text>{authorTldrs.pageSize}</Text>
 							</Section>
 							
 							<Section border>
@@ -208,7 +204,7 @@ function TldrProfile(props) {
 										large: 4
 									}}
 									scrollItemWidth={300}
-									items={tldrs.res}
+									items={tldrs.data}
 									paginated={true}
 									renderItem={(item, i)=>(
 										<Chunk key={i}>

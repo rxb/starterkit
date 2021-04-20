@@ -26,7 +26,15 @@ module.exports = {
 
   after: {
     all: [ log() ],
-    find: [],
+    find: [
+      async (context) => {
+        if(context.params.paginate !== false){
+          context.result.items = context.result.data;
+          //delete context.result.data;
+        }
+        return context;
+      }
+    ],
     get: [],
     create: [],
     update: [],

@@ -69,7 +69,7 @@ const List = (props) => {
 				accessibilityRole='list'
 				style={[ ...combinedStyles, style ]}
 				>
-				{ paginated && items.map( (page, i) => renderItems(page.data, i) )}
+				{ paginated && items.map( (page, i) => renderItems(page.items, i) )}
 				{ !paginated && renderItems(items) }
 				{children}
 			</View>

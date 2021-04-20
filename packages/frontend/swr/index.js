@@ -85,35 +85,46 @@ export const buildQs = (params) => {
    return (params) ? "?"+Object.keys(params).map(key => key + '=' + params[key]).join('&') : '';
 }
 
+// DEPRECATED ALREADY
 // PARSEPAGEOBJ
 // reorganizes pagination objects returned by feathers and outputted by useSWR
 // into something a little flatter and easier to use 
 export const parsePageObj = (swr) => {
-   const {data, ...meta} = swr.data || {}; 
+   const {items, ...meta} = swr.data || {}; 
    return { 
       ...swr,
-      data: data, 
+      data: items, 
       meta: meta
    }
 }
 
-// SWRSUGAR
-// aliases swr.data to swr.res because feathers also returns .data and data[0].data is confusing
-// adds attributes that pagination UI will likely need
-// { data: res, error, mutate, size, setSize, isValidating, isLoadingInitialData, isLoadingMore, isEmpty, pageSize, isReachingEnd, isRefreshing }
-// TODO: make version for nonpaginated swr (replace parsePageObj)
-export const swrSugar = (swr) => {
-   // feathers returns a data key in a paginated response and 
-   // tldrs.data.data is too weird
-   swr.res = swr.data;
-   swr.isLoadingInitialData = !swr.data && !swr.error;
-   swr.isLoadingMore =
-     swr.isLoadingInitialData ||
-     (swr.size > 0 && swr.res && typeof swr.res[swr.size - 1] === "undefined");
-   swr.isEmpty = swr.res?.[0]?.data.length === 0;
-   swr.pageSize = swr.res?.[0]?.limit || 0;
-   swr.isReachingEnd =
-     swr.isEmpty || (swr.res && swr.res[swr.res.length - 1]?.data.length < swr.pageSize);
-   swr.isRefreshing = swr.isValidating && swr.res && swr.res.length === swr.size;
+// PAGEHELPER
+// aliases .data to .res because feathers returns .data for paginated objs. data[0].data is confusing
+// adds attributes for infinite/non-infinite pagination UI 
+export const pageHelper = (swr) => {
+   swr.isInfinite = (typeof swr.size !== "undefined");
+   if(swr.isInfinite){
+      // .data is an array of page objects [{total, offset, limit, items}, ...]
+      swr.isLoadingInitialData = !swr.data && !swr.error;
+      swr.isLoadingMore =
+        swr.isLoadingInitialData ||
+        (swr.size > 0 && swr.data && typeof swr.data[swr.size - 1] === "undefined");
+      swr.total = swr.data?.[0]?.total || 0;
+      swr.isEmpty = swr.data?.[0]?.items?.length === 0;
+      swr.pageSize = swr.data?.[0]?.limit || 0;
+      swr.isReachingEnd = 
+         swr.isEmpty || (swr.data && swr.data[swr.data.length - 1]?.items.length < swr.pageSize);
+      swr.isRefreshing = swr.isValidating && swr.data && swr.data.length === swr.size;
+      //{ data, error, mutate, size, setSize, isValidating, isLoadingInitialData, isLoadingMore, total, isEmpty, pageSize, isReachingEnd, isRefreshing }
+   }
+   else{
+      // data is a page object {total, offset, limit, items}
+      swr.isEmpty = swr.data?.items?.length === 0;
+      swr.pageSize = swr.data?.limit || 0;
+      swr.total = swr.data?.total || 0;
+      swr.pageCount = Math.ceil(swr.total / swr.pageSize);   
+      //{ data, error, mutate, total, isEmpty, pageSize, pageCount }
+   }
    return swr;
 }
+

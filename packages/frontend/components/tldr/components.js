@@ -5,7 +5,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addDropdown, addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // SWR
-import { request, parsePageObj, getTldrUrl } from '@/swr';
+import { request, getTldrUrl } from '@/swr';
 
 // URLS
 import {getTldrEditPageUrl, getVersionEditPageUrl} from './urls';
@@ -241,30 +241,35 @@ export const TldrCardSmall = (props) => {
 							<Text color="secondary" style={{marginTop: 3}} type="small" color="secondary" numberOfLines={3}>{content.blurb}</Text>
 						</View>
 
-						{ draft &&
-							<View style={{flex: 0}}>
-								<View style={[{ backgroundColor: swatches.error, paddingHorizontal: 6, borderRadius: 4, alignSelf: 'flex-start' }]}>
-									<Text type="small" inverted>Unpublished</Text>
-								</View>
-							</View>
-						}
+						
 
-						{ true &&  
-							<View style={{alignSelf: 'flex-end'}}>
-								<ConnectedDropdownTouch 
-									dropdown={<TldrCardContextDropdown 
-														tldr={tldr} 
-														dispatch={dispatch} 
-														mutate={mutate}
-														/>}
-									>
-									<Icon 
-										shape="MoreHorizontal" 
-										color={swatches.textHint} 
-										/>
-								</ConnectedDropdownTouch>
-							</View>
-						}
+						 
+						<Flex>
+							<FlexItem>
+								{ draft &&
+									<View style={[{ backgroundColor: swatches.error, paddingHorizontal: 6, borderRadius: 4, alignSelf: 'flex-start' }]}>
+										<Text type="small" inverted>Unpublished</Text>
+									</View>
+								}
+								</FlexItem>
+								{ true && 
+									<FlexItem shrink>
+										<ConnectedDropdownTouch 
+											dropdown={<TldrCardContextDropdown 
+																tldr={tldr} 
+																dispatch={dispatch} 
+																mutate={mutate}
+																/>}
+											>
+											<Icon 
+												shape="MoreHorizontal" 
+												color={swatches.textHint} 
+												/>
+										</ConnectedDropdownTouch>
+									</FlexItem>
+								}
+							</Flex>
+						
 					</Chunk>
 					
 				</Sectionless>

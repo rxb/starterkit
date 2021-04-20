@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
 
 // SWR
-import { request, parsePageObj, getAuthManagmentUrl } from '@/swr';
+import { request, getAuthManagmentUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX
