@@ -109,7 +109,6 @@ function TldrHome(props) {
 		const user = authentication.user || {};
 
       const category = useSWR( isCategory ? getCategoryUrl(categoryId) : null ); 
-      const {data: categoryData} = category; 
 
       const PAGE_SIZE = 12;
       const tldrs = pageHelper(useSWRInfinite( isCategory ?
@@ -126,7 +125,7 @@ function TldrHome(props) {
             
             <TldrHeader />
 
-				{ !categoryId && categories.res &&
+				{ !categoryId && categories.data &&
                   <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                      <Bounds>
                         {/*
@@ -164,13 +163,13 @@ function TldrHome(props) {
                </Stripe>
 				}
 
-            { (categoryId && categoryData && tldrs.res ) && 
+            { (categoryId && category.data && tldrs.data ) && 
 
                <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
                   <Bounds>
                      <Section>
                         <Chunk>
-                           <Text type="pageHead">{categoryData.name}</Text>
+                           <Text type="pageHead">{category.data.name}</Text>
                         </Chunk>
                      </Section>
                      <Section border>
@@ -199,7 +198,7 @@ function TldrHome(props) {
                                        </Link>
                                     }
                                     { item.last &&
-                                       <Link href={ getTldrEditPageUrl({categoryId: categoryData.id}) }>
+                                       <Link href={ getTldrEditPageUrl({categoryId: category.data.id}) }>
                                           <CreateTldrCardSmall />
                                          
                                        </Link>

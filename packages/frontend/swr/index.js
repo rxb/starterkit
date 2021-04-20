@@ -87,7 +87,6 @@ export const buildQs = (params) => {
 
 
 // PAGEHELPER
-// aliases .data to .res because feathers returns .data for paginated objs. data[0].data is confusing
 // adds attributes for infinite/non-infinite pagination UI 
 export const pageHelper = (swr) => {
    swr.isInfinite = (typeof swr.size !== "undefined");

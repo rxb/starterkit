@@ -63,15 +63,14 @@ function TldrProfile(props) {
 		const dispatch = useDispatch(); 
 
 		const authentication = useSelector(state => state.authentication);
-		const user = authentication.user || {};
-		const userId  = props.userId || user.id;
+		const userId  = props.userId || authentication?.user?.id;
 		
-		const {data: userData} = useSWR( getUserUrl(userId) );
+		const user = useSWR( getUserUrl(userId) );
 		
 		const PAGE_SIZE = 12;
 
 		const authorTldrs = pageHelper(useSWRInfinite(
-			(index) => [getTldrsUrl({self: true, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
+			(index) => [getTldrsUrl({self: true, $skip: PAGE_SIZE*index}), authentication.accessToken ]	
 		));
 		
 		// TODO: updated to saved cards
@@ -100,7 +99,7 @@ function TldrProfile(props) {
 				</Flex>
 				*/}
 
-				{ userData && authorTldrs.res && tldrs.res && 
+				{ user.data && authorTldrs.data && tldrs.data && 
 					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
 						<Bounds>
 							<Section>
@@ -108,15 +107,15 @@ function TldrProfile(props) {
 									<FlexItem shrink justify="center">
 										<Chunk>
 											<Avatar
-												source={{uri: userData.photoUrl}}
+												source={{uri: user.data.photoUrl}}
 												size="large"
 												/>
 										</Chunk>
 									</FlexItem>
 									<FlexItem>
 										<Chunk>
-											<Text type="pageHead">@{userData.urlKey}</Text>
-											<Text>{userData.name}</Text>
+											<Text type="pageHead">@{user.data.urlKey}</Text>
+											<Text>{user.data.name}</Text>
 										</Chunk>
 									</FlexItem>
 									<FlexItem />
@@ -134,7 +133,7 @@ function TldrProfile(props) {
 								<Flex>
 									<FlexItem justify="center">
 										<Chunk>
-											<Text type="sectionHead">Author ({authorTldrs.res[0].total})</Text>
+											<Text type="sectionHead">Author ({authorTldrs.total})</Text>
 										</Chunk>		
 									</FlexItem>
 									
@@ -173,6 +172,7 @@ function TldrProfile(props) {
 										}}
 									/>
 									{ !authorTldrs.isReachingEnd && 
+									<Chunk>
 									<Button
 										isLoading={authorTldrs.isLoadingMore}
 										color="secondary"
@@ -181,6 +181,7 @@ function TldrProfile(props) {
 										}}
 										label="Load more"
 										/>
+									</Chunk>
 									}
 
 							</Section>
@@ -189,7 +190,7 @@ function TldrProfile(props) {
 								<Flex>
 									<FlexItem justify="center">
 										<Chunk>
-											<Text type="sectionHead">Saved ({tldrs.res[0].total})</Text>
+											<Text type="sectionHead">Saved ({tldrs.total})</Text>
 										</Chunk>		
 									</FlexItem>
 								</Flex>
@@ -216,6 +217,7 @@ function TldrProfile(props) {
 									/>
 
 									{ !tldrs.isReachingEnd && 
+									<Chunk>
 									<Button
 										isLoading={tldrs.isLoadingMore}
 										color="secondary"
@@ -224,6 +226,7 @@ function TldrProfile(props) {
 										}}
 										label="Load more"
 										/>
+									</Chunk>
 									}
 							</Section>
 							
