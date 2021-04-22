@@ -57,6 +57,8 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
 const Oauth = (props) => {
 
+   const {error} = props;
+
    const dispatch = useDispatch(); 
    const authentication = useSelector(state => state.authentication);
    const user = authentication.user;
@@ -72,7 +74,6 @@ const Oauth = (props) => {
       }
    }, [user]);
    
-
    return(
       <Page>
          <TldrHeader />
@@ -80,18 +81,32 @@ const Oauth = (props) => {
             <Bounds style={{flex: 1}}>
                <Section style={{flex: 1}}>
                   <View style={styles.absoluteCenter}>
-                     <Chunk>
-                        <ActivityIndicator
-                           size="large"
-                           color={swatches.textHint}
-                           />
-                     </Chunk>
+                    
+                        <Chunk>
+                           <ActivityIndicator
+                              size="large"
+                              color={swatches.textHint}
+                              />
+                        </Chunk>
+                     
+                     
                   </View>
                </Section>
             </Bounds>
          </Stripe>
       </Page>
    );
+}
+
+Oauth.getInitialProps = async (context) => {
+
+	const {store, req, pathname, query} = context;
+	const isServer = !!req;	
+
+	return {
+		isServer	
+   };
+
 }
 
 export default Oauth;

@@ -14,7 +14,6 @@ module.exports = function (app) {
     },
     email: {
       type: DataTypes.STRING,
-      //allowNull: false,
       unique: {
         msg: 'Looks like this email address is already registered',
         fields: ['email']

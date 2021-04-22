@@ -407,3 +407,26 @@ export const DeletePrompt = (props) => {
 		</Section>
 	);
 };
+
+export const LoadMoreButton = (props) => {
+	const {
+		swr,
+		label = "Load more"
+	} = props;
+	return(
+		<>
+			{ !swr.isReachingEnd && 
+				<Chunk>
+					<Button
+						isLoading={swr.isLoadingMore}
+						color="secondary"
+						onPress={()=>{
+							swr.setSize(swr.size+1)
+						}}
+						label={label}
+						/>
+				</Chunk>
+			}
+		</>
+	);
+}

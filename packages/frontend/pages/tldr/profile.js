@@ -46,7 +46,7 @@ import {
 } from 'modules/cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
-import {TldrCardSmall, CreateTldrCardSmall} from '../../components/tldr/components';
+import {TldrCardSmall, CreateTldrCardSmall, LoadMoreButton} from '../../components/tldr/components';
 
 // STYLE
 import styles from 'modules/cinderblock/styles/styles';
@@ -70,7 +70,7 @@ function TldrProfile(props) {
 		const PAGE_SIZE = 12;
 
 		const authorTldrs = pageHelper(useSWRInfinite(
-			(index) => [getTldrsUrl({self: true, $skip: PAGE_SIZE*index}), authentication.accessToken ]	
+			(index) => [getTldrsUrl({self: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]	
 		));
 		
 		// TODO: updated to saved cards
@@ -171,18 +171,8 @@ function TldrProfile(props) {
 											);
 										}}
 									/>
-									{ !authorTldrs.isReachingEnd && 
-									<Chunk>
-									<Button
-										isLoading={authorTldrs.isLoadingMore}
-										color="secondary"
-										onPress={()=>{
-											authorTldrs.setSize(authorTldrs.size+1)
-										}}
-										label="Load more"
-										/>
-									</Chunk>
-									}
+
+									<LoadMoreButton swr={authorTldrs} />
 
 							</Section>
 							
@@ -216,18 +206,8 @@ function TldrProfile(props) {
 									)}
 									/>
 
-									{ !tldrs.isReachingEnd && 
-									<Chunk>
-									<Button
-										isLoading={tldrs.isLoadingMore}
-										color="secondary"
-										onPress={()=>{
-											tldrs.setSize(tldrs.size+1)
-										}}
-										label="Load more"
-										/>
-									</Chunk>
-									}
+									<LoadMoreButton swr={tldrs} />
+
 							</Section>
 							
 					</Bounds>

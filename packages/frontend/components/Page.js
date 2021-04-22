@@ -13,7 +13,7 @@ import {
 import NProgress from 'nprogress'
 import Router from 'next/router'
 
-import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
+//import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
 
 import styles from '../modules/cinderblock/styles/styles';
 import swatches from '../modules/cinderblock/styles/swatches';

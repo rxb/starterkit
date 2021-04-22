@@ -19,6 +19,7 @@
     "cross-env": "^7.0.3"
   },
   "dependencies": {
+    "@feathersjs/authentication-client": "^4.5.11",
     "@feathersjs/authentication-oauth": "^4.5.11",
     "@feathersjs/client": "^4.5.11",
     "accounting": "^0.4.1",

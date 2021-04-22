@@ -41,7 +41,7 @@ import {
 } from 'modules/cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
-import {TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall} from '../../components/tldr/components';
+import {TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton} from '../../components/tldr/components';
 
 // STYLE
 import styles from 'modules/cinderblock/styles/styles';
@@ -207,16 +207,7 @@ function TldrHome(props) {
                               )}
                               />
 
-                              { !tldrs.isReachingEnd && 
-                              <Button
-                                 isLoading={tldrs.isLoadingMore}
-                                 color="secondary"
-                                 onPress={()=>{
-                                    tldrs.setSize(tldrs.size+1)
-                                 }}
-                                 label="Load more"
-                                 />
-                              }
+                              <LoadMoreButton swr={tldrs} />
 
                         </Chunk>
                      </Section>

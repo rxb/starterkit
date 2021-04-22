@@ -13,3 +13,5 @@ export const getTldrEditPageUrl = (options) => buildUrl('/edit', options);
 export const getVersionEditPageUrl = (options) => buildUrl('/versionedit', options);
 export const getRequestPasswordPageUrl = (options) => buildUrl('/requestpassword', options);
 export const getResetPasswordPageUrl = (options) => buildUrl('/resetpassword', options);
+export const getOauthPageUrl = (options) => buildUrl('/oauth', options);
+export const getLoginPageUrl = (options) => buildUrl('/login', options);

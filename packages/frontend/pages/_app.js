@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { AppRegistry } from 'react-native-web';
 
 // REDUX
@@ -7,30 +7,39 @@ import {Provider, useDispatch, useSelector} from 'react-redux';
 import {useStore} from '../store';
 import { logOut, fetchUser, logInSuccess } from '../actions';
 
+// SWR
+import { SWRConfig } from 'swr';
+import { fetcher } from '@/swr';
+
+// URLS
+import { getLoginPageUrl } from 'components/tldr/urls';
+
 // STYLE
 import swatches from '../modules/cinderblock/styles/swatches';
 import { METRICS, MEDIA_QUERIES, BREAKPOINT_SIZES } from '../modules/cinderblock/designConstants';
 import { initMediaProvider } from '../modules/cinderblock/components/UseMediaContext';
 const MediaProvider = initMediaProvider(MEDIA_QUERIES);
 
+// MODULES
+import feathersClient from '../components/FeathersClient'; 
+import Router from 'next/router'
 
-import { SWRConfig } from 'swr';
-import { fetcher } from '@/swr';
-
-// FEATHERS CLIENT
-// just using this for auth
-// TODO: would be nice to do this without a client library at all
-import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
-import feathers from '@feathersjs/client'; // but we still need the original to configure
-export const apiHost = process.env.NEXT_PUBLIC_API_HOST;
-
-const authenticationOptions = {};
-if (process.browser) {
-  authenticationOptions["storage"] = window.localStorage
+// CLEARALLTOKENS
+// these should get cleared anyhow, but let's just be extra safe
+const clearAllTokens = () => {
+  if (process.browser) {
+    document.cookie = "connect.sid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+    localStorage.removeItem("feathers-jwt");
+  }
 }
-feathersClient.configure(feathers.authentication(authenticationOptions));
-feathersClient.configure(feathers.rest(apiHost).fetch(fetch));
 
+// CHECKFORBADOAUTH
+// this is hacky, but I don't know how else to detect it
+const checkForBadOauth = (error) => {
+  if(process.browser && error && error.code == 401 && window.location.pathname == '/tldr/oauth' ){
+    Router.push({pathname: getLoginPageUrl(), query: {error: 'oauth'}}) 
+  }
+}
 
 function ThisApp(props) {
 
@@ -45,10 +54,12 @@ function ThisApp(props) {
     feathersClient.on('logout', (authResult, params, context) => {
       dispatch( logOut() );
     });
+
     feathersClient.reAuthenticate()
       .then(storeAuth)
       .catch((error)=>{
         dispatch( logOut() );
+        checkForBadOauth(error);
       }
     );
 

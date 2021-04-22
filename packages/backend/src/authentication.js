@@ -28,10 +28,16 @@ async function authenticateCustom (authentication, originalParams) {
   };
 }
 
+/*
+async function getRedirectCustom(authResult) {
+
+}
+*/
 
 // GOOGLE STRATEGY
 ///https://docs.feathersjs.com/cookbook/authentication/google.html#using-the-data-returned-from-the-google-app-through-a-custom-oauth-strategy
 class GoogleStrategy extends OAuthStrategy {
+
   async getProfile (data, _params) {
     return data.profile;
   }
