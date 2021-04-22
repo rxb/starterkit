@@ -12,7 +12,7 @@ import { SWRConfig } from 'swr';
 import { fetcher } from '@/swr';
 
 // URLS
-import { getLoginPageUrl } from 'components/tldr/urls';
+import { getLoginPageUrl, getOauthPageUrl } from 'components/tldr/urls';
 
 // STYLE
 import swatches from '../modules/cinderblock/styles/swatches';
@@ -36,7 +36,7 @@ const clearAllTokens = () => {
 // CHECKFORBADOAUTH
 // this is hacky, but I don't know how else to detect it
 const checkForBadOauth = (error) => {
-  if(process.browser && error && error.code == 401 && window.location.pathname == '/tldr/oauth' ){
+  if(process.browser && error && error.code == 401 && window.location.pathname == getOauthPageUrl() ){
     Router.push({pathname: getLoginPageUrl(), query: {error: 'oauth'}}) 
   }
 }
