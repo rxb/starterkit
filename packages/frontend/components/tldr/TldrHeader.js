@@ -70,8 +70,8 @@ function TldrSearch (props) {
 	useEffect(()=>{
 		request( getCategoriesUrl({'$limit': 1000, '$sort[name]': 1}))
 		.then(response => {
-			setSearchResults(response.data)
-			setCategories(response.data)
+			setSearchResults(response.items)
+			setCategories(response.items)
 		})
 	}, [])
 

@@ -24,6 +24,7 @@ const MediaProvider = initMediaProvider(MEDIA_QUERIES);
 import feathersClient from '../components/FeathersClient'; 
 import Router from 'next/router'
 
+/*
 // CLEARALLTOKENS
 // these should get cleared anyhow, but let's just be extra safe
 const clearAllTokens = () => {
@@ -32,6 +33,7 @@ const clearAllTokens = () => {
     localStorage.removeItem("feathers-jwt");
   }
 }
+*/
 
 // CHECKFORBADOAUTH
 // this is hacky, but I don't know how else to detect it

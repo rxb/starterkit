@@ -1,3 +1,5 @@
+const { iff, isProvider } = require('feathers-hooks-common');
+
 // Application hooks that run for every service
 const log = require('./hooks/log');
 
@@ -16,8 +18,8 @@ const setRawFalse = (context) => {
 module.exports = {
   before: {
     all: [],
-    find: [setRawFalse],
-    get: [setRawFalse],
+    find: [iff(isProvider('external'), setRawFalse)],
+    get: [iff(isProvider('external'), setRawFalse)],
     create: [],
     update: [],
     patch: [],
@@ -27,13 +29,16 @@ module.exports = {
   after: {
     all: [ log() ],
     find: [
-      async (context) => {
-        if(context.params.paginate !== false){
-          context.result.items = context.result.data;
-          //delete context.result.data;
+      iff(isProvider('external'), 
+        async (context) => {
+          // rename data -> items to avoid data.data weirdness (but only for external api)
+          if(context.params.paginate !== false){
+            context.result.items = context.result.data;
+            delete context.result.data;
+          }
+          return context;
         }
-        return context;
-      }
+      )
     ],
     get: [],
     create: [],

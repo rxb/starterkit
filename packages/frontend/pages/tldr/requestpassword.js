@@ -93,7 +93,6 @@ const PasswordRequest = (props) => {
       if(!error){
          formState.setLoading(true);
          try{
-
             // update password
             const requestUser = await request( getAuthManagmentUrl(), {
                method: 'POST', 

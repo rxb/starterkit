@@ -10,7 +10,6 @@ module.exports = function(app) {
    }
  
    function sendEmail(email) {
-      console.log('mail stuff');
      return app.service('mailer').create(email).then(function (result) {
        console.log('Sent email', result)
      }).catch(err => {
@@ -20,6 +19,8 @@ module.exports = function(app) {
  
    return {
      notifier: function(type, user, notifierOptions) {
+      // why datavalues instead of an array?
+
        let tokenLink
        let email
        switch (type) {

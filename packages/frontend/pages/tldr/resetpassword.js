@@ -111,6 +111,7 @@ const PasswordReset = (props) => {
                   }
                }
             });
+            console.log(newUser);
 
             // log in with that new password
             feathersClient.authenticate({
