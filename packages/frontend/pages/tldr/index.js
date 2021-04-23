@@ -112,7 +112,7 @@ function TldrHome(props) {
 
       const PAGE_SIZE = 12;
       const tldrs = pageHelper(useSWRInfinite( isCategory ?
-			(index) => [getTldrsUrl({categoryId, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index})] : null	
+			(index) => [getTldrsUrl({categoryId, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken] : null	
 		));
 
       const categories = pageHelper(useSWR( !isCategory ? 

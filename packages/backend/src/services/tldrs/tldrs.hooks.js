@@ -20,9 +20,9 @@ module.exports = {
   before: {
     all: [],
     find: [
-      populateTldrAssociations,
       allowAnonymous(),
       authenticate('jwt', 'anonymous'),
+      populateTldrAssociations,
       (context) => {
         if(context.params.query.self && context.params.user){
           // "self" requests all of logged in user's tldrs, no limiting of drafts

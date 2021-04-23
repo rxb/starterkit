@@ -77,7 +77,6 @@ function TldrProfile(props) {
 		const tldrs = pageHelper(useSWRInfinite(
 			(index) => [getTldrsUrl({$limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
 		));
-
 	
 		return (
 			<Page>
