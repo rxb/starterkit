@@ -8,7 +8,7 @@ import { addDropdown, addPrompt, addToast, addDelayedToast } from '@/actions';
 import { request, getTldrUrl } from '@/swr';
 
 // URLS
-import {getTldrEditPageUrl, getVersionEditPageUrl} from './urls';
+import {getTldrEditPageUrl, getVersionEditPageUrl, saveLoginRedirect} from './urls';
 
 import {
 	Avatar,
@@ -54,12 +54,8 @@ const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 export const OauthButtons = (props) => {
 	const [loadingGoogle, setLoadingGoogle] = useState(false);
 	const [loadingApple, setLoadingApple] = useState(false);
-	const router = useRouter()
-
-	const saveRedirectUrl = () => {
-		const redirect = props.redirect || {pathname: router.pathname, query: router.query};
-		localStorage.setItem("loginRedirect", JSON.stringify(redirect) );
-	}
+	const router = useRouter();
+	const redirect = props.redirectOverride || {pathname: router.pathname, query: router.query};
 
 	return(
 		<>
@@ -69,7 +65,7 @@ export const OauthButtons = (props) => {
 			color="secondary"
 			label="Sign in with Google"
 			onPress={()=>{
-				saveRedirectUrl();
+				saveLoginRedirect(redirect);
 				setLoadingGoogle(true);
 				location.href=`${apiHost}/oauth/google/`
 			}}
@@ -80,7 +76,7 @@ export const OauthButtons = (props) => {
 			color="secondary"
 			label="Sign in with Apple"
 			onPress={()=>{
-				saveRedirectUrl();
+				saveLoginRedirect(redirect);
 				setLoadingApple(true);
 				location.href=`${apiHost}/oauth/apple/`
 			}}

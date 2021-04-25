@@ -201,7 +201,6 @@ const EditProfile = (props) => {
                      delete user[key];
                   });
                }
-               delete user['isVerified']; // can't set this, blocked by               
                formState.setFieldValues(user);   
             });
       }

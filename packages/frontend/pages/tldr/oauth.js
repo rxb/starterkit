@@ -10,7 +10,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import { getIndexPageUrl, getProfileEditPageUrl} from '../../components/tldr/urls';
+import { getIndexPageUrl, getProfileEditPageUrl, getLoginRedirect} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -69,9 +69,7 @@ const Oauth = (props) => {
             Router.push({pathname: getProfileEditPageUrl(), query: {isSignup: true}})
          }
          else{
-            const storedRedirect = localStorage.getItem("loginRedirect");
-            const redirect = storedRedirect ? JSON.parse(storedRedirect) : {pathname: getIndexPageUrl()};
-            localStorage.removeItem("loginRedirect");
+            const redirect = getLoginRedirect() || {pathname: getIndexPageUrl()};
             Router.push(redirect); 
          }   
       }

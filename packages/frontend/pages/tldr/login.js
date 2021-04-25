@@ -98,7 +98,7 @@ const Login = (props) => {
                }
                <Section border={error}>
                   <Chunk>
-                     <OauthButtons redirect={{pathname: '/tldr'}} />
+                     <OauthButtons redirectOverride={{pathname: '/tldr'}} />
                   </Chunk>
                   <LoginForm />
                </Section>

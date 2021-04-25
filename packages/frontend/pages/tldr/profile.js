@@ -70,7 +70,6 @@ function TldrProfile(props) {
 			dispatch( updateUi({logInModalVisible: true}) );
 		}
 
-
 		const user = useSWR( getUserUrl(userId) );
 		
 		const PAGE_SIZE = 12;
