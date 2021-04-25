@@ -1,30 +1,17 @@
-const {
-  saveAndGetNewImageReference
-} = require('../common_hooks.js');
+const { saveAndGetNewImageReference } = require('../common_hooks.js');
+const { authenticate } = require('@feathersjs/authentication').hooks;
+
+// TODO: shows never had an authorId, it's a logged-in free-for-all
 
 // POPULATE ASSOCIATED THINGS
-// (and users/authors)
 const populateShowAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');
-  const { show_comments, users, tags } = sequelize.models;
   context.params.sequelize = {
     ...context.params.sequelize,
-    include: [
-      /*
-      {
-        model: show_comments,
-        include: [ users ]
-      },
-      */
-      {
-        model: tags,
-        as: 'tags'
-      }
-    ]
+    include: [ "tags" ]
   }
   return context;
 }
-
 
 // ASSOCIATE TAGS (many-to-many)
 const associateTags = async (context) => {
@@ -46,15 +33,20 @@ module.exports = {
       populateShowAssociations
     ],
     create: [
+      authenticate('jwt'),
       saveAndGetNewImageReference()
     ],
     update: [
+      authenticate('jwt'),
       saveAndGetNewImageReference()
     ],
     patch: [
+      authenticate('jwt'),
       saveAndGetNewImageReference(),
     ],
-    remove: []
+    remove: [
+      authenticate('jwt')
+    ]
   },
 
   after: {
