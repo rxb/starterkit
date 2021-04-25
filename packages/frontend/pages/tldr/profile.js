@@ -11,7 +11,7 @@ import useSWR, { mutate, useSWRInfinite }  from 'swr';
 
 // REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast } from '@/actions';
+import { addPrompt, addToast, addDelayedToast, updateUi } from '@/actions';
 
 // URLS
 import { getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl, getProfileEditPageUrl} from 'components/tldr/urls';
@@ -64,7 +64,13 @@ function TldrProfile(props) {
 
 		const authentication = useSelector(state => state.authentication);
 		const userId  = props.userId || authentication?.user?.id;
-		
+		if(!userId){
+			// no userId specified defaults to self
+			// but self isn't logged in
+			dispatch( updateUi({logInModalVisible: true}) );
+		}
+
+
 		const user = useSWR( getUserUrl(userId) );
 		
 		const PAGE_SIZE = 12;
@@ -82,23 +88,8 @@ function TldrProfile(props) {
 			<Page>
 				<TldrHeader />
 				
-				{/*
-				<Flex>
-					<FlexItem>
-						<View style={{whiteSpace: 'pre-wrap'}}>
-						{JSON.stringify(tldrs, null, 2)}
-						</View>
-					</FlexItem>
-					<FlexItem>
-						<View style={{whiteSpace: 'pre-wrap'}}>
-						{JSON.stringify(authorTldrs, null, 2)}	
-						</View>
-					
-					</FlexItem>
-				</Flex>
-				*/}
 
-				{ user.data && authorTldrs.data && tldrs.data && 
+				{ userId && user.data && authorTldrs.data && tldrs.data && 
 					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
 						<Bounds>
 							<Section>

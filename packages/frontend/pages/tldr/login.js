@@ -86,9 +86,6 @@ const Login = (props) => {
                         <Chunk>
                            <Text>Sorry, that didn't work. It's possible you set up your account using a different method. You can <Link href={getRequestPasswordPageUrl()}><Text color="tint">reset your password</Text></Link> if you don't remember it.</Text>
                         </Chunk>
-                        <Chunk>
-                           <Text>Once you're signed in, you can add multiple ways of signing in on the settings screen.</Text>
-                        </Chunk>
                         </>
                      }
                      {error != 'oauth' &&
@@ -101,7 +98,7 @@ const Login = (props) => {
                }
                <Section border={error}>
                   <Chunk>
-                     <OauthButtons />
+                     <OauthButtons redirect={{pathname: '/tldr'}} />
                   </Chunk>
                   <LoginForm />
                </Section>

@@ -46,14 +46,20 @@ import swatches from 'modules/cinderblock/styles/swatches';
 import { METRICS } from 'modules/cinderblock/designConstants';
 const smallCardMinHeight = 220;
 
-import Router from 'next/router'
+import Router, {useRouter} from 'next/router'
 import Markdown from 'markdown-to-jsx';
 const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
 
-export const OauthButtons = () => {
+export const OauthButtons = (props) => {
 	const [loadingGoogle, setLoadingGoogle] = useState(false);
 	const [loadingApple, setLoadingApple] = useState(false);
+	const router = useRouter()
+
+	const saveRedirectUrl = () => {
+		const redirect = props.redirect || {pathname: router.pathname, query: router.query};
+		localStorage.setItem("loginRedirect", JSON.stringify(redirect) );
+	}
 
 	return(
 		<>
@@ -63,6 +69,7 @@ export const OauthButtons = () => {
 			color="secondary"
 			label="Sign in with Google"
 			onPress={()=>{
+				saveRedirectUrl();
 				setLoadingGoogle(true);
 				location.href=`${apiHost}/oauth/google/`
 			}}
@@ -73,6 +80,7 @@ export const OauthButtons = () => {
 			color="secondary"
 			label="Sign in with Apple"
 			onPress={()=>{
+				saveRedirectUrl();
 				setLoadingApple(true);
 				location.href=`${apiHost}/oauth/apple/`
 			}}

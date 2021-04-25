@@ -69,7 +69,10 @@ const Oauth = (props) => {
             Router.push({pathname: getProfileEditPageUrl(), query: {isSignup: true}})
          }
          else{
-            Router.push({pathname: getIndexPageUrl()}) 
+            const storedRedirect = localStorage.getItem("loginRedirect");
+            const redirect = storedRedirect ? JSON.parse(storedRedirect) : {pathname: getIndexPageUrl()};
+            localStorage.removeItem("loginRedirect");
+            Router.push(redirect); 
          }   
       }
    }, [user]);
