@@ -1,6 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
-const { protectUserFields, setDefaultSort } = require('../common_hooks.js');
+const { protectUserFields, setDefaultSort, getFullModel } = require('../common_hooks.js');
 
 const includeAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');
@@ -61,10 +61,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      async (context) => {
-        context.result = await context.service.get(context.result.id, context.params);
-        return context
-      },
+      getFullModel()
     ],
     update: [],
     patch: [],
