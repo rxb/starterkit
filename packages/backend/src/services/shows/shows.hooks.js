@@ -58,7 +58,8 @@ module.exports = {
   },
 
   after: {
-    all: [],
+    all: [
+    ],
     find: [],
     get: [],
     create: [],

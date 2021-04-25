@@ -16,9 +16,9 @@ module.exports = async function (app) {
 
 	// Send a test email on load
 	const email = {
-		from: 'info@tldr.cards',
+		from: 'TLDR.cards <info@tldr.cards>',
 		to: 'boenigk@gmail.com',
-		subject: 'HAY',
+		subject: 'tldr.cards mailier starting',
 		html: 'Hey what is up bro'
 	};
 	app.service('mailer').create(email)

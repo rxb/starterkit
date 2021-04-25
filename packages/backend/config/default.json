@@ -3,7 +3,7 @@
   "port": 443,
   "protocol": "https",
   "public": "./public/",
-  "fromEmail": "info@tldr.cards",
+  "fromEmail": "TLDR.cards <info@tldr.cards>",
   "clientServer": "https://tldr.cards:3000",
   "paginate": {
     "default": 10,

@@ -1,21 +1,25 @@
+const { Forbidden } = require('@feathersjs/errors');
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { iff, isProvider } = require('feathers-hooks-common');
-const { queryWithCurrentUser } = require('feathers-authentication-hooks');
-const {
-  hashPassword,
-  protect
-} = require('@feathersjs/authentication-local').hooks;
+const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
+const { setField } = require('feathers-authentication-hooks');
+const { hashPassword, protect } = require('@feathersjs/authentication-local').hooks;
+const { allowAnonymous, saveAndGetNewImageReference, protectUserFields } = require('../common_hooks.js');
 
-const {
-  allowAnonymous,
-  saveAndGetNewImageReference
-} = require('../common_hooks.js');
-
-const uid = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
+const makeUid = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 const makeRandomPassword = () => Math.random().toString(36).substr(10);
 
+// todo: add admin access
+const mustBeOwnerOrAdmin = (options) => {
+  return async(context) => {
+    if(context.params.user.id !== context.id){
+      throw new Forbidden('You are not allowed to access this');
+    }
+    return context;
+  }
+} 
 
-const checkForSelf = (options) => {
+const checkForSelfId = (options) => {
+  // sets id to the id of logged-in user when "self" used as id
   return async(context) => {
     if (context.id == "self") {
       if(context.params.user){
@@ -29,69 +33,90 @@ const checkForSelf = (options) => {
   }
 }
 
-const getFullModel = (options) => {
-  return async(context) => {
-    // .dispatch is the optional return without protected fields, like password
-    context.dispatch = await context.service.get(context.result.id, context.params);
-    return context;
+const preventChangesToAuthFields = (options) => {
+  return iff(
+    isProvider('external'), 
+    preventChanges( 
+      false, 
+      'isVerified',
+      'verifyToken',
+      'verifyShortToken',
+      'verifyExpires',
+      'verifyChanges',
+      'resetToken',
+      'resetShortToken',
+      'resetExpires',
+      'facebookId', 
+      'googleId', 
+      'redditId', 
+      'appleId'
+  ));
+}
+
+// for multistep registration
+// sometimes we need to temporarily fill fields we'll re-ask for later
+const fillTempValues = (options) => {
+  return async (context) => {
+    if(context.data.fillTempValues){
+      const tempId = makeUid();
+      const tempValues = [];
+      // add temp name if no name
+      if(!context.data.name){
+        context.data.name =  `User ${tempId}`;
+        tempValues.push("name");
+      }
+      // add temp urlkey if not urlkey
+      if(!context.data.urlKey){
+        context.data.urlKey =  `user-${tempId}`;
+        tempValues.push("urlKey");
+      }
+      // add temp password if no password
+      if(!context.data.password){
+        context.data.password =  makeRandomPassword();
+        // password doesn't need to be pushed to tempValues, that's a password reset
+      }
+      context.data.tempValues = tempValues;
+    }
+    return context
   }
 }
 
 module.exports = {
   before: {
-    all: [
-      protect('password', 'verifyToken', 'verifyShortToken', 'verifyExpires', 'verifyChanges', 'resetToken', 'resetShortToken', 'resetExpires')
-    ],
+    all: [],
     find: [],
     get: [
       allowAnonymous(),
       authenticate('jwt', 'anonymous'),
-      checkForSelf(),
+      checkForSelfId(),
     ],
     create: [
-      async (context) => {
-        // for multistep registration
-        // sometimes we need to temporarily fill fields we'll re-ask for later
-        if(context.data.fillTempValues){
-          const tempId = uid();
-          const tempValues = [];
-          // add temp name if no name
-          if(!context.data.name){
-            context.data.name =  `User ${tempId}`;
-            tempValues.push("name");
-          }
-          // add temp urlkey if not urlkey
-          if(!context.data.urlKey){
-            context.data.urlKey =  `user-${tempId}`;
-            tempValues.push("urlKey");
-          }
-          // add temp password if no password
-          if(!context.data.password){
-            context.data.password =  makeRandomPassword();
-            // password doesn't need to be pushed to tempValues, that's a password reset
-          }
-          context.data.tempValues = tempValues;
-        }
-        return context
-      },
+      // create user is the only create that doesn't need to be authed already
+      fillTempValues(),
       hashPassword('password'),
       saveAndGetNewImageReference()
     ],
     update: [
       hashPassword('password'),
       authenticate('jwt'),
-      checkForSelf(),
+      checkForSelfId(), 
+      mustBeOwnerOrAdmin(),
+      preventChangesToAuthFields(),
       saveAndGetNewImageReference(),
     ],
     patch: [
-      iff(isProvider('external'), hashPassword('password')), // authManagement pre-hashes
+      // authManagement pre-hashes password when setting it from the reset method
+      iff(isProvider('external'), hashPassword('password')), 
       authenticate('jwt'),
-      checkForSelf(),
+      checkForSelfId(), 
+      mustBeOwnerOrAdmin(),
+      preventChangesToAuthFields(),
       saveAndGetNewImageReference()
     ],
     remove: [
       authenticate('jwt'),
-      checkForSelf(),
+      checkForSelfId(), 
+      mustBeOwnerOrAdmin()
     ]
   },
 
@@ -99,7 +124,7 @@ module.exports = {
     all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
-      protect('password')
+      protectUserFields()
     ],
     find: [],
     get: [],

@@ -191,7 +191,6 @@ const EditProfile = (props) => {
    // load user, one time (unless auth changes), reinitialize the form
    // on first load, feathersclient may not have put the auth into the store yet
    useEffect(()=>{
-      
       if(authentication.accessToken){
          request( getUserUrl("self"), {token: authentication.accessToken} )
             .then( (user) => {
@@ -201,7 +200,8 @@ const EditProfile = (props) => {
                   user.tempValues.forEach((key, i) => {
                      delete user[key];
                   });
-               }               
+               }
+               delete user['isVerified']; // can't set this, blocked by               
                formState.setFieldValues(user);   
             });
       }

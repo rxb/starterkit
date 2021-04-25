@@ -1,4 +1,12 @@
+const { protect } = require('@feathersjs/authentication-local').hooks;
+
 module.exports = {
+
+  protectUserFields: (prefix = "") => { 
+    const fields = ['password', 'verifyToken', 'verifyShortToken', 'verifyExpires', 'verifyChanges', 'resetToken', 'resetShortToken', 'resetExpires', 'facebookId', 'googleId', 'redditId', 'appleId'];
+    const prefixedFields = fields.map( field => prefix + field );
+    return protect( ...prefixedFields );
+  },
 
   // hook for anonymous auth situations
   // (ie when an api would do additional work for an authorized user, but still allows an anonymous user)
@@ -17,6 +25,16 @@ module.exports = {
   
       return context;
     };
+  },
+
+  // REFRESH FULL OBJECT FROM DB
+  getFullModel: (options) => {
+    return async(context) => {
+      // setting .dispatch because it's the the override return attribute 
+      // (doesn't include protected files)
+      context.dispatch = await context.service.get(context.result.id, context.params);
+      return context;
+    }
   },
 
 
