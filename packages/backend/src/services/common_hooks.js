@@ -8,6 +8,20 @@ module.exports = {
     return protect( ...prefixedFields );
   },
 
+  setDefaultSort: (options) => {
+    const {field, order} = options;
+    return (context) => {
+      const { query = {} } = context.params;
+      if(!query.$sort) {
+        query.$sort = {
+          [field]: order
+        }
+      }
+      context.params.query = query;
+      return context;
+    }
+  },
+
   // hook for anonymous auth situations
   // (ie when an api would do additional work for an authorized user, but still allows an anonymous user)
   allowAnonymous: (options = {}) => { 

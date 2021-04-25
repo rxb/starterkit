@@ -303,7 +303,7 @@ function Show(props) {
 													<Text type="small" color="hint">&middot; {dayjs(comment.createdAt).fromNow()} </Text>
 													{ comment.user.id == user.id &&
 														<Fragment>
-															<Link onPress={()=>{
+															<Touch onPress={()=>{
 																dispatch(addPrompt(
 																	<DeletePrompt
 																		authentication={authentication}
@@ -313,7 +313,7 @@ function Show(props) {
 																));
 															}}>
 																<Text type="small" color="hint">&middot; Delete</Text>
-															</Link>
+															</Touch>
 														</Fragment>
 													}
 												</Text>

@@ -1,6 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
-const { protectUserFields } = require('../common_hooks.js');
+const { protectUserFields, setDefaultSort } = require('../common_hooks.js');
 
 const includeAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');
@@ -12,28 +12,22 @@ const includeAssociations = (context) => {
   return context;
 }
 
+// todo: add admin access
+const mustBeOwnerOrAdmin = (options) => {
+  return async(context) => {
+    const item = await context.service.get(context.id);
+    if(context.params.user.id !== item.authorId){
+      throw new Forbidden('You are not allowed to access this');
+    }
+    return context;
+  }
+} 
 
 module.exports = {
   before: {
-    all: [
-      // doesn't seem like sequlize likes to mess with associations
-      // for create/update/patch/remove methods
-      // seems like you need .reload() on the model
-      // not sure how to do that in feathers-sequelize
-    ],
+    all: [],
     find: [
-      (context) => {
-        // sorting is only find-relevant
-        // if you put it in other hooks, they get weird
-        const { query = {} } = context.params;
-        if(!query.$sort) {
-          query.$sort = {
-            'createdAt': 1
-          }
-        }
-        context.params.query = query;
-        return context;
-      },
+      setDefaultSort({field: 'createdAt', order: 1}),
       includeAssociations,
     ],
     get: [
@@ -45,31 +39,18 @@ module.exports = {
         from: 'params.user.id',
         as: 'data.authorId'
       })
-      /*
-      // see https://www.npmjs.com/package/feathers-authentication-hooks for migration
-      associateCurrentUser({ idField: 'id', as: 'authorId' }),
-      */
     ],
     update: [
       authenticate('jwt'),
-      setField({
-        from: 'params.user.id',
-        as: 'params.query.authorId'
-      })
-      /*
-      restrictToOwner({ idField: 'id', ownerField: 'authorId' })
-      */
+      mustBeOwnerOrAdmin()
     ],
-    patch: [],
+    patch: [
+      authenticate('jwt'),
+      mustBeOwnerOrAdmin()  
+    ],
     remove: [
       authenticate('jwt'),
-      setField({
-        from: 'params.user.id',
-        as: 'params.query.authorId'
-      })
-      /*
-      restrictToOwner({ idField: 'id', ownerField: 'authorId' })
-      */
+      mustBeOwnerOrAdmin()
     ]
   },
 
