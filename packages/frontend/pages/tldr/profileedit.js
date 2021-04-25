@@ -9,7 +9,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast, updateUser } from '@/actions';
 
 // URLS
-import {getProfilePageUrl} from '../../components/tldr/urls';
+import {getProfilePageUrl, getLoginRedirect} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -251,9 +251,10 @@ const EditProfile = (props) => {
             feathersClient.reAuthenticate(true);
 
             // toast and push
-            const toastMessage = "Settings updated!";
+            const toastMessage = isSignup ? "Welcome!" : "Settings updated!";
             dispatch(addDelayedToast(toastMessage));
-            Router.push({pathname: getProfilePageUrl()})  
+            const redirect = getLoginRedirect() || {pathname: getProfilePageUrl()};
+            Router.push(redirect);  
          }
          catch(error){
             console.log(error);
