@@ -1,4 +1,6 @@
 import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import ErrorPage from 'next/error'
+
 
 // SWR
 import { request, getUserUrl } from '@/swr';
@@ -257,13 +259,18 @@ const EditProfile = (props) => {
             Router.push(redirect);  
          }
          catch(error){
-            console.log(error);
             formState.setError(error);
             formState.setLoading(false);
          }
       }
    }
 
+   // DIVERT TO ERROR PAGE
+   if (!authentication.user) {
+      return <ErrorPage statusCode={401} />
+   }
+
+   // RENDER
    if( isSignup ){
       return (
          <Page>

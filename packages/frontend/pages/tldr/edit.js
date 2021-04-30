@@ -1,4 +1,5 @@
 import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import ErrorPage from 'next/error'
 
 // SWR
 import { request, getTldrUrl, getCategoriesUrl } from '@/swr';
@@ -152,7 +153,6 @@ const CategoryField = (props) => {
    );
 }
 
-
 const Edit = (props) => {
    const {tldrId, tldr, categoryId} = props;
 
@@ -219,6 +219,13 @@ const Edit = (props) => {
       }
    }
 
+   // DIVERT TO ERROR PAGE
+   if (!authentication.user || (tldr.authorId && user.id && (tldr.authorId != user.id) )) {
+      // not logged in or trying to edit something I don't own
+      return <ErrorPage statusCode={401} />
+   }
+
+   // RENDER
    if( tldrId != undefined ){
       return (
          <Page>

@@ -190,7 +190,8 @@ function TldrHome(props) {
                                  <Chunk key={i}>
                                     { !item.last &&
                                        <Link href={ getTldrPageUrl({tldrId: item.id}) }>
-                                          <TldrCardSmall 
+                                          <TldrCardSmall
+                                             user={user} 
                                              tldr={item} 
                                              dispatch={dispatch} 
                                              mutate={tldrs.mutate}

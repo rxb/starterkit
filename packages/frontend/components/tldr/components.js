@@ -216,6 +216,7 @@ export const TldrCard = (props) => {
 export const TldrCardSmall = (props) => {
 
 	const {
+		user,
 		tldr,
 		dispatch,
 		mutate,
@@ -225,6 +226,10 @@ export const TldrCardSmall = (props) => {
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
 	const content = thisVersion?.content || {};
 	const draft = tldr.id && tldr.currentTldrVersionId == undefined;
+
+	// TODO: admin permission
+	const canEdit = (user?.id == tldr.authorId);
+
 	return(
 			<Card style={[{
 					minHeight: smallCardMinHeight,
@@ -245,9 +250,6 @@ export const TldrCardSmall = (props) => {
 							<Text color="secondary" style={{marginTop: 3}} type="small" color="secondary" numberOfLines={3}>{content.blurb}</Text>
 						</View>
 
-						
-
-						 
 						<Flex>
 							<FlexItem>
 								{ draft &&
@@ -256,7 +258,10 @@ export const TldrCardSmall = (props) => {
 									</View>
 								}
 								</FlexItem>
-								{ true && 
+
+								{/* TODO make this conditional on permission */}
+
+								{ canEdit && 
 									<FlexItem shrink>
 										<ConnectedDropdownTouch 
 											dropdown={<TldrCardContextDropdown 

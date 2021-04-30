@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from 'react';
+import ErrorPage from 'next/error'
 
 // SWR
 import {
@@ -14,7 +15,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast, updateUi } from '@/actions';
 
 // URLS
-import { getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl, getProfileEditPageUrl} from 'components/tldr/urls';
+import { getIndexPageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl, getProfileEditPageUrl} from 'components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -67,22 +68,33 @@ function TldrProfile(props) {
 		if(!userId){
 			// no userId specified defaults to self
 			// but self isn't logged in
-			dispatch( updateUi({logInModalVisible: true}) );
+			dispatch( addDelayedToast("Need to be logged in for that") );
+			Router.push({pathname: getIndexPageUrl()})
 		}
 
 		const user = useSWR( getUserUrl(userId) );
+		const canEdit = (authentication && user.data?.id == authentication?.user?.id); 
+		// TODO: admin permission
 		
 		const PAGE_SIZE = 12;
 
 		const authorTldrs = pageHelper(useSWRInfinite(
-			(index) => [getTldrsUrl({self: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]	
+			(index) => [getTldrsUrl({authorId: userId, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]	
 		));
 		
 		// TODO: updated to saved cards
 		const tldrs = pageHelper(useSWRInfinite(
 			(index) => [getTldrsUrl({$limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
 		));
+
+
+		// DIVERT TO ERROR PAGE
+		if (user.error) {
+			const error = user.error;
+			return <ErrorPage statusCode={error.code} />
+		}
 	
+		// RENDER
 		return (
 			<Page>
 				<TldrHeader />
@@ -108,13 +120,15 @@ function TldrProfile(props) {
 										</Chunk>
 									</FlexItem>
 									<FlexItem />
-									<FlexItem shrink justify="flex-end">
-										<Chunk>
-											<Link href={getProfileEditPageUrl()}> 
-												<Button color="secondary" label="Settings" />
-											</Link>
-										</Chunk>
-									</FlexItem>
+									{canEdit && 
+										<FlexItem shrink justify="flex-end">
+											<Chunk>
+												<Link href={getProfileEditPageUrl()}> 
+													<Button color="secondary" label="Settings" />
+												</Link>
+											</Chunk>
+										</FlexItem>
+									}
 								</Flex>
 								
 							</Section>
@@ -148,7 +162,7 @@ function TldrProfile(props) {
 												<Chunk key={i}>
 													{ !item.last &&
 														<Link href={href}>
-															<TldrCardSmall tldr={item}  />
+															<TldrCardSmall tldr={item} user={authentication.user} />
 														</Link>
 													}
 													{ item.last &&
@@ -189,7 +203,7 @@ function TldrProfile(props) {
 									renderItem={(item, i)=>(
 										<Chunk key={i}>
 											<Link href={ getTldrPageUrl({tldrId: item.id}) }>
-												<TldrCardSmall tldr={item} />
+												<TldrCardSmall tldr={item} user={authentication.user} />
 											</Link>
 										</Chunk>
 									)}

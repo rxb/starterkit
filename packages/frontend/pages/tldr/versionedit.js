@@ -1,4 +1,5 @@
 import React, {Fragment, useState, useCallback, useEffect, useRef} from 'react';
+import ErrorPage from 'next/error'
 
 // SWR
 import { request, getTldrUrl } from '@/swr';
@@ -168,183 +169,188 @@ function VersionEdit(props) {
 			formState.setLoading(false);
 		}
 	}
-	
 
+	// DIVERT TO ERROR PAGE
+	if (!authentication.user || (tldr.authorId && user.id && (tldr.authorId != user.id) )) {
+		// not logged in or trying to edit something I don't own
+		return <ErrorPage statusCode={401} />
+	}
 
-		return (
-			<Page>
-				<TldrHeader />
-				<Head>
-					<title>Edit tldr</title>
-				</Head>
-				<Stripe>
+	// RENDER
+	return (
+		<Page>
+			<TldrHeader />
+			<Head>
+				<title>Edit tldr</title>
+			</Head>
+			<Stripe>
+					<Bounds>
+						<Section>
+							<Text type="pageHead">Edit card</Text>
+						</Section>
+					</Bounds>
+					<Sticky>
 						<Bounds>
 							<Section>
-								<Text type="pageHead">Edit card</Text>
+								<Tabs 
+									selectedValue={selectedTab}
+									onChange={ value => setSelectedTab(value) }
+									>
+									<Tabs.Item 
+										label="Edit" 
+										value="edit" 
+										/>
+									<Tabs.Item 
+										label="Preview" 
+										value="preview" 
+										/>
+								</Tabs>
 							</Section>
 						</Bounds>
-						<Sticky>
-							<Bounds>
-								<Section>
-									<Tabs 
-										selectedValue={selectedTab}
-										onChange={ value => setSelectedTab(value) }
-										>
-										<Tabs.Item 
-											label="Edit" 
-											value="edit" 
-											/>
-										<Tabs.Item 
-											label="Preview" 
-											value="preview" 
-											/>
-									</Tabs>
-								</Section>
-							</Bounds>
-						</Sticky>
+					</Sticky>
 
-						<Bounds>
-							<form>
+					<Bounds>
+						<form>
 
-								<Section>
+							<Section>
 
-									{ (selectedTab == 'edit') &&
-									<>
-										<Chunk>
-											<TextInput
-												style={[styles.textPageHead, inputJoinedTop]}
-												id="title"
-												placeholder="Title"
-												value={formState.getFieldValue('title')}
-												onChange={e => formState.setFieldValue('title', e.target.value) }
-												/>
-											<FieldError error={formState.error?.fieldErrors?.title} />	
-											<TextInput
-												style={[{fontStyle: 'italic'}, inputJoinedBottom]}
-												id="blurb"
-												placeholder="Short description"
-												value={formState.getFieldValue('blurb')}
-												onChange={e => formState.setFieldValue('blurb', e.target.value) }
-												/>
-											<FieldError error={formState.error?.fieldErrors?.blurb} />
-										</Chunk>
-
-										<DndProvider backend={HTML5Backend}>
-											{formState.getFieldValue('steps')?.map((item, i)=>(
-												<Reorderable key={item.stepid} index={i} id={item.stepid} moveItem={moveStep}>
-													<Chunk>
-														<View 
-															style={{paddingLeft: 18}}
-															>
-														<View 
-															style={{
-																position: 'absolute',
-																top: 6,
-																bottom: 6,
-																left: 0,
-																width: 14,
-																backgroundColor: swatches.shade,
-																borderRadius: METRICS.borderRadius,
-																cursor: 'pointer'
-															}}
-															/>
-															<TextInput
-																style={[styles.textBig, inputJoinedTop]}
-																id={`step${i}head`}
-																value={item.head}
-																multiline
-																placeholder="Bulletpoint headline"
-																onChange={e => formState.setFieldValue('steps', [
-																	...formState.getFieldValue('steps').slice(0, i),
-																	{...item, head: e.target.value},
-																	...formState.getFieldValue('steps').slice(i + 1)
-																]) }
-																/>
-															<TextInput
-																style={[inputJoinedBottom]}
-																id={`step${i}body`}
-																value={item.body}
-																multiline
-																placeholder="Bulletpoint description"
-																onChange={e => formState.setFieldValue('steps', [
-																	...formState.getFieldValue('steps').slice(0, i),
-																	{...item, body: e.target.value},
-																	...formState.getFieldValue('steps').slice(i + 1)
-																]) }
-																/>
-														</View>
-													</Chunk>
-												</Reorderable>
-											))}
-										</DndProvider>
-
-										<Touch onPress={()=>{
-												formState.setFieldValue('steps', [
-													...formState.getFieldValue('steps'),
-													{title: '', body: '', stepid: (stepCursor + 1)},
-												])
-												setStepCursor(stepCursor + 1);
-											}}>
-											<Chunk inline>
-												<Icon shape="PlusCircle" />
-												<Text> Add new item</Text>
-											</Chunk>
-										</Touch>
-									</>
-
-									}
-
-									{ (selectedTab == 'preview') &&
-									<View style={{maxWidth: 640, marginHorizontal: 'auto'}}>
-										<Chunk>
-										<TldrCard 
-											tldr={tldr}
-											thisVersion={previewVersion} 
-											/>
-										</Chunk>
-									</View>
-									}	
-								</Section>
-
-								<Section>
-									<Chunk border>
-										<Flex >
-											<FlexItem shrink>
-												<Button
-													color="secondary"
-													label="Save as draft"
-													isLoading={formState.loading && !formState.getFieldValue('publish')}
-													onPress={ () => {
-														submitForm({publish: false});
-													}}				
-													/>
-											</FlexItem>
-											<FlexItem shrink>
-												<Button
-													color="primary"
-													label={(tldr.currentTldrVersionId == undefined) ? 'Publish card'  : `Publish as new version (v ${previewVersion.version})`}
-													isLoading={formState.loading && formState.getFieldValue('publish')}
-													onPress={ () => {
-														submitForm({publish: true});
-													}}
-													/>						
-											</FlexItem>
-										</Flex>
-									</Chunk>
-
-									{/*
+								{ (selectedTab == 'edit') &&
+								<>
 									<Chunk>
-										<Text>{JSON.stringify(tldr)}</Text>
+										<TextInput
+											style={[styles.textPageHead, inputJoinedTop]}
+											id="title"
+											placeholder="Title"
+											value={formState.getFieldValue('title')}
+											onChange={e => formState.setFieldValue('title', e.target.value) }
+											/>
+										<FieldError error={formState.error?.fieldErrors?.title} />	
+										<TextInput
+											style={[{fontStyle: 'italic'}, inputJoinedBottom]}
+											id="blurb"
+											placeholder="Short description"
+											value={formState.getFieldValue('blurb')}
+											onChange={e => formState.setFieldValue('blurb', e.target.value) }
+											/>
+										<FieldError error={formState.error?.fieldErrors?.blurb} />
 									</Chunk>
-									*/}
 
-								</Section>
-							</form>
+									<DndProvider backend={HTML5Backend}>
+										{formState.getFieldValue('steps')?.map((item, i)=>(
+											<Reorderable key={item.stepid} index={i} id={item.stepid} moveItem={moveStep}>
+												<Chunk>
+													<View 
+														style={{paddingLeft: 18}}
+														>
+													<View 
+														style={{
+															position: 'absolute',
+															top: 6,
+															bottom: 6,
+															left: 0,
+															width: 14,
+															backgroundColor: swatches.shade,
+															borderRadius: METRICS.borderRadius,
+															cursor: 'pointer'
+														}}
+														/>
+														<TextInput
+															style={[styles.textBig, inputJoinedTop]}
+															id={`step${i}head`}
+															value={item.head}
+															multiline
+															placeholder="Bulletpoint headline"
+															onChange={e => formState.setFieldValue('steps', [
+																...formState.getFieldValue('steps').slice(0, i),
+																{...item, head: e.target.value},
+																...formState.getFieldValue('steps').slice(i + 1)
+															]) }
+															/>
+														<TextInput
+															style={[inputJoinedBottom]}
+															id={`step${i}body`}
+															value={item.body}
+															multiline
+															placeholder="Bulletpoint description"
+															onChange={e => formState.setFieldValue('steps', [
+																...formState.getFieldValue('steps').slice(0, i),
+																{...item, body: e.target.value},
+																...formState.getFieldValue('steps').slice(i + 1)
+															]) }
+															/>
+													</View>
+												</Chunk>
+											</Reorderable>
+										))}
+									</DndProvider>
 
-					</Bounds>
-				</Stripe>
-			</Page>
-		);
+									<Touch onPress={()=>{
+											formState.setFieldValue('steps', [
+												...formState.getFieldValue('steps'),
+												{title: '', body: '', stepid: (stepCursor + 1)},
+											])
+											setStepCursor(stepCursor + 1);
+										}}>
+										<Chunk inline>
+											<Icon shape="PlusCircle" />
+											<Text> Add new item</Text>
+										</Chunk>
+									</Touch>
+								</>
+
+								}
+
+								{ (selectedTab == 'preview') &&
+								<View style={{maxWidth: 640, marginHorizontal: 'auto'}}>
+									<Chunk>
+									<TldrCard 
+										tldr={tldr}
+										thisVersion={previewVersion} 
+										/>
+									</Chunk>
+								</View>
+								}	
+							</Section>
+
+							<Section>
+								<Chunk border>
+									<Flex >
+										<FlexItem shrink>
+											<Button
+												color="secondary"
+												label="Save as draft"
+												isLoading={formState.loading && !formState.getFieldValue('publish')}
+												onPress={ () => {
+													submitForm({publish: false});
+												}}				
+												/>
+										</FlexItem>
+										<FlexItem shrink>
+											<Button
+												color="primary"
+												label={(tldr.currentTldrVersionId == undefined) ? 'Publish card'  : `Publish as new version (v ${previewVersion.version})`}
+												isLoading={formState.loading && formState.getFieldValue('publish')}
+												onPress={ () => {
+													submitForm({publish: true});
+												}}
+												/>						
+										</FlexItem>
+									</Flex>
+								</Chunk>
+
+								{/*
+								<Chunk>
+									<Text>{JSON.stringify(tldr)}</Text>
+								</Chunk>
+								*/}
+
+							</Section>
+						</form>
+
+				</Bounds>
+			</Stripe>
+		</Page>
+	);
 	
 }
 

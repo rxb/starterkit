@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from 'react';
+import ErrorPage from 'next/error'
 
 // SWR
 import { request, buildQs, getTldrUrl } from '@/swr';
@@ -6,10 +7,10 @@ import useSWR, { mutate }  from 'swr';
 
 // REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
-import { addPrompt, addToast, addDelayedToast } from '@/actions';
+import { addPrompt, addToast, addDelayedToast, updateUi } from '@/actions';
 
 // URLS
-import {getProfilePageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl} from '../../components/tldr/urls';
+import {saveLoginRedirect, getProfilePageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -54,7 +55,6 @@ import {TldrCardSmall, TldrCard, DeletePrompt} from '../../components/tldr/compo
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
-
 
 
 const DownVotePrompt = (props) => {
@@ -172,18 +172,7 @@ const SharePrompt = (props) => {
 	);
 };
 
-const share = async (shareData, dispatchSharePrompt) => {
-	if(navigator.share){
-		try {
-			await navigator.share(shareData)
-		} catch(err) {
-			console.error(err)
-		}
-	}	
-	else{
-		dispatchSharePrompt();
-	}													
-}
+
 
 
 function Tldr(props) {
@@ -192,71 +181,88 @@ function Tldr(props) {
 		const authentication = useSelector(state => state.authentication);
 		const user = authentication.user || {};
 
-		const {data: tldrData} = useSWR( [getTldrUrl(props.tldrId), authentication.accessToken],  {initialData: props.tldr});
+		const tldr = useSWR( [getTldrUrl(props.tldrId), authentication.accessToken],  {initialData: props.tldr});
+
+		const canEdit = (user?.id && tldr?.data?.authorId && user.id == tldr.data.authorId);
+
+		// TODO: get actual related tldrs
+		const relatedTldrs = tldr.data ? 
+			{ data: [ tldr.data, tldr.data, tldr.data, tldr.data, ]} :
+			{data: []};
+
+		const doOrAuth = (fn) => {
+			if(!authentication.accessToken){
+				dispatch(updateUi({logInModalVisible: true}));
+			}
+			else{
+				fn();
+			}
+		};
+
+		const upvoteTldr = () => {
+			doOrAuth(() => {
+				setTimeout(() =>{
+					dispatch(addToast("Thanks for the feedback"))
+				}, 300);	
+			});
+		}
+
+		const downvoteTldr = () => {
+			doOrAuth(() => {
+				setTimeout(() =>{
+					dispatch(addPrompt(<DownVotePrompt/>))
+				}, 300);
+			});
+		}
+
+		const saveTldr = () => {
+			doOrAuth(() => {
+				setTimeout(() =>{
+					alert('saved??');
+				}, 300);
+			});
+		}
+
+		const shareTldr = async (shareData) => {
+			if(navigator.share){
+				try {
+					await navigator.share(shareData)
+				} catch(err) {
+					console.error(err)
+				}
+			}	
+			else{
+				dispatch(addPrompt(<SharePrompt shareData={shareData} />))
+			}													
+		}
 
 
+		// DIVERT TO ERROR PAGE
+		// error from getInitialProps or the swr
+		if (props.error || tldr.error) {
+			const error = props.error || tldr.error;
+			return <ErrorPage statusCode={error.code} />
+		}
 
-		if( !tldrData )
-			return <View />
-
+		// RENDER
 		return (
 			<Page>
+				
 				<TldrHeader />
 
-				<Stripe style={{/*paddingTop: 0,*/ backgroundColor: swatches.notwhite}}>
-
-					<Bounds>
-
+				{ tldr.data && 
+					<Stripe style={{/*paddingTop: 0,*/ backgroundColor: swatches.notwhite}}>
+						<Bounds>
 							<Flex direction="column" switchDirection="large">
-
 								<FlexItem growFactor={1}>
 									<Section style={{ paddingBottom: 0}}>
 										<Chunk>
-											<TldrCard tldr={tldrData} />
+											<TldrCard tldr={tldr.data} />
 										</Chunk>
 									</Section>
 								</FlexItem>
-
 								<FlexItem growFactor={0} style={{flexBasis: 350, flex: 0}}>
 									<Section>
-										{/*
-										<Chunk border style={{marginTop: METRICS.space*2}}>
-											<Flex flush>
-												<FlexItem justify="center" align="center" flush>
-													<Text type="sectionHead">686</Text>
-													<Text type="micro" color="secondary">53% positive</Text>
-												</FlexItem>
-												<FlexItem flush>
-													<Flex flush>
-														<FlexItem flush>
-															<Button
-																color="secondary"
-																width="full"
-																style={{borderTopRightRadius: 0, borderBottomRightRadius: 0, flex: 1, marginRight: 1}}
-																>
-																<Icon 
-																	shape="ArrowUp" 
-																	color={swatches.tint} 
-																	/>
-															</Button>
-														</FlexItem>
-														<FlexItem flush>
-															<Button
-																color="secondary"
-																width="full"
-																style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0, flex: 1}}
-																>
-																<Icon 
-																	shape="ArrowDown" 
-																	color={swatches.tint} 
-																	/>
-															</Button>
-														</FlexItem>
-													</Flex>
-												</FlexItem>
-											</Flex>
-										</Chunk>
-										*/}
 										<Flex style={{marginTop: METRICS.space*2.5}}>
 											<FlexItem shrink>
 												<Chunk>
@@ -264,21 +270,13 @@ function Tldr(props) {
 														color="secondary"
 														style={{borderBottomRightRadius: 0, borderBottomLeftRadius: 0, marginBottom: 1}}
 														shape="ArrowUp"
-														onPress={()=>{
-															setTimeout(() =>{
-																dispatch(addToast("Thanks for the feedback"))
-															}, 300);
-														}}
+														onPress={upvoteTldr}
 														/>
 													<Button
 														style={{borderTopRightRadius: 0, borderTopLeftRadius: 0, marginTop: 1}}
 														color="secondary"
 														shape="ArrowDown"
-														onPress={()=>{
-															setTimeout(() =>{
-																dispatch(addPrompt(<DownVotePrompt/>))
-															}, 300);
-														}}
+														onPress={downvoteTldr}
 														/>
 												</Chunk>
 											</FlexItem>
@@ -291,96 +289,93 @@ function Tldr(props) {
 										</Flex>
 
 										<Chunk border>
-											<Button 
-												shape="Edit"
-												label="Edit card"
-												width="full"
-												color="secondary"
-												href={ getVersionEditPageUrl({tldrId: tldrData.id}) }
-												/>
+											{canEdit && 
+												<Button 
+													shape="Edit"
+													label="Edit card"
+													width="full"
+													color="secondary"
+													href={ getVersionEditPageUrl({tldrId: tldr.data.id}) }
+													/>
+											}
 											<Flex>
 												<FlexItem>
-														<Button 
-															shape="Share2" 
-															color="secondary" 
-															width="full"
-															onPress={()=>{
-																const shareData = {
-																	title: tldrData.currentTldrVersion.content.title,
-																	text: tldrData.currentTldrVersion.content.blurb,
-																	url: `tldr.cards/${tldrData.urlKey}`,
-																}
-																const dispatchSharePrompt = () => {
-																	dispatch(addPrompt(<SharePrompt shareData={shareData} />))
-																};
-																share(shareData, dispatchSharePrompt);
-															}}
-															/>
-															<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Share</Text>
+													<Button 
+														shape="Share2" 
+														color="secondary" 
+														width="full"
+														onPress={()=>{
+															shareTldr({
+																title: tldr.data.currentTldrVersion.content.title,
+																text: tldr.data.currentTldrVersion.content.blurb,
+																url: `tldr.cards/${tldr.data.urlKey}`,
+															});
+														}}
+														/>
+														<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Share</Text>
 												</FlexItem>
 												<FlexItem>
-														<Button 
-															shape="Bookmark" 
-															color="secondary" 
-															width="full"
-															/>
-															<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Save</Text>
+													<Button 
+														shape="Bookmark" 
+														color="secondary" 
+														width="full"
+														onPress={saveTldr}
+														/>
+														<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Save</Text>
 												</FlexItem>
 												<FlexItem>
-														<Button 
-															shape="DownloadCloud" 
-															color="secondary" 
-															width="full"
-															/>
-															<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Download</Text>
-
+													<Button 
+														shape="DownloadCloud" 
+														color="secondary" 
+														width="full"
+														/>
+														<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Download</Text>
 												</FlexItem>
 											</Flex>
-
-
 										</Chunk>
 										
-
-											<Chunk border>
+										<Chunk border>
+											<Flex>
+												<FlexItem>
+													<Text weight="strong">Open issues (13)</Text>
+													<Text type="small" color="secondary">Help improve this card</Text>
+												</FlexItem>
+												<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
+													<Icon
+														color={swatches.textSecondary}
+														shape="MessageCircle"
+														/>
+												</FlexItem>
+											</Flex>
+										</Chunk>
+										
+										<Chunk border>
+											<Link href={ getProfilePageUrl({userId: tldr.data.author.id}) }>
 												<Flex>
 													<FlexItem>
-														<Text weight="strong">Open issues (13)</Text>
-														<Text type="small" color="secondary">Help improve this card</Text>
+														<Text weight="strong">Maintainer</Text>
+														<Text type="small" color="secondary">@{tldr.data.author.urlKey} • {tldr.data.author.name}</Text>
 													</FlexItem>
 													<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
-														<Icon
-															color={swatches.textSecondary}
-															shape="MessageCircle"
-															/>
+														<Avatar 
+															size="small"
+															source={{uri: tldr.data.author.photoUrl}} />
 													</FlexItem>
 												</Flex>
-											</Chunk>
-											
-											<Chunk border>
-												<Link href={ getProfilePageUrl({userId: tldrData.author.id}) }>
-													<Flex>
-														<FlexItem>
-															<Text weight="strong">Maintainer</Text>
-															<Text type="small" color="secondary">@rxb • Richard Boenigk</Text>
-														</FlexItem>
-														<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
-															<Avatar 
-																size="small"
-																source={{uri: 'https://randomuser.me/api/portraits/women/28.jpg'}} />
-														</FlexItem>
-													</Flex>
-												</Link>
-											</Chunk>
+											</Link>
+										</Chunk>
+
+										{canEdit &&
 											<Chunk border>
 												<Inline>
-													<Link href={ getTldrEditPageUrl({tldrId: tldrData.id}) }>
+													<Link href={ getTldrEditPageUrl({tldrId: tldr.data.id}) }>
 														<Text type="small" color="hint">Settings</Text>
 													</Link>
-														<Text type="small" color="hint"> </Text>
+													<Text type="small"> </Text>
 													<Touch onPress={() => { 
 														const prompt = <DeletePrompt 
 															dipatch={dispatch}
-															tldr={tldrData} 
+															tldr={tldr.data} 
 															onSuccess={()=>{
 																dispatch(addDelayedToast('Card deleted!'));
 																Router.push( getProfilePageUrl() );
@@ -392,13 +387,17 @@ function Tldr(props) {
 													</Touch>
 												</Inline>
 											</Chunk>
+										}
 									</Section>
 
 								</FlexItem>
 							</Flex>
 
 					</Bounds>
-				</Stripe>
+					</Stripe>
+				}
+
+				{ relatedTldrs.data && 
 				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
 					<Bounds>
 
@@ -418,12 +417,7 @@ function Tldr(props) {
 									}}
 									scrollItemWidth={300}
 									
-									items={[
-										tldrData,
-										tldrData,
-										tldrData,
-										tldrData,
-									]}
+									items={relatedTldrs.data}
 									
 									renderItem={(item, i)=>{
 										return(
@@ -442,6 +436,7 @@ function Tldr(props) {
 
 					</Bounds>
 				</Stripe>
+				}
 			</Page>
 		);
 
@@ -455,13 +450,22 @@ Tldr.getInitialProps = async (context) => {
 	const isServer = !!req;	
 
 	// fetch and pass as props during SSR, using in the useSWR as intitialData
-	const tldr = (isServer) ? await request(getTldrUrl(tldrId)) : undefined;
-
-	return {
-		tldrId: tldrId,
-		isServer,
-		tldr
+	try{
+		const tldr = (isServer) ? await request(getTldrUrl(tldrId)) : undefined;
+		return {
+			tldrId: tldrId,
+			isServer,
+			tldr
+		}
 	}
+	catch(error){
+		return { 
+			tldrId: tldrId,
+			isServer,
+			error: error 
+		}
+	}
+	
 }
 
 const listItemStyle = {
