@@ -71,7 +71,7 @@ const LoginForm = (props) => {
 						onSubmitEditing={onSubmit}
 						/>
 					<Touch onPress={()=>{
-						Router.push({pathname: getRequestPasswordPageUrl()})  
+						Router.push({pathname: getRequestPasswordPageUrl(), query: {email: formState.getFieldValue('email')} })  
 					}}
 					>
 						<Text type="small" color="hint">Forgot password?</Text>

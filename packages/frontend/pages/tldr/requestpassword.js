@@ -58,14 +58,15 @@ import feathersClient from 'components/FeathersClient';
 
 const PasswordRequest = (props) => {
 
+   const { email = "" } = props;
+
    const dispatch = useDispatch(); 
 
    const [requestSentTo, setRequestSentTo] = useState();
 
-
    const formState = useFormState({
       initialFields: {
-         password: ''
+         email: email
       },
       toastableErrors: {
          BadRequest: 'Something went wrong',
@@ -178,11 +179,11 @@ const PasswordRequest = (props) => {
 PasswordRequest.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const {store, req, pathname, query} = context;
-   const {token} = query;
+   const {email} = query;
    const isServer = !!req;	
 	return {
 		isServer,
-      token
+      email
 	}
 }
 

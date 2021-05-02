@@ -139,19 +139,7 @@ function Page (props) {
 				<Stripe>
 					<Section>
 						<Chunk>
-							{/*
-							<Text type="pageHead">Log in</Text>
-							*/}
-							<Tabs selectedValue="login">
-								<Tabs.Item 
-									label="Login" 
-									value="login" 
-									/>
-								<Tabs.Item 
-									label="Register" 
-									value="register" 
-									/>
-							</Tabs>
+							
 
 							{ui.logInModalOptions?.explainText && 
 								<Text>{ui.logInModalOptions.explainText}</Text>
