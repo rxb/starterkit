@@ -33,6 +33,7 @@ import {
 	LoadingBlock,
 	Link,
 	List,
+	Tabs,
 	Touch,
 	Menu,
 	Modal,
@@ -46,6 +47,8 @@ import {
 } from '../modules/cinderblock';
 
 import LoginForm from './LoginForm';
+import RegistrationForm from './RegistrationForm';
+
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
@@ -127,25 +130,40 @@ function Page (props) {
 			<Modal
 				visible={ui.logInModalVisible}
 				onRequestClose={()=>{
-					dispatch(updateUi({logInModalVisible: false}))
+					dispatch(updateUi({ 
+						logInModalVisible: false, 
+						loginModalOptions: {} 
+					}))
 				}}
 				>
-				
 				<Stripe>
 					<Section>
 						<Chunk>
+							{/*
 							<Text type="pageHead">Log in</Text>
+							*/}
+							<Tabs selectedValue="login">
+								<Tabs.Item 
+									label="Login" 
+									value="login" 
+									/>
+								<Tabs.Item 
+									label="Register" 
+									value="register" 
+									/>
+							</Tabs>
+
+							{ui.logInModalOptions?.explainText && 
+								<Text>{ui.logInModalOptions.explainText}</Text>
+							}
 						</Chunk>
 						<Chunk>
-							<OauthButtons />
+							<OauthButtons redirectOverride={ui.logInModalOptions?.redirect} />
 						</Chunk>
 						<LoginForm />
 					</Section>
-					
 				</Stripe>
-				
 			</Modal>
-			
 			
 			<ConnectedToaster />
 			<ConnectedPrompter />

@@ -97,10 +97,16 @@ const Login = (props) => {
                   </Section>
                }
                <Section border={error}>
+                  
+                  <LoginForm />
+               </Section>
+               <Section border>
+                  <View style={{position: 'absolute', top: -13, left: 0, right: 0, alignItems: 'center'}}>
+                     <Text type="small" weight="strong" style={{backgroundColor: 'white', paddingHorizontal: 10}}>OR</Text>
+                  </View>
                   <Chunk>
                      <OauthButtons redirectOverride={{pathname: '/tldr'}} />
                   </Chunk>
-                  <LoginForm />
                </Section>
             </Bounds>
          </Stripe>

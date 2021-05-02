@@ -55,6 +55,8 @@ import styles from 'modules/cinderblock/styles/styles';
 import swatches from 'modules/cinderblock/styles/swatches';
 import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
+const qs = (params) => "?"+Object.keys(params).map(key => key + '=' + params[key]).join('&');
+
 const Oauth = (props) => {
 
    const {error} = props;

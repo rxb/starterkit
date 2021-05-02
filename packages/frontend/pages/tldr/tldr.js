@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -43,7 +43,7 @@ import {
 } from 'modules/cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
-import Router from 'next/router'
+import Router, {useRouter} from 'next/router'
 
 // STYLES
 import styles from 'modules/cinderblock/styles/styles';
@@ -176,6 +176,7 @@ const SharePrompt = (props) => {
 
 
 function Tldr(props) {
+		const router = useRouter();
 
 		const dispatch = useDispatch(); 
 		const authentication = useSelector(state => state.authentication);
@@ -190,9 +191,40 @@ function Tldr(props) {
 			{ data: [ tldr.data, tldr.data, tldr.data, tldr.data, ]} :
 			{data: []};
 
-		const doOrAuth = (fn) => {
+		// POST-AUTH ACTION
+		// check if hash action passed back from oauth, reg
+		const hashAction = window.location.hash.substr(1);
+		window.location.hash = '';
+		// init postAuthAction values
+		const [postAuthAction, setPostAuthAction] = useState(hashAction);
+		// on login, check for valid action key and do it
+		useEffect(()=>{
+			if(user.id && postAuthAction){
+				switch(postAuthAction){
+					case 'upvoteTldr':
+						upvoteTldr();
+						break;
+					case 'downvoteTldr':
+						downvoteTldr();
+						break;
+					case 'saveTldr':
+						saveTldr();
+						break;	
+				}
+				setPostAuthAction(null);
+			}
+		}, [user.id]);
+
+		const doOrAuth = (fn, actionOnReturn, explainText) => {
 			if(!authentication.accessToken){
-				dispatch(updateUi({logInModalVisible: true}));
+				setPostAuthAction(actionOnReturn);
+				dispatch(updateUi({
+					logInModalVisible: true, 
+					logInModalOptions: {
+						redirect: { hash: actionOnReturn },
+						explainText: explainText
+					}
+				}));
 			}
 			else{
 				fn();
@@ -204,7 +236,7 @@ function Tldr(props) {
 				setTimeout(() =>{
 					dispatch(addToast("Thanks for the feedback"))
 				}, 300);	
-			});
+			}, "upvoteTldr", "To upvote you need to be logged in my dude");
 		}
 
 		const downvoteTldr = () => {
@@ -212,7 +244,7 @@ function Tldr(props) {
 				setTimeout(() =>{
 					dispatch(addPrompt(<DownVotePrompt/>))
 				}, 300);
-			});
+			}, "downvoteTldr", "To downvote you need to be logged in my dude");
 		}
 
 		const saveTldr = () => {
@@ -220,7 +252,7 @@ function Tldr(props) {
 				setTimeout(() =>{
 					alert('saved??');
 				}, 300);
-			});
+			}, "saveTldr", "To save you need to be logged in my dude");
 		}
 
 		const shareTldr = async (shareData) => {
@@ -247,7 +279,7 @@ function Tldr(props) {
 		// RENDER
 		return (
 			<Page>
-				
+
 				<TldrHeader />
 
 				{ tldr.data && 

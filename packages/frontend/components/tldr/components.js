@@ -55,7 +55,11 @@ export const OauthButtons = (props) => {
 	const [loadingGoogle, setLoadingGoogle] = useState(false);
 	const [loadingApple, setLoadingApple] = useState(false);
 	const router = useRouter();
-	const redirect = props.redirectOverride || {pathname: router.pathname, query: router.query};
+	const redirect =  {
+		pathname: router.pathname, 
+		query: router.query, 
+		...props.redirectOverride
+	};
 
 	return(
 		<>

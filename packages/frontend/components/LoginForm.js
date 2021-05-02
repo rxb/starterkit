@@ -70,22 +70,22 @@ const LoginForm = (props) => {
 						placeholder="password"
 						onSubmitEditing={onSubmit}
 						/>
-					
+					<Touch onPress={()=>{
+						Router.push({pathname: getRequestPasswordPageUrl()})  
+					}}
+					>
+						<Text type="small" color="hint">Forgot password?</Text>
+					</Touch>	
+				</Chunk>
+				<Chunk>
 					<Button
 						onPress={onSubmit}
 						accessibilityRole="submit"
 						isLoading={formState.loading}
 						label="Log in"
-						width="full"
+						style={{minWidth: 120}}
 						/>
-					<Touch onPress={()=>{
-						dispatch(updateUi({logInModalVisible: false}))
-						Router.push({pathname: getRequestPasswordPageUrl()})  
-					}}
-					style={{marginTop: 16}}
-					>
-						<Text type="small" color="hint" style={{textAlign: 'center'}}>Forgot password?</Text>
-					</Touch>
+					
 				</Chunk>
 			</form>
 			</LoadingBlock>
