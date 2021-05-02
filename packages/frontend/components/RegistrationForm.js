@@ -157,45 +157,47 @@ const Register = (props) => {
 				<FieldError error={formState.error?.fieldErrors?.email} />	
 	
 				{ passwordMasked &&
-				<TextInput
-					placeholder="Pick a password"
-					id="password"
-					secureTextEntry={true}
-					autoCompleteType="new-password"
-					value={formState.getFieldValue('password')}
-					onChange={e => formState.setFieldValue('password', e.target.value) }
-					/>
+					<View>
+						<TextInput
+							placeholder="Pick a password"
+							id="password"
+							secureTextEntry={true}
+							autoCompleteType="new-password"
+							value={formState.getFieldValue('password')}
+							onChange={e => formState.setFieldValue('password', e.target.value) }
+							/>
+						<View style={{position: 'absolute', right: 14, top: 0, bottom: 0, justifyContent: 'center'}}>
+							<Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
+								<Icon
+									shape="EyeOff"
+									color={swatches.textHint}
+									/>
+							</Touch>
+						</View>
+					</View>
 				}
 				{ !passwordMasked &&
-				<TextInput
-					placeholder="Pick a password"
-					id="password"
-					autoCompleteType="new-password"
-					value={formState.getFieldValue('password')}
-					onChange={e => formState.setFieldValue('password', e.target.value) }
-					/>
+					<View>
+						<TextInput
+							placeholder="Pick a password"
+							id="password"
+							autoCompleteType="new-password"
+							value={formState.getFieldValue('password')}
+							onChange={e => formState.setFieldValue('password', e.target.value) }
+							/>
+						<View style={{position: 'absolute', right: 14, top: 0, bottom: 0, justifyContent: 'center'}}>
+							<Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
+								<Icon
+									shape="Eye"
+									color={swatches.textHint}
+									/>
+							</Touch>
+						</View>
+					</View>
 				}
-				{/*
-				<TextInput
-					id="confirm-password"
-					placeholder="Retype new password to confirm"
-					secureTextEntry={true}
-					autoCompleteType="new-password"
-					value={formState.getFieldValue('confirm-password')}
-					onChange={e => formState.setFieldValue('confirm-password', e.target.value) }
-					/>
-				*/}
 				<FieldError error={formState.error?.fieldErrors?.password} />	
 				<Text type="small" color="hint">
 					Must be at least 8 characters long
-					{ formState.getFieldValue('password').length > 0 &&
-						<>
-						<Text type="small" color="hint">. </Text>
-						<Touch onPress={()=>{
-							setPasswordMasked(!passwordMasked);
-						}}><Text type="small" color="tint">{passwordMasked  ? 'Unhide password' : 'Hide password'}</Text></Touch>
-						</>
-					}
 				</Text>
 			</Chunk>
 			<Chunk>
