@@ -376,3 +376,33 @@ export const LoginForm = (props) => {
    </>
    );
 }
+
+export const LoginHeader = (props) => {
+   const {
+      toggleOnPress,
+      toggleHref
+   } = props;
+   const TouchComponent = toggleHref ? Link : Touch
+
+   return(
+      <>
+         <Text type="pageHead">Log in</Text>
+         <Text color="secondary" type="small" style={{marginTop: 3}}>No account yet? <TouchComponent onPress={toggleOnPress} href={toggleHref}><Text color="tint" type="small">Sign up</Text></TouchComponent></Text>
+      </>
+   );
+}
+
+export const RegisterHeader = (props) => {
+   const {
+      toggleOnPress = ()=>{},
+      toggleHref = null
+   } = props;
+   const TouchComponent = toggleHref ? Link : Touch
+
+   return(
+      <>
+         <Text type="pageHead">Sign up</Text>
+         <Text color="secondary" type="small" style={{marginTop: 3}}>Already have an account? <TouchComponent onPress={toggleOnPress} href={toggleHref}><Text color="tint" type="small">Log in</Text></TouchComponent></Text>
+      </>
+   );
+}

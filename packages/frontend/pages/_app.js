@@ -51,6 +51,7 @@ function ThisApp(props) {
     const dispatch = store.dispatch; // not in the Provider yet
     const storeAuth = (authResult, params, context) => {
       dispatch( logInSuccess(authResult) );
+      
     }
     feathersClient.on('login', storeAuth);
     feathersClient.on('logout', (authResult, params, context) => {

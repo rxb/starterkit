@@ -9,7 +9,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import { getProfileEditPageUrl, getRequestPasswordPageUrl } from 'components/tldr/urls';
+import { getProfileEditPageUrl, getRegisterPageUrl, getRequestPasswordPageUrl } from 'components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -55,7 +55,7 @@ import swatches from 'modules/cinderblock/styles/swatches';
 import { METRICS, EASE } from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
-import { LoginForm } from 'components/authComponents';
+import { LoginForm, LoginHeader } from 'components/authComponents';
 
 
 const Login = (props) => {
@@ -67,11 +67,11 @@ const Login = (props) => {
          <TldrHeader />
          <Stripe>
             <Bounds style={{ maxWidth: 480 }}>
-               
+
                {!error &&
                   <Section>
                      <Chunk>
-                        <Text type="pageHead">Log in</Text>
+                        <LoginHeader toggleHref={getRegisterPageUrl()} />
                      </Chunk>
                   </Section>
                }

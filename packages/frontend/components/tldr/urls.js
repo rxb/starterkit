@@ -15,6 +15,8 @@ export const getRequestPasswordPageUrl = (options) => buildUrl('/requestpassword
 export const getResetPasswordPageUrl = (options) => buildUrl('/resetpassword', options);
 export const getOauthPageUrl = (options) => buildUrl('/oauth', options);
 export const getLoginPageUrl = (options) => buildUrl('/login', options);
+export const getRegisterPageUrl = (options) => buildUrl('/register', options);
+
 
 export const getLoginRedirect = () => {
    const storedRedirect = localStorage.getItem("loginRedirect");

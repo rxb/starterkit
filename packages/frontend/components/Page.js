@@ -51,7 +51,7 @@ import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
 import { addToastableErrors } from 'modules/cinderblock/utils';
-import { RegisterForm, LoginForm } from 'components/authComponents';
+import { RegisterForm, LoginForm, RegisterHeader, LoginHeader } from 'components/authComponents';
 
 
 // usePrevious hook
@@ -136,32 +136,31 @@ function Page (props) {
 				}}
 				>
 				<Stripe>
-						<RevealBlock visible={authUi == 'login'} animateExit={false}>
+
+					{/*ui.logInModalOptions?.explainText && 
+							<Chunk>
+								<Text>{ui.logInModalOptions.explainText}</Text>
+							</Chunk>
+					*/}
+
+					<RevealBlock visible={authUi == 'login'} animateExit={false}>
 						<Section>
-							<Text type="pageHead">Log in</Text>
-							<Text color="secondary" type="small" style={{marginTop: 3}}>No account yet? <Touch onPress={()=>setAuthUi('register')}><Text color="tint" type="small">Sign up</Text></Touch></Text>
-							{/*ui.logInModalOptions?.explainText && 
-								<Chunk>
-									<Text>{ui.logInModalOptions.explainText}</Text>
-								</Chunk>
-							*/}
+							<LoginHeader toggleOnPress={()=>setAuthUi('register')} />
 						</Section>
 						<LoginForm 
 							redirectOnLocalLogin={true}
-							redirectOverride={{pathname: '/tldr'}} 
+							redirectOverride={ui.loginModalOptions?.redirect} 
 							/>
-						</RevealBlock>
-					
+					</RevealBlock>
 
-						<RevealBlock visible={authUi == 'register'} animateExit={false}>
-							<Section>
-								<Text type="pageHead">Sign up</Text>
-								<Text color="secondary" type="small" style={{marginTop: 3}}>Already have an account? <Touch onPress={()=>setAuthUi('login')}><Text color="tint" type="small">Log in</Text></Touch></Text>
-							</Section>
-							<RegisterForm 
-								redirectOverride={{pathname: '/tldr'}} 
-								/>
-						</RevealBlock>
+					<RevealBlock visible={authUi == 'register'} animateExit={false}>
+						<Section>
+							<RegisterHeader toggleOnPress={()=>setAuthUi('login')} />
+						</Section>
+						<RegisterForm 
+							redirectOverride={ui.loginModalOptions?.redirect} 
+							/>
+					</RevealBlock>
 
 				</Stripe>
 			</Modal>
