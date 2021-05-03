@@ -136,11 +136,10 @@ function Page (props) {
 				}}
 				>
 				<Stripe>
-					{ authUi == 'login' && 
-						<RevealBlock visible={true}>
+						<RevealBlock visible={authUi == 'login'} animateExit={false}>
 						<Section>
 							<Text type="pageHead">Log in</Text>
-							<Text color="secondary" type="small" style={{marginTop: 3}}>No account yet? <Touch onPress={()=>setAuthUi('register')}><Text color="tint" type="small">Register</Text></Touch></Text>
+							<Text color="secondary" type="small" style={{marginTop: 3}}>No account yet? <Touch onPress={()=>setAuthUi('register')}><Text color="tint" type="small">Sign up</Text></Touch></Text>
 							{/*ui.logInModalOptions?.explainText && 
 								<Chunk>
 									<Text>{ui.logInModalOptions.explainText}</Text>
@@ -152,10 +151,9 @@ function Page (props) {
 							redirectOverride={{pathname: '/tldr'}} 
 							/>
 						</RevealBlock>
-					}
+					
 
-					{ authUi == 'register' && 
-						<RevealBlock visible={true}>
+						<RevealBlock visible={authUi == 'register'} animateExit={false}>
 							<Section>
 								<Text type="pageHead">Sign up</Text>
 								<Text color="secondary" type="small" style={{marginTop: 3}}>Already have an account? <Touch onPress={()=>setAuthUi('login')}><Text color="tint" type="small">Log in</Text></Touch></Text>
@@ -164,7 +162,6 @@ function Page (props) {
 								redirectOverride={{pathname: '/tldr'}} 
 								/>
 						</RevealBlock>
-					}
 
 				</Stripe>
 			</Modal>

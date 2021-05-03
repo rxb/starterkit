@@ -11,6 +11,8 @@ const RevealBlock = (props) => {
       offset = 100,
       fromTop = false,
       visible = false,
+      animateEntrance = true,
+      animateExit = true,
       style
    } = props;
    const directionMultiplier = (fromTop) ? -1 : 1;
@@ -27,7 +29,7 @@ const RevealBlock = (props) => {
          visibilityValue,{
             toValue: 1,
             easing: EASE,
-            duration,
+            duration: animateEntrance ? duration : 0,
             delay
          }
       ).start();
@@ -38,7 +40,7 @@ const RevealBlock = (props) => {
          visibilityValue,{
             toValue: 0,
             easing: EASE,
-            duration,
+            duration: animateExit ? duration : 0,
             delay
          }
       ).start( remove );
