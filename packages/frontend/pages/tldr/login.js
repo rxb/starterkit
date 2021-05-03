@@ -55,8 +55,7 @@ import swatches from 'modules/cinderblock/styles/swatches';
 import { METRICS, EASE } from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
-import LoginForm from 'components/LoginForm';
-import { OauthButtons } from 'components/tldr/components';
+import { LoginForm } from 'components/authComponents';
 
 
 const Login = (props) => {
@@ -68,6 +67,7 @@ const Login = (props) => {
          <TldrHeader />
          <Stripe>
             <Bounds style={{ maxWidth: 480 }}>
+               
                {!error &&
                   <Section>
                      <Chunk>
@@ -75,6 +75,7 @@ const Login = (props) => {
                      </Chunk>
                   </Section>
                }
+
                {error &&
                   <Section>
                      <Chunk>
@@ -96,18 +97,12 @@ const Login = (props) => {
 
                   </Section>
                }
-               <Section border={error}>
-                  
-                  <LoginForm />
-               </Section>
-               <Section border>
-                  <View style={{position: 'absolute', top: -13, left: 0, right: 0, alignItems: 'center'}}>
-                     <Text type="small" weight="strong" style={{backgroundColor: 'white', paddingHorizontal: 10}}>OR</Text>
-                  </View>
-                  <Chunk>
-                     <OauthButtons redirectOverride={{pathname: '/tldr'}} />
-                  </Chunk>
-               </Section>
+
+               <LoginForm 
+                  redirectOnLocalLogin={true}
+                  redirectOverride={{pathname: '/tldr'}} 
+                  />
+
             </Bounds>
          </Stripe>
       </Page >

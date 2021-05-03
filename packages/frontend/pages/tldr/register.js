@@ -55,18 +55,12 @@ import swatches from 'modules/cinderblock/styles/swatches';
 import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
-//import { Animated } from '@/components/cinderblock/primitives';
-import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
-import feathersClient from 'components/FeathersClient';
-import { OauthButtons } from 'components/tldr/components';
-import RegistrationForm from 'components/RegistrationForm';
+import { RegisterForm } from 'components/authComponents';
 
 
 
 
 const Register = (props) => {
-
-	
 
    return (
       <Page>
@@ -78,23 +72,12 @@ const Register = (props) => {
                      <Text type="pageHead">Sign up</Text>
                   </Chunk>
                </Section>
-               <Section>
-                 <RegistrationForm />
-               </Section>
-               <Section border>
-                  <View style={{position: 'absolute', top: -13, left: 0, right: 0, alignItems: 'center'}}>
-                     <Text type="small" weight="strong" style={{backgroundColor: 'white', paddingHorizontal: 10}}>OR</Text>
-                  </View>
-                  <Chunk>
-                     <OauthButtons />
-                  </Chunk>
-               </Section>
+               <RegisterForm />
             </Bounds>
          </Stripe>
       </Page>
    );
   
-   
 }
 
 Register.getInitialProps = async (context) => {

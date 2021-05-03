@@ -1,4 +1,4 @@
-import React, React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import React,{Fragment, useState, useEffect, useCallback, useRef } from 'react';
 
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,6 +27,7 @@ import {
 	Label,
 	List,
 	Link,
+   LoadingBlock,
 	Modal,
 	Picker,
 	Reorderable,
@@ -49,14 +50,14 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 // COMPONENT-SPECIFIC
 import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
 import feathersClient from '../components/FeathersClient';
-import Router from 'next/router'
+import Router, {useRouter} from 'next/router'
 
 // URLS
 import {getProfileEditPageUrl, getRequestPasswordPageUrl} from 'components/tldr/urls';
 
 
 
-export const LoginForm = (props) => {
+export const LoginLocalForm = (props) => {
 	
 	const dispatch = useDispatch();
 
@@ -92,17 +93,17 @@ export const LoginForm = (props) => {
 						value={formState.getFieldValue('email')}
 						onChange={ e => formState.setFieldValue('email', e.target.value) }
 						keyboardType="email-address"
-						placeholder="email"
+						placeholder="Email"
 						onSubmitEditing={onSubmit}
 						/>
-					<TextInput
-						id="password"
-						value={formState.getFieldValue('password')}
-						onChange={ e => formState.setFieldValue('password', e.target.value) }
-						secureTextEntry={true}
-						placeholder="password"
-						onSubmitEditing={onSubmit}
-						/>
+               <PasswordInput 
+                  placeholder="Password"
+                  id="password"
+                  autoCompleteType="new-password"
+                  value={formState.getFieldValue('password')}
+                  onChange={e => formState.setFieldValue('password', e.target.value) }
+                  onSubmitEditing={onSubmit}
+                  />
 					<Touch onPress={()=>{
 						Router.push({pathname: getRequestPasswordPageUrl(), query: {email: formState.getFieldValue('email')} })  
 					}}
@@ -126,15 +127,14 @@ export const LoginForm = (props) => {
 };
 
 
-export const RegisterForm = (props) => {
+export const RegisterLocalForm = (props) => {
 
 	const dispatch = useDispatch();
-   const [passwordMasked, setPasswordMasked] = useState(true);
 
    const formState = useFormState({
       initialFields: {
-         email: null,
-         password: null,
+         email: '',
+         password: '',
       },
       toastableErrors: {
          BadRequest: 'Something went wrong',
@@ -212,45 +212,14 @@ export const RegisterForm = (props) => {
 					/>
 				<FieldError error={formState.error?.fieldErrors?.email} />	
 	
-				{ passwordMasked &&
-					<View>
-						<TextInput
-							placeholder="Pick a password"
-							id="password"
-							secureTextEntry={true}
-							autoCompleteType="new-password"
-							value={formState.getFieldValue('password')}
-							onChange={e => formState.setFieldValue('password', e.target.value) }
-							/>
-						<View style={{position: 'absolute', right: 14, top: 0, bottom: 0, justifyContent: 'center'}}>
-							<Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
-								<Icon
-									shape="EyeOff"
-									color={swatches.textHint}
-									/>
-							</Touch>
-						</View>
-					</View>
-				}
-				{ !passwordMasked &&
-					<View>
-						<TextInput
-							placeholder="Pick a password"
-							id="password"
-							autoCompleteType="new-password"
-							value={formState.getFieldValue('password')}
-							onChange={e => formState.setFieldValue('password', e.target.value) }
-							/>
-						<View style={{position: 'absolute', right: 14, top: 0, bottom: 0, justifyContent: 'center'}}>
-							<Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
-								<Icon
-									shape="Eye"
-									color={swatches.textHint}
-									/>
-							</Touch>
-						</View>
-					</View>
-				}
+            <PasswordInput 
+               placeholder="Pick a password"
+               id="password"
+               autoCompleteType="new-password"
+               value={formState.getFieldValue('password')}
+               onChange={e => formState.setFieldValue('password', e.target.value) }
+               />
+
 				<FieldError error={formState.error?.fieldErrors?.password} />	
 				<Text type="small" color="hint">
 					Must be at least 8 characters long
@@ -270,6 +239,140 @@ export const RegisterForm = (props) => {
 
 }
 
+export const PasswordInput = (props) => {
+   const [passwordMasked, setPasswordMasked] = useState(true);
 
+   return (
+      <>
+      { passwordMasked &&
+         <View>
+            <TextInput
+               secureTextEntry={true}
+               placeholder={props.placeholder}
+               id={props.id}
+               autoCompleteType={props.autoCompleteType}
+               value={props.value}
+               onChange={props.onChange}
+               style={props.style}
+               />
+            <View style={{position: 'absolute', right: 14, top: 0, bottom: 0, justifyContent: 'center'}}>
+               <Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
+                  <Icon
+                     shape="EyeOff"
+                     color={swatches.textHint}
+                     />
+               </Touch>
+            </View>
+         </View>
+      }
+      { !passwordMasked &&
+         <View>
+            <TextInput
+               placeholder={props.placeholder}
+               id={props.id}
+               autoCompleteType={props.autoCompleteType}
+               value={props.value}
+               onChange={props.onChange}
+               style={props.style}
+               />
+            <View style={{position: 'absolute', right: 14, top: 0, bottom: 0, justifyContent: 'center'}}>
+               <Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
+                  <Icon
+                     shape="Eye"
+                     color={swatches.textHint}
+                     />
+               </Touch>
+            </View>
+         </View>
+      }
+      </>
+   );
+}
 
+export const SectionWithLabelBorder = (props) => {
+   return(
+      <Section border>
+         <View style={{position: 'absolute', top: -13, left: 0, right: 0, alignItems: 'center'}}>
+            <Text type="small" weight="strong" style={{backgroundColor: 'white', paddingHorizontal: 10}}>OR</Text>
+         </View>
+         {props.children}
+      </Section>
+   )
+}
 
+export const OauthButtons = (props) => {
+	const [loadingGoogle, setLoadingGoogle] = useState(false);
+	const [loadingApple, setLoadingApple] = useState(false);
+	const router = useRouter();
+	const redirect =  {
+		pathname: router.pathname, 
+		query: router.query, 
+		...props.redirectOverride
+	};
+
+	return(
+		<>
+		<Button
+			isLoading={loadingGoogle}
+			width="full"
+			color="secondary"
+			label="Continue with Google"
+			onPress={()=>{
+				saveLoginRedirect(redirect);
+				setLoadingGoogle(true);
+				location.href=`${apiHost}/oauth/google/`
+			}}
+			/>
+		<Button
+			isLoading={loadingApple}
+			width="full"
+			color="secondary"
+			label="Continue with Apple"
+			onPress={()=>{
+				saveLoginRedirect(redirect);
+				setLoadingApple(true);
+				location.href=`${apiHost}/oauth/apple/`
+			}}
+			/>
+		</>
+	);
+}
+
+export const RegisterForm = (props) => {
+   return(
+      <>
+         <Section>
+            <RegisterLocalForm 
+               redirectOverride={props.redirectOverride}
+               />
+         </Section>
+         <SectionWithLabelBorder>
+            <Chunk>
+               <OauthButtons 
+                  redirectOverride={props.redirectOverride}
+                  />
+            </Chunk>
+         </SectionWithLabelBorder>
+      </>
+   );
+}
+
+export const LoginForm = (props) => {
+   return(
+      <>
+      <Section>
+         <LoginLocalForm 
+            redirectOnLocalLogin={props.redirectOnLocalLogin}
+            redirectOverride={props.redirectOverride}
+            />
+      </Section>
+      <SectionWithLabelBorder>
+         <Chunk>
+            <OauthButtons 
+               redirectOverride={props.redirectOverride}
+               />
+         </Chunk>
+      </SectionWithLabelBorder>
+   </>
+   );
+}

@@ -38,6 +38,7 @@ import {
 	Menu,
 	Modal,
 	Picker,
+	RevealBlock,
 	Section,
 	Sectionless,
 	Stripe,
@@ -46,14 +47,11 @@ import {
 	View,
 } from '../modules/cinderblock';
 
-import LoginForm from './LoginForm';
-import RegistrationForm from './RegistrationForm';
-
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
 import { addToastableErrors } from 'modules/cinderblock/utils';
-import { OauthButtons } from 'components/tldr/components';
+import { RegisterForm, LoginForm } from 'components/authComponents';
 
 
 // usePrevious hook
@@ -121,6 +119,7 @@ function Page (props) {
 		});
 	},[authentication]);
 
+	const [authUi, setAuthUi] = useState('login');
 
 	return (
 		<View style={{minHeight: '100vh', flex: 1}}>
@@ -137,19 +136,36 @@ function Page (props) {
 				}}
 				>
 				<Stripe>
-					<Section>
-						<Chunk>
-							
+					{ authUi == 'login' && 
+						<RevealBlock visible={true}>
+						<Section>
+							<Text type="pageHead">Log in</Text>
+							<Text color="secondary" type="small" style={{marginTop: 3}}>No account yet? <Touch onPress={()=>setAuthUi('register')}><Text color="tint" type="small">Register</Text></Touch></Text>
+							{/*ui.logInModalOptions?.explainText && 
+								<Chunk>
+									<Text>{ui.logInModalOptions.explainText}</Text>
+								</Chunk>
+							*/}
+						</Section>
+						<LoginForm 
+							redirectOnLocalLogin={true}
+							redirectOverride={{pathname: '/tldr'}} 
+							/>
+						</RevealBlock>
+					}
 
-							{ui.logInModalOptions?.explainText && 
-								<Text>{ui.logInModalOptions.explainText}</Text>
-							}
-						</Chunk>
-						<Chunk>
-							<OauthButtons redirectOverride={ui.logInModalOptions?.redirect} />
-						</Chunk>
-						<LoginForm />
-					</Section>
+					{ authUi == 'register' && 
+						<RevealBlock visible={true}>
+							<Section>
+								<Text type="pageHead">Sign up</Text>
+								<Text color="secondary" type="small" style={{marginTop: 3}}>Already have an account? <Touch onPress={()=>setAuthUi('login')}><Text color="tint" type="small">Log in</Text></Touch></Text>
+							</Section>
+							<RegisterForm 
+								redirectOverride={{pathname: '/tldr'}} 
+								/>
+						</RevealBlock>
+					}
+
 				</Stripe>
 			</Modal>
 			
