@@ -216,14 +216,13 @@ function Tldr(props) {
 			}
 		}, [user.id, postAuthAction]);
 
-		const doOrAuth = (fn, actionOnReturn, explainText) => {
+		const doOrAuth = (fn, actionOnReturn) => {
 			if(!authentication.accessToken){
 				//setPostAuthAction(actionOnReturn);
 				dispatch(updateUi({
 					logInModalVisible: true, 
 					logInModalOptions: {
 						redirect: { hash: actionOnReturn },
-						explainText: explainText,
 						callbackForNonRedirectFlow: ()=>{
 							setPostAuthAction(actionOnReturn)
 						}
@@ -240,7 +239,7 @@ function Tldr(props) {
 				setTimeout(() =>{
 					dispatch(addToast("Thanks for the feedback"))
 				}, 300);	
-			}, "upvoteTldr", "To upvote you need to be logged in my dude");
+			}, "upvoteTldr");
 		}
 
 		const downvoteTldr = () => {
@@ -248,7 +247,7 @@ function Tldr(props) {
 				setTimeout(() =>{
 					dispatch(addPrompt(<DownVotePrompt/>))
 				}, 300);
-			}, "downvoteTldr", "To downvote you need to be logged in my dude");
+			}, "downvoteTldr");
 		}
 
 		const saveTldr = () => {
@@ -256,7 +255,7 @@ function Tldr(props) {
 				setTimeout(() =>{
 					alert('saved??');
 				}, 300);
-			}, "saveTldr", "To save you need to be logged in my dude");
+			}, "saveTldr");
 		}
 
 		const shareTldr = async (shareData) => {

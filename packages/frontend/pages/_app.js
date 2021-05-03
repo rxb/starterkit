@@ -5,7 +5,7 @@ import { AppRegistry } from 'react-native-web';
 // REDUX
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import {useStore} from '../store';
-import { logOut, fetchUser, logInSuccess } from '../actions';
+import { logOut, fetchUser, logInSuccess, updateUi } from '../actions';
 
 // SWR
 import { SWRConfig } from 'swr';
@@ -51,7 +51,8 @@ function ThisApp(props) {
     const dispatch = store.dispatch; // not in the Provider yet
     const storeAuth = (authResult, params, context) => {
       dispatch( logInSuccess(authResult) );
-      
+      localStorage.setItem("probablyHasAccount", "true");
+      dispatch( updateUi({probablyHasAccount: true}) );
     }
     feathersClient.on('login', storeAuth);
     feathersClient.on('logout', (authResult, params, context) => {
@@ -65,6 +66,11 @@ function ThisApp(props) {
         checkForBadOauth(error);
       }
     );
+
+    useEffect(()=>{
+      const probablyHasAccount = !!localStorage.getItem("probablyHasAccount");
+      dispatch( updateUi({probablyHasAccount: probablyHasAccount}) );  
+    }, [])
 
     return (
       <>

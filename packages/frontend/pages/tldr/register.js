@@ -1,4 +1,5 @@
 import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import ErrorPage from 'next/error'
 
 // SWR
 import { request, getUserUrl } from '@/swr';
@@ -9,7 +10,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import { getProfileEditPageUrl, getLoginPageUrl} from '../../components/tldr/urls';
+import { getIndexPageUrl, getLoginPageUrl} from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -59,6 +60,15 @@ import { RegisterForm, RegisterHeader } from 'components/authComponents';
 
 
 const Register = (props) => {
+
+   const authentication = useSelector(state => state.authentication);
+   const user = authentication.user || {};
+
+   useEffect(()=>{
+      if(user){
+         Router.push({pathname: getIndexPageUrl()})
+      }
+   }, []);
 
    return (
       <Page>

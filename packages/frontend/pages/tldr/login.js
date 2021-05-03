@@ -9,7 +9,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import { getProfileEditPageUrl, getRegisterPageUrl, getRequestPasswordPageUrl } from 'components/tldr/urls';
+import { getIndexPageUrl, getRegisterPageUrl, getRequestPasswordPageUrl } from 'components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -60,6 +60,15 @@ import { LoginForm, LoginHeader } from 'components/authComponents';
 
 const Login = (props) => {
 
+   const authentication = useSelector(state => state.authentication);
+   const user = authentication.user || {};
+
+   useEffect(()=>{
+      if(user){
+         Router.push({pathname: getIndexPageUrl()})
+      }
+   }, []);
+
    const { error } = props;
 
    return (
@@ -98,10 +107,7 @@ const Login = (props) => {
                   </Section>
                }
 
-               <LoginForm 
-                  redirectOnLocalLogin={true}
-                  redirectOverride={{pathname: '/tldr'}} 
-                  />
+               <LoginForm  />
 
             </Bounds>
          </Stripe>

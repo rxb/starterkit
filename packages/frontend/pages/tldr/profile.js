@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -55,6 +55,7 @@ import swatches from 'modules/cinderblock/styles/swatches';
 import { METRICS } from 'modules/cinderblock/designConstants';
 
 // SCREEN-SPECIFIC
+import Router from 'next/router'
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
@@ -65,12 +66,14 @@ function TldrProfile(props) {
 
 		const authentication = useSelector(state => state.authentication);
 		const userId  = props.userId || authentication?.user?.id;
-		if(!userId){
-			// no userId specified defaults to self
-			// but self isn't logged in
-			dispatch( addDelayedToast("Need to be logged in for that") );
-			Router.push({pathname: getIndexPageUrl()})
-		}
+		
+		// trying to get self when not logged in? redirect to home
+		useEffect(()=>{
+			if(!userId && !authentication.token){
+				dispatch( addDelayedToast("Need to be logged in for that") );
+				Router.push({pathname: getIndexPageUrl()})
+			}	
+		}, [userId]);
 
 		const user = useSWR( getUserUrl(userId) );
 		const canEdit = (authentication && user.data?.id == authentication?.user?.id); 

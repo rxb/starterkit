@@ -221,6 +221,7 @@ function TldrHeader (props) {
 	const dispatch = useDispatch(); 
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
+	const ui = useSelector(state => state.ui);
 
 	return (
 			<Header position="static">
@@ -272,11 +273,30 @@ function TldrHeader (props) {
 										</ConnectedDropdownTouch>
 								}
 
-								{!user.id &&
+								{!user.id && ui.probablyHasAccount && 
 									<Touch onPress={()=>{
-										dispatch(updateUi({logInModalVisible: true}))
-									}}><Text color="tint" nowrap>Log in</Text></Touch>
+										dispatch(updateUi({
+											logInModalVisible: true, 
+											logInModalOptions: {
+												authUi: 'login'
+											}
+										}));
+									}}>
+										<Text color="tint" nowrap>Log in</Text>
+									</Touch>
 								}
+								
+								{!user.id && !ui.probablyHasAccount && 
+									<Touch onPress={()=>{
+										dispatch(updateUi({
+											logInModalVisible: true, 
+											logInModalOptions: {
+												authUi: 'register'
+											}
+										}));
+									}}><Text color="tint" nowrap>Sign up</Text></Touch>
+								}
+								
 							</Fragment>
 						</FlexItem>
 					</Flex>

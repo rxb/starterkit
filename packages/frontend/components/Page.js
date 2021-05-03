@@ -119,12 +119,17 @@ function Page (props) {
 		});
 	},[authentication]);
 
-	const [authUi, setAuthUi] = useState('login');
-
+	// LOGIN MODAL CONFIG
 	const {
 		redirect = {},
-		callbackForNonRedirectFlow = () => {}
+		callbackForNonRedirectFlow = () => {},
 	} = ui.logInModalOptions || {};
+	const [authUi, setAuthUi] = useState('login');
+	useEffect(()=>{
+		const thisAuthUi = ui.logInModalOptions?.authUi ? ui.logInModalOptions.authUi 
+			: ui.probablyHasAccount ? 'login' : 'register';
+		setAuthUi(thisAuthUi);
+	}, [ui.logInModalVisible])
 
 	return (
 		<View style={{minHeight: '100vh', flex: 1}}>
@@ -141,13 +146,6 @@ function Page (props) {
 				}}
 				>
 				<Stripe>
-
-					{/*ui.logInModalOptions?.explainText && 
-							<Chunk>
-								<Text>{ui.logInModalOptions.explainText}</Text>
-							</Chunk>
-					*/}
-
 					<RevealBlock visible={authUi == 'login'} animateExit={false}>
 						<Section>
 							<LoginHeader toggleOnPress={()=>setAuthUi('register')} />
@@ -158,7 +156,6 @@ function Page (props) {
 							redirectOnLocalLogin={true}
 							/>
 					</RevealBlock>
-
 					<RevealBlock visible={authUi == 'register'} animateExit={false}>
 						<Section>
 							<RegisterHeader toggleOnPress={()=>setAuthUi('login')} />
@@ -167,7 +164,6 @@ function Page (props) {
 							redirectOverride={ui.logInModalOptions ? ui.logInModalOptions.redirect : null} 
 							/>
 					</RevealBlock>
-
 				</Stripe>
 			</Modal>
 			

@@ -17,13 +17,13 @@ export const getOauthPageUrl = (options) => buildUrl('/oauth', options);
 export const getLoginPageUrl = (options) => buildUrl('/login', options);
 export const getRegisterPageUrl = (options) => buildUrl('/register', options);
 
-
+const loginRedirectKey = "loginRedirect";
 export const getLoginRedirect = () => {
-   const storedRedirect = localStorage.getItem("loginRedirect");
-   localStorage.removeItem("loginRedirect");
+   const storedRedirect = localStorage.getItem(loginRedirectKey);
+   localStorage.removeItem(loginRedirectKey);
    return storedRedirect ? JSON.parse(storedRedirect) : false;
 }
 
 export const saveLoginRedirect = (redirect) => {
-   localStorage.setItem("loginRedirect", JSON.stringify(redirect) );
+   localStorage.setItem(loginRedirectKey, JSON.stringify(redirect) );
 }
