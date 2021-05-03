@@ -148,8 +148,7 @@ function Page (props) {
 							<LoginHeader toggleOnPress={()=>setAuthUi('register')} />
 						</Section>
 						<LoginForm 
-							redirectOnLocalLogin={true}
-							redirectOverride={ui.loginModalOptions?.redirect} 
+							redirectOverride={ui.logInModalOptions ? ui.logInModalOptions.redirect : null} 
 							/>
 					</RevealBlock>
 
@@ -158,7 +157,7 @@ function Page (props) {
 							<RegisterHeader toggleOnPress={()=>setAuthUi('login')} />
 						</Section>
 						<RegisterForm 
-							redirectOverride={ui.loginModalOptions?.redirect} 
+							redirectOverride={ui.logInModalOptions ? ui.logInModalOptions.redirect : null} 
 							/>
 					</RevealBlock>
 

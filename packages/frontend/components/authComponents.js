@@ -51,14 +51,16 @@ import {METRICS, EASE} from 'modules/cinderblock/designConstants';
 import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
 import feathersClient from '../components/FeathersClient';
 import Router, {useRouter} from 'next/router'
+const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
 // URLS
-import {getProfileEditPageUrl, getRequestPasswordPageUrl} from 'components/tldr/urls';
+import {getProfileEditPageUrl, getRequestPasswordPageUrl, saveLoginRedirect} from 'components/tldr/urls';
 
 
 
 export const LoginLocalForm = (props) => {
-	
+   const redirect = getLoginRedirect(props.redirectOverride);
+
 	const dispatch = useDispatch();
 
 	const formState = useFormState({
@@ -66,21 +68,26 @@ export const LoginLocalForm = (props) => {
 		initialFields: props.initialFields
 	});
 
-	const onSubmit = () =>{
+	const onSubmit = async () =>{
 		formState.setLoading(true);
-		feathersClient
-			.authenticate({
-				strategy: 'local', 
-				email: formState.fields.email, 
-				password: formState.fields.password
-			})
-			.then(()=>{
-				formState.setLoading(false);
-			})
-			.catch((error)=>{
-				console.log(error);
-				formState.setLoading(false);
-			});
+      try{
+         await feathersClient.authenticate({
+               strategy: 'local', 
+               email: formState.fields.email, 
+               password: formState.fields.password
+            })
+         if(props.redirectOnLocalLogin){
+            Router.push(redirect);
+         }
+         else{
+            formState.setLoading(false);
+         }
+      }
+      catch(error){
+         console.log(error);
+         formState.setError(error);
+         formState.setLoading(false);
+      }
 	}
 
 	return(
@@ -128,6 +135,7 @@ export const LoginLocalForm = (props) => {
 
 
 export const RegisterLocalForm = (props) => {
+   const redirect = getLoginRedirect(props.redirectOverride);
 
 	const dispatch = useDispatch();
 
@@ -184,6 +192,10 @@ export const RegisterLocalForm = (props) => {
                email: submitFields.email, 
                password: submitFields.password
             })
+
+            // save redirect for once reg/auth is done
+            saveLoginRedirect(redirect)
+
             // toast and redirect
             const toastMessage = "Registered!";
             dispatch(addDelayedToast(toastMessage));
@@ -300,15 +312,19 @@ export const SectionWithLabelBorder = (props) => {
    )
 }
 
+export const getLoginRedirect = (redirectOverride = {}) => {
+   const router = useRouter();
+   return {
+		pathname: router.pathname, 
+		query: router.query, 
+		...redirectOverride
+	}
+};
+
 export const OauthButtons = (props) => {
 	const [loadingGoogle, setLoadingGoogle] = useState(false);
 	const [loadingApple, setLoadingApple] = useState(false);
-	const router = useRouter();
-	const redirect =  {
-		pathname: router.pathname, 
-		query: router.query, 
-		...props.redirectOverride
-	};
+   const redirect = getLoginRedirect(props.redirectOverride);
 
 	return(
 		<>
@@ -336,45 +352,6 @@ export const OauthButtons = (props) => {
 			/>
 		</>
 	);
-}
-
-export const RegisterForm = (props) => {
-   return(
-      <>
-         <Section>
-            <RegisterLocalForm 
-               redirectOverride={props.redirectOverride}
-               />
-         </Section>
-         <SectionWithLabelBorder>
-            <Chunk>
-               <OauthButtons 
-                  redirectOverride={props.redirectOverride}
-                  />
-            </Chunk>
-         </SectionWithLabelBorder>
-      </>
-   );
-}
-
-export const LoginForm = (props) => {
-   return(
-      <>
-      <Section>
-         <LoginLocalForm 
-            redirectOnLocalLogin={props.redirectOnLocalLogin}
-            redirectOverride={props.redirectOverride}
-            />
-      </Section>
-      <SectionWithLabelBorder>
-         <Chunk>
-            <OauthButtons 
-               redirectOverride={props.redirectOverride}
-               />
-         </Chunk>
-      </SectionWithLabelBorder>
-   </>
-   );
 }
 
 export const LoginHeader = (props) => {
@@ -406,3 +383,44 @@ export const RegisterHeader = (props) => {
       </>
    );
 }
+
+export const RegisterForm = (props) => {
+   return(
+      <>
+         <Section>
+            <RegisterLocalForm 
+               redirectOverride={props.redirectOverride}
+               />
+         </Section>
+         <SectionWithLabelBorder>
+            <Chunk>
+               <OauthButtons 
+                  redirectOverride={props.redirectOverride}
+                  />
+            </Chunk>
+         </SectionWithLabelBorder>
+      </>
+   );
+}
+
+export const LoginForm = (props) => {
+
+   return(
+      <>
+      <Section>
+         <LoginLocalForm 
+            redirectOnLocalLogin={props.redirectOnLocalLogin}
+            redirectOverride={props.redirectOverride}
+            />
+      </Section>
+      <SectionWithLabelBorder>
+         <Chunk>
+            <OauthButtons 
+               redirectOverride={props.redirectOverride}
+               />
+         </Chunk>
+      </SectionWithLabelBorder>
+   </>
+   );
+}
+
