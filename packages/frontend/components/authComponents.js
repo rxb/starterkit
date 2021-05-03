@@ -201,12 +201,7 @@ export const RegisterLocalForm = (props) => {
             // save redirect for once reg/auth is done
             saveLoginRedirect(redirect)
 
-            /*
-            // toast and redirect
-            // maybe don't do this toast, they're still in the "flow" on next screen
-            const toastMessage = "Registered!";
-            dispatch(addDelayedToast(toastMessage));
-            */
+            // push to remainder of profile form
             Router.push({pathname: getProfileEditPageUrl(), query: {isSignup: true}})  
          }
          catch(error){
