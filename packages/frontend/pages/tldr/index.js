@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from 'react';
+import ErrorPage from 'next/error'
 
 // SWR
 import { request, pageHelper, getTldrsUrl, getCategoriesUrl, getCategoryUrl } from '@/swr';
@@ -119,6 +120,13 @@ function TldrHome(props) {
          getCategoriesUrl({'$limit': 1000}) : null 
       ));
 		
+		// DIVERT TO ERROR PAGE
+		// error from getInitialProps or the swr
+		if (isCategory && (category.error || tldrs.error)) {
+         const error = category.error || tldrs.error;
+			return <ErrorPage statusCode={error.code} />
+		}
+
 
 		return (
 			<Page>
