@@ -59,6 +59,9 @@ import {getProfileEditPageUrl, getRequestPasswordPageUrl, saveLoginRedirect} fro
 
 
 export const LoginLocalForm = (props) => {
+   const {
+      callbackForNonRedirectFlow = ()=>{}
+   } = props;
    const redirect = getLoginRedirect(props.redirectOverride);
 
 	const dispatch = useDispatch();
@@ -77,10 +80,12 @@ export const LoginLocalForm = (props) => {
                password: formState.fields.password
             })
          if(props.redirectOnLocalLogin){
+            formState.setLoading(false);
             Router.push(redirect);
          }
          else{
             formState.setLoading(false);
+            callbackForNonRedirectFlow();
          }
       }
       catch(error){
@@ -196,9 +201,12 @@ export const RegisterLocalForm = (props) => {
             // save redirect for once reg/auth is done
             saveLoginRedirect(redirect)
 
+            /*
             // toast and redirect
+            // maybe don't do this toast, they're still in the "flow" on next screen
             const toastMessage = "Registered!";
             dispatch(addDelayedToast(toastMessage));
+            */
             Router.push({pathname: getProfileEditPageUrl(), query: {isSignup: true}})  
          }
          catch(error){
@@ -407,20 +415,20 @@ export const LoginForm = (props) => {
 
    return(
       <>
-      <Section>
-         <LoginLocalForm 
-            redirectOnLocalLogin={props.redirectOnLocalLogin}
-            redirectOverride={props.redirectOverride}
-            />
-      </Section>
-      <SectionWithLabelBorder>
-         <Chunk>
-            <OauthButtons 
+         <Section>
+            <LoginLocalForm 
+               callbackForNonRedirectFlow={props.callbackForNonRedirectFlow}
                redirectOverride={props.redirectOverride}
                />
-         </Chunk>
-      </SectionWithLabelBorder>
-   </>
+         </Section>
+         <SectionWithLabelBorder>
+            <Chunk>
+               <OauthButtons 
+                  redirectOverride={props.redirectOverride}
+                  />
+            </Chunk>
+         </SectionWithLabelBorder>
+      </>
    );
 }
 

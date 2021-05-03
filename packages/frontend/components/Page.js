@@ -121,6 +121,11 @@ function Page (props) {
 
 	const [authUi, setAuthUi] = useState('login');
 
+	const {
+		redirect = {},
+		callbackForNonRedirectFlow = () => {}
+	} = ui.logInModalOptions || {};
+
 	return (
 		<View style={{minHeight: '100vh', flex: 1}}>
 
@@ -148,7 +153,9 @@ function Page (props) {
 							<LoginHeader toggleOnPress={()=>setAuthUi('register')} />
 						</Section>
 						<LoginForm 
-							redirectOverride={ui.logInModalOptions ? ui.logInModalOptions.redirect : null} 
+							redirectOverride={redirect} 
+							callbackForNonRedirectFlow={callbackForNonRedirectFlow}
+							redirectOnLocalLogin={true}
 							/>
 					</RevealBlock>
 

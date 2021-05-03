@@ -310,9 +310,6 @@ export const CreateTldrCardSmall = (props) => {
 }
 
 
-
-
-
 const TldrCardContextDropdown = (props) => {
 	const {
 		tldr,

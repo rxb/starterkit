@@ -194,12 +194,11 @@ function Tldr(props) {
 		// POST-AUTH ACTION
 		// check if hash action passed back from oauth, reg
 		const [postAuthAction, setPostAuthAction] = useState();
-		useEffect(()=>{
+		useEffect(() => {
 			const hashAction = window.location.hash.substr(1);
 			window.location.hash = '';
 			setPostAuthAction(hashAction);
 		}, []);
-		// on login, check for valid action key and do it
 		useEffect(()=>{
 			if(user.id && postAuthAction){
 				switch(postAuthAction){
@@ -219,12 +218,15 @@ function Tldr(props) {
 
 		const doOrAuth = (fn, actionOnReturn, explainText) => {
 			if(!authentication.accessToken){
-				setPostAuthAction(actionOnReturn);
+				//setPostAuthAction(actionOnReturn);
 				dispatch(updateUi({
 					logInModalVisible: true, 
 					logInModalOptions: {
 						redirect: { hash: actionOnReturn },
-						explainText: explainText
+						explainText: explainText,
+						callbackForNonRedirectFlow: ()=>{
+							setPostAuthAction(actionOnReturn)
+						}
 					}
 				}));
 			}
