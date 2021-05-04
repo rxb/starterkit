@@ -1,11 +1,12 @@
 const { protect } = require('@feathersjs/authentication-local').hooks;
+const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 
 module.exports = {
 
   protectUserFields: (prefix = "") => { 
     const fields = ['password', 'verifyToken', 'verifyShortToken', 'verifyExpires', 'verifyChanges', 'resetToken', 'resetShortToken', 'resetExpires', 'facebookId', 'googleId', 'redditId', 'appleId'];
     const prefixedFields = fields.map( field => prefix + field );
-    return protect( ...prefixedFields );
+    return iff( isProvider('external'), protect( ...prefixedFields ) );
   },
 
   setDefaultSort: (options) => {

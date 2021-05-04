@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
+const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 const { protectUserFields, setDefaultSort, getFullModel } = require('../common_hooks.js');
 
 const includeAssociations = (context) => {
@@ -14,13 +15,16 @@ const includeAssociations = (context) => {
 
 // todo: add admin access
 const mustBeOwnerOrAdmin = (options) => {
-  return async(context) => {
-    const item = await context.service.get(context.id);
-    if(context.params.user.id !== item.authorId){
-      throw new Forbidden('You are not allowed to access this');
+  return iff(
+    isProvider('external'),
+    async(context) => {
+      const item = await context.service.get(context.id);
+      if(context.params.user.id !== item.authorId){
+        throw new Forbidden('You are not allowed to access this');
+      }
+      return context;
     }
-    return context;
-  }
+  );
 } 
 
 module.exports = {

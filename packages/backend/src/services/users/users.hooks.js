@@ -10,12 +10,15 @@ const makeRandomPassword = () => Math.random().toString(36).substr(10);
 
 // todo: add admin access
 const mustBeOwnerOrAdmin = (options) => {
-  return async(context) => {
-    if(context.params.user.id !== context.id){
-      throw new Forbidden('You are not allowed to access this');
+  return iff(
+    isProvider('external'), 
+    async(context) => {
+      if(context.params.user.id !== context.id){
+        throw new Forbidden('You are not allowed to access this');
+      }
+      return context;
     }
-    return context;
-  }
+  );
 } 
 
 const checkForSelfId = (options) => {

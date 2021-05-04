@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
+const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 const { hashPassword, protect } = require('@feathersjs/authentication-local').hooks;
 const { allowAnonymous, protectUserFields } = require('../common_hooks.js');
 
@@ -16,13 +17,16 @@ const populateTldrAssociations = (context) => {
 
 // todo: add admin access
 const mustBeOwnerOrAdmin = (options) => {
-  return async(context) => {
-    const item = await context.service.get(context.id);
-    if(context.params.user.id !== item.authorId){
-      throw new Forbidden('You are not allowed to access this');
+  return iff(
+    isProvider('external'), 
+    async(context) => {
+      const item = await context.service.get(context.id);
+      if(context.params.user.id !== item.authorId){
+        throw new Forbidden('You are not allowed to access this');
+      }
+      return context;
     }
-    return context;
-  }
+  );
 } 
 
 const publishToVersion = (options) => {

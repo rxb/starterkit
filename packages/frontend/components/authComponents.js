@@ -117,6 +117,10 @@ export const LoginLocalForm = (props) => {
                   onSubmitEditing={onSubmit}
                   />
 					<Touch onPress={()=>{
+                  dispatch(updateUi({ 
+                     logInModalVisible: false, 
+                     loginModalOptions: {} 
+                  }))
 						Router.push({pathname: getRequestPasswordPageUrl(), query: {email: formState.getFieldValue('email')} })  
 					}}
 					>
