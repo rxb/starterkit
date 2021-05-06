@@ -236,11 +236,19 @@ function Tldr(props) {
 
 		const vote = async (nextVote) => {
 			tldr.mutate({...tldr.data, currentUserVote: nextVote}, false); // optimistic
-			await request( getTldrsVotesUrl(), {
-				method: nextVote ? 'POST' : 'DELETE', 
-				data: { tldrId: tldr.data.id, vote: nextVote},
-				token: authentication.accessToken
-			});	
+			if(nextVote){
+				await request( getTldrsVotesUrl(), {
+					method: 'POST', 
+					data: { tldrId: tldr.data.id, vote: nextVote},
+					token: authentication.accessToken
+				});
+			}
+			else{
+				await request( getTldrsVotesUrl({tldrId: tldr.data.id}), {
+					method: 'DELETE', 
+					token: authentication.accessToken
+				});
+			}
 			tldr.mutate(); // ok, get real data	
 		}
 

@@ -4,23 +4,22 @@ const { setField } = require('feathers-authentication-hooks');
 const { iff, isProvider } = require('feathers-hooks-common');
 
 const updateVoteTally = async(context) => {
-  console.log(context.data);
   const upvotes = await context.service.find({query: {
     vote: 1,
-    tldrId: context.result.tldrId,
+    tldrId: context.params.query.tldrId,
     $limit: 0 // count
   }});
   const downvotes = await context.service.find({query: {
     vote: -1,
-    tldrId: context.data.tldrId,
+    tldrId: context.params.query.tldrId,
     $limit: 0 // count
   }});
   //console.log(upvotes);
   //console.log(downvotes);
   const voteQuantity = upvotes.total + downvotes.total;
   const voteResult = upvotes.total - downvotes.total;
-  const votePositivity = (voteQuantity > 0) ? voteResult / voteQuantity : 0;
-  //console.log(`quantity: ${voteQuantity} result: ${voteResult} positivity: ${votePositivity} `)
+  const votePositivity = (voteQuantity > 0) ? upvotes.total / voteQuantity : 0;
+  console.log(`quantity: ${voteQuantity} result: ${voteResult} positivity: ${votePositivity} `)
   return context;
 }
 
@@ -35,14 +34,18 @@ module.exports = {
         from: 'params.user.id',
         as: 'data.userId'
       }),
-      (context) => {
-        console.log(context.data);
-        return context;
-      },
+      // so that vote tally after hook can get data from query in both create + remove hooks
+      setField({
+        from: 'data.tldrId',
+        as: 'params.query.tldrId'
+      }),
       // clear vote before doing another vote
       // other option would be diverting to patch/update
       async (context) => {
-        await context.service.remove(null, context.params);
+        context.params.query
+        /*
+        await context.service.remove(null, {query: {userId: context.params.user.id, tldrId: context.data.tldrId}});
+        */
         return context
       }
     ],
@@ -56,12 +59,8 @@ module.exports = {
       authenticate('jwt'),
       setField({
         from: 'params.user.id',
-        as: 'data.userId'
-      }), // this functions as security, must be owned by user, requires 'multi' in service
-      (context) => {
-        console.log(context.data);
-        return context;
-      }
+        as: 'params.query.userId'
+      }) // this functions as security, must be owned by user, requires 'multi' in service
     ]
   },
 
