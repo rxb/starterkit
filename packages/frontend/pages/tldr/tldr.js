@@ -234,24 +234,27 @@ function Tldr(props) {
 			}
 		};
 
+		const vote = async (nextVote) => {
+			tldr.mutate({...tldr.data, currentUserVote: nextVote}, false); // optimistic
+			await request( getTldrsVotesUrl(), {
+				method: nextVote ? 'POST' : 'DELETE', 
+				data: { tldrId: tldr.data.id, vote: nextVote},
+				token: authentication.accessToken
+			});	
+			tldr.mutate(); // ok, get real data	
+		}
+
 		const upvoteTldr = () => {
-			doOrAuth( async () => {
-				const nextVote = tldr.data.currentUserVote ? 0 : 1;
-				tldr.mutate({...tldr.data, currentUserVote: nextVote}, false); // optimistic
-				await request( getTldrsVotesUrl(), {
-					method: nextVote ? 'POST' : 'DELETE', 
-					data: { tldrId: tldr.data.id, vote: nextVote},
-					token: authentication.accessToken
-				});	
-				tldr.mutate(); // ok, get real data	
+			doOrAuth( () => {
+				const nextVote = (tldr.data.currentUserVote == 1) ? 0 : 1;
+				vote(nextVote);
 			}, "upvoteTldr");
 		}
 
 		const downvoteTldr = () => {
-			doOrAuth(() => {
-				setTimeout(() =>{
-					dispatch(addPrompt(<DownVotePrompt/>))
-				}, 300);
+			doOrAuth( () => {
+				const nextVote = (tldr.data.currentUserVote == -1) ? 0 : -1;
+				vote(nextVote);
 			}, "downvoteTldr");
 		}
 
@@ -323,7 +326,7 @@ function Tldr(props) {
 														/>
 													<Button
 														style={{borderTopRightRadius: 0, borderTopLeftRadius: 0, marginTop: 1}}
-														color="secondary"
+														color={tldr.data.currentUserVote == -1 ? 'primary': 'secondary'} 
 														shape="ArrowDown"
 														onPress={downvoteTldr}
 														/>
