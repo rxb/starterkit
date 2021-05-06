@@ -2,7 +2,7 @@ import React, {Fragment, useEffect, useState} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
-import { request, buildQs, getTldrUrl, getUsersSavedTldrsUrl } from '@/swr';
+import { request, buildQs, getTldrUrl, getUsersSavedTldrsUrl, getTldrsVotesUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX
@@ -235,10 +235,15 @@ function Tldr(props) {
 		};
 
 		const upvoteTldr = () => {
-			doOrAuth(() => {
-				setTimeout(() =>{
-					dispatch(addToast("Thanks for the feedback"))
-				}, 300);	
+			doOrAuth( async () => {
+				const nextVote = tldr.data.currentUserVote ? 0 : 1;
+				tldr.mutate({...tldr.data, currentUserVote: nextVote}, false); // optimistic
+				await request( getTldrsVotesUrl(), {
+					method: nextVote ? 'POST' : 'DELETE', 
+					data: { tldrId: tldr.data.id, vote: nextVote},
+					token: authentication.accessToken
+				});	
+				tldr.mutate(); // ok, get real data	
 			}, "upvoteTldr");
 		}
 
@@ -311,7 +316,7 @@ function Tldr(props) {
 											<FlexItem shrink>
 												<Chunk>
 													<Button
-														color="secondary"
+														color={tldr.data.currentUserVote == 1 ? 'primary': 'secondary'} 
 														style={{borderBottomRightRadius: 0, borderBottomLeftRadius: 0, marginBottom: 1}}
 														shape="ArrowUp"
 														onPress={upvoteTldr}

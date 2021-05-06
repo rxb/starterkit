@@ -67,6 +67,12 @@ module.exports = function (app) {
       get: function() {
         return !!this.getDataValue('save')?.id
       }
+    },
+    currentUserVote: {
+      type: DataTypes.VIRTUAL,
+      get: function() {
+        return this.getDataValue('vote')?.vote
+      }
     }
     
   }, {
@@ -94,13 +100,21 @@ module.exports = function (app) {
       as: "currentTldrVersion"
     });
 
-    // SAVES just the existence of a save
+    // SAVE just the existence of a save
     tldrs.hasOne(models.users_savedtldrs, {
       as: 'save',
       sourceKey: "id",
       foreignKey: 'savedTldrId'
     });
 
+    // VOTE just the existence of a vote
+    tldrs.hasOne(models.tldrs_votes, {
+      as: 'vote',
+      sourceKey: "id",
+      foreignKey: 'tldrId'
+    });
+
+    /*
     // SAVERS actual list of the users who saved it
     tldrs.belongsToMany(models.users, {
       through: 'users_savedtldrs',
@@ -108,6 +122,7 @@ module.exports = function (app) {
       foreignKey: 'savedTldrId',
       otherKey: 'userId'
     });
+    */
 
   };
   

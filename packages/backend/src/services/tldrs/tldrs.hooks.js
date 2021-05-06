@@ -31,6 +31,12 @@ const populateCurrentUserAssociations = async (context) => {
           as: "save",
           where: { userId: context.params.user.id },
           required:false
+        },
+        { 
+          model: context.app.services["tldrs-votes"].Model,
+          as: "vote",
+          where: { userId: context.params.user.id },
+          required:false
         }
       ]
     }, appendArrayMerge);  

@@ -25,6 +25,9 @@ export const getCategoryUrl = (id='') => `${apiHost}/categories/${id}`;
 
 export const getUsersSavedTldrsUrl = (params) => `${apiHost}/users-savedtldrs/${buildQs(params)}`; 
 
+export const getTldrsVotesUrl = (params) => `${apiHost}/tldrs-votes/${buildQs(params)}`; 
+
+
 export const getAuthManagmentUrl = () => `${apiHost}/authmanagement/`;
 
 
