@@ -14,8 +14,6 @@ const updateVoteTally = async(context) => {
     tldrId: context.params.query.tldrId,
     $limit: 0 // count
   }});
-  //console.log(upvotes);
-  //console.log(downvotes);
   const voteQuantity = upvotes.total + downvotes.total;
   const voteResult = upvotes.total - downvotes.total;
   const votePositivity = (voteQuantity > 0) ? upvotes.total / voteQuantity : 0;
@@ -42,10 +40,7 @@ module.exports = {
       // clear vote before doing another vote
       // other option would be diverting to patch/update
       async (context) => {
-        context.params.query
-        /*
         await context.service.remove(null, {query: {userId: context.params.user.id, tldrId: context.data.tldrId}});
-        */
         return context
       }
     ],
