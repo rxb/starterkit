@@ -25,11 +25,14 @@ const populateTldrAssociations = async (context) => {
 const populateCurrentUserAssociations = async (context) => {
   if(context.params.user){
     _.mergeWith(context.params.sequelize, {
-      include: [{ 
-        model: context.app.services["users-savedtldrs"].Model,
-        as: "save",
-        where: { userId: context.params.user.id }
-      }]
+      include: [
+        { 
+          model: context.app.services["users-savedtldrs"].Model,
+          as: "save",
+          where: { userId: context.params.user.id },
+          required:false
+        }
+      ]
     }, appendArrayMerge);  
   }
   return context;

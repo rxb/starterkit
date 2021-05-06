@@ -6,7 +6,7 @@ const hooks = require('./tldr_versions.hooks');
 module.exports = function (app) {
   const options = {
     Model: createModel(app),
-    paginate: app.get('paginate')
+    paginate: app.get('paginate'),
   };
 
   // Initialize our service with any options it requires

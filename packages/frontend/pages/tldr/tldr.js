@@ -251,16 +251,15 @@ function Tldr(props) {
 		}
 
 		const saveTldr = () => {
-			doOrAuth(() => {
-				setTimeout( async() =>{
-					await request( getUsersSavedTldrsUrl(), {
-						method: 'POST', 
-						data: {
-							savedTldrId: tldr.data?.id
-						},
-						token: authentication.accessToken
-					});
-				}, 300);
+			doOrAuth( async() => {
+				const nextSaved = !tldr.data.currentUserSaved;
+				tldr.mutate({...tldr.data, currentUserSaved: nextSaved}, false); // optimistic
+				await request( getUsersSavedTldrsUrl(), {
+					method: nextSaved ? 'POST' : 'DELETE', 
+					data: { savedTldrId: tldr.data.id },
+					token: authentication.accessToken
+				});	
+				tldr.mutate(); // ok, get real data
 			}, "saveTldr");
 		}
 
@@ -291,7 +290,9 @@ function Tldr(props) {
 
 				<TldrHeader />
 
+				{/*
 				<pre>{JSON.stringify(tldr.data, null, 2)}</pre>
+				*/}
 
 				{ tldr.data && 
 					<Stripe style={{/*paddingTop: 0,*/ backgroundColor: swatches.notwhite}}>
@@ -360,11 +361,11 @@ function Tldr(props) {
 												<FlexItem>
 													<Button 
 														shape="Bookmark" 
-														color={tldr.data.save ? 'primary': 'secondary'} 
+														color={tldr.data.currentUserSaved ? 'primary': 'secondary'} 
 														width="full"
 														onPress={saveTldr}
 														/>
-														<Text type="micro" color="hint" style={{alignSelf: 'center'}}>{tldr.data.save ? 'Saved' :'Save'}</Text>
+														<Text type="micro" color="hint" style={{alignSelf: 'center'}}>{tldr.data.currentUserSaved ? 'Saved' :'Save'}</Text>
 												</FlexItem>
 												<FlexItem>
 													<Button 

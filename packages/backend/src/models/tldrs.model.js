@@ -62,6 +62,13 @@ module.exports = function (app) {
         is: /^[a-zA-Z0-9_-]*$/
       }
     },
+    currentUserSaved: {
+      type: DataTypes.VIRTUAL,
+      get: function() {
+        return !!this.getDataValue('save')?.id
+      }
+    }
+    
   }, {
     hooks: {
       beforeCount(options) {
