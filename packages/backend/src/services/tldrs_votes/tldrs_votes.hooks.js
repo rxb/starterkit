@@ -17,7 +17,12 @@ const updateVoteTally = async(context) => {
   const voteQuantity = upvotes.total + downvotes.total;
   const voteResult = upvotes.total - downvotes.total;
   const votePositivity = (voteQuantity > 0) ? Math.round((upvotes.total / voteQuantity)*100) : 0;
-  console.log(`quantity: ${voteQuantity} result: ${voteResult} positivity: ${votePositivity} `)
+  const tldr = await context.app.service('tldrs').patch(context.params.query.tldrId, {
+    voteQuantity,
+    voteResult,
+    votePositivity  
+  });
+  console.log(`quantity: ${tldr.voteQuantity} result: ${tldr.voteResult} positivity: ${tldr.votePositivity} `)
   return context;
 }
 
