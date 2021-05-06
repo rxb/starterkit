@@ -47,6 +47,18 @@ module.exports = function (app) {
       type: DataTypes.INTEGER,
       defaultValue: 0
     }, 
+    voteQuantity: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }, 
+    voteResult: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }, 
+    votePositivity: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }, 
     issueCount: {
       type: DataTypes.INTEGER,
       defaultValue: 0

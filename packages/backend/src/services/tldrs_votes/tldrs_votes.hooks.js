@@ -16,7 +16,7 @@ const updateVoteTally = async(context) => {
   }});
   const voteQuantity = upvotes.total + downvotes.total;
   const voteResult = upvotes.total - downvotes.total;
-  const votePositivity = (voteQuantity > 0) ? upvotes.total / voteQuantity : 0;
+  const votePositivity = (voteQuantity > 0) ? Math.round((upvotes.total / voteQuantity)*100) : 0;
   console.log(`quantity: ${voteQuantity} result: ${voteResult} positivity: ${votePositivity} `)
   return context;
 }
