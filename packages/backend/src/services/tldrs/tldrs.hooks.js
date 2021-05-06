@@ -3,14 +3,34 @@ const { setField } = require('feathers-authentication-hooks');
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 const { hashPassword, protect } = require('@feathersjs/authentication-local').hooks;
 const { allowAnonymous, protectUserFields } = require('../common_hooks.js');
+const _ = require('lodash');
 
-const populateTldrAssociations = (context) => {
-  context.params.sequelize = {
-    ...context.params.sequelize,
+// _.merge customizer to concat arrays, not replace slots
+const appendArrayMerge = (objValue, srcValue) => {
+  if (_.isArray(objValue)) {
+    return objValue.concat(srcValue);
+  }
+}
+
+const populateTldrAssociations = async (context) => {
+  _.mergeWith(context.params.sequelize, {
     include: [
       "author",
-      "currentTldrVersion"
+      "currentTldrVersion",
     ]
+  }, appendArrayMerge);
+  return context;
+}
+
+const populateCurrentUserAssociations = async (context) => {
+  if(context.params.user){
+    _.mergeWith(context.params.sequelize, {
+      include: [{ 
+        model: context.app.services["users-savedtldrs"].Model,
+        as: "save",
+        where: { userId: context.params.user.id }
+      }]
+    }, appendArrayMerge);  
   }
   return context;
 }
@@ -79,7 +99,10 @@ module.exports = {
       noDraftsExceptForSelf()
     ],
     get: [
-      populateTldrAssociations
+      allowAnonymous(),
+      authenticate('jwt', 'anonymous'),
+      populateTldrAssociations,
+      populateCurrentUserAssociations,
     ],
     create: [
       authenticate('jwt'),

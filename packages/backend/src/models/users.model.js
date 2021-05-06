@@ -123,6 +123,12 @@ module.exports = function (app) {
   users.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    users.belongsToMany(models.tldrs, {
+      through: 'users_savedtldrs',
+      as: 'savedTldrs',
+      foreignKey: 'userId',
+      otherKey: 'savedTldrId'
+    });
   };
 
   return users;

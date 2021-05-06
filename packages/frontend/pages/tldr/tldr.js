@@ -2,7 +2,7 @@ import React, {Fragment, useEffect, useState} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
-import { request, buildQs, getTldrUrl } from '@/swr';
+import { request, buildQs, getTldrUrl, getUsersSavedTldrsUrl } from '@/swr';
 import useSWR, { mutate }  from 'swr';
 
 // REDUX
@@ -252,8 +252,14 @@ function Tldr(props) {
 
 		const saveTldr = () => {
 			doOrAuth(() => {
-				setTimeout(() =>{
-					alert('saved??');
+				setTimeout( async() =>{
+					await request( getUsersSavedTldrsUrl(), {
+						method: 'POST', 
+						data: {
+							savedTldrId: tldr.data?.id
+						},
+						token: authentication.accessToken
+					});
 				}, 300);
 			}, "saveTldr");
 		}
@@ -284,6 +290,8 @@ function Tldr(props) {
 			<Page>
 
 				<TldrHeader />
+
+				<pre>{JSON.stringify(tldr.data, null, 2)}</pre>
 
 				{ tldr.data && 
 					<Stripe style={{/*paddingTop: 0,*/ backgroundColor: swatches.notwhite}}>
@@ -352,11 +360,11 @@ function Tldr(props) {
 												<FlexItem>
 													<Button 
 														shape="Bookmark" 
-														color="secondary" 
+														color={tldr.data.save ? 'primary': 'secondary'} 
 														width="full"
 														onPress={saveTldr}
 														/>
-														<Text type="micro" color="hint" style={{alignSelf: 'center'}}>Save</Text>
+														<Text type="micro" color="hint" style={{alignSelf: 'center'}}>{tldr.data.save ? 'Saved' :'Save'}</Text>
 												</FlexItem>
 												<FlexItem>
 													<Button 

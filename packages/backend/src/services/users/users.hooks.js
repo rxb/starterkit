@@ -1,9 +1,8 @@
 const { Forbidden } = require('@feathersjs/errors');
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
-const { setField } = require('feathers-authentication-hooks');
 const { hashPassword, protect } = require('@feathersjs/authentication-local').hooks;
-const { allowAnonymous, saveAndGetNewImageReference, protectUserFields } = require('../common_hooks.js');
+const { allowAnonymous, saveAndGetNewImageReference, protectUserFields, checkForSelfId } = require('../common_hooks.js');
 
 const makeUid = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 const makeRandomPassword = () => Math.random().toString(36).substr(10);
@@ -21,20 +20,7 @@ const mustBeOwnerOrAdmin = (options) => {
   );
 } 
 
-const checkForSelfId = (options) => {
-  // sets id to the id of logged-in user when "self" used as id
-  return async(context) => {
-    if (context.id == "self") {
-      if(context.params.user){
-        context.id = context.params.user.id;
-      }
-      else{
-        throw new Error("Need to log in to get your user info");
-      }
-    }
-    return context;
-  }
-}
+
 
 const preventChangesToAuthFields = (options) => {
   return iff(
@@ -91,7 +77,7 @@ module.exports = {
     get: [
       allowAnonymous(),
       authenticate('jwt', 'anonymous'),
-      checkForSelfId(),
+      checkForSelfId({key: 'id'}),
     ],
     create: [
       // create user is the only create that doesn't need to be authed already
@@ -102,7 +88,7 @@ module.exports = {
     update: [
       hashPassword('password'),
       authenticate('jwt'),
-      checkForSelfId(), 
+      checkForSelfId({key: 'id'}), 
       mustBeOwnerOrAdmin(),
       preventChangesToAuthFields(),
       saveAndGetNewImageReference(),
@@ -111,14 +97,14 @@ module.exports = {
       // authManagement pre-hashes password when setting it from the reset method
       iff(isProvider('external'), hashPassword('password')), 
       authenticate('jwt'),
-      checkForSelfId(), 
+      checkForSelfId({key: 'id'}), 
       mustBeOwnerOrAdmin(),
       preventChangesToAuthFields(),
       saveAndGetNewImageReference()
     ],
     remove: [
       authenticate('jwt'),
-      checkForSelfId(), 
+      checkForSelfId({key: 'id'}), 
       mustBeOwnerOrAdmin()
     ]
   },

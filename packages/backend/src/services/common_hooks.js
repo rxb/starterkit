@@ -1,7 +1,25 @@
 const { protect } = require('@feathersjs/authentication-local').hooks;
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
+const _ = require('lodash');
 
 module.exports = {
+
+  checkForSelfId: (options) => {
+    const { key } = options;
+    // sets id to the id of logged-in user when "self" used as id
+    return async(context) => {
+      const possibleSelf = _.get(context, key);
+      if (_.get(context, key) == "self") {
+        if(context.params.user){
+          _.set(context, key, context.params.user.id);
+        }
+        else{
+          throw new Error("Need to log in to get your user info");
+        }
+      }
+      return context;
+    }
+  },
 
   protectUserFields: (prefix = "") => { 
     const fields = ['password', 'verifyToken', 'verifyShortToken', 'verifyExpires', 'verifyChanges', 'resetToken', 'resetShortToken', 'resetExpires', 'facebookId', 'googleId', 'redditId', 'appleId'];

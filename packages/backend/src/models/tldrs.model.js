@@ -86,6 +86,22 @@ module.exports = function (app) {
       foreignKey: "id",
       as: "currentTldrVersion"
     });
+
+    // SAVES just the existence of a save
+    tldrs.hasOne(models.users_savedtldrs, {
+      as: 'save',
+      sourceKey: "id",
+      foreignKey: 'savedTldrId'
+    });
+
+    // SAVERS actual list of the users who saved it
+    tldrs.belongsToMany(models.users, {
+      through: 'users_savedtldrs',
+      as: 'savers',
+      foreignKey: 'savedTldrId',
+      otherKey: 'userId'
+    });
+
   };
   
 

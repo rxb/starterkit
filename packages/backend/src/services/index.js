@@ -10,6 +10,7 @@ const tldrVersions = require('./tldr_versions/tldr_versions.service.js');
 const categories = require('./categories/categories.service.js');
 const mailer = require('./mailer/mailer.service.js');
 const authmanagement = require('./authmanagement/authmanagement.service.js');
+const usersSavedtldrs = require('./users_savedtldrs/users_savedtldrs.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(shows);
@@ -24,4 +25,5 @@ module.exports = function (app) {
   app.configure(categories);
   app.configure(mailer);
   app.configure(authmanagement);
+  app.configure(usersSavedtldrs);
 };

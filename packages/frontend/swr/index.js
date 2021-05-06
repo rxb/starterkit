@@ -23,6 +23,8 @@ export const getUserUrl = (id='') => `${apiHost}/users/${id}`;
 export const getCategoriesUrl = (params) => `${apiHost}/categories/${buildQs(params)}`; 
 export const getCategoryUrl = (id='') => `${apiHost}/categories/${id}`; 
 
+export const getUsersSavedTldrsUrl = (params) => `${apiHost}/users-savedtldrs/${buildQs(params)}`; 
+
 export const getAuthManagmentUrl = () => `${apiHost}/authmanagement/`;
 
 

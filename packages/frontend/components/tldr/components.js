@@ -48,46 +48,8 @@ const smallCardMinHeight = 220;
 
 import Router, {useRouter} from 'next/router'
 import Markdown from 'markdown-to-jsx';
-const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
 
-export const OauthButtons = (props) => {
-	const [loadingGoogle, setLoadingGoogle] = useState(false);
-	const [loadingApple, setLoadingApple] = useState(false);
-	const router = useRouter();
-	const redirect =  {
-		pathname: router.pathname, 
-		query: router.query, 
-		...props.redirectOverride
-	};
-
-	return(
-		<>
-		<Button
-			isLoading={loadingGoogle}
-			width="full"
-			color="secondary"
-			label="Sign in with Google"
-			onPress={()=>{
-				saveLoginRedirect(redirect);
-				setLoadingGoogle(true);
-				location.href=`${apiHost}/oauth/google/`
-			}}
-			/>
-		<Button
-			isLoading={loadingApple}
-			width="full"
-			color="secondary"
-			label="Sign in with Apple"
-			onPress={()=>{
-				saveLoginRedirect(redirect);
-				setLoadingApple(true);
-				location.href=`${apiHost}/oauth/apple/`
-			}}
-			/>
-		</>
-	);
-}
 
 export const TldrCard = (props) => {
 
