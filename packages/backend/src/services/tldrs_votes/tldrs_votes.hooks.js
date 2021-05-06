@@ -22,7 +22,6 @@ const updateVoteTally = async(context) => {
     voteResult,
     votePositivity  
   });
-  console.log(`quantity: ${tldr.voteQuantity} result: ${tldr.voteResult} positivity: ${tldr.votePositivity} `)
   return context;
 }
 
