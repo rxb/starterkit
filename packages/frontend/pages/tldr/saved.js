@@ -66,19 +66,8 @@ function TldrProfile(props) {
 		const dispatch = useDispatch(); 
 
 		const authentication = useSelector(state => state.authentication);
-		const userId  = props.userId || authentication?.user?.id;
-		
-		// trying to get self when not logged in? redirect to home
-		useEffect(()=>{
-			if(!userId && !authentication.token){
-				dispatch( addDelayedToast("Need to be logged in for that") );
-				Router.push({pathname: getIndexPageUrl()})
-			}	
-		}, [userId]);
-
-		const user = useSWR( getUserUrl(userId) );
-		const canEdit = (authentication && user.data?.id == authentication?.user?.id); 
-		// TODO: admin permission
+		const user = authentication.user || {};
+	
 		
 		const PAGE_SIZE = 12;
 
@@ -86,21 +75,18 @@ function TldrProfile(props) {
 			(index) => [getTldrsUrl({selfSaved: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
 		));
 
-
-		
 		// DIVERT TO ERROR PAGE
-		if (user.error) {
-			const error = user.error;
+		if (tldrs.error) {
+			const error = tldrs.error;
 			return <ErrorPage statusCode={error.code} />
 		}
-		
 	
 		// RENDER
 		return (
 			<Page>
 				<TldrHeader />
 
-				{ userId && user.data && tldrs.data && 
+				{ tldrs.data && 
 					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
 						<Bounds>
 							<Section>

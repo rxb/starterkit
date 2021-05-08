@@ -81,19 +81,15 @@ function TldrProfile(props) {
 		// TODO: admin permission
 		
 
-
 		const PAGE_SIZE = 12;
-
 		const authorTldrs = pageHelper(useSWRInfinite(
 			(index) => [getTldrsUrl({authorId: userId, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]	
 		));
 		
 	
-
-		
 		// DIVERT TO ERROR PAGE
-		if (user.error) {
-			const error = user.error;
+		if (user.error || authorTldrs.error) {
+			const error = user.error || authorTldrs.error;
 			return <ErrorPage statusCode={error.code} />
 		}
 		

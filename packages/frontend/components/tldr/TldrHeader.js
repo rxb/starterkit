@@ -182,13 +182,13 @@ function TldrSearch (props) {
 			</View>
 		</RevealBlock>
 	</View>
-
 	);
-
 }
 
 
 const UserDropdown = (props) => {
+	const authentication = useSelector(state => state.authentication);
+	const user = authentication.user || {};
 	const {onRequestClose} = props;
 	const [loading, setLoading] = useState(false);
 	return(
@@ -196,7 +196,7 @@ const UserDropdown = (props) => {
 		<LoadingBlock isLoading={loading}>
 		<Chunk>
 			
-				<Link href={ getProfilePageUrl() } >
+				<Link href={ getProfilePageUrl({userId: user.id}) } >
 					<Text color="tint" >Profile</Text>
 				</Link>
 				<Link href={ getSavedPageUrl() } >
@@ -226,7 +226,6 @@ function TldrHeader (props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 	const ui = useSelector(state => state.ui);
-
 	return (
 			<Header position="static">
 				<Flex direction="row">
@@ -262,7 +261,7 @@ function TldrHeader (props) {
 						justify="center"
 						>
 							<Fragment>
-								{user.id &&
+								{user && user.id &&
 										<ConnectedDropdownTouch dropdown={<UserDropdown />} >
 											<Inline nowrap>
 												<Avatar

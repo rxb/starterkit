@@ -40,7 +40,7 @@ Icon.defaultProps = {
 };
 
 Icon.propTypes = {
-	size: PropTypes.oneOf(['small', 'medium', 'large']),
+	size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'xlarge']),
 	shape: PropTypes.string,
 	color: PropTypes.string
 }
