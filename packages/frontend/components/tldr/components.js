@@ -50,6 +50,24 @@ import Router, {useRouter} from 'next/router'
 import Markdown from 'markdown-to-jsx';
 
 
+export const Emptiness = (props) => {
+	return(
+		<View style={{minHeight: '55vh'}}>
+			<View style={styles.absoluteCenter}>
+				<Chunk style={{alignItems: 'center'}}>
+					<View style={styles.pseudoLineHeight}>
+						<Icon
+							shape="Heart"
+							size="xlarge"
+							color={swatches.textHint}
+							/>
+					</View>
+					<Text color="hint">{props.label}</Text>
+				</Chunk>
+			</View>
+		</View>
+	);
+}
 
 export const TldrCard = (props) => {
 

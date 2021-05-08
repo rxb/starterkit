@@ -18,7 +18,8 @@ const Icon = (props) => {
 			xsmall: 14,
 			small: 16,
 			medium: 24,
-			large: 36
+			large: 36,
+			xlarge: 64
 		}
 		const pixelSize = SIZES[size];
 

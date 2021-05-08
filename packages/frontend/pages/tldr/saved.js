@@ -80,15 +80,12 @@ function TldrProfile(props) {
 		const canEdit = (authentication && user.data?.id == authentication?.user?.id); 
 		// TODO: admin permission
 		
-
-
 		const PAGE_SIZE = 12;
 
-		const authorTldrs = pageHelper(useSWRInfinite(
-			(index) => [getTldrsUrl({authorId: userId, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]	
+		const tldrs = pageHelper(useSWRInfinite(
+			(index) => [getTldrsUrl({selfSaved: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
 		));
-		
-	
+
 
 		
 		// DIVERT TO ERROR PAGE
@@ -103,96 +100,59 @@ function TldrProfile(props) {
 			<Page>
 				<TldrHeader />
 
-				{ userId && user.data && authorTldrs.data && 
+				{ userId && user.data && tldrs.data && 
 					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
 						<Bounds>
 							<Section>
 
-								<Flex>
-									<FlexItem shrink justify="center">
-										<Chunk>
-											<Avatar
-												source={{uri: user.data.photoUrl}}
-												size="large"
-												/>
-										</Chunk>
-									</FlexItem>
-									<FlexItem>
-										<Chunk>
-											<Text type="pageHead">{user.data.name}</Text>
-											<Text>@{user.data.urlKey}</Text>
-										</Chunk>
-									</FlexItem>
-									
-									{/*canEdit && 
-										<FlexItem shrink justify="flex-end">
-											<Chunk>
-												<Link href={getProfileEditPageUrl()}> 
-													<Button color="secondary" label="Settings" />
-												</Link>
-											</Chunk>
-										</FlexItem>
-									*/}
-								</Flex>
+								<Chunk>
+									<Text type="pageHead">Saved </Text>
+								</Chunk>
 
 							</Section>
 							<Section border>
 
-								{ authorTldrs.total == 0 && 
-									<Emptiness 
-										label="No cards yet"
-										/>
-								}
+									{ tldrs.total == 0 && 
+										<Emptiness 
+											label="No saved cards yet"
+											/>
+									}
 
-								{ authorTldrs.total > 0 && 
+
+									{ tldrs.total > 0 && 
 									<>
 										<Chunk>
-											<Text type="sectionHead">
-												{authorTldrs.total} cards
-											</Text>
+											<Text type="sectionHead">{tldrs.total} cards</Text>
 										</Chunk>
 
 										<List
-											variant={{
-												small: 'grid',
-											}}
-											itemsInRow={{
-												small: 1,
-												medium: 2,
-												large: 4
-											}}
-											scrollItemWidth={300}
-											paginated={true}
-											items={authorTldrs.data}
-												renderItem={(item, i)=>{
-													const href = (item.currentTldrVersion != undefined) ? 
-														getTldrPageUrl({tldrId: item.id}) :
-														getVersionEditPageUrl({tldrId: item.id});
-													return (
-														<Chunk key={i}>
-															{ !item.last &&
-																<Link href={href}>
-																	<TldrCardSmall tldr={item} user={authentication.user} />
-																</Link>
-															}
-															{ item.last &&
-																<Link href={ getTldrEditPageUrl() }>
-																	<CreateTldrCardSmall />
-																</Link>
-															}
-														</Chunk>
-													);
-												}}
-											/>
+										variant={{
+											small: 'grid',
+										}}
+										itemsInRow={{
+											small: 1,
+											medium: 2,
+											large: 4
+										}}
+										scrollItemWidth={300}
+										items={tldrs.data}
+										paginated={true}
+										renderItem={(item, i)=>(
+											<Chunk key={i}>
+												<Link href={ getTldrPageUrl({tldrId: item.id}) }>
+													<TldrCardSmall tldr={item} user={authentication.user} />
+												</Link>
+											</Chunk>
+										)}
+										/>
 
-											<LoadMoreButton swr={authorTldrs} />
-										</>	
-									}
-
+										<LoadMoreButton swr={tldrs} />
+										</>
+									}		
 								
+
 							
 
-						
 						</Section>
 					</Bounds>
 				</Stripe>

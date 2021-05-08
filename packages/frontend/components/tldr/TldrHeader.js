@@ -11,7 +11,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addToast, updateUi} from '@/actions';
 
 // URLS
-import {getProfilePageUrl, getProfileEditPageUrl, getTldrEditPageUrl, getIndexPageUrl, getCategoryPageUrl} from './urls';
+import {getProfilePageUrl, getProfileEditPageUrl, getTldrEditPageUrl, getIndexPageUrl, getCategoryPageUrl, getSavedPageUrl} from './urls';
 
 // COMPONENTS
 import {
@@ -195,8 +195,12 @@ const UserDropdown = (props) => {
 	<Sectionless>
 		<LoadingBlock isLoading={loading}>
 		<Chunk>
+			
 				<Link href={ getProfilePageUrl() } >
 					<Text color="tint" >Profile</Text>
+				</Link>
+				<Link href={ getSavedPageUrl() } >
+					<Text color="tint" >Saved</Text>
 				</Link>
 				<Link href={ getProfileEditPageUrl() } >
 					<Text color="tint" >Settings</Text>

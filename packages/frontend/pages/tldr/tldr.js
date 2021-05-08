@@ -266,7 +266,7 @@ function Tldr(props) {
 				if(nextVote){
 					setTimeout(()=>{
 						dispatch(addPrompt(<DownVotePrompt />))
-					}, 450);	
+					}, 400);	
 				}
 			}, "downvoteTldr");
 		}
