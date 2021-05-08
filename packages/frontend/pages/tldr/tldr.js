@@ -263,6 +263,11 @@ function Tldr(props) {
 			doOrAuth( () => {
 				const nextVote = (tldr.data.currentUserVote == -1) ? 0 : -1;
 				vote(nextVote);
+				if(nextVote){
+					setTimeout(()=>{
+						dispatch(addPrompt(<DownVotePrompt />))
+					}, 450);	
+				}
 			}, "downvoteTldr");
 		}
 

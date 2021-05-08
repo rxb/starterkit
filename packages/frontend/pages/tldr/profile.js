@@ -85,23 +85,23 @@ function TldrProfile(props) {
 			(index) => [getTldrsUrl({authorId: userId, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]	
 		));
 		
-		// TODO: updated to saved cards
 		const tldrs = pageHelper(useSWRInfinite(
-			(index) => [getTldrsUrl({$limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
+			(index) => [getTldrsUrl({selfSaved: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]		
 		));
 
 
+		/*
 		// DIVERT TO ERROR PAGE
 		if (user.error) {
 			const error = user.error;
 			return <ErrorPage statusCode={error.code} />
 		}
+		*/
 	
 		// RENDER
 		return (
 			<Page>
 				<TldrHeader />
-				
 
 				{ userId && user.data && authorTldrs.data && tldrs.data && 
 					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>

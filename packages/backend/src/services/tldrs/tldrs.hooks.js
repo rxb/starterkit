@@ -85,16 +85,38 @@ const publishToVersion = (options) => {
 
 const noDraftsExceptForSelf = (options) => {
   return async (context) => {
-    if(context.params.query.self && context.params.user){
-      // "self" requests all of logged in user's tldrs, no limiting of drafts
-      context.params.authorId = context.params.user.id  
+    // if asking for a users authorId tldrs
+    // and logged-in user IS that user
+    if(context.params.query.authorId && context.params.user && context.params.query.authorId == context.params.user.id){
+      // no need to filter drafts
     }
     else{
-      // no drafts, by default
-      context.params.query.currentTldrVersionId = {'$ne' : null}; 
+      // otherwise filter out drafts
+      context.params.query.currentTldrVersionId = {'$ne' : null};       
     }
-    delete context.params.query.self;
     return context;
+  }
+}
+
+// if selfSaved == true, get a logged-in user's list of saved cards
+const querySelfSaved = () => {
+  return async (context) => {
+      if(context.params.query.selfSaved){
+        delete context.params.query.selfSaved;
+        if(context.params.user){
+          _.mergeWith(context.params.sequelize, {
+            include: [{
+              model: context.app.services["users-savedtldrs"].Model,
+              as: "save",
+              where: {userId: context.params.user.id}
+            }]
+          });  
+        }
+        else{
+          throw new Forbidden('You are not allowed to access this');
+        }
+      }
+      return context;
   }
 }
 
@@ -105,7 +127,8 @@ module.exports = {
       allowAnonymous(),
       authenticate('jwt', 'anonymous'),
       populateTldrAssociations,
-      noDraftsExceptForSelf()
+      noDraftsExceptForSelf(),
+      querySelfSaved()
     ],
     get: [
       allowAnonymous(),
