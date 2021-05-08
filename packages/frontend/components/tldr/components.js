@@ -52,7 +52,7 @@ import Markdown from 'markdown-to-jsx';
 
 export const Emptiness = (props) => {
 	const {
-		shape = "Meh",
+		shape = "File",
 		label = "No results"
 	} = props;
 	return(

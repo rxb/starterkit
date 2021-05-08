@@ -101,7 +101,16 @@ function TldrProfile(props) {
 									{ tldrs.total == 0 && 
 										<Emptiness 
 											label="No saved cards yet"
-											/>
+											>
+											<Chunk>
+												<Link href={ getIndexPageUrl() }>
+													<Button 
+														label="Go explore cards" 
+														size="small" 
+														/>
+												</Link>
+											</Chunk>
+										</Emptiness>
 									}
 
 
