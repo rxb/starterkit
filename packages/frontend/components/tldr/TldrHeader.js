@@ -178,6 +178,7 @@ function TldrSearch (props) {
 							</Link>
 						</Chunk>									
 					)) }
+					
 				</Sectionless>
 			</View>
 		</RevealBlock>

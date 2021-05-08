@@ -77,10 +77,9 @@ function TldrProfile(props) {
 		}, [userId]);
 
 		const user = useSWR( getUserUrl(userId) );
-		const canEdit = (authentication && user.data?.id == authentication?.user?.id); 
+		const isSelf = (authentication && user.data?.id == authentication?.user?.id); 
 		// TODO: admin permission
 		
-
 		const PAGE_SIZE = 12;
 		const authorTldrs = pageHelper(useSWRInfinite(
 			(index) => [getTldrsUrl({authorId: userId, $limit: PAGE_SIZE, $skip: PAGE_SIZE*index}), authentication.accessToken ]	
@@ -92,7 +91,6 @@ function TldrProfile(props) {
 			const error = user.error || authorTldrs.error;
 			return <ErrorPage statusCode={error.code} />
 		}
-		
 	
 		// RENDER
 		return (
@@ -120,7 +118,7 @@ function TldrProfile(props) {
 										</Chunk>
 									</FlexItem>
 									
-									{/*canEdit && 
+									{/*isSelf && 
 										<FlexItem shrink justify="flex-end">
 											<Chunk>
 												<Link href={getProfileEditPageUrl()}> 
@@ -137,7 +135,18 @@ function TldrProfile(props) {
 								{ authorTldrs.total == 0 && 
 									<Emptiness 
 										label="No cards yet"
-										/>
+										>
+										{ isSelf && 
+										<Chunk>
+											<Link href={ getTldrEditPageUrl() }>
+												<Button 
+													label="Create a new card" 
+													size="small" 
+													/>
+											</Link>
+										</Chunk>
+										}
+									</Emptiness>
 								}
 
 								{ authorTldrs.total > 0 && 

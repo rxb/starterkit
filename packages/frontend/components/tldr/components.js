@@ -51,19 +51,24 @@ import Markdown from 'markdown-to-jsx';
 
 
 export const Emptiness = (props) => {
+	const {
+		shape = "Meh",
+		label = "No results"
+	} = props;
 	return(
 		<View style={{minHeight: '55vh'}}>
 			<View style={styles.absoluteCenter}>
 				<Chunk style={{alignItems: 'center'}}>
 					<View style={styles.pseudoLineHeight}>
 						<Icon
-							shape="Heart"
+							shape={shape}
 							size="xlarge"
 							color={swatches.textHint}
 							/>
 					</View>
-					<Text color="hint">{props.label}</Text>
+					<Text color="hint">{label}</Text>
 				</Chunk>
+				{props.children}
 			</View>
 		</View>
 	);
