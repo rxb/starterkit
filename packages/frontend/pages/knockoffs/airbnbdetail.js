@@ -38,11 +38,12 @@ import {
 	useMediaContext,
 	View,
 	FakeInput,	
-} from 'modules/cinderblock';
+} from 'cinderblock';
 
-import styles from 'modules/cinderblock/styles/styles';
-import swatches from 'modules/cinderblock/styles/swatches';
-import {METRICS} from 'modules/cinderblock/designConstants';
+import {styles} from 'cinderblock';
+import {swatches} from 'cinderblock';
+import {DesignConstants} from 'cinderblock';
+const {METRICS} = DesignConstants;
 import Page from '@/components/Page';
 import Head from 'next/head'
 

@@ -42,18 +42,20 @@ import {
 	Touch,
 	View,
 	useFormState
-} from 'modules/cinderblock';
+} from 'cinderblock';
 import Router from 'next/router'
 
 
 // STYLE
-import styles from 'modules/cinderblock/styles/styles';
-import swatches from 'modules/cinderblock/styles/swatches';
-import {METRICS, EASE} from 'modules/cinderblock/designConstants';
+import {styles} from 'cinderblock';
+import {swatches} from 'cinderblock';
+import {DesignConstants} from 'cinderblock';
+const {METRICS, EASE} = DesignConstants;
 
 // SCREEN-SPECIFIC
 //import { Animated } from '@/components/cinderblock/primitives';
-import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
+import {Utils} from 'cinderblock';
+const { runValidations, pushError, readFileAsDataUrl } = Utils;
 import feathersClient from 'components/FeathersClient';
 
 const cleanUrlKey = (dirtyUrlKey) => {

@@ -15,8 +15,8 @@ import Router from 'next/router'
 
 //import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
 
-import styles from '../modules/cinderblock/styles/styles';
-import swatches from '../modules/cinderblock/styles/swatches';
+import {styles} from 'cinderblock';
+import {swatches} from 'cinderblock';
 import {
 	Avatar,
 	Bounds,
@@ -45,12 +45,13 @@ import {
 	Text,
 	TextInput,
 	View,
-} from '../modules/cinderblock';
+} from 'cinderblock';
 
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
-import { addToastableErrors } from 'modules/cinderblock/utils';
+import {Utils} from 'cinderblock';
+const { addToastableErrors } = Utils;
 import { RegisterForm, LoginForm, RegisterHeader, LoginHeader } from 'components/authComponents';
 
 

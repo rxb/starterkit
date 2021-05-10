@@ -42,7 +42,7 @@ import {
    Touch,
    View,
    useFormState
-} from 'modules/cinderblock';
+} from 'cinderblock';
 import Page from 'components/Page';
 import TldrHeader from 'components/tldr/TldrHeader';
 import Router from 'next/router'
@@ -50,9 +50,10 @@ import Head from 'next/head'
 
 
 // STYLE
-import styles from 'modules/cinderblock/styles/styles';
-import swatches from 'modules/cinderblock/styles/swatches';
-import { METRICS, EASE } from 'modules/cinderblock/designConstants';
+import {styles} from 'cinderblock';
+import {swatches} from 'cinderblock';
+import {DesignConstants} from 'cinderblock';
+const { METRICS, EASE } = DesignConstants;
 
 // SCREEN-SPECIFIC
 import { LoginForm, LoginHeader } from 'components/authComponents';

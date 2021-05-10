@@ -7,7 +7,7 @@ import {
 	Image,
 	Sectionless,
 	Text,
-} from '../../modules/cinderblock';
+} from 'cinderblock';
 
 
 const ShowCard = (props) => {

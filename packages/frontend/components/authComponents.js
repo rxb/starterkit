@@ -40,15 +40,17 @@ import {
 	Touch,
 	View,
 	useFormState
-} from 'modules/cinderblock';
+} from 'cinderblock';
 
 // STYLE
-import styles from 'modules/cinderblock/styles/styles';
-import swatches from 'modules/cinderblock/styles/swatches';
-import {METRICS, EASE} from 'modules/cinderblock/designConstants';
+import {styles} from 'cinderblock';
+import {swatches} from 'cinderblock';
+import {DesignConstants} from 'cinderblock';
+const {METRICS, EASE} = DesignConstants;
 
 // COMPONENT-SPECIFIC
-import { runValidations, pushError, readFileAsDataUrl } from 'modules/cinderblock/utils';
+import {Utils} from 'cinderblock';
+const { runValidations, pushError, readFileAsDataUrl } = Utils;
 import feathersClient from '../components/FeathersClient';
 import Router, {useRouter} from 'next/router'
 const apiHost = process.env.NEXT_PUBLIC_API_HOST;

@@ -13,7 +13,7 @@ import {
 	TextInput,
 	Touch,
 	useFormState,
-} from '../modules/cinderblock';
+} from 'cinderblock';
 
 // COMPONENT-SPECIFIC
 import feathersClient from '../components/FeathersClient';

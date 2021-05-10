@@ -42,14 +42,15 @@ import {
 	TextInput,
 	useFormState,
 	View,
-} from 'modules/cinderblock';
+} from 'cinderblock';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import feathersClient from '@/components/FeathersClient'; // already instantiated so we can share
 
 // STYLES
-import styles from 'modules/cinderblock/styles/styles';
-import swatches from 'modules/cinderblock/styles/swatches';
-import {METRICS} from 'modules/cinderblock/designConstants';
+import {styles} from 'cinderblock';
+import {swatches} from 'cinderblock';
+import {DesignConstants} from 'cinderblock';
+const {METRICS} = DesignConstants;
 
 
 const catMatch = (s, categories) => {

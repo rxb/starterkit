@@ -15,9 +15,10 @@ import { fetcher } from '@/swr';
 import { getLoginPageUrl, getOauthPageUrl } from 'components/tldr/urls';
 
 // STYLE
-import swatches from '../modules/cinderblock/styles/swatches';
-import { METRICS, MEDIA_QUERIES, BREAKPOINT_SIZES } from '../modules/cinderblock/designConstants';
-import { initMediaProvider } from '../modules/cinderblock/components/UseMediaContext';
+import {swatches} from 'cinderblock';
+import {DesignConstants} from 'cinderblock';
+const { METRICS, MEDIA_QUERIES, BREAKPOINT_SIZES } = DesignConstants;
+import { initMediaProvider } from 'cinderblock';
 const MediaProvider = initMediaProvider(MEDIA_QUERIES);
 
 // MODULES

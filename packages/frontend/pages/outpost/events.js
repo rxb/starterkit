@@ -42,11 +42,12 @@ import {
 	Touch,
 	View,
 	useFormState
-} from 'modules/cinderblock';
+} from 'cinderblock';
 import Head from 'next/head'
 import Page from '@/components/Page';
 import OutpostHeader from '@/components/outpost/OutpostHeader';
-import { runValidations, readFileAsDataUrl } from 'modules/cinderblock/utils';
+import {Utils} from 'cinderblock';
+const { runValidations, readFileAsDataUrl } = Utils;
 
 // SCREEN-SPECIFIC
 import AREAS from '../../data/areas';
@@ -57,9 +58,10 @@ dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 
 // STYLE
-import swatches from 'modules/cinderblock/styles/swatches';
-import styles from 'modules/cinderblock/styles/styles';
-import { METRICS } from 'modules/cinderblock/designConstants';
+import {swatches} from 'cinderblock';
+import {styles} from 'cinderblock';
+import {DesignConstants} from 'cinderblock';
+const { METRICS } = DesignConstants;
 import { Check } from 'react-feather';
 
 

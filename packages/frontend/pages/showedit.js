@@ -43,16 +43,17 @@ import {
 	Touch,
 	View,
 	useFormState
-} from '../modules/cinderblock';
+} from 'cinderblock';
 import CinderblockPage from '../components/starterkit/CinderblockPage';
 import Router from 'next/router'
 import Head from 'next/head'
 
 // STYLE
-import styles from '../modules/cinderblock/styles/styles';
+import {styles} from 'cinderblock';
 
 // SCREEN-SPECFIC
-import { runValidations, readFileAsDataUrl } from '../modules/cinderblock/utils';
+import {Utils} from 'cinderblock';
+const { runValidations, readFileAsDataUrl } = Utils;
 
 
 const ShowForm = (props) => {

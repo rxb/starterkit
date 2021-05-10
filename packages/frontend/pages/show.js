@@ -41,24 +41,27 @@ import {
 	Touch,
 	View,
 	useFormState
-} from '../modules/cinderblock';
+} from 'cinderblock';
 import CinderblockPage from '../components/starterkit/CinderblockPage';
 import Head from 'next/head';
 
 // STYLE
-import swatches from '../modules/cinderblock/styles/swatches';
-import { METRICS } from '../modules/cinderblock/designConstants';
+import {swatches} from 'cinderblock';
+import {DesignConstants} from 'cinderblock';
+const { METRICS } = DesignConstants;
 
 
 // SCREEN-SPECIFIC
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
-import { 
+
+import {Utils} from 'cinderblock';
+const { 
 	runValidations, 
 	readFileAsDataUrl, 
 	addToastableErrors 
-} from '../modules/cinderblock/utils';
+} = Utils;
 
 // keep big functions outside of render
 

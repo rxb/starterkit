@@ -40,15 +40,16 @@ import {
 	Touch,
 	useMediaContext,
 	View,	
-} from 'modules/cinderblock';
+} from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
 import Router, {useRouter} from 'next/router'
 
 // STYLES
-import styles from 'modules/cinderblock/styles/styles';
-import swatches from 'modules/cinderblock/styles/swatches';
-import { METRICS } from 'modules/cinderblock/designConstants';
+import {styles} from 'cinderblock';
+import {swatches} from 'cinderblock';
+import {DesignConstants} from 'cinderblock';
+const { METRICS } = DesignConstants;
 
 // SCREEN-SPECIFIC
 import {TldrCardSmall, TldrCard, DeletePrompt} from '../../components/tldr/components';

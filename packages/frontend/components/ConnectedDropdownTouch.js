@@ -12,7 +12,7 @@ import {
 	clearDropdowns
 } from '../actions';
 
-import{ DropdownTouch } from '../modules/cinderblock';
+import{ DropdownTouch } from 'cinderblock';
 
 const ConnectedDropdownTouch = (props) => ( <DropdownTouch {...props} />);
 const mapStateToProps = (state, ownProps) => ({ dropdowns: state.dropdowns });

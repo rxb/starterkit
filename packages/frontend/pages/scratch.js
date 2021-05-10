@@ -26,9 +26,9 @@ import {
 	Touch,
 	View,
 	withFormState
-} from '../modules/cinderblock';
+} from 'cinderblock';
 
-import styles from '../modules/cinderblock/styles/styles';
+import {styles} from 'cinderblock';
 import Page from '../components/Page';
 
 import AREAS from '../data/areas';
