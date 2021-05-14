@@ -255,7 +255,7 @@ function Events (props) {
 					</Section>
 				</Bounds>
 			</Stripe>
-			<Stripe style={{borderTopWidth: 1, borderColor: swatches.border, backgroundColor: swatches.backgroundShade}}>
+			<Stripe style={{borderTopWidth: 1, borderColor: SWATCHES.border, backgroundColor: SWATCHES.backgroundShade}}>
 				<Bounds>
 					<Section>
 						<Flex direction="column" switchDirection="large" >
@@ -310,7 +310,7 @@ function Events (props) {
 																</FlexItem>
 																<FlexItem justify="center" shrink>
 																<View style={{
-																	backgroundColor: swatches.shade,
+																	backgroundColor: SWATCHES.shade,
 																	paddingHorizontal: 6,
 																	borderRadius: 4,
 																	alignSelf: 'flex-end'
@@ -395,7 +395,7 @@ function Events (props) {
 			{/*															
 					</Bounds>
 				</Stripe>
-				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
+				<Stripe style={{backgroundColor: SWATCHES.backgroundShade}}>
 					<Bounds>
 			*/}
 				<Section>
@@ -427,7 +427,7 @@ function Events (props) {
 																			<Icon
 																				shape="MapPin"
 																				size="small"
-																				color={swatches.tint}
+																				color={SWATCHES.tint}
 																				/>
 																			{area.hostname.toUpperCase()}
 																		</Text>

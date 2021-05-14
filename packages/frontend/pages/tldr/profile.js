@@ -99,7 +99,7 @@ function TldrProfile (props) {
 				<TldrHeader />
 
 				{ userId && user.data && authorTldrs.data && 
-					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
+					<Stripe style={{flex: 1, backgroundColor: SWATCHES.notwhite}}>
 						<Bounds>
 							<Section>
 

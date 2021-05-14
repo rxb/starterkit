@@ -172,7 +172,7 @@ const Register = (props) => {
 							<Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
 								<Icon
 									shape="EyeOff"
-									color={swatches.textHint}
+									color={SWATCHES.textHint}
 									/>
 							</Touch>
 						</View>
@@ -191,7 +191,7 @@ const Register = (props) => {
 							<Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
 								<Icon
 									shape="Eye"
-									color={swatches.textHint}
+									color={SWATCHES.textHint}
 									/>
 							</Touch>
 						</View>

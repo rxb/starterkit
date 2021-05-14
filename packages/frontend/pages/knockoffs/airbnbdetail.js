@@ -88,7 +88,7 @@ const AirbnbDetail = (props) => {
 							<Inline nowrap>
 							<Icon	
 								shape="Paperclip"
-								color={swatches.tint}
+								color={SWATCHES.tint}
 								/>
 								<Text weight="strong" type="big" color="tint" style={{fontFamily: 'SF Pro Rounded', fontWeight: 700, fontSize: 22}}>Airbnb</Text>
 							</Inline>
@@ -404,7 +404,7 @@ const AirbnbDetail = (props) => {
 								return(
 									<Chunk>
 									<View style={[{
-										backgroundColor: swatches.backgroundShade,
+										backgroundColor: SWATCHES.backgroundShade,
 										height: 180,
 										},
 										styles.pseudoLineHeight

@@ -250,7 +250,7 @@ function VersionEdit (props) {
 															bottom: 6,
 															left: 0,
 															width: 14,
-															backgroundColor: swatches.shade,
+															backgroundColor: SWATCHES.shade,
 															borderRadius: METRICS.borderRadius,
 															cursor: 'pointer'
 														}}

@@ -50,7 +50,7 @@ const OutpostHeader = (props) => {
 						<Link href="/outpost/">
 							<Inline>
 							<View style={{transform: [{ rotateY: '180deg' }]}} >
-								<Icon color={inverted ? "white" : swatches.tint} shape="Flag"/>
+								<Icon color={inverted ? "white" : SWATCHES.tint} shape="Flag"/>
 							</View>
 							<Text  color={inverted ? 'primary' : 'tint'} inverted={inverted} style={{fontWeight: 700, fontVarian: 'smallcaps'} }>OUTPOST</Text>
 							</Inline>
@@ -60,7 +60,7 @@ const OutpostHeader = (props) => {
 						<Touch onPress={()=>{
 							alert('TODO: like, a menu or something');
 						}}>
-							<Icon shape="Menu" color={inverted ? "white" : swatches.tint} />
+							<Icon shape="Menu" color={inverted ? "white" : SWATCHES.tint} />
 						</Touch>
 				</FlexItem>
 			</Flex>

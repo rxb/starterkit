@@ -88,7 +88,7 @@ function Saved (props) {
 				<TldrHeader />
 
 				{ tldrs.data && 
-					<Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
+					<Stripe style={{flex: 1, backgroundColor: SWATCHES.notwhite}}>
 						<Bounds>
 							<Section>
 

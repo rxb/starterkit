@@ -65,7 +65,7 @@ export const Emptiness = (props) => {
 						<Icon
 							shape={shape}
 							size="xlarge"
-							color={swatches.textHint}
+							color={SWATCHES.textHint}
 							/>
 					</View>
 					<Text color="hint">{label}</Text>
@@ -114,7 +114,7 @@ export const TldrCard = (props) => {
 								<Icon
 									shape="ChevronDown"
 									size="small"
-									color={swatches.textSecondaryInverted}
+									color={SWATCHES.textSecondaryInverted}
 									/>
 								</Inline>
 							</FlexItem>
@@ -144,7 +144,7 @@ export const TldrCard = (props) => {
 									bottom: 3,
 									left: 0,
 									width: 4,
-									backgroundColor: swatches.border,
+									backgroundColor: SWATCHES.border,
 								}}
 								/>
 							<View>
@@ -156,7 +156,7 @@ export const TldrCard = (props) => {
 									style={{
 										marginTop: METRICS.space /2,
 										padding: METRICS.space / 2,
-										background: swatches.shade,
+										background: SWATCHES.shade,
 										borderRadius: METRICS.borderRadius
 									}}>
 										<Text type="small" color="secondary"><Markdown>{step.note}</Markdown></Text>
@@ -177,7 +177,7 @@ export const TldrCard = (props) => {
 								<Text color="hint">
 									<Icon 
 										shape="ChevronDown"
-										color={swatches.hint}
+										color={SWATCHES.hint}
 										style={{marginBottom: -6, marginLeft: 0, paddingLeft: 0, marginRight: 4}}
 										/>
 									Show references & rationale
@@ -188,7 +188,7 @@ export const TldrCard = (props) => {
 								<Text color="hint">
 									<Icon 
 										shape="ChevronUp"
-										color={swatches.hint}
+										color={SWATCHES.hint}
 										style={{marginBottom: -6, marginRight: 4}}
 										/>
 									Hide references & rationale
@@ -213,7 +213,7 @@ export const TldrCardSmall = (props) => {
 		tldr,
 		dispatch,
 		mutate,
-		color = swatches.tint,
+		color = SWATCHES.tint,
 		style
 	} = props;
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
@@ -246,7 +246,7 @@ export const TldrCardSmall = (props) => {
 						<Flex>
 							<FlexItem>
 								{ draft &&
-									<View style={[{ backgroundColor: swatches.error, paddingHorizontal: 6, borderRadius: 4, alignSelf: 'flex-start' }]}>
+									<View style={[{ backgroundColor: SWATCHES.error, paddingHorizontal: 6, borderRadius: 4, alignSelf: 'flex-start' }]}>
 										<Text type="small" inverted>Unpublished</Text>
 									</View>
 								}
@@ -265,7 +265,7 @@ export const TldrCardSmall = (props) => {
 											>
 											<Icon 
 												shape="MoreHorizontal" 
-												color={swatches.textHint} 
+												color={SWATCHES.textHint} 
 												/>
 										</ConnectedDropdownTouch>
 									</FlexItem>
@@ -289,7 +289,7 @@ export const CreateTldrCardSmall = (props) => {
 						<Icon 
 							shape="Plus"
 							size="large"
-							color={swatches.tint}
+							color={SWATCHES.tint}
 							style={{alignSelf: 'center'}}
 							/>
 						<Text type="micro" color="tint">Create card</Text>

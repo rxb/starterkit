@@ -83,7 +83,7 @@ const Postmates = (props) => {
 
 	return(
 		<View style={{minHeight: '100vh'}}>
-			<View style={{backgroundColor: swatches.backgroundDark}}>
+			<View style={{backgroundColor: SWATCHES.backgroundDark}}>
 					<Chunk style={{alignSelf: 'center', paddingTop: METRICS.space, paddingBottom: METRICS.space}}>
 						<Text inverted type="small">See the latest on our COVID-19 repsonse</Text>
 					</Chunk>
@@ -272,7 +272,7 @@ const Postmates = (props) => {
 					</Section>
 				</Bounds>
 			</Stripe>
-			<Stripe style={{backgroundColor: swatches.backgroundDark}}>
+			<Stripe style={{backgroundColor: SWATCHES.backgroundDark}}>
 				<Bounds>
 					<Section>
 						<Flex>
@@ -364,7 +364,7 @@ const Postmates = (props) => {
 				</Bounds>
 			</Stripe>
 			
-			<Stripe style={{backgroundColor: swatches.shade}}>
+			<Stripe style={{backgroundColor: SWATCHES.shade}}>
 				<Bounds>
 					<Section>
 							

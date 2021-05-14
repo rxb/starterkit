@@ -238,7 +238,7 @@ function Show (props) {
 				<Bounds>
 						<ImageSnap
 							image={showData.photoUrl}
-							style={{backgroundColor: swatches.shade}}
+							style={{backgroundColor: SWATCHES.shade}}
 							/>
 		
 							<Section>

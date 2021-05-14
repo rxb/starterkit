@@ -60,7 +60,7 @@ function CinderblockHeader  (props) {
 						<FlexItem>
 							<Link href="/">
 								<Inline>
-									<Icon shape="FileText" color={swatches.tint} />
+									<Icon shape="FileText" color={SWATCHES.tint} />
 									<Text weight="strong" color="tint">CINDERBLOCK</Text>
 								</Inline>
 							</Link>

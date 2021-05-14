@@ -61,7 +61,6 @@ const catMatch = (s, categories) => {
 
 function TldrSearch  (props) {
    const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	// not going to use SWR for this one
 	const [categories, setCategories] = useState([]);
@@ -222,7 +221,6 @@ const UserDropdown = (props) => {
 }
 
 function TldrHeader  (props) {
-   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
    const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	// data from redux

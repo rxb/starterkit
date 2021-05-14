@@ -199,7 +199,7 @@ function Hello() {
 						</Stripe>
 					</FlexItem>
 					<FlexItem growFactor={2} flush>
-						<Stripe style={{backgroundColor: swatches.backgroundShade}}>
+						<Stripe style={{backgroundColor: SWATCHES.backgroundShade}}>
 							<Bounds>
 									<Section>
 										<Chunk>

@@ -142,7 +142,7 @@ const CategoryField = (props) => {
                   <View style={[
                      styles.input,
                      (selected) 
-                        ? { backgroundColor:  swatches.tint} 
+                        ? { backgroundColor:  SWATCHES.tint} 
                         : { }
                   ]}>
                      <Text inverted={selected}>{category.name}</Text>

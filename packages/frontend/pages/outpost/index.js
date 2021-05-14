@@ -164,7 +164,7 @@ const SearchForm = (props) => {
 					<Icon shape="Search"  />
 				</View>
 				<View style={{position: 'absolute', top: 0, right: 10, height: '100%', justifyContent: 'center'}}>
-					<View style={{backgroundColor: swatches.shade, borderRadius: 4000, paddingHorizontal: 12, paddingVertical: 4}}>
+					<View style={{backgroundColor: SWATCHES.shade, borderRadius: 4000, paddingHorizontal: 12, paddingVertical: 4}}>
 						<Text type="small" color="secondary">New York, NY</Text>
 					</View>
 				</View> 
@@ -212,7 +212,7 @@ const OutpostRow = (props) => {
 			<Chunk>
 				<Link href="/outpost/events">
 					<Card style={[thisCardStyle]}>
-						<Sectionless style={{/*backgroundColor: swatches.tint*/}}>
+						<Sectionless style={{/*backgroundColor: SWATCHES.tint*/}}>
 								<Chunk>
 									<View style={{marginBottom: 4}}>
 										<Text type="small" color="secondary"  numberOfLines={1}>
@@ -299,7 +299,7 @@ function Splash (props) {
 						</Bounds>
 					</View>
 				</Stripe>
-				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
+				<Stripe style={{backgroundColor: SWATCHES.backgroundShade}}>
 					<Bounds>
 
 							<Section style={{paddingTop: METRICS.space / 2, paddingBottom: METRICS.space / 4}}>

@@ -320,7 +320,7 @@ function Tldr (props) {
 				*/}
 
 				{ tldr.data && 
-					<Stripe style={{/*paddingTop: 0,*/ backgroundColor: swatches.notwhite}}>
+					<Stripe style={{/*paddingTop: 0,*/ backgroundColor: SWATCHES.notwhite}}>
 						<Bounds>
 							<Flex direction="column" switchDirection="large">
 								<FlexItem growFactor={1}>
@@ -411,7 +411,7 @@ function Tldr (props) {
 												</FlexItem>
 												<FlexItem shrink justify="center" style={{paddingHorizontal: 3}}>
 													<Icon
-														color={swatches.textSecondary}
+														color={SWATCHES.textSecondary}
 														shape="MessageCircle"
 														/>
 												</FlexItem>
@@ -467,7 +467,7 @@ function Tldr (props) {
 				}
 
 				{ relatedTldrs.data && 
-				<Stripe style={{backgroundColor: swatches.backgroundShade}}>
+				<Stripe style={{backgroundColor: SWATCHES.backgroundShade}}>
 					<Bounds>
 
 							<Section>

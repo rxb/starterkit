@@ -140,7 +140,7 @@ const Postmates = (props) => {
 				style={{
 					paddingVertical: 0,
 					borderBottomWidth: 1,
-					borderBottomColor: swatches.border
+					borderBottomColor: SWATCHES.border
 				}}
 				>
 				<Bounds>

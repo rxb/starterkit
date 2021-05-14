@@ -89,7 +89,7 @@ const Oauth = (props) => {
                         <Chunk>
                            <ActivityIndicator
                               size="large"
-                              color={swatches.textHint}
+                              color={SWATCHES.textHint}
                               />
                         </Chunk>
                      

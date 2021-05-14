@@ -260,7 +260,6 @@ export const RegisterLocalForm = (props) => {
 }
 
 export const PasswordInput = (props) => {
-	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
    const [passwordMasked, setPasswordMasked] = useState(true);
@@ -302,7 +301,7 @@ export const PasswordInput = (props) => {
                <Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
                   <Icon
                      shape="Eye"
-                     color={swatches.textHint}
+                     color={SWATCHES.textHint}
                      />
                </Touch>
             </View>
