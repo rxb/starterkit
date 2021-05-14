@@ -39,12 +39,11 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState,
-   ThemeContext
+	useFormState,	ThemeContext
 } from 'cinderblock';
 
 // STYLE
-import {designConstants} from 'cinderblock';
+
 
 // COMPONENT-SPECIFIC
 import {Utils} from 'cinderblock';
@@ -59,6 +58,7 @@ import {getProfileEditPageUrl, getRequestPasswordPageUrl, saveLoginRedirect} fro
 
 
 export const LoginLocalForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const {
       callbackForNonRedirectFlow = ()=>{}
    } = props;
@@ -144,6 +144,7 @@ export const LoginLocalForm = (props) => {
 
 
 export const RegisterLocalForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const redirect = getLoginRedirect(props.redirectOverride);
 
 	const dispatch = useDispatch();
@@ -259,6 +260,7 @@ export const RegisterLocalForm = (props) => {
 }
 
 export const PasswordInput = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
    const [passwordMasked, setPasswordMasked] = useState(true);
@@ -311,6 +313,7 @@ export const PasswordInput = (props) => {
 }
 
 export const SectionWithLabelBorder = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    return(
       <Section border>
          <View style={{position: 'absolute', top: -13, left: 0, right: 0, alignItems: 'center'}}>
@@ -331,6 +334,7 @@ export const getLoginRedirect = (redirectOverride = {}) => {
 };
 
 export const OauthButtons = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const [loadingGoogle, setLoadingGoogle] = useState(false);
 	const [loadingApple, setLoadingApple] = useState(false);
    const redirect = getLoginRedirect(props.redirectOverride);
@@ -364,6 +368,7 @@ export const OauthButtons = (props) => {
 }
 
 export const LoginHeader = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const {
       toggleOnPress,
       toggleHref
@@ -379,6 +384,7 @@ export const LoginHeader = (props) => {
 }
 
 export const RegisterHeader = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const {
       toggleOnPress = ()=>{},
       toggleHref = null
@@ -394,6 +400,7 @@ export const RegisterHeader = (props) => {
 }
 
 export const RegisterForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    return(
       <>
          <Section>
@@ -413,6 +420,7 @@ export const RegisterForm = (props) => {
 }
 
 export const LoginForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
    return(
       <>

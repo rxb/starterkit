@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import React, { Fragment, useState, useEffect, useCallback, useRef , useContext} from 'react';
 
 // SWR
 import { request } from '@/swr';
@@ -41,7 +41,8 @@ import {
    TextInput,
    Touch,
    View,
-   useFormState
+   useFormState,
+	ThemeContext
 } from 'cinderblock';
 import Page from 'components/Page';
 import TldrHeader from 'components/tldr/TldrHeader';
@@ -49,17 +50,14 @@ import Router from 'next/router'
 import Head from 'next/head'
 
 
-// STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const { METRICS, EASE } = designConstants;
+
 
 // SCREEN-SPECIFIC
 import { LoginForm, LoginHeader } from 'components/authComponents';
 
 
 const Login = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
    const authentication = useSelector(state => state.authentication);
    const user = authentication.user || {};

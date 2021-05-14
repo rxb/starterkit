@@ -41,14 +41,13 @@ import {
 	Text,
 	TextInput,
 	useFormState,
-	View,
-	ThemeContext
+	View,	ThemeContext
 } from 'cinderblock';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import feathersClient from '@/components/FeathersClient'; // already instantiated so we can share
 
 // STYLES
-import {designConstants} from 'cinderblock';
+
 
 
 const catMatch = (s, categories) => {
@@ -60,7 +59,8 @@ const catMatch = (s, categories) => {
 }
 
 
-function TldrSearch (props) {
+function TldrSearch  (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	// not going to use SWR for this one
@@ -188,6 +188,7 @@ function TldrSearch (props) {
 
 
 const UserDropdown = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 	const {onRequestClose} = props;
@@ -220,7 +221,8 @@ const UserDropdown = (props) => {
 	);
 }
 
-function TldrHeader (props) {
+function TldrHeader  (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
    const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	// data from redux

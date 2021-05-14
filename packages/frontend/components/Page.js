@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useRef} from 'react';
+import React, {Fragment, useState, useEffect, useRef, useContext} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	addToast,
@@ -15,8 +15,7 @@ import Router from 'next/router'
 
 //import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
 
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
+
 import {
 	Avatar,
 	Bounds,
@@ -45,6 +44,7 @@ import {
 	Text,
 	TextInput,
 	View,
+	ThemeContext
 } from 'cinderblock';
 
 import ConnectedToaster from './ConnectedToaster';
@@ -69,7 +69,8 @@ function usePrevious (value) {
 // TODO: pass in header
 
 
-function Page (props) {
+function Page  (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 	
 	// data from redux
 	const dispatch = useDispatch(); 

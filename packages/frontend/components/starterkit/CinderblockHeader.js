@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useRef} from 'react';
+import React, {Fragment, useState, useEffect, useRef, useContext} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	addToast,
@@ -11,8 +11,7 @@ import {
 
 import feathersClient from '../FeathersClient'; // already instantiated so we can share
 
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
+
 import {
 	Avatar,
 	Bounds,
@@ -39,11 +38,13 @@ import {
 	Text,
 	TextInput,
 	View,
+	ThemeContext
 } from 'cinderblock';
 
 
 
-function CinderblockHeader (props) {
+function CinderblockHeader  (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 	
 	// data from redux
 	const dispatch = useDispatch(); 

@@ -15,9 +15,19 @@ import { fetcher } from '@/swr';
 import { getLoginPageUrl, getOauthPageUrl } from 'components/tldr/urls';
 
 // STYLE
-import {ThemeContext, designConstants, initMediaProvider} from 'cinderblock';
+import {ThemeContext, styleConfig, designConstants, initMediaProvider} from 'cinderblock';
 const { MEDIA_QUERIES, BREAKPOINT_SIZES } = designConstants;
 const MediaProvider = initMediaProvider(MEDIA_QUERIES);
+const METRICS = {
+  ...styleConfig.METRICS,
+  fontFamily: 'Zapfino'
+}
+const SWATCHES = styleConfig.SWATCHES;
+const themedStyleConfig = {
+  ...styleConfig,
+  METRICS: METRICS,
+  styles: styleConfig.buildStyles(METRICS, SWATCHES)
+}
 
 // MODULES
 import feathersClient from '../components/FeathersClient'; 
@@ -42,8 +52,8 @@ const checkForBadOauth = (error) => {
   }
 }
 
-function ThisApp(props) {
-    const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+function ThisApp (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 
     const {Component, pageProps} = props;
@@ -183,14 +193,15 @@ function ThisApp(props) {
             })
           }
         `}} />
-
-        <MediaProvider>
-          <Provider store={store}>
-              <SWRConfig value={{fetcher: fetcher}}>
-                <Component {...pageProps} />
-              </SWRConfig>
-          </Provider>
-        </MediaProvider>
+        <ThemeContext.Provider value={themedStyleConfig}>
+          <MediaProvider>
+            <Provider store={store}>
+                <SWRConfig value={{fetcher: fetcher}}>
+                  <Component {...pageProps} />
+                </SWRConfig>
+            </Provider>
+          </MediaProvider>
+        </ThemeContext.Provider>
       </>
     )
 }

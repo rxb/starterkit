@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useCallback, useEffect, useRef} from 'react';
+import React, {Fragment, useState, useCallback, useEffect, useRef, useContext} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -43,7 +43,8 @@ import {
 	Touch,
 	View,
 	useFormState,
-	useMediaContext
+	useMediaContext,
+	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
@@ -51,11 +52,9 @@ import {TldrCardSmall, TldrCard} from '../../components/tldr/components';
 import Router from 'next/router'
 import Head from 'next/head'
 
-// STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const {METRICS} = designConstants;
+
+
+
 
 // SCREEN-SPECIFIC
 import { DndProvider } from 'react-dnd'
@@ -86,7 +85,8 @@ const parseDraftContent = (fields) => {
 };
 
 
-function VersionEdit(props) {
+function VersionEdit (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	const dispatch = useDispatch();
 
@@ -369,6 +369,7 @@ export default VersionEdit;
 
 import { useInView } from 'react-intersection-observer';
 const Sticky = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const media = useMediaContext();
 	const [ref, inView, entry] = useInView({threshold: 1});

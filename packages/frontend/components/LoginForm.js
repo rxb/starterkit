@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 
 // REDUX
 import { useDispatch } from 'react-redux';
@@ -13,6 +13,7 @@ import {
 	TextInput,
 	Touch,
 	useFormState,
+	ThemeContext
 } from 'cinderblock';
 
 // COMPONENT-SPECIFIC
@@ -24,6 +25,7 @@ import {getRequestPasswordPageUrl} from 'components/tldr/urls';
 
 
 const LoginForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	
 	const dispatch = useDispatch();
 

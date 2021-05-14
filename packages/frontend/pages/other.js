@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 
 import {
 	Bounds,
@@ -22,13 +22,15 @@ import {
 	Text,
 	TextInput,
 	Touch,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 
-import {styles} from 'cinderblock';
+
 import Page from '../components/Page';
 
 const OtherForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const formState = useFormState({
 		initialFields: {}
@@ -129,7 +131,8 @@ const OtherForm = (props) => {
 
 
 
-function Other(props) {
+function Other (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 		return (
 			<Page>

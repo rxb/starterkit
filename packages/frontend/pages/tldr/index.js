@@ -46,7 +46,7 @@ import TldrHeader from '../../components/tldr/TldrHeader';
 import {TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton} from '../../components/tldr/components';
 
 // STYLE
-import {designConstants} from 'cinderblock';
+
 
 // SCREEN-SPECIFIC 
 import dayjs from 'dayjs';
@@ -55,7 +55,7 @@ dayjs.extend(relativeTime)
 import {TESTCOLORS1 as TESTCOLORS} from '../../components/tldr/testcolors';
 
 const CategoryItem = (props) => {
-   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
    const {
       category,
@@ -101,7 +101,7 @@ const CategoryItem = (props) => {
    )
 }
 
-function TldrHome(props) {
+function TldrHome (props) {
    const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
       const { categoryId } = props;

@@ -42,18 +42,17 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
 import Router from 'next/router'
 import Head from 'next/head'
 
-// STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const {METRICS, EASE} = designConstants;
+
+
+
 
 // SCREEN-SPECIFIC
 import {Utils} from 'cinderblock';
@@ -62,6 +61,7 @@ import feathersClient from 'components/FeathersClient';
 
 
 const PasswordReset = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
    const {token} = props;
 

@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useContext} from 'react';
 
 import {
 	fetcher,
@@ -35,13 +35,13 @@ import {
 	TextInput,
 	Touch,
 	useMediaContext,
-	View,	
+	View,
+	ThemeContext
 } from 'cinderblock';
 
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const {METRICS} = designConstants;
+
+
+
 import Page from '@/components/Page';
 import Head from 'next/head'
 
@@ -74,6 +74,7 @@ const nearbyData = [...sampleRestaurants, ...sampleRestaurants, ...sampleRestaur
 const dealsData = nearbyData.slice(1,4);
 
 const Postmates = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	return(
 		<View style={{minHeight: '100vh'}}>

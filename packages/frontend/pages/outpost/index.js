@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useContext} from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -27,13 +27,13 @@ import {
 	Touch,
 	View,
 	useMediaContext,
-	
+	,
+	ThemeContext
 } from 'cinderblock';
 
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const {METRICS} = designConstants;
+
+
+
 import Page from '@/components/Page';
 import OutpostHeader from '@/components/outpost/OutpostHeader';
 
@@ -115,6 +115,7 @@ const outposts = {
 
 
 const HeaderContent = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	
 	const media = useMediaContext();
 
@@ -148,6 +149,7 @@ const HeaderContent = (props) => {
 };
 
 const SearchForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	return (
 		<Bounds style={{maxWidth: 800}}>
 		<View style={{position: 'relative'}}>
@@ -173,6 +175,7 @@ const SearchForm = (props) => {
 }
 
 const OutpostRow = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const {
 		outposts = [],
@@ -269,7 +272,8 @@ const OutpostRow = (props) => {
 }
 
 
-function Splash(props) {
+function Splash (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 		// modal visibility
 		const [modalVisible, setModalVisible] = useState(false);

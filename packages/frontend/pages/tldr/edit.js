@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import React, {Fragment, useState, useEffect, useCallback, useRef , useContext} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -42,18 +42,17 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
 import Router from 'next/router'
 import Head from 'next/head'
 
-// STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const {METRICS, EASE} = designConstants;
+
+
+
 
 // SCREEN-SPECIFIC
 import { Animated } from 'cinderblock';
@@ -92,6 +91,7 @@ const editValidations = {
 
 
 const UrlKeyField = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const {formState, user} = props;
    return(
       <>
@@ -120,6 +120,7 @@ const UrlKeyField = (props) => {
 }
 
 const CategoryField = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const {formState, categoriesData} = props;
    return(
       <>
@@ -156,6 +157,7 @@ const CategoryField = (props) => {
 }
 
 const Edit = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const {tldrId, tldr, categoryId} = props;
 
    const urlKeyRef = useRef();

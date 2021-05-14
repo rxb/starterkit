@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState, useContext} from 'react';
 
 // REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -32,17 +32,17 @@ import {
 	Stripe,
 	Text,
 	TextInput,
+	ThemeContext
 } from 'cinderblock';
 import CinderblockPage from '../components/starterkit/CinderblockPage';
 import LoginForm from '../components/LoginForm';
 import ShowCard from '../components/starterkit/ShowCard';
 import Head from 'next/head'
 
-// STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
+
 
 const FakePrompt = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
 		onRequestClose
 	} = props;

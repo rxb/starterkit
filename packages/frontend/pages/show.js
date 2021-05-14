@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState, useContext} from 'react';
 
 // SWR
 import {
@@ -40,15 +40,16 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 import CinderblockPage from '../components/starterkit/CinderblockPage';
 import Head from 'next/head';
 
 // STYLE
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const { METRICS } = designConstants;
+
+
+
 
 
 // SCREEN-SPECIFIC
@@ -110,6 +111,7 @@ const submitCommentForm =  async (formState, props) => {
 
 
 const CommentForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	
 	const formState = useFormState({ 
 		initialFields: { body: '' }
@@ -144,6 +146,7 @@ const CommentForm = (props) => {
 
 
 const DeletePrompt = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
 		comment,
 		authentication,
@@ -200,7 +203,8 @@ const DeletePrompt = (props) => {
 
 
 
-function Show(props) {
+function Show (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	const dispatch = useDispatch(); 
 	const authentication = useSelector(state => state.authentication);

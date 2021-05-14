@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useCallback, useRef} from 'react';
+import React, {Fragment, useState, useCallback, useRef, useContext} from 'react';
 
 import {
 	Avatar,
@@ -28,7 +28,8 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 
 import { DndProvider } from 'react-dnd'
@@ -37,6 +38,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 
 const Scratch = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
    const [items, setItems] = useState([
       {

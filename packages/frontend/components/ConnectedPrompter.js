@@ -2,7 +2,7 @@
 // cinderblock itself shouldn't be dependent on redux, specifically
 // just functions passed in a props
 
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 import { connect } from 'react-redux';
 import {
 	addPrompt,

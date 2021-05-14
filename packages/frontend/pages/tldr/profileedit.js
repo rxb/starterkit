@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import React, {Fragment, useState, useEffect, useCallback, useRef , useContext} from 'react';
 import ErrorPage from 'next/error'
 
 
@@ -44,18 +44,17 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
 import Router from 'next/router'
 import Head from 'next/head'
 
-// STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const {METRICS, EASE} = designConstants;
+
+
+
 
 // SCREEN-SPECIFIC
 import {Utils} from 'cinderblock';
@@ -72,6 +71,7 @@ const cleanUrlKey = (dirtyUrlKey) => {
 }
 
 const NameField = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const {formState} = props;
    return(
       <>
@@ -87,6 +87,7 @@ const NameField = (props) => {
 }
 
 const UrlKeyField = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const {formState, suggestion} = props;
    return(
       <>
@@ -111,6 +112,7 @@ const UrlKeyField = (props) => {
 
 
 const PhotoField = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
    const {formState} = props;
    return(
       <>
@@ -169,6 +171,7 @@ const profileEditValidations = {
 
 
 const EditProfile = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
    const {isSignup} = props;
 

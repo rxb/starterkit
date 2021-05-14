@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect, useContext} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -44,17 +44,16 @@ import {
 	TextInput,
 	Touch,
 	useMediaContext,
-	View,	
+	View,
+	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
 import {TldrCardSmall, CreateTldrCardSmall, LoadMoreButton, Emptiness} from '../../components/tldr/components';
 
-// STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const { METRICS } = designConstants;
+
+
+
 
 // SCREEN-SPECIFIC
 import Router from 'next/router'
@@ -62,7 +61,8 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
-function TldrProfile(props) {
+function TldrProfile (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 		const dispatch = useDispatch(); 
 
@@ -221,11 +221,7 @@ TldrProfile.getInitialProps = async (context) => {
 	}
 }
 
-const listItemStyle = {
-	borderTopColor: swatches.border,
-	borderTopWidth: 1,
-	paddingTop: METRICS.space
-}
+
 
 
 export default TldrProfile;

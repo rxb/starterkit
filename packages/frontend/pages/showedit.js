@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 
 // SWR
 import {
@@ -42,14 +42,15 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 import CinderblockPage from '../components/starterkit/CinderblockPage';
 import Router from 'next/router'
 import Head from 'next/head'
 
 // STYLE
-import {styles} from 'cinderblock';
+
 
 // SCREEN-SPECFIC
 import {Utils} from 'cinderblock';
@@ -57,6 +58,7 @@ const { runValidations, readFileAsDataUrl } = Utils;
 
 
 const ShowForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const dispatch = useDispatch();
 
@@ -237,7 +239,8 @@ const ShowForm = (props) => {
 
 
 
-function ShowEdit(props) {
+function ShowEdit (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 

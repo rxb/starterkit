@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment, useContext } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -25,10 +25,11 @@ import {
 	TextInput,
 	Touch,
 	View,
-	withFormState
+	withFormState,
+	ThemeContext
 } from 'cinderblock';
 
-import {styles} from 'cinderblock';
+
 import Page from '../components/Page';
 
 import AREAS from '../data/areas';
@@ -50,7 +51,7 @@ class Scratch extends React.Component {
 		} = this.props;
 
 
-		const  markdownContent = `
+		const markdownContent = `
 
 # Buster Bluth
 
@@ -70,74 +71,78 @@ sed do eiusmod tempor incididunt ut labore Okay lets go
 		`;
 
 		return (
-			<Page>
-				<Stripe>
-					<Bounds>
-							<Section type="pageHead">
+			<ThemeContext.Consumer>
+				{ ({ styles, SWATCHES }) => (
+					<Page>
+						<Stripe>
+							<Bounds>
+								<Section type="pageHead">
 
-								{/*
+									{/*
 								<Chunk>
 									<Text type="pageHead">Scratch</Text>
 								</Chunk>
 								*/}
 
-								<Card style={{
-									maxWidth: 500,
-									borderTopWidth: 10,
-									borderTopColor: 'blue',
-									borderTopStyle: 'solid'
-								}}>
-									<Section>
+									<Card style={{
+										maxWidth: 500,
+										borderTopWidth: 10,
+										borderTopColor: 'blue',
+										borderTopStyle: 'solid'
+									}}>
+										<Section>
 
-										<Markdown
-											options={{
-									            overrides: {
-									            	h1: {
-									            		component: (props) => (<Chunk>
-									            			<Text type="pageHead">{props.children}</Text>
-									            		</Chunk>)
-									            	},
-									            	h2: {
-									            		component: (props) => (<Chunk>
-									            			<Text type="sectionHead">{props.children}</Text>
-									            		</Chunk>)
-									            	},
-									            	h3: {
-									            		component: (props) => (<Chunk>
-									            			<Text type="big">{props.children}</Text>
-									            		</Chunk>)
-									            	},
-									                p: {
-									                    component: (props) => (<Chunk>
-									            			<Text >{props.children}</Text>
-									            		</Chunk>),
-									                },
-									            },
-									        }}
+											<Markdown
+												options={{
+													overrides: {
+														h1: {
+															component: (props) => (<Chunk>
+																<Text type="pageHead">{props.children}</Text>
+															</Chunk>)
+														},
+														h2: {
+															component: (props) => (<Chunk>
+																<Text type="sectionHead">{props.children}</Text>
+															</Chunk>)
+														},
+														h3: {
+															component: (props) => (<Chunk>
+																<Text type="big">{props.children}</Text>
+															</Chunk>)
+														},
+														p: {
+															component: (props) => (<Chunk>
+																<Text >{props.children}</Text>
+															</Chunk>),
+														},
+													},
+												}}
 											>{markdownContent}</Markdown>
 
-								</Section>
+										</Section>
 
-								</Card>
-							</Section>
+									</Card>
+								</Section>
 
 								<Section>
 									<Chunk>
 										<Map
 											fitBounds={true}
-											style={{height: 350}}
+											style={{ height: 350 }}
 											cluster={true}
-											markers={AREAS.map((area, i)=>{
-												return {lat: area.lat, lon: area.lon, title: area.name}
+											markers={AREAS.map((area, i) => {
+												return { lat: area.lat, lon: area.lon, title: area.name }
 											})}
-											/>
+										/>
 
 									</Chunk>
 								</Section>
 
-					</Bounds>
-				</Stripe>
-			</Page>
+							</Bounds>
+						</Stripe>
+					</Page>
+				)}
+			</ThemeContext.Consumer>
 		);
 
 

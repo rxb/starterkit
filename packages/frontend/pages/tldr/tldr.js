@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState, useContext} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -39,17 +39,17 @@ import {
 	TextInput,
 	Touch,
 	useMediaContext,
-	View,	
+	View,
+	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
 import Router, {useRouter} from 'next/router'
 
 // STYLES
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const { METRICS } = designConstants;
+
+
+
 
 // SCREEN-SPECIFIC
 import {TldrCardSmall, TldrCard, DeletePrompt} from '../../components/tldr/components';
@@ -59,6 +59,7 @@ dayjs.extend(relativeTime)
 
 
 const DownVotePrompt = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
 		onRequestClose
 	} = props;
@@ -89,6 +90,7 @@ const DownVotePrompt = (props) => {
 
 
 const SharePrompt = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const {
 		shareData,
@@ -176,7 +178,8 @@ const SharePrompt = (props) => {
 
 
 
-function Tldr(props) {
+function Tldr (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 		const router = useRouter();
 
 		const dispatch = useDispatch(); 
@@ -534,11 +537,7 @@ Tldr.getInitialProps = async (context) => {
 	
 }
 
-const listItemStyle = {
-	borderTopColor: swatches.border,
-	borderTopWidth: 1,
-	paddingTop: METRICS.space
-}
+
 
 
 

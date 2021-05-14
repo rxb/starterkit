@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import React, {Fragment, useState, useEffect, useCallback, useRef , useContext} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -42,7 +42,8 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 import Page from 'components/Page';
 import TldrHeader from 'components/tldr/TldrHeader';
@@ -50,17 +51,16 @@ import Router from 'next/router'
 import Head from 'next/head'
 
 
-// STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const {METRICS, EASE} = designConstants;
+
+
+
 
 // SCREEN-SPECIFIC
 import { RegisterForm, RegisterHeader } from 'components/authComponents';
 
 
 const Register = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
    const authentication = useSelector(state => state.authentication);
    const user = authentication.user || {};

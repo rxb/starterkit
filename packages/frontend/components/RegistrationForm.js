@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import React, {Fragment, useState, useEffect, useCallback, useRef , useContext} from 'react';
 
 // SWR
 import { request, getUserUrl } from '@/swr';
@@ -41,16 +41,15 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 import Router from 'next/router'
 
 
-// STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const {METRICS, EASE} = designConstants;
+
+
+
 
 // SCREEN-SPECIFIC
 //import { Animated } from '@/components/cinderblock/primitives';
@@ -67,6 +66,7 @@ const cleanUrlKey = (dirtyUrlKey) => {
 
 
 const Register = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const dispatch = useDispatch();
    const [passwordMasked, setPasswordMasked] = useState(true);

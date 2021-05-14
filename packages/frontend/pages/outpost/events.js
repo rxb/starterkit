@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState, useContext} from 'react';
 
 // REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -41,7 +41,8 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+	ThemeContext
 } from 'cinderblock';
 import Head from 'next/head'
 import Page from '@/components/Page';
@@ -58,15 +59,16 @@ dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 
 // STYLE
-import {swatches} from 'cinderblock';
-import {styles} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const { METRICS } = designConstants;
+
+
+
+
 import { Check } from 'react-feather';
 
 
 
 const EventForm = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	/*
 
@@ -139,7 +141,8 @@ const EventForm = (props) => {
 };
 
 
-function Events(props) {
+function Events (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 	
 	const areas = AREAS.slice(0,12);
 

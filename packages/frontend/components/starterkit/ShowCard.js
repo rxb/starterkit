@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 
 import {
 	Button,
@@ -7,10 +7,12 @@ import {
 	Image,
 	Sectionless,
 	Text,
+	ThemeContext
 } from 'cinderblock';
 
 
 const ShowCard = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const {
 		show

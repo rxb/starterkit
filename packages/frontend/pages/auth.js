@@ -1,6 +1,6 @@
 import 'isomorphic-unfetch';
 
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head'
 import {v4 as uuid} from 'uuid';
@@ -38,11 +38,12 @@ import {
 	Stripe,
 	Text,
 	TextInput,
-	Touch
+	Touch,
+	ThemeContext
 } from 'cinderblock';
 
 
-import {styles} from 'cinderblock';
+
 import Page from '../components/Page';
 import LoginForm from '../components/LoginForm';
 
@@ -128,11 +129,14 @@ class Auth extends React.Component {
 	render() {
 
 		const DeletePrompt = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 			const {
 				thing,
 				onRequestClose,
 			} = props;
 			return (
+				<ThemeContext.Consumer>
+			{ ({styles, SWATCHES}) => (
 				<Sectionless>
 					<Chunk>
 						<Text type="sectionHead">Are you sure?</Text>
@@ -165,6 +169,8 @@ class Auth extends React.Component {
 					</Chunk>
 
 				</Sectionless>
+				)}
+				</ThemeContext.Consumer>
 			)
 		};
 

@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 
 // REDUX
 import {connect, useDispatch, useSelector} from 'react-redux';
@@ -38,13 +38,13 @@ import {
 	Touch,
 	useFormState,
 	useMediaContext,
-	View,	
+	View,
+	ThemeContext
 } from 'cinderblock';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const { METRICS } = designConstants;
+
+
+
 const smallCardMinHeight = 220;
 
 import Router, {useRouter} from 'next/router'
@@ -52,6 +52,7 @@ import Markdown from 'markdown-to-jsx';
 
 
 export const Emptiness = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
 		shape = "File",
 		label = "No results"
@@ -76,6 +77,7 @@ export const Emptiness = (props) => {
 }
 
 export const TldrCard = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const media = useMediaContext();
 
@@ -204,6 +206,7 @@ export const TldrCard = (props) => {
 
 
 export const TldrCardSmall = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const {
 		user,
@@ -278,6 +281,7 @@ export const TldrCardSmall = (props) => {
 }
 
 export const CreateTldrCardSmall = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	return(
 		<Card style={{minHeight: smallCardMinHeight, borderStyle: 'dashed', backgroundColor: 'transparent'}}>
 			<Sectionless style={{flex: 1}}>
@@ -297,6 +301,7 @@ export const CreateTldrCardSmall = (props) => {
 
 
 const TldrCardContextDropdown = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
 		tldr,
 		dispatch,
@@ -342,6 +347,7 @@ const TldrCardContextDropdown = (props) => {
 
 
 export const DeletePrompt = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const {
 		tldr, 
@@ -405,6 +411,7 @@ export const DeletePrompt = (props) => {
 };
 
 export const LoadMoreButton = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
 		swr,
 		label = "Load more"

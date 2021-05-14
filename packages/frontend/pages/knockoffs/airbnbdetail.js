@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useContext} from 'react';
 
 import {
 	fetcher,
@@ -37,13 +37,13 @@ import {
 	Touch,
 	useMediaContext,
 	View,
-	FakeInput,	
+	FakeInput,
+	ThemeContext
 } from 'cinderblock';
 
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {designConstants} from 'cinderblock';
-const {METRICS} = designConstants;
+
+
+
 import Page from '@/components/Page';
 import Head from 'next/head'
 
@@ -75,6 +75,7 @@ const amenitiesData = [...amenitiesSamples, ...amenitiesSamples, ...amenitiesSam
 
 
 const AirbnbDetail = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	return(
 		<View style={{minHeight: '100vh'}}>
