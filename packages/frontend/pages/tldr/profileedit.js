@@ -54,8 +54,8 @@ import Head from 'next/head'
 // STYLE
 import {styles} from 'cinderblock';
 import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const {METRICS, EASE} = DesignConstants;
+import {designConstants} from 'cinderblock';
+const {METRICS, EASE} = designConstants;
 
 // SCREEN-SPECIFIC
 import {Utils} from 'cinderblock';

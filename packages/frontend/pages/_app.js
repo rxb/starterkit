@@ -1,9 +1,9 @@
 import Head from 'next/head';
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import { AppRegistry } from 'react-native-web';
 
 // REDUX
-import {Provider, useDispatch, useSelector} from 'react-redux';
+import {Provider} from 'react-redux';
 import {useStore} from '../store';
 import { logOut, fetchUser, logInSuccess, updateUi } from '../actions';
 
@@ -15,10 +15,8 @@ import { fetcher } from '@/swr';
 import { getLoginPageUrl, getOauthPageUrl } from 'components/tldr/urls';
 
 // STYLE
-import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const { METRICS, MEDIA_QUERIES, BREAKPOINT_SIZES } = DesignConstants;
-import { initMediaProvider } from 'cinderblock';
+import {ThemeContext, designConstants, initMediaProvider} from 'cinderblock';
+const { MEDIA_QUERIES, BREAKPOINT_SIZES } = designConstants;
 const MediaProvider = initMediaProvider(MEDIA_QUERIES);
 
 // MODULES
@@ -45,6 +43,8 @@ const checkForBadOauth = (error) => {
 }
 
 function ThisApp(props) {
+    const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+
 
     const {Component, pageProps} = props;
     const store = useStore(pageProps.initialReduxState)
@@ -111,9 +111,9 @@ function ThisApp(props) {
               }
               input:focus, textarea:focus, select:focus, .focus{
                 outline: none;
-                border-color: ${swatches.tint};
+                border-color: ${SWATCHES.tint};
                 background-color: transparent;
-                //box-shadow: 0 0 0 3px ${swatches.focus};
+                //box-shadow: 0 0 0 3px ${SWATCHES.focus};
                 zIndex: 2;
               }
 
@@ -147,7 +147,7 @@ function ThisApp(props) {
               /* remove autofill styles (might be evil, but let's try it) 
               @-webkit-keyframes autofill {
                   to {
-                      background: ${swatches.notwhite};
+                      background: ${SWATCHES.notwhite};
                   }
               }
               @-webkit-keyframes autofillfocus {
@@ -186,14 +186,11 @@ function ThisApp(props) {
 
         <MediaProvider>
           <Provider store={store}>
-              <SWRConfig value={{
-                  fetcher: fetcher 
-                }}>
+              <SWRConfig value={{fetcher: fetcher}}>
                 <Component {...pageProps} />
               </SWRConfig>
           </Provider>
         </MediaProvider>
-
       </>
     )
 }

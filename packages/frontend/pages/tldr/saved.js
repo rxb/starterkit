@@ -53,8 +53,8 @@ import {TldrCardSmall, CreateTldrCardSmall, LoadMoreButton, Emptiness} from '../
 // STYLE
 import {styles} from 'cinderblock';
 import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const { METRICS } = DesignConstants;
+import {designConstants} from 'cinderblock';
+const { METRICS } = designConstants;
 
 // SCREEN-SPECIFIC
 import Router from 'next/router'

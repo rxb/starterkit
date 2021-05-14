@@ -60,8 +60,8 @@ dayjs.extend(localizedFormat)
 // STYLE
 import {swatches} from 'cinderblock';
 import {styles} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const { METRICS } = DesignConstants;
+import {designConstants} from 'cinderblock';
+const { METRICS } = designConstants;
 import { Check } from 'react-feather';
 
 

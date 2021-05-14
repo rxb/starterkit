@@ -43,8 +43,8 @@ import {
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import {styles} from 'cinderblock';
 import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const { METRICS } = DesignConstants;
+import {designConstants} from 'cinderblock';
+const { METRICS } = designConstants;
 const smallCardMinHeight = 220;
 
 import Router, {useRouter} from 'next/router'

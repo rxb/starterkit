@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useRef, useCallback} from 'react';
+import React, {Fragment, useState, useEffect, useRef, useCallback, useContext} from 'react';
 import ReactDOM from 'react-dom';
 
 // SWR
@@ -42,15 +42,13 @@ import {
 	TextInput,
 	useFormState,
 	View,
+	ThemeContext
 } from 'cinderblock';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import feathersClient from '@/components/FeathersClient'; // already instantiated so we can share
 
 // STYLES
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const {METRICS} = DesignConstants;
+import {designConstants} from 'cinderblock';
 
 
 const catMatch = (s, categories) => {
@@ -63,7 +61,8 @@ const catMatch = (s, categories) => {
 
 
 function TldrSearch (props) {
-	
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+
 	// not going to use SWR for this one
 	const [categories, setCategories] = useState([]);
 	const [searchResults, setSearchResults] = useState([]);
@@ -152,7 +151,7 @@ function TldrSearch (props) {
 			<View
 				style={{
 					backgroundColor: 'white',
-					borderColor: swatches.border,
+					borderColor: SWATCHES.border,
 					borderWidth: 1,
 					top: '100%',
 					marginTop: -7,
@@ -222,6 +221,7 @@ const UserDropdown = (props) => {
 }
 
 function TldrHeader (props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	// data from redux
 	const dispatch = useDispatch(); 
@@ -234,7 +234,7 @@ function TldrHeader (props) {
 					<FlexItem shrink justify="center">
 						<Link href={ getIndexPageUrl() }>
 							<Inline nowrap>
-								<Icon shape="FileText" color={swatches.tint} />
+								<Icon shape="FileText" color={SWATCHES.tint} />
 								<Text weight="strong" color="tint" type="big">tldr</Text>
 							</Inline>
 						</Link>
@@ -272,7 +272,7 @@ function TldrHeader (props) {
 													/>
 												<Icon 
 													shape="ChevronDown" 
-													size="small" color={swatches.hint} 
+													size="small" color={SWATCHES.hint} 
 													/>
 											</Inline>
 										</ConnectedDropdownTouch>

@@ -41,8 +41,8 @@ import {
 
 import {styles} from 'cinderblock';
 import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const {METRICS} = DesignConstants;
+import {designConstants} from 'cinderblock';
+const {METRICS} = designConstants;
 import Page from '@/components/Page';
 import Head from 'next/head'
 

@@ -1,4 +1,4 @@
-import React,{Fragment, useState, useEffect, useCallback, useRef } from 'react';
+import React,{Fragment, useState, useContext } from 'react';
 
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,14 +39,12 @@ import {
 	TextInput,
 	Touch,
 	View,
-	useFormState
+	useFormState,
+   ThemeContext
 } from 'cinderblock';
 
 // STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const {METRICS, EASE} = DesignConstants;
+import {designConstants} from 'cinderblock';
 
 // COMPONENT-SPECIFIC
 import {Utils} from 'cinderblock';
@@ -261,6 +259,8 @@ export const RegisterLocalForm = (props) => {
 }
 
 export const PasswordInput = (props) => {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+
    const [passwordMasked, setPasswordMasked] = useState(true);
 
    return (
@@ -280,7 +280,7 @@ export const PasswordInput = (props) => {
                <Touch onPress={ ()=>setPasswordMasked(!passwordMasked) }>
                   <Icon
                      shape="EyeOff"
-                     color={swatches.textHint}
+                     color={SWATCHES.textHint}
                      />
                </Touch>
             </View>

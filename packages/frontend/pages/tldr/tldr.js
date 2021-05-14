@@ -48,8 +48,8 @@ import Router, {useRouter} from 'next/router'
 // STYLES
 import {styles} from 'cinderblock';
 import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const { METRICS } = DesignConstants;
+import {designConstants} from 'cinderblock';
+const { METRICS } = designConstants;
 
 // SCREEN-SPECIFIC
 import {TldrCardSmall, TldrCard, DeletePrompt} from '../../components/tldr/components';

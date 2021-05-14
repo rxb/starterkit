@@ -29,8 +29,8 @@ import {
 } from 'cinderblock';
 import {styles} from 'cinderblock';
 import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const {METRICS} = DesignConstants;
+import {designConstants} from 'cinderblock';
+const {METRICS} = designConstants;
 
 
 const OutpostHeader = (props) => {

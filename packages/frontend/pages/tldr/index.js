@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useContext} from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -39,16 +39,14 @@ import {
 	Touch,
 	useMediaContext,
 	View,	
+   ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
 import {TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton} from '../../components/tldr/components';
 
 // STYLE
-import {styles} from 'cinderblock';
-import {swatches} from 'cinderblock';
-import {DesignConstants} from 'cinderblock';
-const { METRICS } = DesignConstants;
+import {designConstants} from 'cinderblock';
 
 // SCREEN-SPECIFIC 
 import dayjs from 'dayjs';
@@ -57,9 +55,11 @@ dayjs.extend(relativeTime)
 import {TESTCOLORS1 as TESTCOLORS} from '../../components/tldr/testcolors';
 
 const CategoryItem = (props) => {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+
    const {
       category,
-      color = swatches.tint
+      color = SWATCHES.tint
    } = props;
    return (
     
@@ -102,6 +102,7 @@ const CategoryItem = (props) => {
 }
 
 function TldrHome(props) {
+   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
       const { categoryId } = props;
       const isCategory = categoryId != undefined;
@@ -135,7 +136,7 @@ function TldrHome(props) {
             <TldrHeader />
 
 				{ !categoryId && categories.data &&
-                  <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
+                  <Stripe style={{flex: 1, backgroundColor: SWATCHES.notwhite}}>
                      <Bounds>
                         {/*
                         <Section>
@@ -174,7 +175,7 @@ function TldrHome(props) {
 
             { (categoryId && category.data && tldrs.data ) && 
 
-               <Stripe style={{flex: 1, backgroundColor: swatches.notwhite}}>
+               <Stripe style={{flex: 1, backgroundColor: SWATCHES.notwhite}}>
                   <Bounds>
                      <Section>
                         <Chunk>
@@ -243,11 +244,7 @@ TldrHome.getInitialProps = async (context) => {
 	}
 }
 
-const listItemStyle = {
-	borderTopColor: swatches.border,
-	borderTopWidth: 1,
-	paddingTop: METRICS.space
-}
+
 
 
 
