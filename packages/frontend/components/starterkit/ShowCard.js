@@ -1,4 +1,4 @@
-import React, {Fragment, useContext} from 'react';
+import React, { Fragment, useContext } from 'react';
 
 import {
 	Button,
@@ -18,9 +18,9 @@ const ShowCard = (props) => {
 		show
 	} = props;
 
-	return(
+	return (
 		<Card>
-			<Image source={{uri: show.photoUrl}} style={{
+			<Image source={{ uri: show.photoUrl }} style={{
 				height: 200,
 			}} />
 			<Sectionless>

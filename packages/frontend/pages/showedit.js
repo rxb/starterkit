@@ -1,4 +1,4 @@
-import React, {Fragment, useContext} from 'react';
+import React, { Fragment, useContext } from 'react';
 
 // SWR
 import {
@@ -7,10 +7,10 @@ import {
 	getShowUrl,
 	getTagsUrl
 } from '../swr';
-import useSWR, { mutate }  from 'swr';
+import useSWR, { mutate } from 'swr';
 
 // REDUX
-import {connect, useDispatch, useSelector} from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { addToast, addDelayedToast } from '../actions';
 
 // COMPONENTS
@@ -53,7 +53,7 @@ import Head from 'next/head'
 
 
 // SCREEN-SPECFIC
-import {Utils} from 'cinderblock';
+import { Utils } from 'cinderblock';
 const { runValidations, readFileAsDataUrl } = Utils;
 
 
@@ -68,7 +68,7 @@ const ShowForm = (props) => {
 		authentication,
 	} = props;
 
-	const formState = useFormState({ 
+	const formState = useFormState({
 		initialFields: {
 			title: showData.title,
 			photoUrl: showData.photoUrl,
@@ -85,66 +85,66 @@ const ShowForm = (props) => {
 		addToast: msg => dispatch(addToast(msg))
 	});
 
-	const submitEditForm = async ()=> {
-		
+	const submitEditForm = async () => {
+
 
 		// client-side validations
 		// just for example here. client-side mostly makes sense for optimistic updates
 		const error = runValidations(formState.fields, {
 			title: {
-				 isLength: {
-					 args: {min: 1},
-					 msg: "Title can't be blank"
-				 },
-				 notContains: {
-					 args: "garbage",
-					 msg: "No shows about garbage, please"
-				 }
-			 }
-		 });
+				isLength: {
+					args: { min: 1 },
+					msg: "Title can't be blank"
+				},
+				notContains: {
+					args: "garbage",
+					msg: "No shows about garbage, please"
+				}
+			}
+		});
 		formState.setError(error);
 		console.log(error);
 
-		if(!error){
+		if (!error) {
 			formState.setLoading(true);
 
 			// photo process
-			const {photoNewFile, ...showFields} = formState.fields;
-			if(photoNewFile){
+			const { photoNewFile, ...showFields } = formState.fields;
+			if (photoNewFile) {
 				showFields.dataUri = await readFileAsDataUrl(photoNewFile);
 			}
 
-			try{
-				const response = await request( getShowUrl(showData.id), {
-					method: 'PATCH', 
+			try {
+				const response = await request(getShowUrl(showData.id), {
+					method: 'PATCH',
 					data: showFields,
 					token: authentication.accessToken
 				});
 				dispatch(addDelayedToast('Show saved; nice work!'));
-				Router.push({pathname:'/show', query: {showId: showData.id}})
-		  	}
-			catch(error){
+				Router.push({ pathname: '/show', query: { showId: showData.id } })
+			}
+			catch (error) {
 				formState.setError(error);
 				formState.setLoading(false);
 			}
 		}
-		else{
+		else {
 			console.log('error?')
 		}
 		console.log('end submit')
 	}
 
-	
 
-	return(
+
+	return (
 		<form>
 			<Chunk>
 				<Label for="title">Show title</Label>
 				<TextInput
 					id="title"
 					value={formState.getFieldValue('title')}
-					onChange={e => formState.setFieldValue('title', e.target.value) }
-					/>
+					onChange={e => formState.setFieldValue('title', e.target.value)}
+				/>
 				<FieldError error={formState.error?.fieldErrors?.title} />
 			</Chunk>
 			<Chunk>
@@ -152,28 +152,28 @@ const ShowForm = (props) => {
 				<TextInput
 					id="description"
 					value={formState.getFieldValue('description')}
-					onChange={e => formState.setFieldValue('description', e.target.value) }
+					onChange={e => formState.setFieldValue('description', e.target.value)}
 					multiline
 					numberOfLines={4}
 					showCounter={true}
 					maxLength={1000}
-					/>
+				/>
 				<FieldError error={formState.error?.fieldErrors?.description} />
 			</Chunk>
 			<Chunk>
 				<Label for="title">Genres</Label>
-				{(['Comedy', 'Drama', 'Documentary']).map((item, i)=>{
+				{(['Comedy', 'Drama', 'Documentary']).map((item, i) => {
 					const checked = formState.getFieldValue('genres').indexOf(item) != -1;
-					return(
+					return (
 						<CheckBox
 							key={item}
 							label={item}
 							value={checked}
 							onChange={() => {
-								const newItems = (checked) ?  formState.getFieldValue('genres').filter(a => a !== item) : formState.getFieldValue('genres').concat([item]);
+								const newItems = (checked) ? formState.getFieldValue('genres').filter(a => a !== item) : formState.getFieldValue('genres').concat([item]);
 								formState.setFieldValue('genres', newItems)
 							}}
-							/>
+						/>
 
 					);
 				})}
@@ -183,12 +183,12 @@ const ShowForm = (props) => {
 			</Chunk>
 			<Chunk>
 				<Label>Your photo</Label>
-				<PhotoInput 
+				<PhotoInput
 					fileState={{
 						preview: formState.getFieldValue('photoUrl'),
 						file: formState.getFieldValue('photoNewFile')
 					}}
-					onChangeFile={(fileState)=>(
+					onChangeFile={(fileState) => (
 						formState.setFieldValues({
 							/* comes from server, doesn't get sent back to server */
 							photoUrl: fileState.filepreview,
@@ -198,30 +198,30 @@ const ShowForm = (props) => {
 							photoNewFile: fileState.file
 						})
 					)}
-					/>
+				/>
 				<FieldError error={formState.error?.fieldErrors?.photoUrl} />
 
 			</Chunk>
 
 			<Chunk>
 				<Label for="title">Tags</Label>
-				{tagsData && tagsData.map((item, i)=>{
-					const checked = formState.getFieldValue('tags').findIndex( tag => tag.id == item.id ) != -1;
-					return(
+				{tagsData && tagsData.map((item, i) => {
+					const checked = formState.getFieldValue('tags').findIndex(tag => tag.id == item.id) != -1;
+					return (
 						<CheckBox
 							key={String(item.id)}
 							label={item.label}
 							value={checked}
 							onChange={() => {
-								const {id, label} = item;
+								const { id, label } = item;
 								// keep an obj with id and label
 								// with the idea that maybe an obj with label and without id would be created
 								const newItems = (checked) ?
 									formState.getFieldValue('tags').filter(a => a.id !== id) :
-									formState.getFieldValue('tags').concat([{id, label}]);
+									formState.getFieldValue('tags').concat([{ id, label }]);
 								formState.setFieldValue('tags', newItems);
 							}}
-							/>
+						/>
 					);
 				})}
 			</Chunk>
@@ -229,9 +229,9 @@ const ShowForm = (props) => {
 				<Button
 					type="primary"
 					label="Let's do this"
-					onPress={ submitEditForm }
+					onPress={submitEditForm}
 					isLoading={formState.loading}
-					/>
+				/>
 			</Chunk>
 		</form>
 	);
@@ -239,63 +239,63 @@ const ShowForm = (props) => {
 
 
 
-function ShowEdit (props) {
-   const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+function ShowEdit(props) {
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	const show = useSWR( getShowUrl(props.showId) );
+	const show = useSWR(getShowUrl(props.showId));
 	const { data: showData, error: showError } = show;
-	
-	const tags = useSWR( getTagsUrl() );
+
+	const tags = useSWR(getTagsUrl());
 	const tagsData = tags.data ? tags.data.items : [];
 
-		return (
-			<CinderblockPage>
-				<Head>
-					<meta property='og:title' content='Scratch' />
-					<title>Edit show</title>
-				</Head>
-				<Stripe>
-					<Bounds>
+	return (
+		<CinderblockPage>
+			<Head>
+				<meta property='og:title' content='Scratch' />
+				<title>Edit show</title>
+			</Head>
+			<Stripe>
+				<Bounds>
 
-							<Section type="pageHead">
-								<Chunk>
-									<Text type="pageHead">Edit show</Text>
-								</Chunk>
-							</Section>
-							{showData && 
-								<Flex direction="column" switchDirection="medium">
-								<FlexItem growFactor={2}>
-									<Section>
-										{ showData.id &&
+					<Section type="pageHead">
+						<Chunk>
+							<Text type="pageHead">Edit show</Text>
+						</Chunk>
+					</Section>
+					{showData &&
+						<Flex direction="column" switchDirection="medium">
+							<FlexItem growFactor={2}>
+								<Section>
+									{showData.id &&
 										<ShowForm
 											showData={showData}
 											tagsData={tagsData}
 											authentication={authentication}
-											/>
-										}
-									</Section>
-								</FlexItem>
-								<FlexItem growFactor={1} style={{minWidth: 'inherit'}}>
-									<Section>
-										<Chunk>
-											<Text color="hint" style={{maxWidth: '100%'}}>{JSON.stringify(showData, null, " ")}</Text>
-										</Chunk>
-									</Section>
+										/>
+									}
+								</Section>
+							</FlexItem>
+							<FlexItem growFactor={1} style={{ minWidth: 'inherit' }}>
+								<Section>
+									<Chunk>
+										<Text color="hint" style={{ maxWidth: '100%' }}>{JSON.stringify(showData, null, " ")}</Text>
+									</Chunk>
+								</Section>
 
-								</FlexItem>
-							</Flex>
-							}
+							</FlexItem>
+						</Flex>
+					}
 
-					</Bounds>
-				</Stripe>
-			</CinderblockPage>
-		);
+				</Bounds>
+			</Stripe>
+		</CinderblockPage>
+	);
 }
 
 ShowEdit.getInitialProps = async (context) => {
-	const {query} = context;
+	const { query } = context;
 	return {
 		showId: query.showId
 	}

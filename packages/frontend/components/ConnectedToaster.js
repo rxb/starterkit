@@ -2,7 +2,7 @@
 // cinderblock itself shouldn't be dependent on redux, specifically
 // just functions passed in a props
 
-import React, {Fragment, useContext} from 'react';
+import React, { Fragment, useContext } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -11,9 +11,9 @@ import {
 	removeToast
 } from '../actions';
 
-import{ Toaster } from 'cinderblock';
+import { Toaster } from 'cinderblock';
 
-const ConnectedToaster = (props) => ( <Toaster {...props} />);
+const ConnectedToaster = (props) => (<Toaster {...props} />);
 const mapStateToProps = (state, ownProps) => ({ toasts: state.toasts });
 const actionCreators = { addToast, hideToast, removeToast }
-export default connect( mapStateToProps, actionCreators )(ConnectedToaster);
+export default connect(mapStateToProps, actionCreators)(ConnectedToaster);

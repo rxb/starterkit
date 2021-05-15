@@ -14,17 +14,17 @@ module.exports = {
     */
     return queryInterface.bulkInsert('tags', [
       {
-        "label" : "Sitcom",
+        "label": "Sitcom",
         createdAt: Sequelize.fn('NOW'),
         updatedAt: Sequelize.fn('NOW')
       },
       {
-        "label" : "Documentary",
+        "label": "Documentary",
         createdAt: Sequelize.fn('NOW'),
         updatedAt: Sequelize.fn('NOW')
       },
       {
-        "label" : "Reality Show",
+        "label": "Reality Show",
         createdAt: Sequelize.fn('NOW'),
         updatedAt: Sequelize.fn('NOW')
       }

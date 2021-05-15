@@ -1,8 +1,8 @@
-import React, {Fragment, useContext} from 'react';
+import React, { Fragment, useContext } from 'react';
 
 // REDUX
 import { useDispatch } from 'react-redux';
-import { addPrompt, addToast, addDelayedToast, updateUi} from '@/actions';
+import { addPrompt, addToast, addDelayedToast, updateUi } from '@/actions';
 
 // COMPONENTS
 import {
@@ -21,12 +21,12 @@ import feathersClient from '../components/FeathersClient';
 import Router from 'next/router'
 
 // URLS
-import {getRequestPasswordPageUrl} from 'components/tldr/urls';
+import { getRequestPasswordPageUrl } from 'components/tldr/urls';
 
 
 const LoginForm = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
-	
+
 	const dispatch = useDispatch();
 
 	const formState = useFormState({
@@ -34,50 +34,50 @@ const LoginForm = (props) => {
 		initialFields: props.initialFields
 	});
 
-	const onSubmit = () =>{
+	const onSubmit = () => {
 		formState.setLoading(true);
 		feathersClient
 			.authenticate({
-				strategy: 'local', 
-				email: formState.fields.email, 
+				strategy: 'local',
+				email: formState.fields.email,
 				password: formState.fields.password
 			})
-			.then(()=>{
+			.then(() => {
 				formState.setLoading(false);
 			})
-			.catch((error)=>{
+			.catch((error) => {
 				console.log(error);
 				formState.setLoading(false);
 			});
 	}
 
-	return(
-			<LoadingBlock isLoading={formState.loading}>
-											
+	return (
+		<LoadingBlock isLoading={formState.loading}>
+
 			<form name="loginForm">
 				<Chunk>
 					<TextInput
 						id="email"
 						value={formState.getFieldValue('email')}
-						onChange={ e => formState.setFieldValue('email', e.target.value) }
+						onChange={e => formState.setFieldValue('email', e.target.value)}
 						keyboardType="email-address"
 						placeholder="email"
 						onSubmitEditing={onSubmit}
-						/>
+					/>
 					<TextInput
 						id="password"
 						value={formState.getFieldValue('password')}
-						onChange={ e => formState.setFieldValue('password', e.target.value) }
+						onChange={e => formState.setFieldValue('password', e.target.value)}
 						secureTextEntry={true}
 						placeholder="password"
 						onSubmitEditing={onSubmit}
-						/>
-					<Touch onPress={()=>{
-						Router.push({pathname: getRequestPasswordPageUrl(), query: {email: formState.getFieldValue('email')} })  
+					/>
+					<Touch onPress={() => {
+						Router.push({ pathname: getRequestPasswordPageUrl(), query: { email: formState.getFieldValue('email') } })
 					}}
 					>
 						<Text type="small" color="hint">Forgot password?</Text>
-					</Touch>	
+					</Touch>
 				</Chunk>
 				<Chunk>
 					<Button
@@ -85,12 +85,12 @@ const LoginForm = (props) => {
 						accessibilityRole="submit"
 						isLoading={formState.loading}
 						label="Log in"
-						style={{minWidth: 120}}
-						/>
-					
+						style={{ minWidth: 120 }}
+					/>
+
 				</Chunk>
 			</form>
-			</LoadingBlock>
+		</LoadingBlock>
 	);
 };
 

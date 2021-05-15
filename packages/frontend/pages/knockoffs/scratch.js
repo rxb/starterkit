@@ -1,35 +1,35 @@
-import React, {Fragment, useState, useCallback, useRef, useContext} from 'react';
+import React, { Fragment, useState, useCallback, useRef, useContext } from 'react';
 
 import {
-	Avatar,
-	Bounds,
-	Button,
-	Card,
-	CheckBox,
-	Chunk,
-	FakeInput,
-	FieldError,
-	Flex,
-	FlexItem,
-	FileInput,
-	Icon,
-	Inline,
-	Image,
-	Label,
-	List,
-	Link,
-	Modal,
-	Picker,
+   Avatar,
+   Bounds,
+   Button,
+   Card,
+   CheckBox,
+   Chunk,
+   FakeInput,
+   FieldError,
+   Flex,
+   FlexItem,
+   FileInput,
+   Icon,
+   Inline,
+   Image,
+   Label,
+   List,
+   Link,
+   Modal,
+   Picker,
    Reorderable,
-	Section,
-	Sectionless,
-	Stripe,
-	Text,
-	TextInput,
-	Touch,
-	View,
-	useFormState,
-	ThemeContext
+   Section,
+   Sectionless,
+   Stripe,
+   Text,
+   TextInput,
+   Touch,
+   View,
+   useFormState,
+   ThemeContext
 } from 'cinderblock';
 
 import { DndProvider } from 'react-dnd'
@@ -38,38 +38,38 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 
 const Scratch = (props) => {
-	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+   const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
    const [items, setItems] = useState([
       {
-          id: 1,
-          text: 'Write a cool JS library',
+         id: 1,
+         text: 'Write a cool JS library',
       },
       {
-          id: 2,
-          text: 'Make it generic enough',
+         id: 2,
+         text: 'Make it generic enough',
       },
       {
-          id: 3,
-          text: 'Write README',
+         id: 3,
+         text: 'Write README',
       },
       {
-          id: 4,
-          text: 'Create some examples',
+         id: 4,
+         text: 'Create some examples',
       },
       {
-          id: 5,
-          text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
+         id: 5,
+         text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
       },
       {
-          id: 6,
-          text: '???',
+         id: 6,
+         text: '???',
       },
       {
-          id: 7,
-          text: 'PROFIT',
+         id: 7,
+         text: 'PROFIT',
       },
-  ]);
+   ]);
 
 
    const moveItem = useCallback((dragIndex, hoverIndex) => {
@@ -82,9 +82,9 @@ const Scratch = (props) => {
 
 
    return (
-         
-         <Stripe>
-            {/*
+
+      <Stripe>
+         {/*
             <Bounds>
                <Section>
                   <Chunk>
@@ -106,7 +106,7 @@ const Scratch = (props) => {
                </Section>
             </Bounds>
                      */}
-         </Stripe>
+      </Stripe>
    );
 }
 

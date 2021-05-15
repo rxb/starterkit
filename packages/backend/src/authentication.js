@@ -11,7 +11,7 @@ class AnonymousStrategy extends AuthenticationBaseStrategy {
   }
 }
 
-async function authenticateCustom (authentication, originalParams) {
+async function authenticateCustom(authentication, originalParams) {
   const entity = this.configuration.entity;
   const { provider, ...params } = originalParams;
   const profile = await this.getProfile(authentication, params);
@@ -38,7 +38,7 @@ async function getRedirectCustom(authResult) {
 ///https://docs.feathersjs.com/cookbook/authentication/google.html#using-the-data-returned-from-the-google-app-through-a-custom-oauth-strategy
 class GoogleStrategy extends OAuthStrategy {
 
-  async getProfile (data, _params) {
+  async getProfile(data, _params) {
     return data.profile;
   }
 
@@ -55,18 +55,18 @@ class GoogleStrategy extends OAuthStrategy {
     return newData;
   }
 
-  async authenticate(authentication, originalParams){
+  async authenticate(authentication, originalParams) {
     return await authenticateCustom.call(this, authentication, originalParams);
   }
 }
 
 class AppleStrategy extends OAuthStrategy {
-  
-  async getProfile (data, _params) {
+
+  async getProfile(data, _params) {
     return data.jwt.id_token.payload;
   }
 
-  async getEntityData(profile) {  
+  async getEntityData(profile) {
     const baseData = await super.getEntityData(profile);
     const newData = {
       ...baseData,
@@ -77,10 +77,10 @@ class AppleStrategy extends OAuthStrategy {
     return newData;
   }
 
-  async authenticate(authentication, originalParams){
+  async authenticate(authentication, originalParams) {
     return await authenticateCustom.call(this, authentication, originalParams);
   }
-  
+
 }
 
 /*

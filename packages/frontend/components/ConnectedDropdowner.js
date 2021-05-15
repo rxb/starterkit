@@ -2,7 +2,7 @@
 // cinderblock itself shouldn't be dependent on redux, specifically
 // just functions passed in a props
 
-import React, {Fragment, useContext} from 'react';
+import React, { Fragment, useContext } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -11,9 +11,9 @@ import {
 	removeDropdown
 } from '../actions';
 
-import{ Dropdowner } from 'cinderblock';
+import { Dropdowner } from 'cinderblock';
 
-const ConnectedDropdowner = (props) => ( <Dropdowner {...props} />);
+const ConnectedDropdowner = (props) => (<Dropdowner {...props} />);
 const mapStateToProps = (state, ownProps) => ({ dropdowns: state.dropdowns });
 const actionCreators = { addDropdown, hideDropdown, removeDropdown }
-export default connect( mapStateToProps, actionCreators )(ConnectedDropdowner);
+export default connect(mapStateToProps, actionCreators)(ConnectedDropdowner);

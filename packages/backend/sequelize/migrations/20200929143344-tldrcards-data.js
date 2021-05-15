@@ -10,27 +10,27 @@ module.exports = {
      */
     await queryInterface.addColumn(
       'tldrs', 'urlKey', {
-        type: Sequelize.TEXT,
-        unique : true
-      });
+      type: Sequelize.TEXT,
+      unique: true
+    });
     await queryInterface.addColumn(
       'tldrs', 'versionsUsedCount', {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
-      });   
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    });
     await queryInterface.addColumn(
       'tldr_versions', 'version', {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
-      });   
-    await queryInterface.removeColumn('tldr_versions', 'versionName'); 
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    });
+    await queryInterface.removeColumn('tldr_versions', 'versionName');
     await queryInterface.addColumn(
       'users', 'urlKey', {
-        type: Sequelize.TEXT,
-        unique : true
-      });              
+      type: Sequelize.TEXT,
+      unique: true
+    });
   },
 
   down: async (queryInterface, Sequelize) => {

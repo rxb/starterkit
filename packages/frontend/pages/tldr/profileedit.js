@@ -1,17 +1,17 @@
-import React, {Fragment, useState, useEffect, useCallback, useRef , useContext} from 'react';
+import React, { Fragment, useState, useEffect, useCallback, useRef, useContext } from 'react';
 import ErrorPage from 'next/error'
 
 
 // SWR
 import { request, getUserUrl } from '@/swr';
-import useSWR, { mutate }  from 'swr';
+import useSWR, { mutate } from 'swr';
 
 // REDUX
-import {connect, useDispatch, useSelector} from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast, addDelayedToast, updateUser } from '@/actions';
 
 // URLS
-import {getProfilePageUrl, getLoginRedirect} from '../../components/tldr/urls';
+import { getProfilePageUrl, getLoginRedirect } from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -33,10 +33,10 @@ import {
 	List,
 	Link,
 	Modal,
-   PhotoInput,
+	PhotoInput,
 	Picker,
 	Reorderable,
-   RevealBlock,
+	RevealBlock,
 	Section,
 	Sectionless,
 	Stripe,
@@ -57,429 +57,429 @@ import Head from 'next/head'
 
 
 // SCREEN-SPECIFIC
-import {Utils} from 'cinderblock';
+import { Utils } from 'cinderblock';
 const { runValidations, pushError, readFileAsDataUrl } = Utils;
 import feathersClient from 'components/FeathersClient';
-import {OauthButtons} from '../../components/tldr/components';
+import { OauthButtons } from '../../components/tldr/components';
 
 
 const cleanUrlKey = (dirtyUrlKey) => {
-   return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
-            .replace(/\s+/gi,"-")
-            .replace(/[-]+/gi, "-")
-            .toLowerCase();
+	return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
+		.replace(/\s+/gi, "-")
+		.replace(/[-]+/gi, "-")
+		.toLowerCase();
 }
 
 const NameField = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
-   const {formState} = props;
-   return(
-      <>
-      <TextInput
-         spellCheck={false}
-         id="name"
-         value={formState.getFieldValue('name')}
-         onChange={e => formState.setFieldValue('name', e.target.value) }
-         />
-      <FieldError error={formState.error?.fieldErrors?.name} />
-      </>	      
-   );
+	const { formState } = props;
+	return (
+		<>
+			<TextInput
+				spellCheck={false}
+				id="name"
+				value={formState.getFieldValue('name')}
+				onChange={e => formState.setFieldValue('name', e.target.value)}
+			/>
+			<FieldError error={formState.error?.fieldErrors?.name} />
+		</>
+	);
 }
 
 const UrlKeyField = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
-   const {formState, suggestion} = props;
-   return(
-      <>
-       <TextInput
-            spellCheck={false}
-            id="urlKey"
-            value={formState.getFieldValue('urlKey')}
-            onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value)) }
-            />
-         <FieldError error={formState.error?.fieldErrors?.urlKey} />	
-         <Text color="hint" type="small"> Only letters, numbers, and dashes 
-         { suggestion &&
-            <Touch onPress={()=> formState.setFieldValue('urlKey', suggestion)}>
-               <Text color="hint" type="small">. How about <Text type="small" color="tint">{suggestion}</Text>?</Text>
-            </Touch>
-         }
-         </Text>
-      </>
-   );
+	const { formState, suggestion } = props;
+	return (
+		<>
+			<TextInput
+				spellCheck={false}
+				id="urlKey"
+				value={formState.getFieldValue('urlKey')}
+				onChange={e => formState.setFieldValue('urlKey', cleanUrlKey(e.target.value))}
+			/>
+			<FieldError error={formState.error?.fieldErrors?.urlKey} />
+			<Text color="hint" type="small"> Only letters, numbers, and dashes
+			{suggestion &&
+					<Touch onPress={() => formState.setFieldValue('urlKey', suggestion)}>
+						<Text color="hint" type="small">. How about <Text type="small" color="tint">{suggestion}</Text>?</Text>
+					</Touch>
+				}
+			</Text>
+		</>
+	);
 }
 
 
 
 const PhotoField = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
-   const {formState} = props;
-   return(
-      <>
-      <PhotoInput 
-         fileState={{
-            preview: formState.getFieldValue('photoUrl'),
-            file: formState.getFieldValue('photoNewFile')
-         }}
-         onChangeFile={(fileState)=>(
-            formState.setFieldValues({
-               /* comes from server, doesn't get sent back to server */
-               photoUrl: fileState.preview,
-               /* comes from server, gets sent back to server */
-               photoId: false,
-               /* only exists client -> server */
-               photoNewFile: fileState.file
-            }))}
-         />
-      <FieldError error={formState.error?.fieldErrors?.photoUrl} />
-      </>
-   )
+	const { formState } = props;
+	return (
+		<>
+			<PhotoInput
+				fileState={{
+					preview: formState.getFieldValue('photoUrl'),
+					file: formState.getFieldValue('photoNewFile')
+				}}
+				onChangeFile={(fileState) => (
+					formState.setFieldValues({
+						/* comes from server, doesn't get sent back to server */
+						photoUrl: fileState.preview,
+						/* comes from server, gets sent back to server */
+						photoId: false,
+						/* only exists client -> server */
+						photoNewFile: fileState.file
+					}))}
+			/>
+			<FieldError error={formState.error?.fieldErrors?.photoUrl} />
+		</>
+	)
 }
 
 const profileEditValidations = {
-   urlKey: {
-      // TODO: add client-side uniqueness validation 
-      // (server will catch it for now)
-      notEmpty: {
-          msg: "Username can't be blank"
-      },
-      is: {
-         args: /^[a-zA-Z0-9-]*$/,
-         msg: "Username can only include letters, numbers, and dashes"
-      },
-   },
-   name: {
-      notEmpty: {
-          msg: "Name can't be blank"
-      }
-   },
-   email: {
-      notEmpty: {
-          msg: "Email can't be blank"
-      },
-      isEmail: {
-         msg: "Email must be a valid email address"
-      }
-   },
-   password: {
-      len:{
-         args: [8, undefined],
-         msg: "Password must be at least 8 characters long"
-      }
-    },
+	urlKey: {
+		// TODO: add client-side uniqueness validation 
+		// (server will catch it for now)
+		notEmpty: {
+			msg: "Username can't be blank"
+		},
+		is: {
+			args: /^[a-zA-Z0-9-]*$/,
+			msg: "Username can only include letters, numbers, and dashes"
+		},
+	},
+	name: {
+		notEmpty: {
+			msg: "Name can't be blank"
+		}
+	},
+	email: {
+		notEmpty: {
+			msg: "Email can't be blank"
+		},
+		isEmail: {
+			msg: "Email must be a valid email address"
+		}
+	},
+	password: {
+		len: {
+			args: [8, undefined],
+			msg: "Password must be at least 8 characters long"
+		}
+	},
 };
 
 
 const EditProfile = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
-   const {isSignup} = props;
+	const { isSignup } = props;
 
-   const dispatch = useDispatch(); 
-   const authentication = useSelector(state => state.authentication);
-   const [formStep, setFormStep] = useState(0);
-   const [buttonAttempt, setButtonAttempt] = useState();
+	const dispatch = useDispatch();
+	const authentication = useSelector(state => state.authentication);
+	const [formStep, setFormStep] = useState(0);
+	const [buttonAttempt, setButtonAttempt] = useState();
 
-   const formState = useFormState({
-      initialFields: {
-         name: '',
-         urlKey: '',
-         photoUrl: '',
+	const formState = useFormState({
+		initialFields: {
+			name: '',
+			urlKey: '',
+			photoUrl: '',
 			photoId: '',
-         ...(isSignup ? false : {email: ''}) // don't need to patch fields that aren't shown
-      },
-      toastableErrors: {
-         BadRequest: 'Something went wrong',
-         NotAuthenticated: 'Not signed in'
-      },
-      addToast: msg => dispatch(addToast(msg))
-   }); 
+			...(isSignup ? false : { email: '' }) // don't need to patch fields that aren't shown
+		},
+		toastableErrors: {
+			BadRequest: 'Something went wrong',
+			NotAuthenticated: 'Not signed in'
+		},
+		addToast: msg => dispatch(addToast(msg))
+	});
 
-   // load user, one time (unless auth changes), reinitialize the form
-   // on first load, feathersclient may not have put the auth into the store yet
-   useEffect(()=>{
-      if(authentication.accessToken){
-         request( getUserUrl("self"), {token: authentication.accessToken} )
-            .then( (user) => {
-               // in signUp flow, do not populate fields listed in tempValues 
-               // in full edit, let them see everything
-               if(isSignup && Array.isArray(user.tempValues)){
-                  user.tempValues.forEach((key, i) => {
-                     delete user[key];
-                  });
-               }
-               formState.setFieldValues(user);   
-            });
-      }
-   }, [authentication.accessToken]);
+	// load user, one time (unless auth changes), reinitialize the form
+	// on first load, feathersclient may not have put the auth into the store yet
+	useEffect(() => {
+		if (authentication.accessToken) {
+			request(getUserUrl("self"), { token: authentication.accessToken })
+				.then((user) => {
+					// in signUp flow, do not populate fields listed in tempValues 
+					// in full edit, let them see everything
+					if (isSignup && Array.isArray(user.tempValues)) {
+						user.tempValues.forEach((key, i) => {
+							delete user[key];
+						});
+					}
+					formState.setFieldValues(user);
+				});
+		}
+	}, [authentication.accessToken]);
 
-   const submitForm = async () => {
-      
-      const {photoNewFile, ...submitFields} = {
-         ...formState.fields,
-         profileComplete: true,  // profile is complete if you've done this flow even once
-         tempValues: []
-      };
-      let error = runValidations(submitFields, profileEditValidations);
-      
-      
-      // custom frontend password confirmation match
-      if(submitFields["password"] != submitFields["confirm-password"]){
-         error = pushError(error, "password", "Your passwords don't match")
-      }
-      
+	const submitForm = async () => {
 
-      // display errors that exist
+		const { photoNewFile, ...submitFields } = {
+			...formState.fields,
+			profileComplete: true,  // profile is complete if you've done this flow even once
+			tempValues: []
+		};
+		let error = runValidations(submitFields, profileEditValidations);
+
+
+		// custom frontend password confirmation match
+		if (submitFields["password"] != submitFields["confirm-password"]) {
+			error = pushError(error, "password", "Your passwords don't match")
+		}
+
+
+		// display errors that exist
 		formState.setError(error);
 
-      // if no errors, let's submit
-      if(!error){
+		// if no errors, let's submit
+		if (!error) {
 
-         formState.setLoading(true);
+			formState.setLoading(true);
 
-         // only include password if not empty
-         if( submitFields.password && submitFields.password.trim().length == 0){
-            delete submitFields.password
-         }
+			// only include password if not empty
+			if (submitFields.password && submitFields.password.trim().length == 0) {
+				delete submitFields.password
+			}
 
-         // photo process
-         if(photoNewFile){
-            submitFields.dataUri = await readFileAsDataUrl(photoNewFile);
-         }
+			// photo process
+			if (photoNewFile) {
+				submitFields.dataUri = await readFileAsDataUrl(photoNewFile);
+			}
 
-         try{
-            const newUser = await request( getUserUrl("self"), {
-               method: 'PATCH', 
-               data: submitFields,
-               token: authentication.accessToken
-            });
-            
-            // force reauthenticate to update user 
-            feathersClient.reAuthenticate(true);
+			try {
+				const newUser = await request(getUserUrl("self"), {
+					method: 'PATCH',
+					data: submitFields,
+					token: authentication.accessToken
+				});
 
-            // toast and push
-            const toastMessage = isSignup ? "Welcome!" : "Settings updated!";
-            dispatch(addDelayedToast(toastMessage));
-            const redirect = getLoginRedirect() || {pathname: getProfilePageUrl()};
-            Router.push(redirect);  
-         }
-         catch(error){
-            formState.setError(error);
-            formState.setLoading(false);
-         }
-      }
-   }
+				// force reauthenticate to update user 
+				feathersClient.reAuthenticate(true);
 
-   // DIVERT TO ERROR PAGE
-   if (!authentication.user) {
-      return <ErrorPage statusCode={401} />
-   }
+				// toast and push
+				const toastMessage = isSignup ? "Welcome!" : "Settings updated!";
+				dispatch(addDelayedToast(toastMessage));
+				const redirect = getLoginRedirect() || { pathname: getProfilePageUrl() };
+				Router.push(redirect);
+			}
+			catch (error) {
+				formState.setError(error);
+				formState.setLoading(false);
+			}
+		}
+	}
 
-   // RENDER
-   if( isSignup ){
-      return (
-         <Page>
-            <TldrHeader />
-            <Stripe>
-               <Bounds style={{maxWidth: 640}}>
-                  <Section>
-                     <Chunk>
-                        <Text type="pageHead">Welcome!</Text>
-                     </Chunk>
-                  </Section>
-                  <Section>
-                     <form>
-                     <RevealBlock visible={formStep >= 0} delay={300}>
-                        <Chunk>
-                           <Label for="name">What's your name?</Label>
-                           <NameField formState={formState} />
-                        </Chunk>
-                        { (formStep == 0) &&
-                           <Chunk>
-                              <Button 
-                                 label="Next"
-                                 onPress={ ()=> {
-                                    const error = runValidations(formState.fields, {
-                                       name: profileEditValidations.name
-                                    });
-                                    formState.setError(error);
-                                    if(!error){
-                                        setFormStep(1) 
-                                    }
-                                 } }
-                                 />
-                           </Chunk>
-                        }
-                     </RevealBlock>
-                     <RevealBlock visible={formStep >= 1}>
-                        <Chunk>
-                           <Label for="urlKey">Pick a username</Label>
-                           <UrlKeyField 
-                              formState={formState} 
-                              suggestion={cleanUrlKey(formState.getFieldValue('name'))}
-                              />
-                        </Chunk>
-                        { (formStep == 1) &&
-                           <Chunk>
-                              <Button 
-                                 label="Next"
-                                 onPress={ ()=> {
-                                    const error = runValidations(formState.fields, {
-                                       urlKey: profileEditValidations.urlKey
-                                    });
-                                    formState.setError(error);
-                                    if(!error){
-                                        setFormStep(2) 
-                                    }
-                                 } }
-                                 />
-                           </Chunk>
-                        }
-                     </RevealBlock>
-                     <RevealBlock visible={formStep >= 2}>
-                        <Chunk>
-                           <Label for="photo">Pick a profile photo</Label>
-                           <PhotoField formState={formState} />
-                        </Chunk>
-                        <Chunk>
-                           <Button 
-                              label="Next"
-                              onPress={ submitForm }
-                              isLoading={formState.loading}
-                              />
-                           {/*
-                           <Inline>
-                           <Button 
-                              color="secondary"
-                              label="Skip"
-                              onPress={()=>{
-                                 setButtonAttempt('skip');
-                                 submitForm()
-                              }}
-                              isLoading={formState.loading && buttonAttempt == 'skip'}
-                              />
-                           <Button 
-                              label="Upload"
-                              onPress={ ()=>{
-                                 const error = runValidations(formState.fields, {
-                                    photoUrl: {
-                                       notEmpty: {
-                                          msg: "Select a photo to upload"
-                                       }
-                                    }
-                                 });
-                                 formState.setError(error);
-                                 if(!error){
-                                    setButtonAttempt('upload');
-                                    submitForm();
-                                 } 
-                              }}
-                              isLoading={formState.loading && buttonAttempt == 'upload'}
-                              />
-                           </Inline>
-                           */}
-                        </Chunk>
-                     </RevealBlock>   
-                  
-                     </form>
-                     
-                  </Section>
+	// DIVERT TO ERROR PAGE
+	if (!authentication.user) {
+		return <ErrorPage statusCode={401} />
+	}
 
-               </Bounds>
-            </Stripe>
-         </Page>
-      );
-   
-   }
-   else{
-      return (
-         <Page>
-            <TldrHeader />
-            <Stripe>
-               <Bounds style={{maxWidth: 640}}>
-                  <Section>
-                     <Chunk>
-                        <Text type="pageHead">Settings</Text>
-                     </Chunk>
-                  </Section>
-                  <Section>
-                     <form>
-                        <Chunk>
-                           <Label for="name">Name</Label>
-                           <NameField formState={formState} />
-                        </Chunk>
-                        <Chunk>
-                           <Label for="urlKey">Username</Label>
-                           <UrlKeyField formState={formState} />
-                        </Chunk>
-                        <Chunk>
-                           <Label for="photo">Photo</Label>
-                           <PhotoField formState={formState} />
-                        </Chunk>                     
-                        <Chunk>
-                           <Label for="email">Email</Label>
-                           <TextInput
-                              spellCheck={false}
-                              id="email"
-                              autoCompleteType="email"
-                              keyboardType="email-address"
-                              value={formState.getFieldValue('email')}
-                              onChange={e => formState.setFieldValue('email', e.target.value) }
-                              />
-                           <FieldError error={formState.error?.fieldErrors?.email} />	
-                        </Chunk>
-                        <Chunk>
-                           <Label for="password">Set a new password</Label>
-                           <TextInput
-                              id="password"
-                              placeholder="New password"
-                              secureTextEntry={true}
-                              autoCompleteType="new-password"
-                              value={formState.getFieldValue('password')}
-                              onChange={e => formState.setFieldValue('password', e.target.value) }
-                              />
-                           <TextInput
-                              id="confirm-password"
-                              placeholder="Retype new password to confirm"
-                              secureTextEntry={true}
-                              autoCompleteType="new-password"
-                              value={formState.getFieldValue('confirm-password')}
-                              onChange={e => formState.setFieldValue('confirm-password', e.target.value) }
-                              />
-                           <FieldError error={formState.error?.fieldErrors?.password} />	
-                           <Text type="small" color="hint">Must be at least 8 characters long</Text>
-                        </Chunk>
-                   
-                        <Chunk>
-                           <Button 
-                              label="Save"
-                              onPress={ submitForm }
-                              isLoading={formState.loading}
-                              />
-                        </Chunk>
-                  
-                     </form>
-                     
-                  </Section>
+	// RENDER
+	if (isSignup) {
+		return (
+			<Page>
+				<TldrHeader />
+				<Stripe>
+					<Bounds style={{ maxWidth: 640 }}>
+						<Section>
+							<Chunk>
+								<Text type="pageHead">Welcome!</Text>
+							</Chunk>
+						</Section>
+						<Section>
+							<form>
+								<RevealBlock visible={formStep >= 0} delay={300}>
+									<Chunk>
+										<Label for="name">What's your name?</Label>
+										<NameField formState={formState} />
+									</Chunk>
+									{(formStep == 0) &&
+										<Chunk>
+											<Button
+												label="Next"
+												onPress={() => {
+													const error = runValidations(formState.fields, {
+														name: profileEditValidations.name
+													});
+													formState.setError(error);
+													if (!error) {
+														setFormStep(1)
+													}
+												}}
+											/>
+										</Chunk>
+									}
+								</RevealBlock>
+								<RevealBlock visible={formStep >= 1}>
+									<Chunk>
+										<Label for="urlKey">Pick a username</Label>
+										<UrlKeyField
+											formState={formState}
+											suggestion={cleanUrlKey(formState.getFieldValue('name'))}
+										/>
+									</Chunk>
+									{(formStep == 1) &&
+										<Chunk>
+											<Button
+												label="Next"
+												onPress={() => {
+													const error = runValidations(formState.fields, {
+														urlKey: profileEditValidations.urlKey
+													});
+													formState.setError(error);
+													if (!error) {
+														setFormStep(2)
+													}
+												}}
+											/>
+										</Chunk>
+									}
+								</RevealBlock>
+								<RevealBlock visible={formStep >= 2}>
+									<Chunk>
+										<Label for="photo">Pick a profile photo</Label>
+										<PhotoField formState={formState} />
+									</Chunk>
+									<Chunk>
+										<Button
+											label="Next"
+											onPress={submitForm}
+											isLoading={formState.loading}
+										/>
+										{/*
+									<Inline>
+									<Button 
+										color="secondary"
+										label="Skip"
+										onPress={()=>{
+											setButtonAttempt('skip');
+											submitForm()
+										}}
+										isLoading={formState.loading && buttonAttempt == 'skip'}
+										/>
+									<Button 
+										label="Upload"
+										onPress={ ()=>{
+											const error = runValidations(formState.fields, {
+												photoUrl: {
+													notEmpty: {
+														msg: "Select a photo to upload"
+													}
+												}
+											});
+											formState.setError(error);
+											if(!error){
+												setButtonAttempt('upload');
+												submitForm();
+											} 
+										}}
+										isLoading={formState.loading && buttonAttempt == 'upload'}
+										/>
+									</Inline>
+									*/}
+									</Chunk>
+								</RevealBlock>
 
-               </Bounds>
-            </Stripe>
-         </Page>
-      );
-   
-   }
+							</form>
+
+						</Section>
+
+					</Bounds>
+				</Stripe>
+			</Page>
+		);
+
+	}
+	else {
+		return (
+			<Page>
+				<TldrHeader />
+				<Stripe>
+					<Bounds style={{ maxWidth: 640 }}>
+						<Section>
+							<Chunk>
+								<Text type="pageHead">Settings</Text>
+							</Chunk>
+						</Section>
+						<Section>
+							<form>
+								<Chunk>
+									<Label for="name">Name</Label>
+									<NameField formState={formState} />
+								</Chunk>
+								<Chunk>
+									<Label for="urlKey">Username</Label>
+									<UrlKeyField formState={formState} />
+								</Chunk>
+								<Chunk>
+									<Label for="photo">Photo</Label>
+									<PhotoField formState={formState} />
+								</Chunk>
+								<Chunk>
+									<Label for="email">Email</Label>
+									<TextInput
+										spellCheck={false}
+										id="email"
+										autoCompleteType="email"
+										keyboardType="email-address"
+										value={formState.getFieldValue('email')}
+										onChange={e => formState.setFieldValue('email', e.target.value)}
+									/>
+									<FieldError error={formState.error?.fieldErrors?.email} />
+								</Chunk>
+								<Chunk>
+									<Label for="password">Set a new password</Label>
+									<TextInput
+										id="password"
+										placeholder="New password"
+										secureTextEntry={true}
+										autoCompleteType="new-password"
+										value={formState.getFieldValue('password')}
+										onChange={e => formState.setFieldValue('password', e.target.value)}
+									/>
+									<TextInput
+										id="confirm-password"
+										placeholder="Retype new password to confirm"
+										secureTextEntry={true}
+										autoCompleteType="new-password"
+										value={formState.getFieldValue('confirm-password')}
+										onChange={e => formState.setFieldValue('confirm-password', e.target.value)}
+									/>
+									<FieldError error={formState.error?.fieldErrors?.password} />
+									<Text type="small" color="hint">Must be at least 8 characters long</Text>
+								</Chunk>
+
+								<Chunk>
+									<Button
+										label="Save"
+										onPress={submitForm}
+										isLoading={formState.loading}
+									/>
+								</Chunk>
+
+							</form>
+
+						</Section>
+
+					</Bounds>
+				</Stripe>
+			</Page>
+		);
+
+	}
 
 }
 
 EditProfile.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
-	const {store, req, pathname, query} = context;
-   const {isSignup, fromOauth} = query;
-   const isServer = !!req;	
+	const { store, req, pathname, query } = context;
+	const { isSignup, fromOauth } = query;
+	const isServer = !!req;
 	return {
 		isServer,
-      isSignup,
-      fromOauth
+		isSignup,
+		fromOauth
 	}
 }
 

@@ -13,14 +13,14 @@ const coords = {
 };
 
 const getLatLonBoundingBox = (options) => {
-  return async(context) => {
+  return async (context) => {
     const { query = {} } = context.params;
 
     // if radius, get bouding coordinates
-    if(query.radius){
+    if (query.radius) {
       const bounds = geolib.getBoundsOfDistance(
-          { latitude: query.latitude, longitude: query.longitude },
-          query.radius * 1000
+        { latitude: query.latitude, longitude: query.longitude },
+        query.radius * 1000
       );
       query.latitude = {
         $lt: bounds[1].latitude,
@@ -38,7 +38,7 @@ const getLatLonBoundingBox = (options) => {
     context.params.query = query;
     return context;
   }
-} 
+}
 
 const parseJsonLd = (options) => {
   return async (context) => {
@@ -53,31 +53,31 @@ const parseJsonLd = (options) => {
     // check for location data
     let locationData = {};
     let missingLocationData = false;
-    if(sourceData.location){
+    if (sourceData.location) {
       locationData.name = sourceData.location.name;
-      if(sourceData.location.geo){
+      if (sourceData.location.geo) {
         locationData.latitude = sourceData.location.geo.latitude;
         locationData.longitude = sourceData.location.geo.longitude;
       }
-      else{
+      else {
         missingLocationData = true;
       }
 
-      if(sourceData.location.address){
+      if (sourceData.location.address) {
         locationData.city = sourceData.location.address.addressLocality;
         locationData.country = sourceData.location.address.addressCountry;
         locationData.streetAddress = sourceData.location.address.streetAddress;
         locationData.postalCode = sourceData.location.address.postalCode;
       }
-      else{
+      else {
         missingLocationData = true;
       }
 
       // attempt to fill in location information
-      if(missingLocationData){
-        const geocoder = NodeGeocoder({provider: 'google', 'apiKey': GOOGLE_KEY});
+      if (missingLocationData) {
+        const geocoder = NodeGeocoder({ provider: 'google', 'apiKey': GOOGLE_KEY });
         const locationString = Object.values(locationData).join(' '); // everything we have
-        const locationResponse = await geocoder.geocode( locationString );
+        const locationResponse = await geocoder.geocode(locationString);
         const locationObject = locationResponse[0];
         locationData = {
           ...locationData,
@@ -101,7 +101,7 @@ const parseJsonLd = (options) => {
       latitude: locationData.latitude,
       longitude: locationData.longitude
     }
-    context.data = {...context.data, ...extraData};
+    context.data = { ...context.data, ...extraData };
     return context;
   }
 }
@@ -112,7 +112,7 @@ module.exports = {
   before: {
     all: [],
     find: [
-      setDefaultSort({field: 'startDate', order: 1}),
+      setDefaultSort({ field: 'startDate', order: 1 }),
       getLatLonBoundingBox()
     ],
     get: [],

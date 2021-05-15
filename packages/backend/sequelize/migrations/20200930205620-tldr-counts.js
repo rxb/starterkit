@@ -10,14 +10,14 @@ module.exports = {
      */
     await queryInterface.addColumn(
       'tldrs', 'forkCount', {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      });
+      type: Sequelize.INTEGER,
+      defaultValue: 0
+    });
     await queryInterface.addColumn(
       'tldrs', 'issueCount', {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      });     
+      type: Sequelize.INTEGER,
+      defaultValue: 0
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -27,8 +27,8 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeColumn('tldrs', 'forkCount'); 
-    await queryInterface.removeColumn('tldrs', 'issueCount'); 
+    await queryInterface.removeColumn('tldrs', 'forkCount');
+    await queryInterface.removeColumn('tldrs', 'issueCount');
 
   }
 };

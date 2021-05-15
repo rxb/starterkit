@@ -1,16 +1,16 @@
-import React, {Fragment, useState, useEffect, useCallback, useRef , useContext} from 'react';
+import React, { Fragment, useState, useEffect, useCallback, useRef, useContext } from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
 import { request, getUserUrl } from '@/swr';
-import useSWR, { mutate }  from 'swr';
+import useSWR, { mutate } from 'swr';
 
 // REDUX
-import {connect, useDispatch, useSelector} from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import { getIndexPageUrl, getLoginPageUrl} from '../../components/tldr/urls';
+import { getIndexPageUrl, getLoginPageUrl } from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -34,7 +34,7 @@ import {
 	Modal,
 	Picker,
 	Reorderable,
-   RevealBlock,
+	RevealBlock,
 	Section,
 	Sectionless,
 	Stripe,
@@ -62,37 +62,37 @@ import { RegisterForm, RegisterHeader } from 'components/authComponents';
 const Register = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
-   const authentication = useSelector(state => state.authentication);
-   const user = authentication.user || {};
+	const authentication = useSelector(state => state.authentication);
+	const user = authentication.user || {};
 
-   useEffect(()=>{
-      if(user){
-         Router.push({pathname: getIndexPageUrl()})
-      }
-   }, []);
+	useEffect(() => {
+		if (user) {
+			Router.push({ pathname: getIndexPageUrl() })
+		}
+	}, []);
 
-   return (
-      <Page>
-         <TldrHeader />
-         <Stripe>
-            <Bounds style={{maxWidth: 480}}>
-               <Section>
-                  <Chunk>
+	return (
+		<Page>
+			<TldrHeader />
+			<Stripe>
+				<Bounds style={{ maxWidth: 480 }}>
+					<Section>
+						<Chunk>
 							<RegisterHeader toggleHref={getLoginPageUrl()} />
-                  </Chunk>
-               </Section>
-               <RegisterForm />
-            </Bounds>
-         </Stripe>
-      </Page>
-   );
-  
+						</Chunk>
+					</Section>
+					<RegisterForm />
+				</Bounds>
+			</Stripe>
+		</Page>
+	);
+
 }
 
 Register.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
-	const {store, req, pathname, query} = context;
-   const isServer = !!req;	
+	const { store, req, pathname, query } = context;
+	const isServer = !!req;
 	return {
 		isServer,
 	}

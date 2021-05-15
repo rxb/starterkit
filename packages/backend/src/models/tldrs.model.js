@@ -46,23 +46,23 @@ module.exports = function (app) {
     forkCount: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }, 
+    },
     voteQuantity: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }, 
+    },
     voteResult: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }, 
+    },
     votePositivity: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    }, 
+    },
     issueCount: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    },        
+    },
     urlKey: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -76,17 +76,17 @@ module.exports = function (app) {
     },
     currentUserSaved: {
       type: DataTypes.VIRTUAL,
-      get: function() {
+      get: function () {
         return !!this.getDataValue('save')?.id
       }
     },
     currentUserVote: {
       type: DataTypes.VIRTUAL,
-      get: function() {
+      get: function () {
         return this.getDataValue('vote')?.vote
       }
     }
-    
+
   }, {
     hooks: {
       beforeCount(options) {
@@ -106,7 +106,7 @@ module.exports = function (app) {
       as: "category"
     });
     tldrs.hasMany(models.tldr_versions);
-    tldrs.hasOne(models.tldr_versions, { 
+    tldrs.hasOne(models.tldr_versions, {
       sourceKey: "currentTldrVersionId",
       foreignKey: "id",
       as: "currentTldrVersion"
@@ -137,7 +137,7 @@ module.exports = function (app) {
     */
 
   };
-  
+
 
   return tldrs;
 };

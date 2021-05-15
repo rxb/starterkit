@@ -79,18 +79,18 @@ const categories = [
 ];
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    const populatedCategories = categories.map((cat,i) => {
-      return {
-        ...cat,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    });
-     return queryInterface.bulkInsert('categories', populatedCategories);
-  },
+	up: async (queryInterface, Sequelize) => {
+		const populatedCategories = categories.map((cat, i) => {
+			return {
+				...cat,
+				createdAt: new Date(),
+				updatedAt: new Date()
+			}
+		});
+		return queryInterface.bulkInsert('categories', populatedCategories);
+	},
 
-  down: async (queryInterface, Sequelize) => {
-     return queryInterface.bulkDelete('categories', null, {});
-  }
+	down: async (queryInterface, Sequelize) => {
+		return queryInterface.bulkDelete('categories', null, {});
+	}
 };

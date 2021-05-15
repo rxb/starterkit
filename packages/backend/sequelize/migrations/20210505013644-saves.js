@@ -8,10 +8,10 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-     await queryInterface.createTable('users_savedtldrs', {
+    await queryInterface.createTable('users_savedtldrs', {
       id: {
         allowNull: false,
-        autoIncrement: true, 
+        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    await queryInterface.addIndex('users_savedtldrs', ['userId', 'savedTldrId'], {unique: true})
+    await queryInterface.addIndex('users_savedtldrs', ['userId', 'savedTldrId'], { unique: true })
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -42,6 +42,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-     await queryInterface.dropTable('users_savedtldrs');
+    await queryInterface.dropTable('users_savedtldrs');
   }
 };

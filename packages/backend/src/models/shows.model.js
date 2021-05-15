@@ -5,7 +5,7 @@ const DataTypes = Sequelize.DataTypes;
 
 
 module.exports = function (app) {
-  const serverUrl = app.get('protocol')+"://"+app.get('host');
+  const serverUrl = app.get('protocol') + "://" + app.get('host');
   const sequelizeClient = app.get('sequelizeClient');
   const shows = sequelizeClient.define('shows', {
     id: {
@@ -39,20 +39,20 @@ module.exports = function (app) {
     photoUrl: {
       // https://sequelize-guides.netlify.com/virtual-columns/
       type: DataTypes.VIRTUAL,
-      get () {
+      get() {
         return this.getDataValue('photoId') ? `${serverUrl}/photos/${this.getDataValue('photoId')}` : null;
       }
     },
   },
-  {
-    hooks: {
-      /*
-      beforeCount(options) {
-        options.raw = true;
+    {
+      hooks: {
+        /*
+        beforeCount(options) {
+          options.raw = true;
+        }
+        */
       }
-      */
-    }
-  });
+    });
 
   // eslint-disable-next-line no-unused-vars
   shows.associate = function (models) {

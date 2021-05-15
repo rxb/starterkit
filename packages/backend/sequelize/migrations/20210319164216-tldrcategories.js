@@ -10,8 +10,8 @@ module.exports = {
      */
     await queryInterface.addColumn(
       'tldrs', 'categoryId', {
-        type: Sequelize.INTEGER,
-      });
+      type: Sequelize.INTEGER,
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -21,6 +21,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-     await queryInterface.removeColumn('tldrs', 'categoryId'); 
+    await queryInterface.removeColumn('tldrs', 'categoryId');
   }
 };

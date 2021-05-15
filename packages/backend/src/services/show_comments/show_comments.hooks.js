@@ -8,7 +8,7 @@ const includeAssociations = (context) => {
   const { users } = sequelize.models;
   context.params.sequelize = {
     ...context.params.sequelize,
-    include: [ users ]
+    include: [users]
   }
   return context;
 }
@@ -17,21 +17,21 @@ const includeAssociations = (context) => {
 const mustBeOwnerOrAdmin = (options) => {
   return iff(
     isProvider('external'),
-    async(context) => {
+    async (context) => {
       const item = await context.service.get(context.id);
-      if(context.params.user.id !== item.authorId){
+      if (context.params.user.id !== item.authorId) {
         throw new Forbidden('You are not allowed to access this');
       }
       return context;
     }
   );
-} 
+}
 
 module.exports = {
   before: {
     all: [],
     find: [
-      setDefaultSort({field: 'createdAt', order: 1}),
+      setDefaultSort({ field: 'createdAt', order: 1 }),
       includeAssociations,
     ],
     get: [
@@ -50,7 +50,7 @@ module.exports = {
     ],
     patch: [
       authenticate('jwt'),
-      mustBeOwnerOrAdmin()  
+      mustBeOwnerOrAdmin()
     ],
     remove: [
       authenticate('jwt'),

@@ -3,24 +3,28 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
 const { iff, isProvider } = require('feathers-hooks-common');
 
-const updateVoteTally = async(context) => {
-  const upvotes = await context.service.find({query: {
-    vote: 1,
-    tldrId: context.params.query.tldrId,
-    $limit: 0 // count
-  }});
-  const downvotes = await context.service.find({query: {
-    vote: -1,
-    tldrId: context.params.query.tldrId,
-    $limit: 0 // count
-  }});
+const updateVoteTally = async (context) => {
+  const upvotes = await context.service.find({
+    query: {
+      vote: 1,
+      tldrId: context.params.query.tldrId,
+      $limit: 0 // count
+    }
+  });
+  const downvotes = await context.service.find({
+    query: {
+      vote: -1,
+      tldrId: context.params.query.tldrId,
+      $limit: 0 // count
+    }
+  });
   const voteQuantity = upvotes.total + downvotes.total;
   const voteResult = upvotes.total - downvotes.total;
-  const votePositivity = (voteQuantity > 0) ? Math.round((upvotes.total / voteQuantity)*100) : 0;
+  const votePositivity = (voteQuantity > 0) ? Math.round((upvotes.total / voteQuantity) * 100) : 0;
   const tldr = await context.app.service('tldrs').patch(context.params.query.tldrId, {
     voteQuantity,
     voteResult,
-    votePositivity  
+    votePositivity
   });
   return context;
 }
@@ -44,7 +48,7 @@ module.exports = {
       // clear vote before doing another vote
       // other option would be diverting to patch/update
       async (context) => {
-        await context.service.remove(null, {query: {userId: context.params.user.id, tldrId: context.data.tldrId}});
+        await context.service.remove(null, { query: { userId: context.params.user.id, tldrId: context.data.tldrId } });
         return context
       }
     ],

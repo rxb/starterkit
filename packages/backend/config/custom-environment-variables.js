@@ -8,12 +8,12 @@ const getAppleClientSecret = () => {
 	const teamId = process.env.STARTERKIT_APPLE_TEAM_ID;
 	const clientId = process.env.STARTERKIT_APPLE_CLIENT_ID;
 
-  /*
-	console.log(`privateKey ${privateKey}`);
-	console.log(`keyId ${keyId}`);
-	console.log(`teamId ${teamId}`);
-	console.log(`clientId ${clientId}`);
-  */
+	/*
+	 console.log(`privateKey ${privateKey}`);
+	 console.log(`keyId ${keyId}`);
+	 console.log(`teamId ${teamId}`);
+	 console.log(`clientId ${clientId}`);
+	*/
 
 	const headers = {
 		kid: keyId,
@@ -34,18 +34,18 @@ const getAppleClientSecret = () => {
 process.env.STARTERKIT_APPLE_SECRET = getAppleClientSecret();
 
 const config = {
-  "authentication": {
-	 "secret": "STARTERKIT_AUTHENTICATION_SECRET",
-    "oauth": {
-      "google": {
-        "key": "STARTERKIT_GOOGLE_KEY",
-        "secret": "STARTERKIT_GOOGLE_SECRET"
-      },
-      "apple": {
-        "key": "STARTERKIT_APPLE_CLIENT_ID",
-        "secret": "STARTERKIT_APPLE_SECRET"
-      }
-    }
-  }
+	"authentication": {
+		"secret": "STARTERKIT_AUTHENTICATION_SECRET",
+		"oauth": {
+			"google": {
+				"key": "STARTERKIT_GOOGLE_KEY",
+				"secret": "STARTERKIT_GOOGLE_SECRET"
+			},
+			"apple": {
+				"key": "STARTERKIT_APPLE_CLIENT_ID",
+				"secret": "STARTERKIT_APPLE_SECRET"
+			}
+		}
+	}
 }
 module.exports = config;

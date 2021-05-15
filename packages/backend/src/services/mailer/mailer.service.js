@@ -11,7 +11,7 @@ module.exports = async function (app) {
 		}
 	})));
 	app.service('mailer').hooks({
-		before: { all: [disallow('external')] } 
+		before: { all: [disallow('external')] }
 	})
 
 	/*

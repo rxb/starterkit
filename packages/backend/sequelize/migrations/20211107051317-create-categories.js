@@ -10,7 +10,7 @@ module.exports = {
       },
       urlKey: {
         type: Sequelize.TEXT,
-        unique : true
+        unique: true
       },
       tldrCount: {
         type: Sequelize.INTEGER,

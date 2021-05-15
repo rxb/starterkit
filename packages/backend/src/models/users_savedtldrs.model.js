@@ -8,7 +8,7 @@ module.exports = function (app) {
   const usersSavedtldrs = sequelizeClient.define('users_savedtldrs', {
     id: {
       allowNull: false,
-      autoIncrement: true, 
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },

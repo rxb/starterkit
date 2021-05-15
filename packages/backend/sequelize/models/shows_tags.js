@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     showId: DataTypes.INTEGER,
     tagId: DataTypes.INTEGER
   }, {});
-  shows_tags.associate = function(models) {
+  shows_tags.associate = function (models) {
     // associations can be defined here
   };
   return shows_tags;

@@ -27,12 +27,12 @@ module.exports = {
   },
 
   after: {
-    all: [ log() ],
+    all: [log()],
     find: [
-      iff(isProvider('external'), 
+      iff(isProvider('external'),
         async (context) => {
           // rename data -> items to avoid data.data weirdness (but only for external api)
-          if(context.params.paginate !== false){
+          if (context.params.paginate !== false) {
             context.result.items = context.result.data;
             delete context.result.data;
           }
@@ -48,7 +48,7 @@ module.exports = {
   },
 
   error: {
-    all: [ log() ],
+    all: [log()],
     find: [],
     get: [],
     create: [],

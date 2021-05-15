@@ -10,23 +10,23 @@ const makeRandomPassword = () => Math.random().toString(36).substr(10);
 // todo: add admin access
 const mustBeOwnerOrAdmin = (options) => {
   return iff(
-    isProvider('external'), 
-    async(context) => {
-      if(context.params.user.id !== context.id){
+    isProvider('external'),
+    async (context) => {
+      if (context.params.user.id !== context.id) {
         throw new Forbidden('You are not allowed to access this');
       }
       return context;
     }
   );
-} 
+}
 
 
 
 const preventChangesToAuthFields = (options) => {
   return iff(
-    isProvider('external'), 
-    preventChanges( 
-      false, 
+    isProvider('external'),
+    preventChanges(
+      false,
       'isVerified',
       'verifyToken',
       'verifyShortToken',
@@ -35,33 +35,33 @@ const preventChangesToAuthFields = (options) => {
       'resetToken',
       'resetShortToken',
       'resetExpires',
-      'facebookId', 
-      'googleId', 
-      'redditId', 
+      'facebookId',
+      'googleId',
+      'redditId',
       'appleId'
-  ));
+    ));
 }
 
 // for multistep registration
 // sometimes we need to temporarily fill fields we'll re-ask for later
 const fillTempValues = (options) => {
   return async (context) => {
-    if(context.data.fillTempValues){
+    if (context.data.fillTempValues) {
       const tempId = makeUid();
       const tempValues = [];
       // add temp name if no name
-      if(!context.data.name){
-        context.data.name =  `User ${tempId}`;
+      if (!context.data.name) {
+        context.data.name = `User ${tempId}`;
         tempValues.push("name");
       }
       // add temp urlkey if not urlkey
-      if(!context.data.urlKey){
-        context.data.urlKey =  `user-${tempId}`;
+      if (!context.data.urlKey) {
+        context.data.urlKey = `user-${tempId}`;
         tempValues.push("urlKey");
       }
       // add temp password if no password
-      if(!context.data.password){
-        context.data.password =  makeRandomPassword();
+      if (!context.data.password) {
+        context.data.password = makeRandomPassword();
         // password doesn't need to be pushed to tempValues, that's a password reset
       }
       context.data.tempValues = tempValues;
@@ -77,7 +77,7 @@ module.exports = {
     get: [
       allowAnonymous(),
       authenticate('jwt', 'anonymous'),
-      checkForSelfId({key: 'id'}),
+      checkForSelfId({ key: 'id' }),
     ],
     create: [
       // create user is the only create that doesn't need to be authed already
@@ -88,23 +88,23 @@ module.exports = {
     update: [
       hashPassword('password'),
       authenticate('jwt'),
-      checkForSelfId({key: 'id'}), 
+      checkForSelfId({ key: 'id' }),
       mustBeOwnerOrAdmin(),
       preventChangesToAuthFields(),
       saveAndGetNewImageReference(),
     ],
     patch: [
       // authManagement pre-hashes password when setting it from the reset method
-      iff(isProvider('external'), hashPassword('password')), 
+      iff(isProvider('external'), hashPassword('password')),
       authenticate('jwt'),
-      checkForSelfId({key: 'id'}), 
+      checkForSelfId({ key: 'id' }),
       mustBeOwnerOrAdmin(),
       preventChangesToAuthFields(),
       saveAndGetNewImageReference()
     ],
     remove: [
       authenticate('jwt'),
-      checkForSelfId({key: 'id'}), 
+      checkForSelfId({ key: 'id' }),
       mustBeOwnerOrAdmin()
     ]
   },

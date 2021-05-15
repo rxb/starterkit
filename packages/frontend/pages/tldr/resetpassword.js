@@ -1,15 +1,15 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 
 // SWR
 import { request, getAuthManagmentUrl } from '@/swr';
-import useSWR, { mutate }  from 'swr';
+import useSWR, { mutate } from 'swr';
 
 // REDUX
-import {connect, useDispatch, useSelector} from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast, addDelayedToast, updateUser } from '@/actions';
 
 // URLS
-import {getIndexPageUrl} from 'components/tldr/urls';
+import { getIndexPageUrl } from 'components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -31,10 +31,10 @@ import {
 	List,
 	Link,
 	Modal,
-   PhotoInput,
+	PhotoInput,
 	Picker,
 	Reorderable,
-   RevealBlock,
+	RevealBlock,
 	Section,
 	Sectionless,
 	Stripe,
@@ -55,7 +55,7 @@ import Head from 'next/head'
 
 
 // SCREEN-SPECIFIC
-import {Utils} from 'cinderblock';
+import { Utils } from 'cinderblock';
 const { runValidations, pushError, readFileAsDataUrl } = Utils;
 import feathersClient from 'components/FeathersClient';
 
@@ -63,137 +63,137 @@ import feathersClient from 'components/FeathersClient';
 const PasswordReset = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
-   const {token} = props;
+	const { token } = props;
 
-   const dispatch = useDispatch(); 
-   const authentication = useSelector(state => state.authentication);
+	const dispatch = useDispatch();
+	const authentication = useSelector(state => state.authentication);
 
-   const formState = useFormState({
-      initialFields: {
-         password: ''
-      },
-      toastableErrors: {
-         BadRequest: 'Something went wrong',
-      },
-      addToast: msg => dispatch(addToast(msg))
-   }); 
+	const formState = useFormState({
+		initialFields: {
+			password: ''
+		},
+		toastableErrors: {
+			BadRequest: 'Something went wrong',
+		},
+		addToast: msg => dispatch(addToast(msg))
+	});
 
-   const submitForm = async () => {
-      const submitFields = { ...formState.fields};
-      let error = runValidations(submitFields, {
-         password: {
-            len:{
-               args: [8, undefined],
-               msg: "Password must be at least 8 characters long"
-            }
-          },
-      });
-      
-      // custom frontend password confirmation match
-      if(submitFields["password"] != submitFields["confirm-password"]){
-         error = pushError(error, "password", "Your passwords don't match")
-      }
-      
-      // display errors that exist
+	const submitForm = async () => {
+		const submitFields = { ...formState.fields };
+		let error = runValidations(submitFields, {
+			password: {
+				len: {
+					args: [8, undefined],
+					msg: "Password must be at least 8 characters long"
+				}
+			},
+		});
+
+		// custom frontend password confirmation match
+		if (submitFields["password"] != submitFields["confirm-password"]) {
+			error = pushError(error, "password", "Your passwords don't match")
+		}
+
+		// display errors that exist
 		formState.setError(error);
 
-      // if no errors, let's submit
-      if(!error){
-         formState.setLoading(true);
-         try{
+		// if no errors, let's submit
+		if (!error) {
+			formState.setLoading(true);
+			try {
 
-            // update password
-            const newUser = await request( getAuthManagmentUrl(), {
-               method: 'POST', 
-               data: {
-                  action: 'resetPwdLong',
-                  value: {
-                     token: token,
-                     password: submitFields.password
-                  }
-               }
-            });
-            console.log(newUser);
+				// update password
+				const newUser = await request(getAuthManagmentUrl(), {
+					method: 'POST',
+					data: {
+						action: 'resetPwdLong',
+						value: {
+							token: token,
+							password: submitFields.password
+						}
+					}
+				});
+				console.log(newUser);
 
-            // log in with that new password
-            feathersClient.authenticate({
-               strategy: 'local', 
-               email: newUser.email, 
-               password: submitFields.password
-            })
+				// log in with that new password
+				feathersClient.authenticate({
+					strategy: 'local',
+					email: newUser.email,
+					password: submitFields.password
+				})
 
-            // toast and push
-            const toastMessage = "Password updated!";
-            dispatch(addDelayedToast(toastMessage));
-            Router.push({pathname: getIndexPageUrl()})  
-         }
-         catch(error){
-            console.log(error);
-            formState.setError(error);
-            formState.setLoading(false);
-         }
-      }
-   }
+				// toast and push
+				const toastMessage = "Password updated!";
+				dispatch(addDelayedToast(toastMessage));
+				Router.push({ pathname: getIndexPageUrl() })
+			}
+			catch (error) {
+				console.log(error);
+				formState.setError(error);
+				formState.setLoading(false);
+			}
+		}
+	}
 
- 
-      return (
-         <Page>
-            <TldrHeader />
-            <Stripe>
-               <Bounds style={{maxWidth: 640}}>
-                  <Section>
-                     <Chunk>
-                        <Text type="pageHead">Reset password</Text>
-                     </Chunk>
-                  </Section>
-                  <Section>
-                     <form>
-                         <Chunk>
-                           <Label for="password">Set a new password</Label>
-                           <TextInput
-                              id="password"
-                              placeholder="New password"
-                              secureTextEntry={true}
-                              autoCompleteType="new-password"
-                              value={formState.getFieldValue('password')}
-                              onChange={e => formState.setFieldValue('password', e.target.value) }
-                              />
-                           <TextInput
-                              id="confirm-password"
-                              placeholder="Retype new password to confirm"
-                              secureTextEntry={true}
-                              autoCompleteType="new-password"
-                              value={formState.getFieldValue('confirm-password')}
-                              onChange={e => formState.setFieldValue('confirm-password', e.target.value) }
-                              />
-                           <FieldError error={formState.error?.fieldErrors?.password} />	
-                           <Text type="small" color="hint">Must be at least 8 characters long</Text>
-                        </Chunk>
-                        <Chunk>
-                           <Button 
-                              label="Save"
-                              onPress={ submitForm }
-                              isLoading={formState.loading}
-                              />
-                        </Chunk>
 
-                     </form>
-                  </Section>
-               </Bounds>
-            </Stripe>
-         </Page>
-      );
-   
+	return (
+		<Page>
+			<TldrHeader />
+			<Stripe>
+				<Bounds style={{ maxWidth: 640 }}>
+					<Section>
+						<Chunk>
+							<Text type="pageHead">Reset password</Text>
+						</Chunk>
+					</Section>
+					<Section>
+						<form>
+							<Chunk>
+								<Label for="password">Set a new password</Label>
+								<TextInput
+									id="password"
+									placeholder="New password"
+									secureTextEntry={true}
+									autoCompleteType="new-password"
+									value={formState.getFieldValue('password')}
+									onChange={e => formState.setFieldValue('password', e.target.value)}
+								/>
+								<TextInput
+									id="confirm-password"
+									placeholder="Retype new password to confirm"
+									secureTextEntry={true}
+									autoCompleteType="new-password"
+									value={formState.getFieldValue('confirm-password')}
+									onChange={e => formState.setFieldValue('confirm-password', e.target.value)}
+								/>
+								<FieldError error={formState.error?.fieldErrors?.password} />
+								<Text type="small" color="hint">Must be at least 8 characters long</Text>
+							</Chunk>
+							<Chunk>
+								<Button
+									label="Save"
+									onPress={submitForm}
+									isLoading={formState.loading}
+								/>
+							</Chunk>
+
+						</form>
+					</Section>
+				</Bounds>
+			</Stripe>
+		</Page>
+	);
+
 }
 
 PasswordReset.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
-	const {store, req, pathname, query} = context;
-   const {token} = query;
-   const isServer = !!req;	
+	const { store, req, pathname, query } = context;
+	const { token } = query;
+	const isServer = !!req;
 	return {
 		isServer,
-      token
+		token
 	}
 }
 

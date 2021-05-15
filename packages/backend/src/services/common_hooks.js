@@ -7,13 +7,13 @@ module.exports = {
   checkForSelfId: (options) => {
     const { key } = options;
     // sets id to the id of logged-in user when "self" used as id
-    return async(context) => {
+    return async (context) => {
       const possibleSelf = _.get(context, key);
       if (_.get(context, key) == "self") {
-        if(context.params.user){
+        if (context.params.user) {
           _.set(context, key, context.params.user.id);
         }
-        else{
+        else {
           throw new Error("Need to log in to get your user info");
         }
       }
@@ -21,17 +21,17 @@ module.exports = {
     }
   },
 
-  protectUserFields: (prefix = "") => { 
+  protectUserFields: (prefix = "") => {
     const fields = ['password', 'verifyToken', 'verifyShortToken', 'verifyExpires', 'verifyChanges', 'resetToken', 'resetShortToken', 'resetExpires', 'facebookId', 'googleId', 'redditId', 'appleId'];
-    const prefixedFields = fields.map( field => prefix + field );
-    return iff( isProvider('external'), protect( ...prefixedFields ) );
+    const prefixedFields = fields.map(field => prefix + field);
+    return iff(isProvider('external'), protect(...prefixedFields));
   },
 
   setDefaultSort: (options) => {
-    const {field, order} = options;
+    const { field, order } = options;
     return (context) => {
       const { query = {} } = context.params;
-      if(!query.$sort) {
+      if (!query.$sort) {
         query.$sort = {
           [field]: order
         }
@@ -43,11 +43,11 @@ module.exports = {
 
   // hook for anonymous auth situations
   // (ie when an api would do additional work for an authorized user, but still allows an anonymous user)
-  allowAnonymous: (options = {}) => { 
+  allowAnonymous: (options = {}) => {
     return async context => {
       const { params } = context;
-  
-      if(params.provider && !params.authentication) {
+
+      if (params.provider && !params.authentication) {
         context.params = {
           ...params,
           authentication: {
@@ -55,14 +55,14 @@ module.exports = {
           }
         }
       }
-  
+
       return context;
     };
   },
 
   // REFRESH FULL OBJECT FROM DB
   getFullModel: (options) => {
-    return async(context) => {
+    return async (context) => {
       // setting .dispatch because it's the the override return attribute 
       // (doesn't include protected files)
       context.dispatch = await context.service.get(context.result.id, context.params);
@@ -79,13 +79,14 @@ module.exports = {
       dataUriKey: 'dataUri', // uplodaed base64 image
       fileKey: 'file', // multipart file
       urlKey: 'url', // url of remote image
-      ...options};
+      ...options
+    };
 
     return async (context) => {
 
-      const hasImageToUpload = (context.data[opts.dataUriKey] || context.data[opts.urlKey] || context.params[opts.fileKey] );
+      const hasImageToUpload = (context.data[opts.dataUriKey] || context.data[opts.urlKey] || context.params[opts.fileKey]);
 
-      if(hasImageToUpload){
+      if (hasImageToUpload) {
         const data = {
           dataUri: context.data[opts.dataUriKey],
           url: context.data[opts.urlKey]
@@ -96,7 +97,7 @@ module.exports = {
         const upload = await context.app.service('uploads').create(data, params);
         context.data[opts.foreignPhotoKey] = upload.id;
       }
-     
+
       return context;
     }
   }

@@ -12,11 +12,11 @@ module.exports = withBundleAnalyzer(withTM({
 
 		const webpack = require('webpack')
 
-	    // Transform all direct `react-native` imports to `react-native-web`
-	 	config.resolve.alias = {
-	      ...(config.resolve.alias || {}),
-	      'react-native$': 'react-native-web'
-	    }
+		// Transform all direct `react-native` imports to `react-native-web`
+		config.resolve.alias = {
+			...(config.resolve.alias || {}),
+			'react-native$': 'react-native-web'
+		}
 
 		config.plugins = config.plugins || []
 		config.plugins.push(new webpack.IgnorePlugin(/\/iconv-loader$/)); // something about rn-markdown needs this

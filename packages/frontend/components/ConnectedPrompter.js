@@ -2,7 +2,7 @@
 // cinderblock itself shouldn't be dependent on redux, specifically
 // just functions passed in a props
 
-import React, {Fragment, useContext} from 'react';
+import React, { Fragment, useContext } from 'react';
 import { connect } from 'react-redux';
 import {
 	addPrompt,
@@ -10,9 +10,9 @@ import {
 	removePrompt
 } from '../actions';
 
-import{ Prompter } from 'cinderblock';
+import { Prompter } from 'cinderblock';
 
-const ConnectedPrompter = (props) => ( <Prompter {...props} /> );
+const ConnectedPrompter = (props) => (<Prompter {...props} />);
 
 const mapStateToProps = (state, ownProps) => {
 	return ({

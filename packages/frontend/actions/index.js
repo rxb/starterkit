@@ -1,4 +1,4 @@
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 const apiHost = 'http://localhost:3030/';
 
 
@@ -16,28 +16,28 @@ export const logOut = () => ({
 /*
 // MODALS
 export const showModal = (id, content) => ({
-    type: 'SHOW_MODAL',
-    payload: {content: content}
+	 type: 'SHOW_MODAL',
+	 payload: {content: content}
 });
 
 export const teardownModal = (id) => ({
-    type: 'TEARDOWN_MODAL',
-    payload: {content: content}
+	 type: 'TEARDOWN_MODAL',
+	 payload: {content: content}
 });
 
 export const removeModal = (id) => ({
-    type: 'REMOVE_MODAL',
-    payload: {content: content}
+	 type: 'REMOVE_MODAL',
+	 payload: {content: content}
 });
 */
 
 // UI -- assorted global UI state
-export const updateUi = ( diff ) => ({
+export const updateUi = (diff) => ({
 	type: 'UPDATE_UI',
 	payload: diff
 });
 
-export const resetUi = ( ) => ({
+export const resetUi = () => ({
 	type: 'RESET_UI',
 });
 
@@ -55,14 +55,14 @@ export const addToast = (message, options = {}) => ({
 export const hideToast = (id) => ({
 	type: 'HIDE_TOAST',
 	payload: {
-	  id: id,
+		id: id,
 	}
 });
 
 export const removeToast = (id) => ({
 	type: 'REMOVE_TOAST',
 	payload: {
-	  id: id,
+		id: id,
 	}
 });
 
@@ -97,14 +97,14 @@ export const addPrompt = (content, options = {}) => ({
 export const hidePrompt = (id) => ({
 	type: 'HIDE_PROMPT',
 	payload: {
-	  id: id,
+		id: id,
 	}
 });
 
 export const removePrompt = (id) => ({
 	type: 'REMOVE_PROMPT',
 	payload: {
-	  id: id,
+		id: id,
 	}
 });
 
@@ -123,14 +123,14 @@ export const addDropdown = (content, options = {}) => ({
 export const hideDropdown = (id) => ({
 	type: 'HIDE_DROPDOWN',
 	payload: {
-	  id: id,
+		id: id,
 	}
 });
 
 export const removeDropdown = (id) => ({
 	type: 'REMOVE_DROPDOWN',
 	payload: {
-	  id: id,
+		id: id,
 	}
 });
 

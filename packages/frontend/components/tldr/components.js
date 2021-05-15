@@ -1,14 +1,14 @@
-import React, {useState, useRef, useContext} from 'react';
+import React, { useState, useRef, useContext } from 'react';
 
 // REDUX
-import {connect, useDispatch, useSelector} from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { addDropdown, addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // SWR
 import { request, getTldrUrl } from '@/swr';
 
 // URLS
-import {getTldrEditPageUrl, getVersionEditPageUrl, saveLoginRedirect} from './urls';
+import { getTldrEditPageUrl, getVersionEditPageUrl, saveLoginRedirect } from './urls';
 
 import {
 	Avatar,
@@ -47,7 +47,7 @@ import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 
 const smallCardMinHeight = 220;
 
-import Router, {useRouter} from 'next/router'
+import Router, { useRouter } from 'next/router'
 import Markdown from 'markdown-to-jsx';
 
 
@@ -57,16 +57,16 @@ export const Emptiness = (props) => {
 		shape = "File",
 		label = "No results"
 	} = props;
-	return(
-		<View style={{minHeight: '55vh'}}>
+	return (
+		<View style={{ minHeight: '55vh' }}>
 			<View style={styles.absoluteCenter}>
-				<Chunk style={{alignItems: 'center'}}>
+				<Chunk style={{ alignItems: 'center' }}>
 					<View style={styles.pseudoLineHeight}>
 						<Icon
 							shape={shape}
 							size="xlarge"
 							color={SWATCHES.textHint}
-							/>
+						/>
 					</View>
 					<Text color="hint">{label}</Text>
 				</Chunk>
@@ -91,23 +91,23 @@ export const TldrCard = (props) => {
 	const content = thisVersion.content;
 
 	return (
-		<Card shadow style={[{ borderRadius: 12 }, style ]}>
+		<Card shadow style={[{ borderRadius: 12 }, style]}>
 			<Sectionless style={[
-					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {},
-					{backgroundColor: "#4353ff"}
-				]}>
-					<Chunk style={{paddingBottom: 4}}>
-						<Flex>
-							<FlexItem>
-								<Inline>
-									<Avatar style={{height: 12, width: 12, opacity: .75}} source={{uri: 'https://randomuser.me/api/portraits/women/18.jpg'}} />
-									<Text type="small" inverted color="secondary">
-										@{tldr.author.urlKey} / {tldr.urlKey}
-									</Text>
-								</Inline>
-							</FlexItem>
-							<FlexItem style={{alignItems: 'flex-end'}}>
-								<Inline>
+				(media.medium) ? { paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10 } : {},
+				{ backgroundColor: "#4353ff" }
+			]}>
+				<Chunk style={{ paddingBottom: 4 }}>
+					<Flex>
+						<FlexItem>
+							<Inline>
+								<Avatar style={{ height: 12, width: 12, opacity: .75 }} source={{ uri: 'https://randomuser.me/api/portraits/women/18.jpg' }} />
+								<Text type="small" inverted color="secondary">
+									@{tldr.author.urlKey} / {tldr.urlKey}
+								</Text>
+							</Inline>
+						</FlexItem>
+						<FlexItem style={{ alignItems: 'flex-end' }}>
+							<Inline>
 								<Text type="small" inverted color="secondary">
 									v.{thisVersion.version}
 								</Text>
@@ -115,29 +115,29 @@ export const TldrCard = (props) => {
 									shape="ChevronDown"
 									size="small"
 									color={SWATCHES.textSecondaryInverted}
-									/>
-								</Inline>
-							</FlexItem>
-						</Flex>
-					</Chunk>
-					<Chunk>
-						<Text type="pageHead" inverted>{content.title}</Text>
-						<Text inverted style={{fontStyle: 'italic', marginTop: 8}}>{content.blurb}</Text>
-					</Chunk>
+								/>
+							</Inline>
+						</FlexItem>
+					</Flex>
+				</Chunk>
+				<Chunk>
+					<Text type="pageHead" inverted>{content.title}</Text>
+					<Text inverted style={{ fontStyle: 'italic', marginTop: 8 }}>{content.blurb}</Text>
+				</Chunk>
 			</Sectionless>
 			<Sectionless style={[
-					(media.medium) ? {paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10} : {}
-				]}>
+				(media.medium) ? { paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10 } : {}
+			]}>
 				<View>
-					{content.steps.map((step, i)=>(
-						<View 
-							key={i} 
+					{content.steps.map((step, i) => (
+						<View
+							key={i}
 							style={{
 								marginTop: 0,
 								marginBottom: METRICS.space + 5,
 								paddingLeft: 16,
 							}}>
-							<View 
+							<View
 								style={{
 									position: 'absolute',
 									top: 3,
@@ -146,32 +146,32 @@ export const TldrCard = (props) => {
 									width: 4,
 									backgroundColor: SWATCHES.border,
 								}}
-								/>
+							/>
 							<View>
 								<Text type="big"><Markdown>{step.head}</Markdown></Text>
 								<Text color="secondary"><Markdown>{step.body}</Markdown></Text>
 							</View>
 							{ showReferences &&
-								<View 
+								<View
 									style={{
-										marginTop: METRICS.space /2,
+										marginTop: METRICS.space / 2,
 										padding: METRICS.space / 2,
 										background: SWATCHES.shade,
 										borderRadius: METRICS.borderRadius
 									}}>
-										<Text type="small" color="secondary"><Markdown>{step.note}</Markdown></Text>
+									<Text type="small" color="secondary"><Markdown>{step.note}</Markdown></Text>
 								</View>
 							}
 						</View>
-						))}
-					</View>
-					
-				
-					<Chunk>
-						<Touch onPress={()=>{
-							setReferences(!showReferences)
-						}}>
-							{/*
+					))}
+				</View>
+
+
+				<Chunk>
+					<Touch onPress={() => {
+						setReferences(!showReferences)
+					}}>
+						{/*
 
 							{ !showReferences &&
 								<Text color="hint">
@@ -196,11 +196,11 @@ export const TldrCard = (props) => {
 							}	
 							*/}
 
-						</Touch>
-					</Chunk>
-				</Sectionless>
-					
-			</Card>
+					</Touch>
+				</Chunk>
+			</Sectionless>
+
+		</Card>
 	);
 };
 
@@ -223,76 +223,76 @@ export const TldrCardSmall = (props) => {
 	// TODO: admin permission
 	const canEdit = (user?.id == tldr.authorId);
 
-	return(
-			<Card style={[{
-					minHeight: smallCardMinHeight,
-				}, style]}>
-				
-				<Sectionless
-					style={{
-						paddingTop: METRICS.space,
-						flex: 1,
-						borderTopWidth: 10,
-						borderTopColor: color
-					}}
-					>
-					<Chunk style={{flex: 1}}>
-						<View style={{flex: 1}}>
-							<Text type="micro" color="hint">{tldr.author?.urlKey}/{tldr.urlKey}</Text>
-							<Text type="big">{content.title ? content.title : 'Untitled'}</Text>
-							<Text color="secondary" style={{marginTop: 3}} type="small" color="secondary" numberOfLines={3}>{content.blurb}</Text>
-						</View>
+	return (
+		<Card style={[{
+			minHeight: smallCardMinHeight,
+		}, style]}>
 
-						<Flex>
-							<FlexItem>
-								{ draft &&
-									<View style={[{ backgroundColor: SWATCHES.error, paddingHorizontal: 6, borderRadius: 4, alignSelf: 'flex-start' }]}>
-										<Text type="small" inverted>Unpublished</Text>
-									</View>
-								}
-								</FlexItem>
+			<Sectionless
+				style={{
+					paddingTop: METRICS.space,
+					flex: 1,
+					borderTopWidth: 10,
+					borderTopColor: color
+				}}
+			>
+				<Chunk style={{ flex: 1 }}>
+					<View style={{ flex: 1 }}>
+						<Text type="micro" color="hint">{tldr.author?.urlKey}/{tldr.urlKey}</Text>
+						<Text type="big">{content.title ? content.title : 'Untitled'}</Text>
+						<Text color="secondary" style={{ marginTop: 3 }} type="small" color="secondary" numberOfLines={3}>{content.blurb}</Text>
+					</View>
 
-								{/* TODO make this conditional on permission */}
+					<Flex>
+						<FlexItem>
+							{draft &&
+								<View style={[{ backgroundColor: SWATCHES.error, paddingHorizontal: 6, borderRadius: 4, alignSelf: 'flex-start' }]}>
+									<Text type="small" inverted>Unpublished</Text>
+								</View>
+							}
+						</FlexItem>
 
-								{ canEdit && 
-									<FlexItem shrink>
-										<ConnectedDropdownTouch 
-											dropdown={<TldrCardContextDropdown 
-																tldr={tldr} 
-																dispatch={dispatch} 
-																mutate={mutate}
-																/>}
-											>
-											<Icon 
-												shape="MoreHorizontal" 
-												color={SWATCHES.textHint} 
-												/>
-										</ConnectedDropdownTouch>
-									</FlexItem>
-								}
-							</Flex>
-						
-					</Chunk>
-					
-				</Sectionless>
-			</Card>
+						{/* TODO make this conditional on permission */}
+
+						{canEdit &&
+							<FlexItem shrink>
+								<ConnectedDropdownTouch
+									dropdown={<TldrCardContextDropdown
+										tldr={tldr}
+										dispatch={dispatch}
+										mutate={mutate}
+									/>}
+								>
+									<Icon
+										shape="MoreHorizontal"
+										color={SWATCHES.textHint}
+									/>
+								</ConnectedDropdownTouch>
+							</FlexItem>
+						}
+					</Flex>
+
+				</Chunk>
+
+			</Sectionless>
+		</Card>
 	);
 
 }
 
 export const CreateTldrCardSmall = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
-	return(
-		<Card style={{minHeight: smallCardMinHeight, borderStyle: 'dashed', backgroundColor: 'transparent'}}>
-			<Sectionless style={{flex: 1}}>
+	return (
+		<Card style={{ minHeight: smallCardMinHeight, borderStyle: 'dashed', backgroundColor: 'transparent' }}>
+			<Sectionless style={{ flex: 1 }}>
 				<View style={styles.absoluteCenter}>
-						<Icon 
-							shape="Plus"
-							size="large"
-							color={SWATCHES.tint}
-							style={{alignSelf: 'center'}}
-							/>
-						<Text type="micro" color="tint">Create card</Text>
+					<Icon
+						shape="Plus"
+						size="large"
+						color={SWATCHES.tint}
+						style={{ alignSelf: 'center' }}
+					/>
+					<Text type="micro" color="tint">Create card</Text>
 				</View>
 			</Sectionless>
 		</Card>
@@ -309,34 +309,34 @@ const TldrCardContextDropdown = (props) => {
 		onRequestClose,
 		onCompleteClose
 	} = props;
-	return(
+	return (
 		<Sectionless>
 			<Chunk>
 				{/* can't nest urls, so all links need to push router */}
-				<Touch 
-					onPress={(e)=>{
+				<Touch
+					onPress={(e) => {
 						e.preventDefault()
-						Router.push({pathname: getVersionEditPageUrl(), query: {tldrId: tldr.id}})
+						Router.push({ pathname: getVersionEditPageUrl(), query: { tldrId: tldr.id } })
 					}}
-					>
+				>
 					<Text color="tint">Edit</Text>
 				</Touch>
-				<Touch 
-					onPress={(e)=>{
+				<Touch
+					onPress={(e) => {
 						e.preventDefault()
-						Router.push({pathname: getTldrEditPageUrl(), query: {tldrId: tldr.id}})
+						Router.push({ pathname: getTldrEditPageUrl(), query: { tldrId: tldr.id } })
 					}}
-					>
+				>
 					<Text color="tint">Settings</Text>
 				</Touch>
-				<Touch onPress={(e) => { 
-						e.preventDefault();
-						onCompleteClose();
-						dispatch(addPrompt(<DeletePrompt tldr={tldr} onSuccess={()=>{
-							mutate();
-							dispatch(addToast('Card deleted!'))
-						}} />))
-					}}>
+				<Touch onPress={(e) => {
+					e.preventDefault();
+					onCompleteClose();
+					dispatch(addPrompt(<DeletePrompt tldr={tldr} onSuccess={() => {
+						mutate();
+						dispatch(addToast('Card deleted!'))
+					}} />))
+				}}>
 					<Text color="tint">Delete</Text>
 				</Touch>
 			</Chunk>
@@ -350,13 +350,13 @@ export const DeletePrompt = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const {
-		tldr, 
-		onRequestClose = () => {},
-		onSuccess = () => {},
+		tldr,
+		onRequestClose = () => { },
+		onSuccess = () => { },
 		dispatch
 	} = props;
 
-	const formState = useFormState( {
+	const formState = useFormState({
 		toastableErrors: {
 			BadRequest: 'Something went wrong',
 			NotAuthenticated: 'Not signed in'
@@ -368,16 +368,16 @@ export const DeletePrompt = (props) => {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 	const deleteTldr = async () => {
-		try{
+		try {
 			formState.setLoading(true);
 			await request(getTldrUrl(tldr.id), {
-				method: 'DELETE', 
+				method: 'DELETE',
 				token: authentication.accessToken
 			});
 			onSuccess();
 			onRequestClose();
 		}
-		catch(error){
+		catch (error) {
 			console.log(error);
 			formState.setError(error);
 			formState.setLoading(false);
@@ -398,13 +398,13 @@ export const DeletePrompt = (props) => {
 					label="Delete card"
 					width="full"
 					isLoading={formState.loading}
-					/>
+				/>
 				<Button
 					onPress={onRequestClose}
 					color="secondary"
 					label="Never mind"
 					width="full"
-					/>
+				/>
 			</Chunk>
 		</Section>
 	);
@@ -416,18 +416,18 @@ export const LoadMoreButton = (props) => {
 		swr,
 		label = "Load more"
 	} = props;
-	return(
+	return (
 		<>
-			{ !swr.isReachingEnd && 
+			{ !swr.isReachingEnd &&
 				<Chunk>
 					<Button
 						isLoading={swr.isLoadingMore}
 						color="secondary"
-						onPress={()=>{
-							swr.setSize(swr.size+1)
+						onPress={() => {
+							swr.setSize(swr.size + 1)
 						}}
 						label={label}
-						/>
+					/>
 				</Chunk>
 			}
 		</>

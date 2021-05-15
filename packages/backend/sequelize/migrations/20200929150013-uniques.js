@@ -9,17 +9,17 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.changeColumn(
-      'users', 'urlKey',{
-        type: Sequelize.TEXT,
-        allowNull: false,
-        unique: true
-      });
+      'users', 'urlKey', {
+      type: Sequelize.TEXT,
+      allowNull: false,
+      unique: true
+    });
     await queryInterface.changeColumn(
-      'tldrs', 'urlKey',{
-        type: Sequelize.TEXT,
-        allowNull: false,
-        unique: true
-      });
+      'tldrs', 'urlKey', {
+      type: Sequelize.TEXT,
+      allowNull: false,
+      unique: true
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -30,14 +30,14 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     await queryInterface.changeColumn(
-      'users', 'urlKey',{
-        allowNull: true,
-        unique: false
-      });
+      'users', 'urlKey', {
+      allowNull: true,
+      unique: false
+    });
     await queryInterface.changeColumn(
-      'tldrs', 'urlKey',{
-        allowNull: true,
-        unique: false
-      });    
+      'tldrs', 'urlKey', {
+      allowNull: true,
+      unique: false
+    });
   }
 };

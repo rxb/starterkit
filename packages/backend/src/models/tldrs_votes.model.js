@@ -8,7 +8,7 @@ module.exports = function (app) {
   const tldrsVotes = sequelizeClient.define('tldrs_votes', {
     id: {
       allowNull: false,
-      autoIncrement: true, 
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },

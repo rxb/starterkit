@@ -36,13 +36,29 @@
       },
       "redirect": "https://tldr.cards:3000/tldr/oauth",
       "google": {
-        "scope": ["openid", "profile", "email"],
-        "response": ["tokens", "raw", "jwt", "profile"],
+        "scope": [
+          "openid",
+          "profile",
+          "email"
+        ],
+        "response": [
+          "tokens",
+          "raw",
+          "jwt",
+          "profile"
+        ],
         "nonce": true
       },
       "apple": {
-        "scope": ["openid", "name", "email"],
-        "response": ["raw", "jwt"],
+        "scope": [
+          "openid",
+          "name",
+          "email"
+        ],
+        "response": [
+          "raw",
+          "jwt"
+        ],
         "nonce": true,
         "custom_params": {
           "response_type": "code id_token",

@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useContext} from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 
 import {
 	fetcher,
@@ -6,7 +6,7 @@ import {
 	useTldr
 } from 'swr/index';
 
-import {connect, useDispatch, useSelector} from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast } from 'actions/index';
 
 
@@ -66,24 +66,24 @@ const sampleRestaurants = [
 		photo: "https://raster-static.postmates.com/?url=https%3A%2F%2Fd1725r39asqzt3.cloudfront.net%2F7c075c47-d458-4d0c-ab45-11d3b2ac4e43%2Forig.png&quality=85&w=640&h=0&mode=auto&format=webp&v=4",
 		name: "Taqueria El Patron Mexican Grill",
 		desc: "30-40 min • Mexican"
-	},	
+	},
 ];
 
 const nearbyData = [...sampleRestaurants, ...sampleRestaurants, ...sampleRestaurants, ...sampleRestaurants];
 
-const dealsData = nearbyData.slice(1,4);
+const dealsData = nearbyData.slice(1, 4);
 
 const Postmates = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
-	return(
-		<View style={{minHeight: '100vh'}}>
-			<Stripe 
+	return (
+		<View style={{ minHeight: '100vh' }}>
+			<Stripe
 				style={{
 					backgroundColor: '#FED928',
 					paddingVertical: 0
 				}}
-				>
+			>
 				<Bounds>
 					<Sectionless>
 						<Flex>
@@ -95,38 +95,38 @@ const Postmates = (props) => {
 							<FlexItem>
 								<Chunk>
 									<Inline>
-									<Icon 
-										shape="Search"
-										size="small"
+										<Icon
+											shape="Search"
+											size="small"
 										/>
-									<Text color="secondary">Search for anything...</Text>
+										<Text color="secondary">Search for anything...</Text>
 									</Inline>
 								</Chunk>
 							</FlexItem>
 							<FlexItem align="flex-end">
 								<Chunk>
-									<Inline style={{alignSelf: 'flex-end'}}>
-										<Button 
+									<Inline style={{ alignSelf: 'flex-end' }}>
+										<Button
 											size="small"
 											label="Log in"
 											color="secondary"
-											/>
-										<Button 
+										/>
+										<Button
 											size="small"
 											label="Sign up"
-											/>	
-									</Inline>										
+										/>
+									</Inline>
 								</Chunk>
 							</FlexItem>
 						</Flex>
 					</Sectionless>
 				</Bounds>
 			</Stripe>
-			<Stripe 
-				style={{backgroundColor: '#FED928'}}
-				imageHeight={{small: 292}}
+			<Stripe
+				style={{ backgroundColor: '#FED928' }}
+				imageHeight={{ small: 292 }}
 				image="https://raster-static.postmates.com/?url=https%3A%2F%2Fbuyer-static-gcp.postmates.com%2Fdist%2Fprod%2Fcollection-feed-header-refresh.ff66a93edfd10817d088e6b48bbb80cbedc459960022385bbdf8141e74de7c68c092f2444e22133303ff25dc3e90131d9a4474fd8a4fd1874ca7af56840d0170.jpg&quality=85&w=3200&h=0&mode=auto&format=webp&v=4"
-				>
+			>
 				<Bounds>
 					<Section>
 						<Chunk>
@@ -136,32 +136,32 @@ const Postmates = (props) => {
 					</Section>
 				</Bounds>
 			</Stripe>
-			<Stripe 
+			<Stripe
 				style={{
 					paddingVertical: 0,
 					borderBottomWidth: 1,
 					borderBottomColor: SWATCHES.border
 				}}
-				>
+			>
 				<Bounds>
 					<Sectionless>
 						<Flex>
 							<FlexItem shrink>
 								<Chunk>
-									<Text 
-										style={{whiteSpace: 'nowrap'}} 
+									<Text
+										style={{ whiteSpace: 'nowrap' }}
 										weight="strong"
-										>Delivery <Text color="secondary">or</Text> Pickup</Text>
+									>Delivery <Text color="secondary">or</Text> Pickup</Text>
 								</Chunk>
 							</FlexItem>
 							<FlexItem>
 								<Chunk>
 									<Inline>
-									<Icon 
-										shape="MapPin"
-										size="small"
+										<Icon
+											shape="MapPin"
+											size="small"
 										/>
-									<Text weight="strong">Brooklyn</Text>
+										<Text weight="strong">Brooklyn</Text>
 									</Inline>
 								</Chunk>
 							</FlexItem>
@@ -169,7 +169,7 @@ const Postmates = (props) => {
 					</Sectionless>
 				</Bounds>
 			</Stripe>
-			
+
 			<Stripe>
 				<Bounds>
 					<Section>
@@ -181,11 +181,11 @@ const Postmates = (props) => {
 								</Chunk>
 							</FlexItem>
 							<FlexItem shrink justify="flex-end">
-								<Text 
-									color="secondary" 
-									type="small" 
+								<Text
+									color="secondary"
+									type="small"
 									nowrap
-									>View all 19 &rarr;</Text>
+								>View all 19 &rarr;</Text>
 							</FlexItem>
 						</Flex>
 						<Chunk>
@@ -198,22 +198,22 @@ const Postmates = (props) => {
 									large: 3
 								}}
 								items={dealsData}
-								renderItem={(item, i)=>{
+								renderItem={(item, i) => {
 									return (
 										<View key={i}>
 											<Chunk>
-												<Image 
-													source={{uri: item.photo}}
-													style={[styles.pseudoLineHeight, {height: 200}]}
+												<Image
+													source={{ uri: item.photo }}
+													style={[styles.pseudoLineHeight, { height: 200 }]}
 												/>
-												
+
 												<Text weight="strong">{item.name}</Text>
 												<Text type="small" color="hint">{item.desc}</Text>
 											</Chunk>
 										</View>
 									)
 								}}
-								/>
+							/>
 						</Chunk>
 					</Section>
 
@@ -235,27 +235,27 @@ const Postmates = (props) => {
 									large: 3
 								}}
 								items={nearbyData}
-								renderItem={(item, i)=>{
+								renderItem={(item, i) => {
 									return (
 										<View key={i}>
 											<Chunk>
-												<Image 
-													source={{uri: item.photo}}
-													style={[styles.pseudoLineHeight, {height: 200}]}
+												<Image
+													source={{ uri: item.photo }}
+													style={[styles.pseudoLineHeight, { height: 200 }]}
 												/>
-												
+
 												<Text weight="strong">{item.name}</Text>
 												<Text type="small" color="hint">{item.desc}</Text>
 											</Chunk>
 										</View>
 									)
 								}}
-								/>
+							/>
 						</Chunk>
 					</Section>
 				</Bounds>
 			</Stripe>
-		
+
 		</View>
 	)
 }

@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
-  const serverUrl = app.get('protocol')+"://"+app.get('host');
+  const serverUrl = app.get('protocol') + "://" + app.get('host');
   const sequelizeClient = app.get('sequelizeClient');
   const users = sequelizeClient.define('users', {
     id: {
@@ -24,13 +24,13 @@ module.exports = function (app) {
           msg: "Email can't be blank"
         }
       },
-      
+
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len:{
+        len: {
           args: [8, 255],
           msg: "Password must be at least 8 characters long"
         }
@@ -51,7 +51,7 @@ module.exports = function (app) {
     photoUrl: {
       // https://sequelize-guides.netlify.com/virtual-columns/
       type: DataTypes.VIRTUAL,
-      get:  function() {
+      get: function () {
         return this.getDataValue('photoId') ? `${serverUrl}/photos/${this.getDataValue('photoId')}` : null;
       }
     },
@@ -83,7 +83,7 @@ module.exports = function (app) {
       validate: {
         is: /^[a-zA-Z0-9_-]*$/
       }
-    }, 
+    },
     isVerified: {
       type: DataTypes.BOOLEAN
     },
@@ -92,25 +92,25 @@ module.exports = function (app) {
     },
     verifyShortToken: {
       type: DataTypes.STRING
-    }, 
+    },
     verifyExpires: {
       type: DataTypes.DATE
-    },   
+    },
     verifyChanges: {
       type: DataTypes.STRING
-    },   
+    },
     resetToken: {
       type: DataTypes.STRING
-    }, 
+    },
     resetShortToken: {
       type: DataTypes.STRING
-    },  
+    },
     resetExpires: {
       type: DataTypes.DATE
-    },  
+    },
     resetAttempts: {
       type: DataTypes.INTEGER
-    },                          
+    },
   }, {
     hooks: {
       beforeCount(options) {

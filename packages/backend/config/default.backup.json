@@ -10,9 +10,14 @@
     "entity": "user",
     "service": "users",
     "secret": "d660a46337774b6f3ec3906a48193ede9bb2ae5996c2f8fa1b905d688c2d13afac228cd54ecb52497b735e12c5d3c8518ea4fb57647a4095b607d8a51db22d87fe9d0c9f5e00183635d51270b94e6f6305aab2d9f729dd4312e4e244fe1e4fe2748d14cb6e9d763e3a0277cedbe457460569ee532ffab6aa1ad0a834ae030873a68da4d948e838b410db0195be9cca3af3474ab7a1b2eb312d5338ed05bc7782fdf0c95d4f74ea6d33b1799306f223671339b5375645836ff8a4af9a956bb6da118e4fecbf1d1026c745114ddfd8f6bd06f2df456ca018465d441af2d754c5e6bd8acbfe73f7f532cb58a8cd7e771cf41e615d2930b1675ea879f4ffe12cdf4f",
-    "authStrategies": [ "jwt", "local" ],
+    "authStrategies": [
+      "jwt",
+      "local"
+    ],
     "jwtOptions": {
-      "header": { "typ": "access" },
+      "header": {
+        "typ": "access"
+      },
       "audience": "http://localhost",
       "issuer": "feathers",
       "algorithm": "HS256",
@@ -27,17 +32,26 @@
       "facebook": {
         "key": "463734217825939",
         "secret": "f41b2d79aeb65d3090bc9b45e90781b2",
-        "scope": ["email", "public_profile"]
+        "scope": [
+          "email",
+          "public_profile"
+        ]
       },
       "google": {
         "key": "768305261543-okn8ajbkmp96a73ssbq7o77ab1m2s7uh.apps.googleusercontent.com",
         "secret": "Gm0tpLnTtkLqapA0_cC3Lz6x",
-        "scope": ["openid", "profile", "email"]
+        "scope": [
+          "openid",
+          "profile",
+          "email"
+        ]
       },
       "reddit": {
         "key": "RJ4_ToL0RXcyuA",
         "secret": "Zykey8XalEe9VobKKst8LkWUA8A",
-        "scope": ["identity"],
+        "scope": [
+          "identity"
+        ],
         "duration": "temporary",
         "state": true,
         "profile_url": "https://oauth.reddit.com/api/v1/me",

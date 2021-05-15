@@ -1,9 +1,9 @@
 import 'isomorphic-unfetch';
 
-import React, {Fragment, useContext} from 'react';
+import React, { Fragment, useContext } from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head'
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 import {
 	//logInAndFetchUser,
@@ -70,11 +70,11 @@ client.configure(feathers.rest(apiUrl).fetch(fetch));
 
 class Auth extends React.Component {
 
-	static async getInitialProps (context) {
+	static async getInitialProps(context) {
 		return {};
 	}
 
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.state = {
 			things: [],
@@ -113,7 +113,7 @@ class Auth extends React.Component {
 	}
 	*/
 
-	componentDidMount(){
+	componentDidMount() {
 		/*
 		feathersClient.on('login', (authResult, params, context) => {
 			console.log('scratch event');
@@ -129,47 +129,47 @@ class Auth extends React.Component {
 	render() {
 
 		const DeletePrompt = (props) => {
-	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+			const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 			const {
 				thing,
 				onRequestClose,
 			} = props;
 			return (
 				<ThemeContext.Consumer>
-			{ ({styles, SWATCHES}) => (
-				<Sectionless>
-					<Chunk>
-						<Text type="sectionHead">Are you sure?</Text>
-					</Chunk>
-					<Chunk>
-						<Text>Deleting your comment {thing.id}</Text>
-					</Chunk>
-					<Chunk>
-						<Button
-							onPress={()=>{
-								const things = [...this.state.things];
-								const index = things.findIndex(item => item.id == thing.id);
-								if(index >= 0){
-									things.splice(index, 1);
-									this.setState({things: things});
-								}
-								onRequestClose();
-							}}
-							label="Yes I'm sure"
-							width="full"
-							/>
-						<Button
-							onPress={()=>{
-								onRequestClose();
-							}}
-							label="No thanks"
-							color="secondary"
-							width="full"
-							/>
-					</Chunk>
+					{ ({ styles, SWATCHES }) => (
+						<Sectionless>
+							<Chunk>
+								<Text type="sectionHead">Are you sure?</Text>
+							</Chunk>
+							<Chunk>
+								<Text>Deleting your comment {thing.id}</Text>
+							</Chunk>
+							<Chunk>
+								<Button
+									onPress={() => {
+										const things = [...this.state.things];
+										const index = things.findIndex(item => item.id == thing.id);
+										if (index >= 0) {
+											things.splice(index, 1);
+											this.setState({ things: things });
+										}
+										onRequestClose();
+									}}
+									label="Yes I'm sure"
+									width="full"
+								/>
+								<Button
+									onPress={() => {
+										onRequestClose();
+									}}
+									label="No thanks"
+									color="secondary"
+									width="full"
+								/>
+							</Chunk>
 
-				</Sectionless>
-				)}
+						</Sectionless>
+					)}
 				</ThemeContext.Consumer>
 			)
 		};
@@ -186,105 +186,105 @@ class Auth extends React.Component {
 
 		return (
 			<Fragment>
-			<Page>
-				<Head>
-					<meta property='og:title' content='Scratch' />
-					<title>Scratch</title>
-				</Head>
-				<Stripe>
-					<Bounds>
+				<Page>
+					<Head>
+						<meta property='og:title' content='Scratch' />
+						<title>Scratch</title>
+					</Head>
+					<Stripe>
+						<Bounds>
 							<Section type="pageHead">
 								<Chunk>
 									<Text type="pageHead">Scratch</Text>
 								</Chunk>
 							</Section>
 
-								<Flex direction="column" switchDirection="large">
-									<FlexItem>
-										{ !user.id &&
-											<Fragment>
-												<Section>
-													<Chunk>
-														<Button
-														  	width="full"
-															label="log in with Facebook"
-															onPress={()=>{
-																location.href=`${apiHost}/oauth/facebook/`
-															}}
-															/>
-														<Button
-														  	width="full"
-															label="log in with Google"
-															onPress={()=>{
-																location.href=`${apiHost}/oauth/google/`
-															}}
-															/>
-														<Button
-														  	width="full"
-															label="log in with Reddit"
-															onPress={()=>{
-																location.href=`${apiHost}/oauth/reddit/`
-															}}
-															/>
-													</Chunk>
-												</Section>
-												<Section>
-													<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
-														<LoginForm
-															onSubmit={(fields)=>{
-																//this.loginLocal(fields);
-																//logIn(),
-																feathersClient.authenticate({strategy: 'local', email: fields.email, password: fields.password});
-															}}
-															isLoading={(authentication.loading || authentication.token)}
-															/>
-													</LoadingBlock>
-												</Section>
-											</Fragment>
-										}
-										{ user.id &&
+							<Flex direction="column" switchDirection="large">
+								<FlexItem>
+									{!user.id &&
+										<Fragment>
 											<Section>
 												<Chunk>
 													<Button
-													  	width="full"
-														label="log out"
-														onPress={feathersClient.logout}
-														/>
+														width="full"
+														label="log in with Facebook"
+														onPress={() => {
+															location.href = `${apiHost}/oauth/facebook/`
+														}}
+													/>
+													<Button
+														width="full"
+														label="log in with Google"
+														onPress={() => {
+															location.href = `${apiHost}/oauth/google/`
+														}}
+													/>
+													<Button
+														width="full"
+														label="log in with Reddit"
+														onPress={() => {
+															location.href = `${apiHost}/oauth/reddit/`
+														}}
+													/>
 												</Chunk>
 											</Section>
-										}
-									</FlexItem>
-									<FlexItem>
+											<Section>
+												<LoadingBlock isLoading={(authentication.loading || authentication.token)}>
+													<LoginForm
+														onSubmit={(fields) => {
+															//this.loginLocal(fields);
+															//logIn(),
+															feathersClient.authenticate({ strategy: 'local', email: fields.email, password: fields.password });
+														}}
+														isLoading={(authentication.loading || authentication.token)}
+													/>
+												</LoadingBlock>
+											</Section>
+										</Fragment>
+									}
+									{user.id &&
 										<Section>
 											<Chunk>
-												<Avatar
-													source={{uri: user.photoUrl}}
-													size="large"
-													/>
-												<Text type="big">{user.name}</Text>
-												<Text color="hint">{user.email}</Text>
-											</Chunk>
-											<Chunk>
-												<Text>USER: {JSON.stringify(user)}</Text>
+												<Button
+													width="full"
+													label="log out"
+													onPress={feathersClient.logout}
+												/>
 											</Chunk>
 										</Section>
-									</FlexItem>
-								</Flex>
+									}
+								</FlexItem>
+								<FlexItem>
+									<Section>
+										<Chunk>
+											<Avatar
+												source={{ uri: user.photoUrl }}
+												size="large"
+											/>
+											<Text type="big">{user.name}</Text>
+											<Text color="hint">{user.email}</Text>
+										</Chunk>
+										<Chunk>
+											<Text>USER: {JSON.stringify(user)}</Text>
+										</Chunk>
+									</Section>
+								</FlexItem>
+							</Flex>
 
 
 							<Section>
-								  {things.map(thing => (
-								  		<Chunk>
-									  		<Text>{thing.message} {thing.id}</Text>
-									  		<Link  onPress={()=>{
-												this.props.addPrompt( <DeletePrompt thing={thing} /> );
-									  		}}>
-									  			<Text color="tint">Delete</Text>
-									  		</Link>
-									  	</Chunk>
+								{things.map(thing => (
+									<Chunk>
+										<Text>{thing.message} {thing.id}</Text>
+										<Link onPress={() => {
+											this.props.addPrompt(<DeletePrompt thing={thing} />);
+										}}>
+											<Text color="tint">Delete</Text>
+										</Link>
+									</Chunk>
 
 
-								  ))}
+								))}
 
 
 								{/*
@@ -301,10 +301,10 @@ class Auth extends React.Component {
 								*/}
 
 							</Section>
-					</Bounds>
-				</Stripe>
+						</Bounds>
+					</Stripe>
 
-			</Page>
+				</Page>
 
 			</Fragment>
 		);
