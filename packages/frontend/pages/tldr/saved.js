@@ -104,12 +104,11 @@ function Saved(props) {
 									label="No saved cards yet"
 								>
 									<Chunk>
-										<Link href={getIndexPageUrl()}>
-											<Button
-												label="Go explore cards"
-												size="small"
+										<Button
+											href={getIndexPageUrl()}
+											label="Go explore cards"
+											size="small"
 											/>
-										</Link>
 									</Chunk>
 								</Emptiness>
 							}
@@ -159,7 +158,7 @@ function Saved(props) {
 
 }
 
-TldrProfile.getInitialProps = async (context) => {
+Saved.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const { store, req, pathname, query } = context;
 	const userId = query.userId;

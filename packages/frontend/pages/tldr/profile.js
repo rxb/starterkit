@@ -139,12 +139,11 @@ function TldrProfile(props) {
 								>
 									{isSelf &&
 										<Chunk>
-											<Link href={getTldrEditPageUrl()}>
 												<Button
+													href={getTldrEditPageUrl()}
 													label="Create a new card"
 													size="small"
 												/>
-											</Link>
 										</Chunk>
 									}
 								</Emptiness>

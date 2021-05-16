@@ -52,8 +52,6 @@ import Head from 'next/head'
 
 
 
-
-
 // SCREEN-SPECIFIC
 import { Animated } from 'cinderblock';
 import { Utils } from 'cinderblock';
@@ -224,7 +222,7 @@ const Edit = (props) => {
 	}
 
 	// DIVERT TO ERROR PAGE
-	if (!authentication.user || (tldr.authorId && user.id && (tldr.authorId != user.id))) {
+	if (!authentication.user || (tldr && tldr.authorId && user.id && (tldr.authorId != user.id))) {
 		// not logged in or trying to edit something I don't own
 		return <ErrorPage statusCode={401} />
 	}
