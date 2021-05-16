@@ -222,7 +222,6 @@ function Tldr(props) {
 
 	const doOrAuth = (fn, actionOnReturn) => {
 		if (!authentication.accessToken) {
-			//setPostAuthAction(actionOnReturn);
 			dispatch(updateUi({
 				logInModalVisible: true,
 				logInModalOptions: {

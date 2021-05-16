@@ -45,9 +45,7 @@ import {
 } from 'cinderblock';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import feathersClient from '@/components/FeathersClient'; // already instantiated so we can share
-
-// STYLES
-
+import Router from 'next/router'
 
 
 const catMatch = (s, categories) => {
@@ -228,6 +226,25 @@ function TldrHeader(props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 	const ui = useSelector(state => state.ui);
+
+	// maybe abstract this out?
+	const createButtonOnPress = () => {
+		if (!authentication.accessToken) {
+			dispatch(updateUi({
+				logInModalVisible: true,
+				logInModalOptions: {
+					redirect: { pathname: getTldrEditPageUrl() },
+					callbackForNonRedirectFlow: () => {
+						Router.push({ pathname: getTldrEditPageUrl() })
+					}
+				}
+			}));
+		}
+		else{
+			Router.push({ pathname: getTldrEditPageUrl() })
+		}
+	}
+
 	return (
 		<Header position="static">
 			<Flex direction="row">
@@ -248,7 +265,7 @@ function TldrHeader(props) {
 					justify="center"
 				>
 					<Button
-						href={getTldrEditPageUrl()}
+						onPress={createButtonOnPress}
 						label="Create"
 						size="xsmall"
 						color="secondary"
