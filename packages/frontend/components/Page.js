@@ -13,8 +13,6 @@ import {
 import NProgress from 'nprogress'
 import Router from 'next/router'
 
-//import feathersClient from '../components/FeathersClient'; // already instantiated so we can share
-
 
 import {
 	Avatar,
@@ -52,7 +50,6 @@ import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
 import { addToastableErrors } from 'components/utils';
 import { RegisterForm, LoginForm, RegisterHeader, LoginHeader } from 'components/authComponents';
-
 
 // usePrevious hook
 // todo: pull this into another file to be reused
