@@ -50,8 +50,7 @@ import {
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
-import { Utils } from 'cinderblock';
-const { addToastableErrors } = Utils;
+import { addToastableErrors } from 'components/utils';
 import { RegisterForm, LoginForm, RegisterHeader, LoginHeader } from 'components/authComponents';
 
 

@@ -56,13 +56,10 @@ import Head from 'next/head';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
+import { addToastableErrors } from 'components/utils';
 
 import { Utils } from 'cinderblock';
-const {
-	runValidations,
-	readFileAsDataUrl,
-	addToastableErrors
-} = Utils;
+const { runValidations } = Utils;
 
 // keep big functions outside of render
 
