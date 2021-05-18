@@ -119,7 +119,7 @@ function TldrHome(props) {
 	));
 
 	const categories = pageHelper(useSWR(!isCategory ?
-		getCategoriesUrl({ '$limit': 1000 }) : null
+		getCategoriesUrl({ '$limit': 1000 }) : null, { initialData: props.categoriesData }
 	));
 
 	// DIVERT TO ERROR PAGE
@@ -238,9 +238,20 @@ TldrHome.getInitialProps = async (context) => {
 	const { categoryId } = query;
 	const isServer = !!req;
 
-	return {
-		categoryId,
-		isServer,
+	try {
+		const categoriesData = (isServer) ? await request(getCategoriesUrl({ '$limit': 1000 })) : undefined;
+		return {
+			categoryId,
+			isServer,
+			categoriesData
+		}
+	}
+	catch (error) {
+		return {
+			categoryId,
+			isServer,
+			error: error
+		}
 	}
 }
 
