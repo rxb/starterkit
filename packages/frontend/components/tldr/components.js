@@ -39,17 +39,17 @@ import {
 	useFormState,
 	useMediaContext,
 	View,
-	ThemeContext
+	ThemeContext,
+	designConstants
 } from 'cinderblock';
+const { MEDIA_QUERIES } = designConstants;
+import StyleSheet from 'react-native-media-query';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
-
-
-
-const smallCardMinHeight = 220;
-
 import Router, { useRouter } from 'next/router'
 import Markdown from 'markdown-to-jsx';
 
+
+const smallCardMinHeight = 220;
 
 export const Emptiness = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
@@ -77,9 +77,7 @@ export const Emptiness = (props) => {
 }
 
 export const TldrCard = (props) => {
-	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
-
-	const media = useMediaContext();
+	const { styles, ids, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const [showReferences, setReferences] = useState(false);
 
@@ -90,12 +88,25 @@ export const TldrCard = (props) => {
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
 	const content = thisVersion.content;
 
+	const {styles: activeStyles, ids: activeIds} = StyleSheet.create({
+		'tldrSectionless': {
+			[MEDIA_QUERIES.medium]:{
+				paddingHorizontal: 30, 
+				paddingTop: 30, 
+				paddingBottom: 10,
+			}
+		}
+	});
+
 	return (
 		<Card shadow style={[{ borderRadius: 12 }, style]}>
-			<Sectionless style={[
-				(media.medium) ? { paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10 } : {},
-				{ backgroundColor: "#4353ff" }
-			]}>
+			<Sectionless 
+				style={[
+					{ backgroundColor: "#4353ff" },
+					activeStyles.tldrSectionless,
+				]}		
+				dataSet={{ media: activeIds.tldrSectionless }}
+				>
 				<Chunk style={{ paddingBottom: 4 }}>
 					<Flex>
 						<FlexItem>
@@ -125,9 +136,10 @@ export const TldrCard = (props) => {
 					<Text inverted style={{ fontStyle: 'italic', marginTop: 8 }}>{content.blurb}</Text>
 				</Chunk>
 			</Sectionless>
-			<Sectionless style={[
-				(media.medium) ? { paddingHorizontal: 30, paddingTop: 30, paddingBottom: 10 } : {}
-			]}>
+			<Sectionless 
+				style={activeStyles.tldrSectionless}		
+				dataSet={{ media: activeIds.tldrSectionless }}
+				>
 				<View>
 					{content.steps.map((step, i) => (
 						<View
