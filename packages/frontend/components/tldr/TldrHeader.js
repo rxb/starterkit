@@ -252,7 +252,7 @@ function TldrHeader(props) {
 					<Link href={getIndexPageUrl()}>
 						<Inline nowrap>
 							<Icon shape="FileText" color={SWATCHES.tint} />
-							<Text weight="strong" color="tint" type="big">{!process.browser ? 'server' : 'tldr'}</Text>
+							<Text weight="strong" color="tint" type="big">tldr</Text>
 						</Inline>
 					</Link>
 				</FlexItem>
