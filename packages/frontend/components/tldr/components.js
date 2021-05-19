@@ -42,7 +42,7 @@ import {
 	ThemeContext,
 	designConstants
 } from 'cinderblock';
-const { MEDIA_QUERIES } = designConstants;
+const { MEDIA_QUERIES_SINGLE } = designConstants;
 import StyleSheet from 'react-native-media-query';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import Router, { useRouter } from 'next/router'
@@ -90,7 +90,7 @@ export const TldrCard = (props) => {
 
 	const {styles: activeStyles, ids: activeIds} = StyleSheet.create({
 		'tldrSectionless': {
-			[MEDIA_QUERIES.medium]:{
+			[MEDIA_QUERIES_SINGLE.medium]:{
 				paddingHorizontal: 30, 
 				paddingTop: 30, 
 				paddingBottom: 10,

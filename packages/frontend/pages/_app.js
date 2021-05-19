@@ -15,8 +15,8 @@ import { getLoginPageUrl, getOauthPageUrl } from 'components/tldr/urls';
 
 // STYLE
 import { ThemeContext, styleConfig, designConstants, initMediaProvider } from 'cinderblock';
-const { MEDIA_QUERY_PARAMS } = designConstants;
-const MediaProvider = initMediaProvider(MEDIA_QUERY_PARAMS);
+const { MEDIA_QUERY_PARAMS_SINGLE } = designConstants;
+const MediaProvider = initMediaProvider(MEDIA_QUERY_PARAMS_SINGLE);
 
 // CONFIG STYLES
 const METRICS = {
