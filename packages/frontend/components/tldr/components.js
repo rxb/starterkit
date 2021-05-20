@@ -1,14 +1,15 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect, useCallback } from 'react';
+import ReactDOM from 'react-dom';
 
 // REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { addDropdown, addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // SWR
-import { request, getTldrUrl } from '@/swr';
+import { request, getTldrUrl, getCategoriesUrl } from '@/swr';
 
 // URLS
-import { getTldrEditPageUrl, getVersionEditPageUrl, saveLoginRedirect } from './urls';
+import { getTldrEditPageUrl, getVersionEditPageUrl, saveLoginRedirect, getCategoryPageUrl } from './urls';
 
 import {
 	Avatar,
@@ -30,6 +31,7 @@ import {
 	Menu,
 	Modal,
 	Picker,
+	RevealBlock,
 	Section,
 	Sectionless,
 	Stripe,
@@ -443,5 +445,148 @@ export const LoadMoreButton = (props) => {
 				</Chunk>
 			}
 		</>
+	);
+}
+
+const catMatch = (s, categories) => {
+	const p = Array.from(s).reduce((a, v, i) => `${a}[^${s.substr(i)}]*?${v}`, '');
+	const re = RegExp(p, 'i');
+	return categories.filter(v => {
+		return (v.name && v.name.match(re)) || (v.keywords && v.keywords.match(re));
+	});
+}
+
+
+export const TldrSearch = (props) => {
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+
+	// not going to use SWR for this one
+	const [categories, setCategories] = useState([]);
+	const [searchResults, setSearchResults] = useState([]);
+	let categoriesData = [];
+	useEffect(() => {
+		request(getCategoriesUrl({ '$limit': 1000, '$sort[name]': 1 }))
+			.then(response => {
+				setSearchResults(response.items)
+				setCategories(response.items)
+			})
+	}, [])
+
+	// AUTOCOMPLETE
+	// hide/show of autocomplete
+	// cant just use blur because attempting to tap an autocomplete item would blur before tap
+	const searchOuter = useRef(null);
+	const [searchFocus, setSearchFocus] = useState(false);
+	const handleDocumentClick = useCallback((e) => {
+		if (ReactDOM.findDOMNode(searchOuter.current).contains(e.target)) {
+			return false;
+		}
+		setSearchFocus(false);
+	});
+	const handleKeyPress = useCallback((e) => {
+		if (e.keyCode === 27) {
+			setSearchFocus(false);
+		}
+	});
+	const cleanup = useCallback(() => {
+		document.removeEventListener('click', handleDocumentClick, false);
+		document.removeEventListener("keydown", handleKeyPress, false);
+	});
+	useEffect(() => {
+		if (searchFocus) {
+			document.addEventListener('click', handleDocumentClick, false);
+			document.addEventListener("keydown", handleKeyPress, false);
+		}
+		else {
+			cleanup();
+		}
+		return cleanup;
+	}, [searchFocus]);
+
+	useEffect(() => {
+		if(props.autoFocus){
+			setSearchFocus(true);	
+		}
+	}, []);
+
+	const formState = useFormState({
+		initialFields: {
+			search: ''
+		}
+	})
+
+	return (
+		<View
+			ref={searchOuter}
+		>
+			<TextInput
+				style={{
+					paddingVertical: 6,
+					borderRadius: 20,
+					marginVertical: 0
+				}}
+				wrapperStyle={{
+					// for autocomplete, maybe should be ported back
+					zIndex: 2,
+					backgroundColor: 'white',
+					marginVertical: METRICS.pseudoLineHeight
+				}}
+				spellCheck={false}
+				clearButtonMode="while-editing"
+				keyboard="web-search"
+				onChange={e => {
+					formState.setFieldValue('search', e.target.value)
+					setSearchResults(catMatch(e.target.value, categories));
+				}}
+				value={formState.getFieldValue('search')}
+				onFocus={() => {
+					setSearchFocus(true);
+				}}
+				autoFocus={props.autoFocus}
+			/>
+
+			<RevealBlock
+				visible={searchFocus}
+				duration={60}
+				delay={10}
+				offset={20}
+				fromTop
+				added={props.autoFocus}
+			>
+				<View
+					style={{
+						backgroundColor: 'white',
+						borderColor: SWATCHES.border,
+						borderWidth: 1,
+						top: '100%',
+						marginTop: -7,
+						left: 16, right: 16,
+						position: 'absolute'
+					}}
+				>
+					<Sectionless>
+						{formState.getFieldValue('search') != '' &&
+							<Chunk>
+								{<Text>Search "{formState.getFieldValue('search')}"</Text>}
+							</Chunk>
+						}
+						{searchResults.map((item, i) => (
+							<Chunk key={i}>
+								<Link
+									href={getCategoryPageUrl({ categoryId: item.id })}
+									onPress={() => {
+										setSearchFocus(false);
+									}}
+								>
+									<Text>{item.name}</Text>
+									<Text type="micro" color="hint">{item.keywords}</Text>
+								</Link>
+							</Chunk>
+						))}
+
+					</Sectionless>
+				</View>
+			</RevealBlock>
+		</View>
 	);
 }
