@@ -522,6 +522,7 @@ export const TldrSearchInHeader = (props) => {
 				autoFocus={false} 
 				categories={categories}
 				exitSearch={exitSearch}
+				onFocus={()=> setSearchFocus(true)}
 				/>
 
 			<RevealBlock
@@ -654,6 +655,7 @@ const TldrSearchInput = (props) => {
 		formState,
 		setSearchResults,
 		autoFocus,
+		onFocus = ()=>{},
 		categories,
 		exitSearch
 	} = props;
@@ -682,9 +684,10 @@ const TldrSearchInput = (props) => {
 				formState.setFieldValue('search', e.target.value)
 				setSearchResults(catMatch(e.target.value, categories));
 			}}
+			onFocus={onFocus}
 			value={formState.getFieldValue('search')}
 			autoFocus={autoFocus}
-		/>
+			/>
 	)
 }
 

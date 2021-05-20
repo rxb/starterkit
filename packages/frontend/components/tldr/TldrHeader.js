@@ -53,7 +53,7 @@ import Router from 'next/router'
 
 
 const UserDropdown = (props) => {
-	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+	const { styles, ids, METRICS, SWATCHES } = useContext(ThemeContext);
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 	const { onRequestClose } = props;
@@ -87,7 +87,7 @@ const UserDropdown = (props) => {
 }
 
 function TldrHeader(props) {
-	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+	const { styles, ids, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	// data from redux
 	const dispatch = useDispatch();
@@ -126,14 +126,15 @@ function TldrHeader(props) {
 				</FlexItem>
 				
 				<FlexItem justify="center">
-					{/*
-					<TldrSearchInHeader />
-					*/}
+					<View style={styles['hide']} dataSet={{ media: ids["showAt__large"]}}>
+						<TldrSearchInHeader />
+					</View>
 				</FlexItem>
 				<FlexItem
 					shrink
 					align="flex-end"
 					justify="center"
+					dataSet={{ media: ids["hideAt__large"]}}
 				>
 					<Button
 						onPress={()=>{
