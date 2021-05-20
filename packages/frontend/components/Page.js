@@ -13,7 +13,6 @@ import {
 import NProgress from 'nprogress'
 import Router from 'next/router'
 
-
 import {
 	Avatar,
 	Bounds,
@@ -45,28 +44,13 @@ import {
 	ThemeContext
 } from 'cinderblock';
 
+import LoginModal from './LoginModal';
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
 import { addToastableErrors } from 'components/utils';
-import { RegisterForm, LoginForm, RegisterHeader, LoginHeader } from 'components/authComponents';
-
-// usePrevious hook
-// todo: pull this into another file to be reused
-function usePrevious(value) {
-	const ref = useRef();
-	useEffect(() => {
-		ref.current = value
-	}, [value]);
-	return ref.current;
-}
-
-
-// TODO: pass in header
-
 
 function Page(props) {
-	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	// data from redux
 	const dispatch = useDispatch();
@@ -88,7 +72,6 @@ function Page(props) {
 		Router.onRouteChangeError = () => NProgress.done();
 	}, []);
 
-
 	// dismiss dropdowns on window resize
 	useEffect(() => {
 		function handleResize() {
@@ -99,16 +82,6 @@ function Page(props) {
 	}, []);
 
 
-	// dismiss modal on login
-	const prevUser = usePrevious(user);
-	useEffect(() => {
-		// got user, so dismiss modal
-		if (user.id && prevUser !== user && ui.logInModalVisible) {
-			dispatch(updateUi({ logInModalVisible: false }))
-		}
-	}, [user]);
-
-
 	// errors - do separate useEffect for each error checking
 	useEffect(() => {
 		addToastableErrors(dispatch, authentication, {
@@ -117,63 +90,19 @@ function Page(props) {
 		});
 	}, [authentication]);
 
-	// LOGIN MODAL CONFIG
-	const {
-		redirect = {},
-		callbackForNonRedirectFlow = () => { },
-	} = ui.logInModalOptions || {};
-	const [authUi, setAuthUi] = useState('login');
-	useEffect(() => {
-		const thisAuthUi = ui.logInModalOptions?.authUi ? ui.logInModalOptions.authUi
-			: ui.probablyHasAccount ? 'login' : 'register';
-		setAuthUi(thisAuthUi);
-	}, [ui.logInModalVisible])
-
 	return (
 		<View style={{ minHeight: '100vh', flex: 1 }}>
 
 			{props.children}
 
-			<Modal
-				visible={ui.logInModalVisible}
-				onRequestClose={() => {
-					dispatch(updateUi({
-						logInModalVisible: false,
-						loginModalOptions: {}
-					}))
-				}}
-			>
-				<Stripe>
-					<RevealBlock visible={authUi == 'login'} animateExit={false}>
-						<Section>
-							<LoginHeader toggleOnPress={() => setAuthUi('register')} />
-						</Section>
-						<LoginForm
-							redirectOverride={redirect}
-							callbackForNonRedirectFlow={callbackForNonRedirectFlow}
-							redirectOnLocalLogin={true}
-						/>
-					</RevealBlock>
-					<RevealBlock visible={authUi == 'register'} animateExit={false}>
-						<Section>
-							<RegisterHeader toggleOnPress={() => setAuthUi('login')} />
-						</Section>
-						<RegisterForm
-							redirectOverride={ui.logInModalOptions ? ui.logInModalOptions.redirect : null}
-						/>
-					</RevealBlock>
-				</Stripe>
-			</Modal>
-
+			{/* global ui */}
+			<LoginModal />
 			<ConnectedToaster />
 			<ConnectedPrompter />
 			<ConnectedDropdowner />
 
 		</View>
 	);
-
 }
-
-
 
 export default Page;
