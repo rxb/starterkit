@@ -44,8 +44,7 @@ import {
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
 import { TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton } from '../../components/tldr/components';
-
-// STYLE
+import StyleSheet from 'react-native-media-query';
 
 
 // SCREEN-SPECIFIC 
@@ -53,6 +52,21 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import { TESTCOLORS1 as TESTCOLORS } from '../../components/tldr/testcolors';
+
+const {styles: indexStyles, ids: indexIds} = StyleSheet.create({
+	categoryCard1: {
+		marginVertical: 0,
+		zIndex: 10,
+		minHeight: 180,
+	},
+	categoryCard2: { 
+		marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9 
+	},
+	categoryCard3: { 
+		marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8 
+	},
+})
+
 
 const CategoryItem = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
@@ -63,17 +77,9 @@ const CategoryItem = (props) => {
 	} = props;
 	return (
 
-
 		<Chunk>
 			<View style={{ position: 'relative', marginRight: 10, marginBottom: 18 }}>
-				<Card
-					style={{
-						marginVertical: 0,
-						zIndex: 10,
-						minHeight: 180,
-						backgroundColor: color,
-					}}
-				>
+				<Card style={[indexStyles.categoryCard1, {backgroundColor: color}]}>
 					<View style={{
 						height: 60,
 						backgroundColor: 'rgba(255, 255, 255, .35)',
@@ -82,19 +88,14 @@ const CategoryItem = (props) => {
 						paddingTop: METRICS.space,
 						flex: 1,
 					}}>
-
 						<Chunk style={{ flex: 0 }}>
 							<Text type="big" inverted>{category.name}</Text>
 							<Text type="small" style={{ textAlign: 'left' }} inverted>1,263 cards</Text>
 						</Chunk>
 					</Sectionless>
 				</Card>
-				<Card
-					style={{ marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9 }}
-				/>
-				<Card
-					style={{ marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8 }}
-				/>
+				<Card style={indexStyles.categoryCard2} />
+				<Card style={indexStyles.categoryCard3} />
 			</View>
 		</Chunk>
 

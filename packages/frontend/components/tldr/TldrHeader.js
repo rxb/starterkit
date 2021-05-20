@@ -245,6 +245,13 @@ function TldrHeader(props) {
 		}
 	}
 
+	// toggle search
+	const [searchVisible, setSearchVisible] = useState(false);
+	const toggleSearch = () => {
+		// maybe this is a case for shallow routing
+		setSearchVisible(!searchVisible);
+	}
+
 	return (
 		<Header position="static">
 			<Flex direction="row">
@@ -256,8 +263,22 @@ function TldrHeader(props) {
 						</Inline>
 					</Link>
 				</FlexItem>
+				
 				<FlexItem justify="center">
+					{/*
 					<TldrSearch />
+					*/}
+				</FlexItem>
+				<FlexItem
+					shrink
+					align="flex-end"
+					justify="center"
+				>
+					<Button
+						onPress={toggleSearch}
+						shape="Search"
+						color="secondary"
+					/>
 				</FlexItem>
 				<FlexItem
 					shrink
@@ -266,8 +287,7 @@ function TldrHeader(props) {
 				>
 					<Button
 						onPress={createButtonOnPress}
-						label="Create"
-						size="xsmall"
+						shape="File"
 						color="secondary"
 					/>
 				</FlexItem>
@@ -319,6 +339,27 @@ function TldrHeader(props) {
 					</Fragment>
 				</FlexItem>
 			</Flex>
+			{ searchVisible && 
+				<View style={{
+					position: 'absolute',
+					top: 0, bottom: 0, 
+					left: 0, right: 0,
+					backgroundColor: 'white'
+				}}>
+					<Flex>
+						<FlexItem justify="center">
+							<TldrSearch />
+						</FlexItem>
+						<FlexItem shrink>
+							<Button
+								onPress={toggleSearch}
+								shape="X"
+								color="secondary"
+								/>
+						</FlexItem>
+					</Flex>
+				</View>
+			}
 		</Header>
 
 	);
