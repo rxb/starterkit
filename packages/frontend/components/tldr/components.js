@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 // REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { addDropdown, addPrompt, addToast, addDelayedToast } from '@/actions';
+import { addDropdown, addPrompt, addToast, addDelayedToast, updateUi } from '@/actions';
 
 // SWR
 import { request, getTldrUrl, getCategoriesUrl } from '@/swr';
@@ -457,13 +457,12 @@ const catMatch = (s, categories) => {
 }
 
 
-export const TldrSearch = (props) => {
+export const TldrSearchInHeader = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	// not going to use SWR for this one
 	const [categories, setCategories] = useState([]);
 	const [searchResults, setSearchResults] = useState([]);
-	let categoriesData = [];
 	useEffect(() => {
 		request(getCategoriesUrl({ '$limit': 1000, '$sort[name]': 1 }))
 			.then(response => {
@@ -481,11 +480,11 @@ export const TldrSearch = (props) => {
 		if (ReactDOM.findDOMNode(searchOuter.current).contains(e.target)) {
 			return false;
 		}
-		setSearchFocus(false);
+		exitSearch();
 	});
 	const handleKeyPress = useCallback((e) => {
 		if (e.keyCode === 27) {
-			setSearchFocus(false);
+			exitSearch();
 		}
 	});
 	const cleanup = useCallback(() => {
@@ -503,11 +502,9 @@ export const TldrSearch = (props) => {
 		return cleanup;
 	}, [searchFocus]);
 
-	useEffect(() => {
-		if(props.autoFocus){
-			setSearchFocus(true);	
-		}
-	}, []);
+	const exitSearch = () => {
+		setSearchFocus(false);
+	}
 
 	const formState = useFormState({
 		initialFields: {
@@ -519,31 +516,13 @@ export const TldrSearch = (props) => {
 		<View
 			ref={searchOuter}
 		>
-			<TextInput
-				style={{
-					paddingVertical: 6,
-					borderRadius: 20,
-					marginVertical: 0
-				}}
-				wrapperStyle={{
-					// for autocomplete, maybe should be ported back
-					zIndex: 2,
-					backgroundColor: 'white',
-					marginVertical: METRICS.pseudoLineHeight
-				}}
-				spellCheck={false}
-				clearButtonMode="while-editing"
-				keyboard="web-search"
-				onChange={e => {
-					formState.setFieldValue('search', e.target.value)
-					setSearchResults(catMatch(e.target.value, categories));
-				}}
-				value={formState.getFieldValue('search')}
-				onFocus={() => {
-					setSearchFocus(true);
-				}}
-				autoFocus={props.autoFocus}
-			/>
+			<TldrSearchInput 
+				formState={formState} 
+				setSearchResults={setSearchResults} 
+				autoFocus={false} 
+				categories={categories}
+				exitSearch={exitSearch}
+				/>
 
 			<RevealBlock
 				visible={searchFocus}
@@ -551,7 +530,6 @@ export const TldrSearch = (props) => {
 				delay={10}
 				offset={20}
 				fromTop
-				added={props.autoFocus}
 			>
 				<View
 					style={{
@@ -565,28 +543,178 @@ export const TldrSearch = (props) => {
 					}}
 				>
 					<Sectionless>
-						{formState.getFieldValue('search') != '' &&
-							<Chunk>
-								{<Text>Search "{formState.getFieldValue('search')}"</Text>}
-							</Chunk>
-						}
-						{searchResults.map((item, i) => (
-							<Chunk key={i}>
-								<Link
-									href={getCategoryPageUrl({ categoryId: item.id })}
-									onPress={() => {
-										setSearchFocus(false);
-									}}
-								>
-									<Text>{item.name}</Text>
-									<Text type="micro" color="hint">{item.keywords}</Text>
-								</Link>
-							</Chunk>
-						))}
-
+						<TldrSearchResults
+							searchString={formState.getFieldValue('search')}
+							searchResults={searchResults}
+							exitSearch={exitSearch}
+							/>
 					</Sectionless>
 				</View>
 			</RevealBlock>
+	
 		</View>
+	);
+}
+
+export const TldrSearchOverlay = (props) => {
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+	const dispatch = useDispatch();
+	const ui = useSelector(state => state.ui);
+
+	// not going to use SWR for this one
+	const [categories, setCategories] = useState([]);
+	const [searchResults, setSearchResults] = useState([]);
+	useEffect(() => {
+		request(getCategoriesUrl({ '$limit': 1000, '$sort[name]': 1 }))
+			.then(response => {
+				setSearchResults(response.items)
+				setCategories(response.items)
+			})
+	}, []);
+
+	useEffect(()=> {
+		if(ui.searchOverlayVisible){
+			document.addEventListener("keydown", handleKeyPress, false);
+		}
+		else{
+			document.removeEventListener("keydown", handleKeyPress, false);
+		}
+		return () => {
+			document.removeEventListener("keydown", handleKeyPress, false);
+		}
+	}, [ui.searchOverlayVisible]);
+	const handleKeyPress = useCallback((e) => {
+		if (e.keyCode === 27) {
+			exitSearch();
+		}
+	});
+
+	const exitSearch = () => {
+		dispatch(updateUi({ searchOverlayVisible: false }));
+	} 
+	
+	const formState = useFormState({
+		initialFields: {
+			search: ''
+		}
+	})
+
+	if(!ui.searchOverlayVisible)
+		return false;
+
+	return (
+		<View style={{
+			position: 'absolute',
+			top: 0, left: 0, right: 0,
+			minHeight: '100vh',
+			zIndex: 2,
+			backgroundColor: 'white'
+		}}>
+			<Header>
+				<Flex>
+					<FlexItem justify="center">
+						<TldrSearchInput 
+							formState={formState} 
+							setSearchResults={setSearchResults} 
+							autoFocus={true} 
+							categories={categories}
+							exitSearch={exitSearch}
+							/>
+					</FlexItem>
+					<FlexItem shrink>
+						<Button
+							onPress={()=>{
+								exitSearch();
+							}}
+							shape="X"
+							color="secondary"
+							/>
+					</FlexItem>
+				</Flex>
+			</Header>
+			<Stripe>
+				<Bounds>
+					<Section>
+						<TldrSearchResults
+							searchString={formState.getFieldValue('search')}
+							searchResults={searchResults}
+							exitSearch={exitSearch}
+							/>
+					</Section>
+				</Bounds>
+			</Stripe>
+		</View>
+	);
+}
+
+const TldrSearchInput = (props) => {
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+
+	const {
+		formState,
+		setSearchResults,
+		autoFocus,
+		categories,
+		exitSearch
+	} = props;
+	return(
+		<TextInput
+			style={{
+				paddingVertical: 6,
+				borderRadius: 20,
+				marginVertical: 0
+			}}
+			wrapperStyle={{
+				// for autocomplete, maybe should be ported back
+				zIndex: 2,
+				backgroundColor: 'white',
+				marginVertical: METRICS.pseudoLineHeight
+			}}
+			spellCheck={false}
+			clearButtonMode="while-editing"
+			keyboard="web-search"
+			onKeyPress={e => {
+				if (e.keyCode === 27) {
+					exitSearch();
+				}
+			}}
+			onChange={e => {
+				formState.setFieldValue('search', e.target.value)
+				setSearchResults(catMatch(e.target.value, categories));
+			}}
+			value={formState.getFieldValue('search')}
+			autoFocus={autoFocus}
+		/>
+	)
+}
+
+
+const TldrSearchResults = (props) => {
+	const {
+		searchString,
+		searchResults,
+		exitSearch
+	} = props;
+	return(
+		<>
+		{searchString != '' &&
+			<Chunk>
+				{<Text>Search "{searchString}"</Text>}
+			</Chunk>
+		}
+		{searchResults.map((item, i) => (
+			<Chunk key={i}>
+				<Link
+					href={getCategoryPageUrl({ categoryId: item.id })}
+					onPress={() => {
+						exitSearch();
+					}}
+				>
+					<Text>{item.name}</Text>
+					<Text type="micro" color="hint">{item.keywords}</Text>
+				</Link>
+			</Chunk>
+		))}
+		</>
 	);
 }

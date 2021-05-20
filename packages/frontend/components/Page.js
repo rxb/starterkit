@@ -45,6 +45,7 @@ import {
 } from 'cinderblock';
 
 import LoginModal from './LoginModal';
+import {TldrSearchOverlay} from './tldr/components'; // TODO: make a 'connected' version of this
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
@@ -97,6 +98,7 @@ function Page(props) {
 
 			{/* global ui */}
 			<LoginModal />
+			<TldrSearchOverlay />
 			<ConnectedToaster />
 			<ConnectedPrompter />
 			<ConnectedDropdowner />

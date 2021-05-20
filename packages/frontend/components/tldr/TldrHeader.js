@@ -43,7 +43,7 @@ import {
 	useFormState,
 	View, ThemeContext
 } from 'cinderblock';
-import {TldrSearch} from './components';
+import {TldrSearchInHeader, TldrSearchOverlay} from './components';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import feathersClient from '@/components/FeathersClient'; // already instantiated so we can share
 import Router from 'next/router'
@@ -113,13 +113,6 @@ function TldrHeader(props) {
 		}
 	}
 
-	// toggle search
-	const [searchVisible, setSearchVisible] = useState(false);
-	const toggleSearch = () => {
-		// maybe this is a case for shallow routing
-		setSearchVisible(!searchVisible);
-	}
-
 	return (
 		<Header position="static">
 			<Flex direction="row">
@@ -134,7 +127,7 @@ function TldrHeader(props) {
 				
 				<FlexItem justify="center">
 					{/*
-					<TldrSearch />
+					<TldrSearchInHeader />
 					*/}
 				</FlexItem>
 				<FlexItem
@@ -143,7 +136,9 @@ function TldrHeader(props) {
 					justify="center"
 				>
 					<Button
-						onPress={toggleSearch}
+						onPress={()=>{
+							dispatch(updateUi({ searchOverlayVisible: true }))
+						}}
 						shape="Search"
 						color="secondary"
 					/>
@@ -207,27 +202,7 @@ function TldrHeader(props) {
 					</Fragment>
 				</FlexItem>
 			</Flex>
-			{ searchVisible && 
-				<View style={{
-					position: 'absolute',
-					top: 0, bottom: 0, 
-					left: 0, right: 0,
-					backgroundColor: 'white'
-				}}>
-					<Flex>
-						<FlexItem justify="center">
-							<TldrSearch autoFocus />
-						</FlexItem>
-						<FlexItem shrink>
-							<Button
-								onPress={toggleSearch}
-								shape="X"
-								color="secondary"
-								/>
-						</FlexItem>
-					</Flex>
-				</View>
-			}
+
 		</Header>
 
 	);
