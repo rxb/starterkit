@@ -105,48 +105,27 @@ const CategoryItem = (props) => {
 function TldrHome(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
-	const { categoryId } = props;
-	const isCategory = categoryId != undefined;
-
 	const dispatch = useDispatch();
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	const category = useSWR(isCategory ? getCategoryUrl(categoryId) : null);
-
-	const PAGE_SIZE = 12;
-	const tldrs = pageHelper(useSWRInfinite(isCategory ?
-		(index) => [getTldrsUrl({ categoryId, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken] : null
-	));
-
-	const categories = pageHelper(useSWR(!isCategory ?
-		getCategoriesUrl({ '$limit': 1000 }) : null, { initialData: props.categoriesData }
+	const categories = pageHelper(useSWR( getCategoriesUrl({ '$limit': 1000 }), { initialData: props.categoriesData }
 	));
 
 	// DIVERT TO ERROR PAGE
 	// error from getInitialProps or the swr
-	if (isCategory && (category.error || tldrs.error)) {
-		const error = category.error || tldrs.error;
+	if (categories.error) {
+		const error = categories.error;
 		return <ErrorPage statusCode={error.code} />
 	}
 
-
 	return (
 		<Page>
-
 			<TldrHeader />
-
-			{ !categoryId && categories.data &&
+				{ categories.data && 
 				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
-						{/*
-								<Section>
-									<Chunk>
-										<Text type="pageHead">Categories</Text>
-									</Chunk>
-								</Section>
-								*/}
-						<Section >
+						<Section>
 							<List
 								variant={{
 									small: 'grid',
@@ -168,65 +147,9 @@ function TldrHome(props) {
 								)}
 							/>
 						</Section>
-						<Section>
-						</Section>
 					</Bounds>
 				</Stripe>
-			}
-
-			{ (categoryId && category.data && tldrs.data) &&
-
-				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
-					<Bounds>
-						<Section>
-							<Chunk>
-								<Text type="pageHead">{category.data.name}</Text>
-							</Chunk>
-						</Section>
-						<Section border>
-							<Chunk>
-								<List
-									variant={{
-										small: 'grid',
-									}}
-									itemsInRow={{
-										small: 1,
-										medium: 2,
-										large: 4
-									}}
-									scrollItemWidth={300}
-									items={tldrs.data}
-									paginated={true}
-									renderItem={(item, i) => (
-										<Chunk key={i}>
-											{ !item.last &&
-												<Link href={getTldrPageUrl({ tldrId: item.id })}>
-													<TldrCardSmall
-														user={user}
-														tldr={item}
-														dispatch={dispatch}
-														mutate={tldrs.mutate}
-													/>
-												</Link>
-											}
-											{ item.last &&
-												<Link href={getTldrEditPageUrl({ categoryId: category.data.id })}>
-													<CreateTldrCardSmall />
-
-												</Link>
-											}
-										</Chunk>
-									)}
-								/>
-
-								<LoadMoreButton swr={tldrs} />
-
-							</Chunk>
-						</Section>
-					</Bounds>
-				</Stripe>
-
-			}
+				}
 		</Page>
 	);
 
@@ -236,20 +159,17 @@ function TldrHome(props) {
 TldrHome.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const { store, req, pathname, query } = context;
-	const { categoryId } = query;
 	const isServer = !!req;
 
 	try {
 		const categoriesData = (isServer) ? await request(getCategoriesUrl({ '$limit': 1000 })) : undefined;
 		return {
-			categoryId,
 			isServer,
 			categoriesData
 		}
 	}
 	catch (error) {
 		return {
-			categoryId,
 			isServer,
 			error: error
 		}

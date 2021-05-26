@@ -5,7 +5,8 @@ const buildUrl = (pageUrl, params) => {
 }
 
 export const getIndexPageUrl = (options) => buildUrl('/', options);
-export const getCategoryPageUrl = (options) => buildUrl('/', options);
+export const getCategoryPageUrl = (options) => buildUrl('/category', options);
+export const getSearchPageUrl = (options) => buildUrl('/search', options);
 export const getProfilePageUrl = (options) => buildUrl('/profile', options);
 export const getProfileEditPageUrl = (options) => buildUrl('/profileedit', options);
 export const getTldrPageUrl = (options) => buildUrl('/tldr', options);

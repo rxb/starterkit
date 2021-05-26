@@ -9,7 +9,7 @@ import { addDropdown, addPrompt, addToast, addDelayedToast, updateUi } from '@/a
 import { request, getTldrUrl, getCategoriesUrl } from '@/swr';
 
 // URLS
-import { getTldrEditPageUrl, getVersionEditPageUrl, saveLoginRedirect, getCategoryPageUrl } from './urls';
+import { getTldrEditPageUrl, getVersionEditPageUrl, getSearchPageUrl, getCategoryPageUrl } from './urls';
 
 import {
 	Avatar,
@@ -635,7 +635,7 @@ export const TldrSearchOverlay = (props) => {
 			</Header>
 			<Stripe>
 				<Bounds>
-					<Section>
+					<Section style={{paddingTop: METRICS.space/2}}>
 						<TldrSearchResults
 							searchString={formState.getFieldValue('search')}
 							searchResults={searchResults}
@@ -701,9 +701,16 @@ const TldrSearchResults = (props) => {
 	return(
 		<>
 		{searchString != '' &&
-			<Chunk>
-				{<Text>Search "{searchString}"</Text>}
-			</Chunk>
+			<Link
+				href={getSearchPageUrl({ q: searchString })}
+				onPress={() => {
+					exitSearch();
+				}}
+			>
+				<Chunk>
+					{<Text>Search "{searchString}"</Text>}
+				</Chunk>
+			</Link>
 		}
 		{searchResults.map((item, i) => (
 			<Chunk key={i}>

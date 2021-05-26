@@ -34,7 +34,8 @@ const operatorsAliases = {
   $any: Op.any,
   $all: Op.all,
   $values: Op.values,
-  $col: Op.col
+  $col: Op.col,
+  $match: Op.match // for postgresql tsvector
 };
 
 module.exports = function (app) {

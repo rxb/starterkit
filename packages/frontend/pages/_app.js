@@ -19,10 +19,7 @@ const { MEDIA_QUERY_PARAMS_SINGLE } = designConstants;
 const MediaProvider = initMediaProvider(MEDIA_QUERY_PARAMS_SINGLE);
 
 // CONFIG STYLES
-const METRICS = {
-	...styleConfig.METRICS,
-	fontFamily: 'Zapfino'
-}
+const METRICS = styleConfig.METRICS;
 const SWATCHES = styleConfig.SWATCHES;
 const themedStyleConfig = {
 	...styleConfig,
