@@ -29,31 +29,26 @@ module.exports = {
     const t = await queryInterface.sequelize.transaction();
     const tables = Object.keys(searchObjects);
     try {
-
       for (let i = 0; i < tables.length; i++) {
         const table = tables[i];
         await queryInterface.sequelize.query(`
               ALTER TABLE ${table} ADD COLUMN ${vectorName} TSVECTOR;
             `, { transaction: t })
 
-        console.log('1');
         await queryInterface.sequelize.query(`
                 UPDATE ${table} SET ${vectorName} = to_tsvector('english', ${searchObjects[table].join(" || ' ' || ")});
               `, { transaction: t })
 
-        console.log('2');
         await queryInterface.sequelize.query(`
                 CREATE INDEX ${table}_search ON ${table} USING gin(${vectorName});
               `, { transaction: t })
 
-        console.log('3');
         await queryInterface.sequelize.query(`
                 CREATE TRIGGER ${table}_vector_update
                 BEFORE INSERT OR UPDATE ON ${table}
                 FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger(${vectorName}, 'pg_catalog.english', ${searchObjects[table].join(', ')});
               `, { transaction: t })
 
-        console.log('4');
         await t.commit();
       }
     }
@@ -61,27 +56,35 @@ module.exports = {
       t.rollback()
       throw error;
     }
-    finally{
+    finally {
       return t;
     }
   },
 
-  down: async (queryInterface) => (
-    queryInterface.sequelize.transaction((t) =>
-      Promise.all(Object.keys(searchObjects).map((table) =>
-        queryInterface.sequelize.query(`
-          DROP TRIGGER ${table}_vector_update ON ${table};
-        `, { transaction: t })
-          .then(() =>
-            queryInterface.sequelize.query(`
-                DROP INDEX ${table}_search;
-              `, { transaction: t })
-          ).then(() =>
-            queryInterface.sequelize.query(`
-                ALTER TABLE ${table} DROP COLUMN ${vectorName};
-              `, { transaction: t })
-          )
-      ))
-    )
-  ),
+  down: async (queryInterface) => {
+    const t = await queryInterface.sequelize.transaction();
+    const tables = Object.keys(searchObjects);
+    try {
+      for (let i = 0; i < tables.length; i++) {
+        const table = tables[i];
+        await queryInterface.sequelize.query(`
+        DROP TRIGGER ${table}_vector_update ON ${table};
+      `, { transaction: t })
+        await queryInterface.sequelize.query(`
+              DROP INDEX ${table}_search;
+            `, { transaction: t })
+        await queryInterface.sequelize.query(`
+              ALTER TABLE ${table} DROP COLUMN ${vectorName};
+            `, { transaction: t })
+      }
+    }
+    catch (error) {
+      t.rollback()
+      throw error;
+    }
+    finally {
+      return t;
+    }
+
+  }
 };
