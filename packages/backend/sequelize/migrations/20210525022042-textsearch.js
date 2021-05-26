@@ -21,7 +21,7 @@ WHERE
 const vectorName = '_search';
 
 const searchObjects = {
-  tldrs: ['draftContent'],
+  tldrs: ['"draftContent"'],
 };
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
     const t = await queryInterface.sequelize.transaction();
     const tables = Object.keys(searchObjects);
     try {
-      
+
       for (let i = 0; i < tables.length; i++) {
         const table = tables[i];
         await queryInterface.sequelize.query(`
@@ -61,7 +61,9 @@ module.exports = {
       t.rollback()
       throw error;
     }
-
+    finally{
+      return t;
+    }
   },
 
   down: async (queryInterface) => (
