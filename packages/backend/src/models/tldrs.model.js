@@ -38,6 +38,9 @@ module.exports = function (app) {
     draftContent: {
       type: Sequelize.JSONB
     },
+    currentTldrVersionContent: {
+      type: Sequelize.JSONB
+    },
     versionsUsedCount: {
       type: DataTypes.INTEGER,
       allowNull: false,

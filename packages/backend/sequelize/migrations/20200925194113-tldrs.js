@@ -6,7 +6,8 @@ module.exports = {
       'tldrs', // table name
       'draftContent', // new field name
       {
-        type: Sequelize.JSONB
+        type: Sequelize.JSONB,
+        defaultValue: {}
       },
     )
   },

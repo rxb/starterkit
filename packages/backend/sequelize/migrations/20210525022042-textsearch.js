@@ -6,6 +6,7 @@
 //https://pgdash.io/blog/postgres-12-generated-columns.html
 //https://www.2ndquadrant.com/en/blog/generated-columns-in-postgresql-12/
 // https://stackoverflow.com/questions/58665794/possible-reason-to-include-a-tsvector-field
+// http://rachbelaid.com/postgres-full-text-search-is-good-enough/
 // to_tsquery expects explicit booleans between keywords, plainto_tsquery is more loosey goosey
 // generated columns can't pull in text from outside the table, so stored procedures generating the ts_vector column is better -- either of those then gets an index
 /*

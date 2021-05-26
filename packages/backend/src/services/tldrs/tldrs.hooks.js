@@ -78,6 +78,7 @@ const publishToVersion = (options) => {
       // update references in the tldr
       context.data.currentTldrVersionId = tldr_version.id;
       context.data.versionsUsedCount = newVersion;
+      context.data.currentTldrVersionContent = context.data.draftContent;
     }
     return context;
   }

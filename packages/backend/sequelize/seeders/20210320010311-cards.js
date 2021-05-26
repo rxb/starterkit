@@ -23,7 +23,9 @@ module.exports = {
     const categories = await queryInterface.sequelize.query(
       `SELECT id, name, "urlKey" from categories;`
     );
+
     console.log(categories[0]);
+
     await queryInterface.bulkInsert('tldrs', categories[0].flatMap((category, i) => {
       return [
         {
@@ -47,14 +49,31 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date()
         },
+        {
+          urlKey: `awesome-${category.urlKey}`,
+          categoryId: category.id,
+          authorId: authorId,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },  
+        {
+          urlKey: `special-${category.urlKey}`,
+          categoryId: category.id,
+          authorId: authorId,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }               
       ];
     }));
+    console.log('insert cards');
 
     // ####
     // fetch cards, add versions
     const cards = await queryInterface.sequelize.query(
       `SELECT id, "categoryId" from tldrs;`
     );
+    console.log('fetch cards');
+
     await queryInterface.bulkInsert('tldr_versions', cards[0].map((card, i) => {
       return {
         content: JSON.stringify({
@@ -68,13 +87,17 @@ module.exports = {
         updatedAt: new Date()
       }
     }));
+    console.log('insert versions');
+
 
     // ####
     // update tldrs with currentTldrVersionId
     // this is custom Postgres subqury magic
     return await queryInterface.sequelize.query(
-      `UPDATE tldrs SET "currentTldrVersionId" = subquery.id, "draftContent" = subquery.content FROM (SELECT id, "tldrId" AS tldrid, content FROM tldr_versions) AS subquery WHERE tldrs.id = subquery.tldrId`
+      `UPDATE tldrs SET "currentTldrVersionId" = subquery.id, "draftContent" = subquery.content, "curentTldrVersionContent" = subquery.content FROM (SELECT id, "tldrId" AS tldrid, content FROM tldr_versions) AS subquery WHERE tldrs.id = subquery.tldrId`
     );
+
+    console.log('reference versions');
 
   },
 
@@ -85,5 +108,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+     queryInterface.bulkDelete('tldrs', null, {});
+     queryInterface.bulkDelete('tldr_versions', null, {});
   }
 };
