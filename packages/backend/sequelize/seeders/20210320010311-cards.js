@@ -1,6 +1,9 @@
 'use strict';
 
 const loremIpsum = require("lorem-ipsum").loremIpsum;
+const getRandoSentence = (min, max) => {
+  return loremIpsum({sentenceLowerBound: min, sentenceUpperBound: max});
+}
 
 function titleCase(str) {
   str = str.toLowerCase().split(' ');
@@ -12,6 +15,29 @@ function titleCase(str) {
 
 const defaultSteps = [{ "body": "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "head": "Excepteur sint occaecat cupidatat", "note": "Well here we are with a note" }, { "body": "sed do eiusmod tempor incididunt ut labore Okay lets go", "head": "Lorem ipsum dolor sit amet, consectetur adipiscing elit", "note": "Well here we are with a note" }, { "body": "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed do eiusmod tempor incididunt ut labore Okay lets go", "head": "Excepteur sint occaecat cupidatat", "note": "Well here we are with a note" }, { "body": "sed do eiusmod tempor incididunt ut labore Okay lets go", "head": "Lorem ipsum dolor sit amet, consectetur adipiscing elit", "note": "Well here we are with a note" }, { "body": "Non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "head": "Excepteur sint occaecat cupidatat", "note": "Well here we are with a note" }];
 
+const buildSteps =  () => {
+  const steps = [];
+  for(let i=0; i<5; i++){
+    const headText = getRandoSentence(5, 8);
+    const bodyText = getRandoSentence(10, 15);
+    steps.push({
+      head: headText,
+      body: bodyText,
+      note: "Well here we are with a note"
+    });
+  }
+  return steps;
+}
+
+const buildTitle = () => {
+  const text = getRandoSentence(2, 4);
+  return titleCase(text);
+}
+
+const buildBlurb = () => {
+  const text = getRandoSentence(10, 16);
+  return text;
+}
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -75,17 +101,22 @@ module.exports = {
     console.log('fetch cards');
 
     await queryInterface.bulkInsert('tldr_versions', cards[0].map((card, i) => {
-      return {
+      const steps =  buildSteps();
+      const title =  buildTitle();
+      const blurb =  buildBlurb();
+      const cardVersion = {
         content: JSON.stringify({
-          steps: defaultSteps,
-          title: titleCase(loremIpsum({ count: 3, units: "words" })),
-          blurb: loremIpsum({ count: 1, units: "sentence", wordsPerSentence: { max: 16, min: 10 } })
+          steps: steps,
+          title: title,
+          blurb: blurb
         }),
         tldrId: card.id,
         version: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }
+      console.log(cardVersion);  
+      return cardVersion;
     }));
     console.log('insert versions');
 
