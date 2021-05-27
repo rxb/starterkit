@@ -94,7 +94,7 @@ module.exports = {
     // update tldrs with currentTldrVersionId
     // this is custom Postgres subqury magic
     return await queryInterface.sequelize.query(
-      `UPDATE tldrs SET "currentTldrVersionId" = subquery.id, "draftContent" = subquery.content, "curentTldrVersionContent" = subquery.content FROM (SELECT id, "tldrId" AS tldrid, content FROM tldr_versions) AS subquery WHERE tldrs.id = subquery.tldrId`
+      `UPDATE tldrs SET "currentTldrVersionId" = subquery.id, "draftContent" = subquery.content, "currentTldrVersionContent" = subquery.content FROM (SELECT id, "tldrId" AS tldrid, content FROM tldr_versions) AS subquery WHERE tldrs.id = subquery.tldrId`
     );
 
     console.log('reference versions');
