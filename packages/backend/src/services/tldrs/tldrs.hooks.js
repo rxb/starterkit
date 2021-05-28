@@ -136,7 +136,7 @@ const querySearch = () => {
       // have to drop into seqeulize config
       _.mergeWith(context.params.sequelize, {
         attributes: [
-          [sequelize.fn('ts_rank', '_search', tsquery), 'tsrank']
+          [sequelize.fn('ts_rank', sequelize.literal('"_search"'), tsquery), 'tsrank']
         ],
         order: [
           [sequelize.literal('tsrank'), 'DESC']
