@@ -129,13 +129,14 @@ const querySearch = () => {
       // create tsquery
       const tsquery = sequelize.fn('plainto_tsquery', context.params.query._search)
 
-      // change plain text into tsquery 
+      // change plain text from REST into a tsquery match
       context.params.query._search = {'$match': tsquery}
 
       // add rank to attributes, order by rank
-      // have to drop into seqeulize config
+      // have to drop into seqeulize config for this kind of stuff
       _.mergeWith(context.params.sequelize, {
         attributes: {
+          // include because it's additional not an explicit whitelist
           include: [
             [sequelize.fn('ts_rank', sequelize.literal('"_search"'), tsquery), 'tsrank']
           ]

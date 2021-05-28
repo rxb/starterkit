@@ -659,7 +659,15 @@ const TldrSearchInput = (props) => {
 		categories,
 		exitSearch
 	} = props;
+
+	const handleKeyPress = (e) => {
+		if (e.keyCode === 27) {
+			exitSearch();
+		}
+	}
+
 	return(
+		<form>
 		<TextInput
 			style={{
 				paddingVertical: 6,
@@ -675,11 +683,7 @@ const TldrSearchInput = (props) => {
 			spellCheck={false}
 			clearButtonMode="while-editing"
 			keyboard="web-search"
-			onKeyPress={e => {
-				if (e.keyCode === 27) {
-					exitSearch();
-				}
-			}}
+			onKeyPress={handleKeyPress}
 			onChange={e => {
 				formState.setFieldValue('search', e.target.value)
 				setSearchResults(catMatch(e.target.value, categories));
@@ -687,7 +691,12 @@ const TldrSearchInput = (props) => {
 			onFocus={onFocus}
 			value={formState.getFieldValue('search')}
 			autoFocus={autoFocus}
+			onSubmitEditing={()=>{
+				exitSearch();
+				Router.push({ pathname: getSearchPageUrl(), query: { q: formState.getFieldValue('search') } })
+			}}
 			/>
+			</form>
 	)
 }
 
