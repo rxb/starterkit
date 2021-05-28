@@ -132,15 +132,16 @@ const querySearch = () => {
       // change plain text into tsquery 
       context.params.query._search = {'$match': tsquery}
 
-      // add rank to attributes
+      // add rank to attributes, order by rank
+      // have to drop into seqeulize config
       _.mergeWith(context.params.sequelize, {
         attributes: [
           [sequelize.fn('ts_rank', '_search', tsquery), 'tsrank']
+        ],
+        order: [
+          [sequelize.literal('tsrank'), 'DESC']
         ]
       });
-
-      // order by rank
-      context.params.query.$sort = {'tsrank': -1};
     }
     return context;
   }
