@@ -65,7 +65,7 @@ function Category(props) {
 
 	const PAGE_SIZE = 12;
 	const tldrs = pageHelper(useSWRInfinite(
-		(index) => [getTldrsUrl({ $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken] 
+		(index) => [getTldrsUrl({_search: q, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken] 
 	));
 
 	// DIVERT TO ERROR PAGE
@@ -85,7 +85,7 @@ function Category(props) {
 					<Bounds>
 						<Section>
 							<Chunk>
-								<Text>Search results</Text>
+								<Text>{tldrs.data[0].total} search results</Text>
 								<Text type="pageHead">{q}</Text>
 							</Chunk>
 						</Section>

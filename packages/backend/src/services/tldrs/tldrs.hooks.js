@@ -121,6 +121,31 @@ const querySelfSaved = () => {
   }
 }
 
+const querySearch = () => {
+  return async (context) => {
+    if (context.params.query._search) {
+      const sequelize = context.app.get('sequelizeClient');
+
+      // create tsquery
+      const tsquery = sequelize.fn('plainto_tsquery', context.params.query._search)
+
+      // change plain text into tsquery 
+      context.params.query._search = {'$match': tsquery}
+
+      // add rank to attributes
+      _.mergeWith(context.params.sequelize, {
+        attributes: [
+          [sequelize.fn('ts_rank', '_search', tsquery), 'tsrank']
+        ]
+      });
+
+      // order by rank
+      context.params.query.$sort = {'tsrank': -1};
+    }
+    return context;
+  }
+}
+
 
 module.exports = {
   before: {
@@ -130,7 +155,8 @@ module.exports = {
       authenticate('jwt', 'anonymous'),
       populateTldrAssociations,
       noDraftsExceptForSelf(),
-      querySelfSaved()
+      querySelfSaved(),
+      querySearch()
     ],
     get: [
       allowAnonymous(),

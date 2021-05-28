@@ -1,9 +1,13 @@
 'use strict';
 
-const loremIpsum = require("lorem-ipsum").loremIpsum;
+
+const LoremIpsum = require("lorem-ipsum").LoremIpsum
+const lorem = new LoremIpsum();
 const getRandoSentence = (min, max) => {
-  return loremIpsum({sentenceLowerBound: min, sentenceUpperBound: max});
+  const wordCount = Math.floor(Math.random() * (max-min)) + min
+  return lorem.generateWords(wordCount);
 }
+
 
 function titleCase(str) {
   str = str.toLowerCase().split(' ');
