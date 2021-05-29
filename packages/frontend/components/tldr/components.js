@@ -476,17 +476,37 @@ export const TldrSearchInHeader = (props) => {
 	// cant just use blur because attempting to tap an autocomplete item would blur before tap
 	const searchOuter = useRef(null);
 	const [searchFocus, setSearchFocus] = useState(false);
+	
+	const [selectedIndex, setSelectedIndex] = useState(0);
+	const updateSelectedIndex = (offset) => {
+		setSelectedIndex(selectedIndex+offset);
+	}
+	const updateSelectedIndexRef = React.useRef(updateSelectedIndex);
+	updateSelectedIndexRef.current = updateSelectedIndex;
+
 	const handleDocumentClick = useCallback((e) => {
 		if (ReactDOM.findDOMNode(searchOuter.current).contains(e.target)) {
 			return false;
 		}
 		exitSearch();
 	});
-	const handleKeyPress = useCallback((e) => {
+
+	const handleKeyPress = (e) => {
 		if (e.keyCode === 27) {
+			// esc
 			exitSearch();
 		}
-	});
+		else if(e.keyCode === 40){
+			// down
+			e.preventDefault();
+			updateSelectedIndexRef.current(+1);
+		}
+		else if(e.keyCode === 38){
+			// up
+			e.preventDefault();
+			updateSelectedIndexRef.current(-1);
+		}
+	};
 	const cleanup = useCallback(() => {
 		document.removeEventListener('click', handleDocumentClick, false);
 		document.removeEventListener("keydown", handleKeyPress, false);
@@ -515,14 +535,16 @@ export const TldrSearchInHeader = (props) => {
 	return (
 		<View
 			ref={searchOuter}
-		>
+		>	
 			<TldrSearchInput 
 				formState={formState} 
 				setSearchResults={setSearchResults} 
 				autoFocus={false} 
 				categories={categories}
 				exitSearch={exitSearch}
-				onFocus={()=> setSearchFocus(true)}
+				setSelectedIndex={setSelectedIndex}
+				selectedIndex={selectedIndex}
+				onFocus={()=>setSearchFocus(true)}
 				/>
 
 			<RevealBlock
@@ -548,6 +570,7 @@ export const TldrSearchInHeader = (props) => {
 							searchString={formState.getFieldValue('search')}
 							searchResults={searchResults}
 							exitSearch={exitSearch}
+							selectedIndex={selectedIndex}
 							/>
 					</Sectionless>
 				</View>
@@ -650,6 +673,7 @@ export const TldrSearchOverlay = (props) => {
 
 const TldrSearchInput = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+	const inputRef = useRef();
 
 	const {
 		formState,
@@ -657,18 +681,26 @@ const TldrSearchInput = (props) => {
 		autoFocus,
 		onFocus = ()=>{},
 		categories,
-		exitSearch
+		exitSearch,
 	} = props;
 
-	const handleKeyPress = (e) => {
+	const handleKeyPress = (e) =>{
 		if (e.keyCode === 27) {
+			// esc
 			exitSearch();
+		}
+		else if(e.keyCode === 40){
+			// arrow down
+			// blur so autocomplete event handler can take over
+			e.preventDefault();
+			inputRef.current.blur();
 		}
 	}
 
 	return(
 		<form>
 		<TextInput
+			ref={inputRef}
 			style={{
 				paddingVertical: 6,
 				borderRadius: 20,
@@ -705,7 +737,8 @@ const TldrSearchResults = (props) => {
 	const {
 		searchString,
 		searchResults,
-		exitSearch
+		exitSearch,
+		selectedIndex
 	} = props;
 	return(
 		<>
@@ -722,7 +755,7 @@ const TldrSearchResults = (props) => {
 			</Link>
 		}
 		{searchResults.map((item, i) => (
-			<Chunk key={i}>
+			<Chunk key={i} style={{backgroundColor: selectedIndex == i ? 'blue' :'transparent'}}>
 				<Link
 					href={getCategoryPageUrl({ categoryId: item.id })}
 					onPress={() => {
