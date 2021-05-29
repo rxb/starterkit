@@ -49,7 +49,7 @@ import StyleSheet from 'react-native-media-query';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import Router, { useRouter } from 'next/router'
 import Markdown from 'markdown-to-jsx';
-
+import { v4 as uuid } from 'uuid';
 
 const smallCardMinHeight = 220;
 
@@ -459,7 +459,8 @@ const catMatch = (s, categories) => {
 
 export const TldrSearchInHeader = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-
+	
+	// CATEGORY DATA
 	// not going to use SWR for this one
 	const [categories, setCategories] = useState([]);
 	const [searchResults, setSearchResults] = useState([]);
@@ -471,26 +472,38 @@ export const TldrSearchInHeader = (props) => {
 			})
 	}, [])
 
-	// AUTOCOMPLETE
+	// ENTER / EXIT SEARCH MODE
 	// hide/show of autocomplete
 	// cant just use blur because attempting to tap an autocomplete item would blur before tap
+	const inputRef = useRef();
 	const searchOuter = useRef(null);
-	const [searchFocus, setSearchFocus] = useState(false);
+	const [searchFocus, _setSearchFocus] = useState(false);
+	const setSearchFocus = (focus) => {
+		_setSearchFocus(focus);
+		formState.setFieldValue('search', '');
+		if(focus){
+			inputRef.current.focus();
+		}
+		else{
+			inputRef.current.blur();
+		}
+	}
+	const exitSearch = () => {
+		setSelectedIndex(startingIndex);
+		setSearchFocus(false);
+	}
 	
-	const [selectedIndex, setSelectedIndex] = useState(0);
+	// SELECTED AUTOCOMPLETE ITEM
+	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
+	const startingIndex = -1;
+	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
 	const updateSelectedIndex = (offset) => {
 		setSelectedIndex(selectedIndex+offset);
 	}
 	const updateSelectedIndexRef = React.useRef(updateSelectedIndex);
 	updateSelectedIndexRef.current = updateSelectedIndex;
 
-	const handleDocumentClick = useCallback((e) => {
-		if (ReactDOM.findDOMNode(searchOuter.current).contains(e.target)) {
-			return false;
-		}
-		exitSearch();
-	});
-
+	// KEY PRESSES
 	const handleKeyPress = (e) => {
 		if (e.keyCode === 27) {
 			// esc
@@ -507,6 +520,16 @@ export const TldrSearchInHeader = (props) => {
 			updateSelectedIndexRef.current(-1);
 		}
 	};
+	
+	// OUTCLICK 
+	const handleDocumentClick = useCallback((e) => {
+		if (ReactDOM.findDOMNode(searchOuter.current).contains(e.target)) {
+			return false;
+		}
+		exitSearch();
+	});
+
+	// DOCUMENT EVENT LISTENERS 
 	const cleanup = useCallback(() => {
 		document.removeEventListener('click', handleDocumentClick, false);
 		document.removeEventListener("keydown", handleKeyPress, false);
@@ -522,13 +545,13 @@ export const TldrSearchInHeader = (props) => {
 		return cleanup;
 	}, [searchFocus]);
 
-	const exitSearch = () => {
-		setSearchFocus(false);
-	}
-
+	// FORMSTATE
 	const formState = useFormState({
 		initialFields: {
 			search: ''
+		},
+		onChange: (fields) => {
+			setSearchResults(catMatch(fields.search, categories));
 		}
 	})
 
@@ -537,13 +560,10 @@ export const TldrSearchInHeader = (props) => {
 			ref={searchOuter}
 		>	
 			<TldrSearchInput 
+				ref={inputRef}
 				formState={formState} 
-				setSearchResults={setSearchResults} 
 				autoFocus={false} 
-				categories={categories}
 				exitSearch={exitSearch}
-				setSelectedIndex={setSelectedIndex}
-				selectedIndex={selectedIndex}
 				onFocus={()=>setSearchFocus(true)}
 				/>
 
@@ -584,7 +604,20 @@ export const TldrSearchOverlay = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 	const dispatch = useDispatch();
 	const ui = useSelector(state => state.ui);
+	const inputRef = useRef();
 
+	// SELECTED AUTOCOMPLETE ITEM
+	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
+	const startingIndex = -1;
+	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
+	const updateSelectedIndex = (offset) => {
+		setSelectedIndex(selectedIndex+offset);
+	}
+	const updateSelectedIndexRef = React.useRef(updateSelectedIndex);
+	updateSelectedIndexRef.current = updateSelectedIndex;
+
+
+	// CATEGORY DATA
 	// not going to use SWR for this one
 	const [categories, setCategories] = useState([]);
 	const [searchResults, setSearchResults] = useState([]);
@@ -596,6 +629,7 @@ export const TldrSearchOverlay = (props) => {
 			})
 	}, []);
 
+	// DOCUMENT EVENT LISTENERS 
 	useEffect(()=> {
 		if(ui.searchOverlayVisible){
 			document.addEventListener("keydown", handleKeyPress, false);
@@ -607,19 +641,38 @@ export const TldrSearchOverlay = (props) => {
 			document.removeEventListener("keydown", handleKeyPress, false);
 		}
 	}, [ui.searchOverlayVisible]);
+
+	// KEY PRESSES
 	const handleKeyPress = useCallback((e) => {
 		if (e.keyCode === 27) {
 			exitSearch();
 		}
+		else if(e.keyCode === 40){
+			// down
+			e.preventDefault();
+			updateSelectedIndexRef.current(+1);
+		}
+		else if(e.keyCode === 38){
+			// up
+			e.preventDefault();
+			updateSelectedIndexRef.current(-1);
+		}
 	});
 
+	// EXIT SEARCH MODE
 	const exitSearch = () => {
+		setSelectedIndex(startingIndex);
+		formState.setFieldValue('search', '');
 		dispatch(updateUi({ searchOverlayVisible: false }));
 	} 
 	
+	// FORM STATE
 	const formState = useFormState({
 		initialFields: {
 			search: ''
+		},
+		onChange: (fields) => {
+			setSearchResults(catMatch(fields.search, categories));
 		}
 	})
 
@@ -638,10 +691,9 @@ export const TldrSearchOverlay = (props) => {
 				<Flex>
 					<FlexItem justify="center">
 						<TldrSearchInput 
+							ref={inputRef}
 							formState={formState} 
-							setSearchResults={setSearchResults} 
 							autoFocus={true} 
-							categories={categories}
 							exitSearch={exitSearch}
 							/>
 					</FlexItem>
@@ -663,6 +715,7 @@ export const TldrSearchOverlay = (props) => {
 							searchString={formState.getFieldValue('search')}
 							searchResults={searchResults}
 							exitSearch={exitSearch}
+							selectedIndex={selectedIndex}
 							/>
 					</Section>
 				</Bounds>
@@ -671,16 +724,16 @@ export const TldrSearchOverlay = (props) => {
 	);
 }
 
-const TldrSearchInput = (props) => {
+
+
+const _TldrSearchInput = (props) => {	
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-	const inputRef = useRef();
 
 	const {
+		innerRef,
 		formState,
-		setSearchResults,
 		autoFocus,
 		onFocus = ()=>{},
-		categories,
 		exitSearch,
 	} = props;
 
@@ -693,14 +746,14 @@ const TldrSearchInput = (props) => {
 			// arrow down
 			// blur so autocomplete event handler can take over
 			e.preventDefault();
-			inputRef.current.blur();
+			innerRef.current.blur();
 		}
 	}
 
 	return(
 		<form>
 		<TextInput
-			ref={inputRef}
+			ref={innerRef}
 			style={{
 				paddingVertical: 6,
 				borderRadius: 20,
@@ -718,7 +771,6 @@ const TldrSearchInput = (props) => {
 			onKeyPress={handleKeyPress}
 			onChange={e => {
 				formState.setFieldValue('search', e.target.value)
-				setSearchResults(catMatch(e.target.value, categories));
 			}}
 			onFocus={onFocus}
 			value={formState.getFieldValue('search')}
@@ -730,10 +782,16 @@ const TldrSearchInput = (props) => {
 			/>
 			</form>
 	)
-}
+};
+
+const TldrSearchInput = React.forwardRef((props, ref) => {
+	return <_TldrSearchInput innerRef={ref} {...props} />
+});
 
 
 const TldrSearchResults = (props) => {
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+
 	const {
 		searchString,
 		searchResults,
@@ -755,16 +813,23 @@ const TldrSearchResults = (props) => {
 			</Link>
 		}
 		{searchResults.map((item, i) => (
-			<Chunk key={i} style={{backgroundColor: selectedIndex == i ? 'blue' :'transparent'}}>
-				<Link
-					href={getCategoryPageUrl({ categoryId: item.id })}
-					onPress={() => {
-						exitSearch();
-					}}
-				>
-					<Text>{item.name}</Text>
-					<Text type="micro" color="hint">{item.keywords}</Text>
-				</Link>
+			<Chunk key={i}>
+				<View style={{
+						backgroundColor: selectedIndex == i ? SWATCHES.shade :'transparent',
+						padding: METRICS.space/2,
+						margin: -1*METRICS.space/2,
+						borderRadius: METRICS.borderRadius
+					}}>
+					<Link
+						href={getCategoryPageUrl({ categoryId: item.id })}
+						onPress={() => {
+							exitSearch();
+						}}
+					>
+						<Text>{item.name}</Text>
+						<Text type="micro" color="hint">{item.keywords}</Text>
+					</Link>
+				</View>
 			</Chunk>
 		))}
 		</>
