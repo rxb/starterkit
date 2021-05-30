@@ -451,9 +451,10 @@ export const LoadMoreButton = (props) => {
 const catMatch = (s, categories) => {
 	const p = Array.from(s).reduce((a, v, i) => `${a}[^${s.substr(i)}]*?${v}`, '');
 	const re = RegExp(p, 'i');
-	return categories.filter(v => {
+	const newCats = categories.filter(v => {
 		return (v.name && v.name.match(re)) || (v.keywords && v.keywords.match(re));
 	});
+	return s ? [{'_type': 'search', searchString: s}].concat(newCats) : newCats;
 }
 
 
@@ -467,8 +468,12 @@ export const TldrSearchInHeader = (props) => {
 	useEffect(() => {
 		request(getCategoriesUrl({ '$limit': 1000, '$sort[name]': 1 }))
 			.then(response => {
-				setSearchResults(response.items)
-				setCategories(response.items)
+				const categories = response.items.map(item => ({
+					...item, 
+					'_url': getCategoryPageUrl({ categoryId: item.id })
+				}));
+				setSearchResults(categories)
+				setCategories(categories)
 			})
 	}, [])
 
@@ -479,29 +484,42 @@ export const TldrSearchInHeader = (props) => {
 	const searchOuter = useRef(null);
 	const [searchFocus, _setSearchFocus] = useState(false);
 	const setSearchFocus = (focus) => {
-		_setSearchFocus(focus);
-		formState.setFieldValue('search', '');
+		if(!searchFocus || !focus){
+			// don't clear if search is visible and staying visible
+			formState.setFieldValue('search', '');
+		}
 		if(focus){
+			setSelectedIndex(startingIndex);
 			inputRef.current.focus();
 		}
 		else{
 			inputRef.current.blur();
 		}
+		_setSearchFocus(focus);
 	}
 	const exitSearch = () => {
-		setSelectedIndex(startingIndex);
 		setSearchFocus(false);
 	}
 	
 	// SELECTED AUTOCOMPLETE ITEM
 	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
-	const startingIndex = -1;
+	const startingIndex = 0;
 	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
 	const updateSelectedIndex = (offset) => {
 		setSelectedIndex(selectedIndex+offset);
 	}
 	const updateSelectedIndexRef = React.useRef(updateSelectedIndex);
 	updateSelectedIndexRef.current = updateSelectedIndex;
+
+	// CHOOSE SELECTED INDEX
+	// again with the event handlers only getting first render
+	const chooseSelectedIndex = () => {
+		exitSearch();
+		Router.push(searchResults[selectedIndex]._url);
+	}
+	const chooseSelectedIndexRef = React.useRef(chooseSelectedIndex);
+	chooseSelectedIndexRef.current = chooseSelectedIndex;
+
 
 	// KEY PRESSES
 	const handleKeyPress = (e) => {
@@ -518,6 +536,11 @@ export const TldrSearchInHeader = (props) => {
 			// up
 			e.preventDefault();
 			updateSelectedIndexRef.current(-1);
+		}
+		else if(e.keyCode === 13){
+			// enter
+			e.preventDefault();
+			chooseSelectedIndexRef.current();
 		}
 	};
 	
@@ -608,7 +631,7 @@ export const TldrSearchOverlay = (props) => {
 
 	// SELECTED AUTOCOMPLETE ITEM
 	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
-	const startingIndex = -1;
+	const startingIndex = 0;
 	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
 	const updateSelectedIndex = (offset) => {
 		setSelectedIndex(selectedIndex+offset);
@@ -616,6 +639,14 @@ export const TldrSearchOverlay = (props) => {
 	const updateSelectedIndexRef = React.useRef(updateSelectedIndex);
 	updateSelectedIndexRef.current = updateSelectedIndex;
 
+	// CHOOSE SELECTED INDEX
+	// again with the event handlers only getting first render
+	const chooseSelectedIndex = () => {
+		exitSearch();
+		Router.push(searchResults[selectedIndex]._url);
+	}
+	const chooseSelectedIndexRef = React.useRef(chooseSelectedIndex);
+	chooseSelectedIndexRef.current = chooseSelectedIndex;
 
 	// CATEGORY DATA
 	// not going to use SWR for this one
@@ -624,8 +655,12 @@ export const TldrSearchOverlay = (props) => {
 	useEffect(() => {
 		request(getCategoriesUrl({ '$limit': 1000, '$sort[name]': 1 }))
 			.then(response => {
-				setSearchResults(response.items)
-				setCategories(response.items)
+				const categories = response.items.map(item => ({
+					...item, 
+					'_url': getCategoryPageUrl({ categoryId: item.id })
+				}));
+				setSearchResults(categories)
+				setCategories(categories)
 			})
 	}, []);
 
@@ -657,11 +692,15 @@ export const TldrSearchOverlay = (props) => {
 			e.preventDefault();
 			updateSelectedIndexRef.current(-1);
 		}
+		else if(e.keyCode === 13){
+			// enter
+			e.preventDefault();
+			chooseSelectedIndexRef.current();
+		}
 	});
 
 	// EXIT SEARCH MODE
 	const exitSearch = () => {
-		setSelectedIndex(startingIndex);
 		formState.setFieldValue('search', '');
 		dispatch(updateUi({ searchOverlayVisible: false }));
 	} 
@@ -793,25 +832,12 @@ const TldrSearchResults = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	const {
-		searchString,
 		searchResults,
 		exitSearch,
 		selectedIndex
 	} = props;
 	return(
 		<>
-		{searchString != '' &&
-			<Link
-				href={getSearchPageUrl({ q: searchString })}
-				onPress={() => {
-					exitSearch();
-				}}
-			>
-				<Chunk>
-					{<Text>Search "{searchString}"</Text>}
-				</Chunk>
-			</Link>
-		}
 		{searchResults.map((item, i) => (
 			<Chunk key={i}>
 				<View style={{
@@ -821,13 +847,24 @@ const TldrSearchResults = (props) => {
 						borderRadius: METRICS.borderRadius
 					}}>
 					<Link
-						href={getCategoryPageUrl({ categoryId: item.id })}
+						href={item._url}
 						onPress={() => {
 							exitSearch();
 						}}
 					>
-						<Text>{item.name}</Text>
-						<Text type="micro" color="hint">{item.keywords}</Text>
+						<Flex nbsp>
+							<FlexItem shrink nbsp justify="center">
+								<Icon 
+									shape={item._type=="search" ? "Search" : "List"}
+									size="small"
+									color={SWATCHES.textHint}
+									/>								
+							</FlexItem>
+							<FlexItem nbsp>
+								<Text>{ item._type=="search" ? `Search "${item.searchString}"` : item.name}</Text>
+								<Text type="micro" color="hint">{item.keywords}</Text>
+							</FlexItem>
+						</Flex>
 					</Link>
 				</View>
 			</Chunk>
