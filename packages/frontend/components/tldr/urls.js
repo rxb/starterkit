@@ -30,3 +30,21 @@ export const getLoginRedirect = () => {
 export const saveLoginRedirect = (redirect) => {
 	localStorage.setItem(loginRedirectKey, JSON.stringify(redirect));
 }
+
+import { updateUi } from '@/actions';
+export const detourIfAuthNeeded = (url, authentication, dispatch, Router) => {
+	if (!authentication.accessToken) {
+		dispatch(updateUi({
+			logInModalVisible: true,
+			logInModalOptions: {
+				redirect: { url },
+				callbackForNonRedirectFlow: () => {
+					Router.push( url )
+				}
+			}
+		}));
+	}
+	else{
+		Router.push( url )
+	}
+}

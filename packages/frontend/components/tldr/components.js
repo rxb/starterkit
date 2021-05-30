@@ -503,7 +503,7 @@ export const TldrSearchInHeader = (props) => {
 	
 	// SELECTED AUTOCOMPLETE ITEM
 	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
-	const startingIndex = 0;
+	const startingIndex = -1;
 	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
 	const updateSelectedIndex = (offset) => {
 		setSelectedIndex(selectedIndex+offset);
@@ -514,8 +514,12 @@ export const TldrSearchInHeader = (props) => {
 	// CHOOSE SELECTED INDEX
 	// again with the event handlers only getting first render
 	const chooseSelectedIndex = () => {
-		exitSearch();
-		Router.push(searchResults[selectedIndex]._url);
+		// going to let form submit handle text search since this might lag
+		const url = searchResults[selectedIndex]?._url;
+		if(url){
+			exitSearch();
+			Router.push(url);
+		}
 	}
 	const chooseSelectedIndexRef = React.useRef(chooseSelectedIndex);
 	chooseSelectedIndexRef.current = chooseSelectedIndex;
@@ -538,8 +542,7 @@ export const TldrSearchInHeader = (props) => {
 			updateSelectedIndexRef.current(-1);
 		}
 		else if(e.keyCode === 13){
-			// enter
-			e.preventDefault();
+			// enter (don't preventDefault, form submit needs it)
 			chooseSelectedIndexRef.current();
 		}
 	};
@@ -574,7 +577,9 @@ export const TldrSearchInHeader = (props) => {
 			search: ''
 		},
 		onChange: (fields) => {
-			setSearchResults(catMatch(fields.search, categories));
+			const s = fields.search;
+			setSearchResults(catMatch(s, categories));
+			setSelectedIndex( s.length ? 0 : -1);
 		}
 	})
 
@@ -588,6 +593,7 @@ export const TldrSearchInHeader = (props) => {
 				autoFocus={false} 
 				exitSearch={exitSearch}
 				onFocus={()=>setSearchFocus(true)}
+				onKeyPress={handleKeyPress}
 				/>
 
 			<RevealBlock
@@ -631,7 +637,7 @@ export const TldrSearchOverlay = (props) => {
 
 	// SELECTED AUTOCOMPLETE ITEM
 	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
-	const startingIndex = 0;
+	const startingIndex = -1;
 	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
 	const updateSelectedIndex = (offset) => {
 		setSelectedIndex(selectedIndex+offset);
@@ -642,8 +648,12 @@ export const TldrSearchOverlay = (props) => {
 	// CHOOSE SELECTED INDEX
 	// again with the event handlers only getting first render
 	const chooseSelectedIndex = () => {
-		exitSearch();
-		Router.push(searchResults[selectedIndex]._url);
+		// going to let form submit handle text search since this might lag
+		const url = searchResults[selectedIndex]?._url;
+		if(url){
+			exitSearch();
+			Router.push(url);
+		}
 	}
 	const chooseSelectedIndexRef = React.useRef(chooseSelectedIndex);
 	chooseSelectedIndexRef.current = chooseSelectedIndex;
@@ -693,8 +703,7 @@ export const TldrSearchOverlay = (props) => {
 			updateSelectedIndexRef.current(-1);
 		}
 		else if(e.keyCode === 13){
-			// enter
-			e.preventDefault();
+			// enter (don't preventDefault, form submit needs it)
 			chooseSelectedIndexRef.current();
 		}
 	});
@@ -711,7 +720,9 @@ export const TldrSearchOverlay = (props) => {
 			search: ''
 		},
 		onChange: (fields) => {
-			setSearchResults(catMatch(fields.search, categories));
+			const s = fields.search;
+			setSearchResults(catMatch(s, categories));
+			setSelectedIndex( s.length ? 0 : -1);
 		}
 	})
 
@@ -734,6 +745,7 @@ export const TldrSearchOverlay = (props) => {
 							formState={formState} 
 							autoFocus={true} 
 							exitSearch={exitSearch}
+							onKeyPress={handleKeyPress}
 							/>
 					</FlexItem>
 					<FlexItem shrink>
@@ -774,19 +786,17 @@ const _TldrSearchInput = (props) => {
 		autoFocus,
 		onFocus = ()=>{},
 		exitSearch,
+		onKeyPress = ()=>{}
 	} = props;
 
 	const handleKeyPress = (e) =>{
-		if (e.keyCode === 27) {
-			// esc
-			exitSearch();
-		}
-		else if(e.keyCode === 40){
+		if(e.keyCode === 40){
 			// arrow down
 			// blur so autocomplete event handler can take over
 			e.preventDefault();
 			innerRef.current.blur();
 		}
+		onKeyPress(e); 
 	}
 
 	return(

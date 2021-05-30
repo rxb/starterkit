@@ -6,12 +6,11 @@ import { request, getCategoriesUrl } from '@/swr';
 import useSWR, { mutate } from 'swr';
 
 // REDUX
-// REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { addToast, updateUi } from '@/actions';
 
 // URLS
-import { getProfilePageUrl, getProfileEditPageUrl, getTldrEditPageUrl, getIndexPageUrl, getCategoryPageUrl, getSavedPageUrl } from './urls';
+import { detourIfAuthNeeded, getProfilePageUrl, getProfileEditPageUrl, getTldrEditPageUrl, getIndexPageUrl, getCategoryPageUrl, getSavedPageUrl } from './urls';
 
 // COMPONENTS
 import {
@@ -95,22 +94,9 @@ function TldrHeader(props) {
 	const user = authentication.user || {};
 	const ui = useSelector(state => state.ui);
 
-	// maybe abstract this out?
+	// auth action with redirect through auth if needed	
 	const createButtonOnPress = () => {
-		if (!authentication.accessToken) {
-			dispatch(updateUi({
-				logInModalVisible: true,
-				logInModalOptions: {
-					redirect: { pathname: getTldrEditPageUrl() },
-					callbackForNonRedirectFlow: () => {
-						Router.push({ pathname: getTldrEditPageUrl() })
-					}
-				}
-			}));
-		}
-		else{
-			Router.push({ pathname: getTldrEditPageUrl() })
-		}
+		detourIfAuthNeeded( getTldrEditPageUrl(), authentication, dispatch, Router);
 	}
 
 	return (

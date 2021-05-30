@@ -10,7 +10,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
 // URLS
-import { getIndexPageUrl, getCategoryPageUrl, getTldrPageUrl, getTldrEditPageUrl } from '../../components/tldr/urls';
+import { detourIfAuthNeeded, getIndexPageUrl, getCategoryPageUrl, getTldrPageUrl, getTldrEditPageUrl } from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -43,14 +43,13 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
-import { TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton } from '../../components/tldr/components';
-
+import { TldrCardSmall, CreateTldrCardSmall, Emptiness, LoadMoreButton } from '../../components/tldr/components';
 
 // SCREEN-SPECIFIC 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
-
+import Router from 'next/router'
 
 
 function Category(props) {
@@ -85,11 +84,12 @@ function Category(props) {
 					<Bounds>
 						<Section>
 							<Chunk>
-								<Text>{tldrs.data[0].total} search results</Text>
+								<Text>{tldrs.total > 0 ? `${tldrs.total} search results` : 'Search results'}</Text>
 								<Text type="pageHead">{q}</Text>
 							</Chunk>
 						</Section>
 						<Section border>
+							{ tldrs.total > 0 && 
 							<Chunk>
 								<List
 									variant={{
@@ -128,6 +128,34 @@ function Category(props) {
 								<LoadMoreButton swr={tldrs} />
 
 							</Chunk>
+							}
+					
+							{ tldrs.total == 0 && 
+								<Chunk>
+									<Emptiness
+										label={`No cards for "${q}" yet`}
+										>
+										<Chunk>
+											<Button
+												onPress={()=>{
+													detourIfAuthNeeded( getTldrEditPageUrl(), authentication, dispatch, Router);
+												}}
+												label="Create a card"
+												size="small"
+												style={{alignSelf: 'center'}}
+												/>
+											<Button
+												color="secondary"
+												href={getIndexPageUrl()}
+												label="Go explore cards"
+												size="small"
+												style={{alignSelf: 'center'}}
+												/>
+										</Chunk>
+									</Emptiness>
+								</Chunk>
+							}
+
 						</Section>
 					</Bounds>
 				</Stripe>
