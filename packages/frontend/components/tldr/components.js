@@ -457,12 +457,16 @@ const catMatch = (s, categories) => {
 	return s ? [{'_type': 'search', searchString: s}].concat(newCats) : newCats;
 }
 
-
-export const TldrSearchInHeader = (props) => {
+export const TldrSearch = (props) => {
+	const { variant = 'header' } = props;
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+
+	const dispatch = useDispatch();
+	const ui = useSelector(state => state.ui);
+	const inputRef = useRef();
 	
-	// CATEGORY DATA
-	// not going to use SWR for this one
+	// FETCH CATEGORY DATA
+	// once on mount, don't use SWR
 	const [categories, setCategories] = useState([]);
 	const [searchResults, setSearchResults] = useState([]);
 	useEffect(() => {
@@ -477,99 +481,148 @@ export const TldrSearchInHeader = (props) => {
 			})
 	}, [])
 
-	// ENTER / EXIT SEARCH MODE
-	// hide/show of autocomplete
-	// cant just use blur because attempting to tap an autocomplete item would blur before tap
-	const inputRef = useRef();
+	// KEY PRESSES
+	const _handleKeyPress = (e) => {
+		if(searchMode){
+			if (e.keyCode === 27) {
+				// esc
+				exitSearch();
+			}
+			else if(e.keyCode === 40){
+				// down
+				e.preventDefault();
+				updateSelectedIndex(+1);
+			}
+			else if(e.keyCode === 38){
+				// up
+				e.preventDefault();
+				updateSelectedIndex(-1);
+			}
+			else if(e.keyCode === 13){
+				// enter (don't preventDefault, form submit needs it)
+				chooseSelectedIndex();
+			}
+		}
+	};
+	// event handlers only get first render
+	const handleKeyPressRef = useRef(_handleKeyPress);
+	handleKeyPressRef.current = _handleKeyPress;
+	const handleKeyPress = (e) => handleKeyPressRef.current(e);
+
+
+	// OUTCLICK 
 	const searchOuter = useRef(null);
-	const [searchFocus, _setSearchFocus] = useState(false);
-	const setSearchFocus = (focus) => {
-		if(!searchFocus || !focus){
-			// don't clear if search is visible and staying visible
+	const _handleDocumentClick = (e) => {
+		if(searchMode && variant=='header'){
+			if (ReactDOM.findDOMNode(searchOuter.current).contains(e.target)) {
+				return false;
+			}
+			console.log('outclick'); // because the old one is still active
+			exitSearch();
+		}
+	};
+	// event handlers only get first render
+	const handleDocumentClickRef = useRef(_handleDocumentClick);
+	handleDocumentClickRef.current = _handleDocumentClick;
+	const handleDocumentClick = (e) => handleDocumentClickRef.current(e);
+
+
+
+	// SEARCH MODE ACTIVATED OR NOT
+	// check on mount, also on ui state change
+	const [searchMode, _setSearchMode] = useState();
+	const setSearchMode = (mode) => {
+		if(searchMode != mode){
 			formState.setFieldValue('search', '');
 		}
-		if(focus){
-			setSelectedIndex(startingIndex);
-			inputRef.current.focus();
-		}
-		else{
-			inputRef.current.blur();
-		}
-		_setSearchFocus(focus);
-	}
-	const exitSearch = () => {
-		setSearchFocus(false);
+		setSelectedIndex( formState.getFieldValue('search') ? 0 : startingIndex);
+		_setSearchMode(mode);
 	}
 	
+	// WATCH UI for SEARCH MODE
+	useEffect(()=>{
+		if(variant == 'header'){
+			setSearchMode(ui.searchHeaderActive);
+		}
+		else if(variant == 'overlay'){
+			setSearchMode(ui.searchOverlayActive);
+		}
+	}, [ui.searchOverlayActive, ui.searchHeaderActive]);
+
+	// EXIT SEARCH
+	const exitSearch = () => {
+		if(variant == 'header'){
+			dispatch(updateUi({ searchHeaderActive: false }));
+		}
+		else if(variant == 'overlay'){
+			dispatch(updateUi({ searchOverlayActive: false }));
+		}
+	}
+
+	// SET UP EVENT LISTENERS
+	// once, on mount
+	const cleanup = () => {
+		console.log('remove listeners');
+		document.removeEventListener('click', handleDocumentClick, false);
+		document.removeEventListener("keydown", handleKeyPress, false);
+	}
+	useEffect(() => {
+		if(searchMode){
+			console.log('add listeners');
+			document.addEventListener('click', handleDocumentClick, false);
+			document.addEventListener("keydown", handleKeyPress, false);	
+		}
+		else{
+			cleanup();
+		}
+		return cleanup;
+	}, [searchMode]);
+
+
+	// HANDLE SEARCH FOCUS
+	const handleSearchFocus = () => {
+		if(variant=='header'){
+			setSearchMode(true);
+		}
+	}
+
+	// EXPLICITLY SET SEARCH FOCUS
+	const setSearchFocus = (focus) => {
+		if(focus){
+			inputRef.current?.focus();
+			handleSearchFocus();
+		}
+		else{
+			inputRef.current?.blur();
+		}
+	}
+
 	// SELECTED AUTOCOMPLETE ITEM
 	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
 	const startingIndex = -1;
 	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
 	const updateSelectedIndex = (offset) => {
-		setSelectedIndex(selectedIndex+offset);
+		if(selectedIndex+offset <= startingIndex){
+			setSelectedIndex(startingIndex);
+			setSearchFocus(true);
+		}
+		else if(selectedIndex+offset >= searchResults.length){
+			setSelectedIndex(0);
+		}
+		else{
+			setSelectedIndex(selectedIndex+offset);
+		}
 	}
-	const updateSelectedIndexRef = React.useRef(updateSelectedIndex);
-	updateSelectedIndexRef.current = updateSelectedIndex;
 
 	// CHOOSE SELECTED INDEX
-	// again with the event handlers only getting first render
 	const chooseSelectedIndex = () => {
 		// going to let form submit handle text search since this might lag
 		const url = searchResults[selectedIndex]?._url;
 		if(url){
-			exitSearch();
 			Router.push(url);
 		}
 	}
-	const chooseSelectedIndexRef = React.useRef(chooseSelectedIndex);
-	chooseSelectedIndexRef.current = chooseSelectedIndex;
 
-
-	// KEY PRESSES
-	const handleKeyPress = (e) => {
-		if (e.keyCode === 27) {
-			// esc
-			exitSearch();
-		}
-		else if(e.keyCode === 40){
-			// down
-			e.preventDefault();
-			updateSelectedIndexRef.current(+1);
-		}
-		else if(e.keyCode === 38){
-			// up
-			e.preventDefault();
-			updateSelectedIndexRef.current(-1);
-		}
-		else if(e.keyCode === 13){
-			// enter (don't preventDefault, form submit needs it)
-			chooseSelectedIndexRef.current();
-		}
-	};
-	
-	// OUTCLICK 
-	const handleDocumentClick = useCallback((e) => {
-		if (ReactDOM.findDOMNode(searchOuter.current).contains(e.target)) {
-			return false;
-		}
-		exitSearch();
-	});
-
-	// DOCUMENT EVENT LISTENERS 
-	const cleanup = useCallback(() => {
-		document.removeEventListener('click', handleDocumentClick, false);
-		document.removeEventListener("keydown", handleKeyPress, false);
-	});
-	useEffect(() => {
-		if (searchFocus) {
-			document.addEventListener('click', handleDocumentClick, false);
-			document.addEventListener("keydown", handleKeyPress, false);
-		}
-		else {
-			cleanup();
-		}
-		return cleanup;
-	}, [searchFocus]);
 
 	// FORMSTATE
 	const formState = useFormState({
@@ -583,21 +636,21 @@ export const TldrSearchInHeader = (props) => {
 		}
 	})
 
-	return (
-		<View
-			ref={searchOuter}
-		>	
+
+
+	// HEADER
+	if (variant == 'header'){
+		return (
+		<View ref={searchOuter}>	
 			<TldrSearchInput 
 				ref={inputRef}
 				formState={formState} 
 				autoFocus={false} 
-				exitSearch={exitSearch}
-				onFocus={()=>setSearchFocus(true)}
+				onFocus={handleSearchFocus}
 				onKeyPress={handleKeyPress}
 				/>
-
 			<RevealBlock
-				visible={searchFocus}
+				visible={searchMode}
 				duration={60}
 				delay={10}
 				offset={20}
@@ -618,163 +671,65 @@ export const TldrSearchInHeader = (props) => {
 						<TldrSearchResults
 							searchString={formState.getFieldValue('search')}
 							searchResults={searchResults}
-							exitSearch={exitSearch}
 							selectedIndex={selectedIndex}
 							/>
 					</Sectionless>
 				</View>
 			</RevealBlock>
-	
 		</View>
-	);
-}
-
-export const TldrSearchOverlay = (props) => {
-	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-	const dispatch = useDispatch();
-	const ui = useSelector(state => state.ui);
-	const inputRef = useRef();
-
-	// SELECTED AUTOCOMPLETE ITEM
-	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
-	const startingIndex = -1;
-	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
-	const updateSelectedIndex = (offset) => {
-		setSelectedIndex(selectedIndex+offset);
+		)
 	}
-	const updateSelectedIndexRef = React.useRef(updateSelectedIndex);
-	updateSelectedIndexRef.current = updateSelectedIndex;
 
-	// CHOOSE SELECTED INDEX
-	// again with the event handlers only getting first render
-	const chooseSelectedIndex = () => {
-		// going to let form submit handle text search since this might lag
-		const url = searchResults[selectedIndex]?._url;
-		if(url){
-			exitSearch();
-			Router.push(url);
+	// OVERLAY 
+	else if(variant == 'overlay'){
+		if(!searchMode){
+			return <View style={{display: 'none'}}/>
 		}
+		return (
+			<View style={{
+				position: 'absolute',
+				top: 0, left: 0, right: 0,
+				minHeight: '100vh',
+				zIndex: 2,
+				backgroundColor: 'white'
+			}}>
+				<Header>
+					<Flex>
+						<FlexItem justify="center">
+							<TldrSearchInput 
+								ref={inputRef}
+								formState={formState} 
+								autoFocus={true} 
+								onKeyPress={handleKeyPress}
+								onFocus={handleSearchFocus}
+								/>
+						</FlexItem>
+						<FlexItem shrink>
+							<Button
+								onPress={()=>{
+									exitSearch();
+								}}
+								shape="X"
+								color="secondary"
+								/>
+						</FlexItem>
+					</Flex>
+				</Header>
+				<Stripe>
+					<Bounds>
+						<Section style={{paddingTop: METRICS.space/2}}>
+							<TldrSearchResults
+								searchString={formState.getFieldValue('search')}
+								searchResults={searchResults}
+								selectedIndex={selectedIndex}
+								/>
+						</Section>
+					</Bounds>
+				</Stripe>
+			</View>
+		);
 	}
-	const chooseSelectedIndexRef = React.useRef(chooseSelectedIndex);
-	chooseSelectedIndexRef.current = chooseSelectedIndex;
-
-	// CATEGORY DATA
-	// not going to use SWR for this one
-	const [categories, setCategories] = useState([]);
-	const [searchResults, setSearchResults] = useState([]);
-	useEffect(() => {
-		request(getCategoriesUrl({ '$limit': 1000, '$sort[name]': 1 }))
-			.then(response => {
-				const categories = response.items.map(item => ({
-					...item, 
-					'_url': getCategoryPageUrl({ categoryId: item.id })
-				}));
-				setSearchResults(categories)
-				setCategories(categories)
-			})
-	}, []);
-
-	// DOCUMENT EVENT LISTENERS 
-	useEffect(()=> {
-		if(ui.searchOverlayVisible){
-			document.addEventListener("keydown", handleKeyPress, false);
-		}
-		else{
-			document.removeEventListener("keydown", handleKeyPress, false);
-		}
-		return () => {
-			document.removeEventListener("keydown", handleKeyPress, false);
-		}
-	}, [ui.searchOverlayVisible]);
-
-	// KEY PRESSES
-	const handleKeyPress = useCallback((e) => {
-		if (e.keyCode === 27) {
-			exitSearch();
-		}
-		else if(e.keyCode === 40){
-			// down
-			e.preventDefault();
-			updateSelectedIndexRef.current(+1);
-		}
-		else if(e.keyCode === 38){
-			// up
-			e.preventDefault();
-			updateSelectedIndexRef.current(-1);
-		}
-		else if(e.keyCode === 13){
-			// enter (don't preventDefault, form submit needs it)
-			chooseSelectedIndexRef.current();
-		}
-	});
-
-	// EXIT SEARCH MODE
-	const exitSearch = () => {
-		formState.setFieldValue('search', '');
-		dispatch(updateUi({ searchOverlayVisible: false }));
-	} 
-	
-	// FORM STATE
-	const formState = useFormState({
-		initialFields: {
-			search: ''
-		},
-		onChange: (fields) => {
-			const s = fields.search;
-			setSearchResults(catMatch(s, categories));
-			setSelectedIndex( s.length ? 0 : -1);
-		}
-	})
-
-	if(!ui.searchOverlayVisible)
-		return false;
-
-	return (
-		<View style={{
-			position: 'absolute',
-			top: 0, left: 0, right: 0,
-			minHeight: '100vh',
-			zIndex: 2,
-			backgroundColor: 'white'
-		}}>
-			<Header>
-				<Flex>
-					<FlexItem justify="center">
-						<TldrSearchInput 
-							ref={inputRef}
-							formState={formState} 
-							autoFocus={true} 
-							exitSearch={exitSearch}
-							onKeyPress={handleKeyPress}
-							/>
-					</FlexItem>
-					<FlexItem shrink>
-						<Button
-							onPress={()=>{
-								exitSearch();
-							}}
-							shape="X"
-							color="secondary"
-							/>
-					</FlexItem>
-				</Flex>
-			</Header>
-			<Stripe>
-				<Bounds>
-					<Section style={{paddingTop: METRICS.space/2}}>
-						<TldrSearchResults
-							searchString={formState.getFieldValue('search')}
-							searchResults={searchResults}
-							exitSearch={exitSearch}
-							selectedIndex={selectedIndex}
-							/>
-					</Section>
-				</Bounds>
-			</Stripe>
-		</View>
-	);
 }
-
 
 
 const _TldrSearchInput = (props) => {	
@@ -785,7 +740,6 @@ const _TldrSearchInput = (props) => {
 		formState,
 		autoFocus,
 		onFocus = ()=>{},
-		exitSearch,
 		onKeyPress = ()=>{}
 	} = props;
 
@@ -825,7 +779,6 @@ const _TldrSearchInput = (props) => {
 			value={formState.getFieldValue('search')}
 			autoFocus={autoFocus}
 			onSubmitEditing={()=>{
-				exitSearch();
 				Router.push({ pathname: getSearchPageUrl(), query: { q: formState.getFieldValue('search') } })
 			}}
 			/>
@@ -840,14 +793,17 @@ const TldrSearchInput = React.forwardRef((props, ref) => {
 
 const TldrSearchResults = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+	const ui = useSelector(state => state.ui);
 
 	const {
 		searchResults,
-		exitSearch,
 		selectedIndex
 	} = props;
 	return(
 		<>
+				ok {JSON.stringify(ui.searchHeaderActive)}
+				ok {JSON.stringify(ui.searchOverlayActive)}
+
 		{searchResults.map((item, i) => (
 			<Chunk key={i}>
 				<View style={{
@@ -856,11 +812,10 @@ const TldrSearchResults = (props) => {
 						margin: -1*METRICS.space/2,
 						borderRadius: METRICS.borderRadius
 					}}>
+						
+
 					<Link
 						href={item._url}
-						onPress={() => {
-							exitSearch();
-						}}
 					>
 						<Flex nbsp>
 							<FlexItem shrink nbsp justify="center">
@@ -872,7 +827,7 @@ const TldrSearchResults = (props) => {
 							</FlexItem>
 							<FlexItem nbsp>
 								<Text>{ item._type=="search" ? `Search "${item.searchString}"` : item.name}</Text>
-								<Text type="micro" color="hint">{item.keywords}</Text>
+								<Text type="micro" color="hint">{item.keywords}{item._url}</Text>
 							</FlexItem>
 						</Flex>
 					</Link>

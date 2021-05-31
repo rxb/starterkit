@@ -45,23 +45,25 @@ function ThisApp(props) {
 	const store = useStore(pageProps.initialReduxState)
 	const dispatch = store.dispatch; // not in the Provider yet
 
-	// auth events
-	const storeAuth = (authResult, params, context) => {
-		dispatch(logInSuccess(authResult));
-		localStorage.setItem("probablyHasAccount", "true");
-		dispatch(updateUi({ probablyHasAccount: true }));
-	}
-	feathersClient.on('login', storeAuth);
-	feathersClient.on('logout', (authResult, params, context) => {
-		dispatch(logOut());
-	});
-	feathersClient.reAuthenticate()
-		.then(storeAuth)
-		.catch((error) => {
-			dispatch(logOut());
-			checkForBadOauth(error);
-		});
 	useEffect(() => {
+		// auth events
+		const storeAuth = (authResult, params, context) => {
+			dispatch(logInSuccess(authResult));
+			localStorage.setItem("probablyHasAccount", "true");
+			dispatch(updateUi({ probablyHasAccount: true }));
+		}
+		feathersClient.on('login', storeAuth);
+		feathersClient.on('logout', (authResult, params, context) => {
+			dispatch(logOut());
+		});
+		feathersClient.reAuthenticate()
+			.then(storeAuth)
+			.catch((error) => {
+				dispatch(logOut());
+				checkForBadOauth(error);
+		});
+
+		// customize UI for likely return visitor
 		const probablyHasAccount = !!localStorage.getItem("probablyHasAccount");
 		dispatch(updateUi({ probablyHasAccount: probablyHasAccount }));
 	}, [])

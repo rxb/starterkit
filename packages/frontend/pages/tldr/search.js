@@ -52,7 +52,7 @@ dayjs.extend(relativeTime)
 import Router from 'next/router'
 
 
-function Category(props) {
+function Search(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	const { q } = props;
@@ -141,16 +141,16 @@ function Category(props) {
 													detourIfAuthNeeded( getTldrEditPageUrl(), authentication, dispatch, Router);
 												}}
 												label="Create a card"
-												size="small"
 												style={{alignSelf: 'center'}}
 												/>
+												{/* 
 											<Button
 												color="secondary"
 												href={getIndexPageUrl()}
-												label="Go explore cards"
-												size="small"
+												label="Browse cards"
 												style={{alignSelf: 'center'}}
 												/>
+												*/}
 										</Chunk>
 									</Emptiness>
 								</Chunk>
@@ -166,7 +166,7 @@ function Category(props) {
 
 }
 
-Category.getInitialProps = async (context) => {
+Search.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const { store, req, pathname, query } = context;
 	const { q } = query;
@@ -183,4 +183,4 @@ Category.getInitialProps = async (context) => {
 
 
 
-export default Category;
+export default Search;

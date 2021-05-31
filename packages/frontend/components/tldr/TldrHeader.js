@@ -42,7 +42,7 @@ import {
 	useFormState,
 	View, ThemeContext
 } from 'cinderblock';
-import {TldrSearchInHeader, TldrSearchOverlay} from './components';
+import {TldrSearch, TldrSearchInHeader} from './components';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import feathersClient from '@/components/FeathersClient'; // already instantiated so we can share
 import Router from 'next/router'
@@ -113,7 +113,7 @@ function TldrHeader(props) {
 				
 				<FlexItem justify="center">
 					<View style={styles['hide']} dataSet={{ media: ids["showAt__large"]}}>
-						<TldrSearchInHeader />
+						<TldrSearch variant="header" />
 					</View>
 				</FlexItem>
 				<FlexItem
@@ -124,7 +124,7 @@ function TldrHeader(props) {
 				>
 					<Button
 						onPress={()=>{
-							dispatch(updateUi({ searchOverlayVisible: true }))
+							dispatch(updateUi({ searchOverlayActive: true }))
 						}}
 						shape="Search"
 						color="secondary"

@@ -45,7 +45,7 @@ import {
 } from 'cinderblock';
 
 import LoginModal from './LoginModal';
-import {TldrSearchOverlay} from './tldr/components'; // TODO: make a 'connected' version of this
+import { TldrSearch } from './tldr/components'; // TODO: make a 'connected' version of this
 import ConnectedToaster from './ConnectedToaster';
 import ConnectedPrompter from './ConnectedPrompter';
 import ConnectedDropdowner from './ConnectedDropdowner';
@@ -68,6 +68,7 @@ function Page(props) {
 		Router.onRouteChangeComplete = () => {
 			NProgress.done();
 			dispatch(clearDropdowns());
+			dispatch(updateUi({searchOverlayActive: false, searchHeaderActive: false}));
 			setTimeout(() => dispatch(showDelayedToasts()), 500);
 		}
 		Router.onRouteChangeError = () => NProgress.done();
@@ -77,6 +78,7 @@ function Page(props) {
 	useEffect(() => {
 		function handleResize() {
 			dispatch(clearDropdowns());
+			dispatch(updateUi({searchOverlayActive: false, searchHeaderActive: false}));
 		}
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
@@ -98,7 +100,7 @@ function Page(props) {
 
 			{/* global ui */}
 			<LoginModal />
-			<TldrSearchOverlay />
+			<TldrSearch variant="overlay" />
 			<ConnectedToaster />
 			<ConnectedPrompter />
 			<ConnectedDropdowner />
