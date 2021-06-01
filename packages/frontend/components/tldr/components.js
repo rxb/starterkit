@@ -596,10 +596,7 @@ export const TldrSearch = (props) => {
 	}, [searchMode]);
 
 
-
-
 	// SELECTED AUTOCOMPLETE ITEM
-	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
 	const startingIndex = -1;
 	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
 	const updateSelectedIndex = (offset) => {
@@ -756,34 +753,34 @@ const _TldrSearchInput = (props) => {
 
 	return(
 		<form>
-		<TextInput
-			ref={innerRef}
-			style={{
-				paddingVertical: 6,
-				borderRadius: 20,
-				marginVertical: 0
-			}}
-			wrapperStyle={{
-				// for autocomplete, maybe should be ported back
-				zIndex: 2,
-				backgroundColor: 'white',
-				marginVertical: METRICS.pseudoLineHeight
-			}}
-			spellCheck={false}
-			clearButtonMode="while-editing"
-			keyboard="web-search"
-			onKeyPress={handleKeyPress}
-			onChange={e => {
-				formState.setFieldValue('search', e.target.value)
-			}}
-			onFocus={onFocus}
-			value={formState.getFieldValue('search')}
-			autoFocus={autoFocus}
-			onSubmitEditing={()=>{
-				Router.push({ pathname: getSearchPageUrl(), query: { q: formState.getFieldValue('search') } })
-			}}
-			/>
-			</form>
+			<TextInput
+				ref={innerRef}
+				style={{
+					paddingVertical: 6,
+					borderRadius: 20,
+					marginVertical: 0
+				}}
+				wrapperStyle={{
+					// for autocomplete, maybe should be ported back
+					zIndex: 2,
+					backgroundColor: 'white',
+					marginVertical: METRICS.pseudoLineHeight
+				}}
+				spellCheck={false}
+				clearButtonMode="while-editing"
+				keyboard="web-search"
+				onKeyPress={handleKeyPress}
+				onChange={e => {
+					formState.setFieldValue('search', e.target.value)
+				}}
+				onFocus={onFocus}
+				value={formState.getFieldValue('search')}
+				autoFocus={autoFocus}
+				onSubmitEditing={()=>{
+					Router.push({ pathname: getSearchPageUrl(), query: { q: formState.getFieldValue('search') } })
+				}}
+				/>
+		</form>
 	)
 };
 
@@ -802,8 +799,6 @@ const TldrSearchResults = (props) => {
 	} = props;
 	return(
 		<>
-				ok {JSON.stringify(ui.searchHeaderActive)}
-				ok {JSON.stringify(ui.searchOverlayActive)}
 
 		{searchResults.map((item, i) => (
 			<Chunk key={i}>
