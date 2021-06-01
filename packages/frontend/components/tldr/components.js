@@ -527,7 +527,6 @@ export const TldrSearch = (props) => {
 	const handleDocumentClick = (e) => handleDocumentClickRef.current(e);
 
 
-
 	// SEARCH MODE ACTIVATED OR NOT
 	// check on mount, also on ui state change
 	const [searchMode, _setSearchMode] = useState();
@@ -559,6 +558,24 @@ export const TldrSearch = (props) => {
 		}
 	}
 
+	// HANDLE SEARCH FOCUS
+	const handleSearchFocus = () => {
+		if(variant=='header'){
+			dispatch(updateUi({ searchHeaderActive: true }));
+		}
+	}
+
+	// EXPLICITLY SET SEARCH FOCUS
+	const setSearchFocus = (focus) => {
+		if(focus){
+			inputRef.current?.focus();
+			handleSearchFocus();
+		}
+		else{
+			inputRef.current?.blur();
+		}
+	}
+
 	// SET UP EVENT LISTENERS
 	// once, on mount
 	const cleanup = () => {
@@ -579,23 +596,7 @@ export const TldrSearch = (props) => {
 	}, [searchMode]);
 
 
-	// HANDLE SEARCH FOCUS
-	const handleSearchFocus = () => {
-		if(variant=='header'){
-			setSearchMode(true);
-		}
-	}
 
-	// EXPLICITLY SET SEARCH FOCUS
-	const setSearchFocus = (focus) => {
-		if(focus){
-			inputRef.current?.focus();
-			handleSearchFocus();
-		}
-		else{
-			inputRef.current?.blur();
-		}
-	}
 
 	// SELECTED AUTOCOMPLETE ITEM
 	// event handlers don't get updated on rerenders, so we need a ref to connect it to current rendered function
