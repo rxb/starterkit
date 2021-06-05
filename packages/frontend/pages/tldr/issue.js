@@ -2,7 +2,7 @@ import React, { Fragment, useContext } from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
-import { request, pageHelper, getTldrUrl, getIssuesUrl } from '@/swr';
+import { request, pageHelper, getTldrUrl, getIssueUrl, getIssueCommentsUrl } from '@/swr';
 import useSWR, { useSWRInfinite, mutate } from 'swr';
 
 // REDUX
@@ -10,7 +10,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
 // URLS
-import { getTldrPageUrl, getIssuePageUrl } from '../../components/tldr/urls';
+import { getTldrPageUrl, getIssuePageUrl } from '@/components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -56,17 +56,17 @@ dayjs.extend(relativeTime)
 function Issues(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
-	const { tldrId } = props;
+	const { issueId } = props;
 
 	const dispatch = useDispatch();
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	const tldr = useSWR(getTldrUrl(tldrId));
+	const issue = useSWR(getIssueUrl(issueId));
 
 	const PAGE_SIZE = 12;
-	const issues = pageHelper(useSWRInfinite(
-		(index) => [getIssuesUrl({ tldrId, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken]
+	const issueComments = pageHelper(useSWRInfinite(
+		(index) => [getIssueCommentsUrl({ issueId, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken]
 	));
 
 	// DIVERT TO ERROR PAGE
@@ -81,20 +81,19 @@ function Issues(props) {
 
 			<TldrHeader />
 
-			{ issues.data && tldr.data &&
+			{ issueComments.data && issue.data &&
 				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
 						<Section>
 							<Chunk>
-								<Text>{tldr.data.currentTldrVersionContent.title}</Text>
-								<Text type="pageHead">Issues</Text>
+								<Text type="pageHead">{issue.data.title}</Text>
 							</Chunk>
 						</Section>
 						<Section border>
-							{issues.total == 0 &&
+							{issuesComments.total == 0 &&
 								<Chunk>
 									<Emptiness
-										label={`No issues for this card yet`}
+										label={`No comments for this issue yet`}
 									>
 										<Chunk>
 											<Button
@@ -113,18 +112,18 @@ function Issues(props) {
 								</Chunk>
 							}
 
-							{issues.total > 0 &&
+							{issueComments.total > 0 &&
 
 								<Chunk>
 									<List
 										variant={{
 											small: 'linear',
 										}}
-										items={issues.data}
+										items={issueComments.data}
 										paginated={true}
 										renderItem={(item, i) => (
 											<Chunk key={i}>
-														<Text>{item.title} {item.created_at}</Text>
+												<Text>{item.body} {item.created_at}</Text>
 											</Chunk>
 										)}
 									/>

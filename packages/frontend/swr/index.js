@@ -23,6 +23,9 @@ export const getUserUrl = (id = '') => `${apiHost}/users/${id}`;
 export const getIssuesUrl = (params) => `${apiHost}/issues/${buildQs(params)}`;
 export const getIssueUrl = (id = '') => `${apiHost}/issues/${id}`;
 
+export const getIssueCommentsUrl = (params) => `${apiHost}/issue-comments/${buildQs(params)}`;
+export const getIssueCommentUrl = (id = '') => `${apiHost}/issue-comments/${id}`;
+
 export const getCategoriesUrl = (params) => `${apiHost}/categories/${buildQs(params)}`;
 export const getCategoryUrl = (id = '') => `${apiHost}/categories/${id}`;
 
