@@ -43,7 +43,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
-import { LoadMoreButton } from '@/components/tldr/components';
+import { LoadMoreButton, Emptiness } from '@/components/tldr/components';
 
 
 // SCREEN-SPECIFIC 
@@ -62,11 +62,11 @@ function Issues(props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	const tldr = useSWR( getTldrUrl(tldrId) );
+	const tldr = useSWR(getTldrUrl(tldrId));
 
 	const PAGE_SIZE = 12;
 	const issues = pageHelper(useSWRInfinite(
-		(index) => [getIssuesUrl({ tldrId, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken] 
+		(index) => [getIssuesUrl({ tldrId, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken]
 	));
 
 	// DIVERT TO ERROR PAGE
@@ -81,37 +81,61 @@ function Issues(props) {
 
 			<TldrHeader />
 
-				{ issues.data && tldr.data && 
- 				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
+			{ issues.data && tldr.data &&
+				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
 						<Section>
 							<Chunk>
-								<Text>Issues</Text>
-								<Text type="pageHead">{tldr.currentTldrVersionContent.title}</Text>
+								<Text>{tldr.data.currentTldrVersionContent.title}</Text>
+								<Text type="pageHead">Issues</Text>
 							</Chunk>
 						</Section>
 						<Section border>
-							<Chunk>
-								<List
-									variant={{
-										small: 'linear',
-									}}
-									items={issues.data}
-									paginated={true}
-									renderItem={(item, i) => (
-										<Chunk key={i}>
-											{ !item.last &&
-												<Link href={getTldrPageUrl({ tldrId: item.id })}>
-													<Text>{item.title} {item.created_at}</Text>
-												</Link>
-											}
+							{issues.total == 0 &&
+								<Chunk>
+									<Emptiness
+										label={`No issues for this card yet`}
+									>
+										<Chunk>
+											<Button
+												onPress={() => {
+													alert('woo');
+													/*
+													detourIfAuthNeeded(getTldrEditPageUrl(), authentication, dispatch, Router);
+													*/
+												}}
+												label="Open an issue"
+												style={{ alignSelf: 'center' }}
+											/>
+											
 										</Chunk>
-									)}
-								/>
+									</Emptiness>
+								</Chunk>
+							}
 
-								<LoadMoreButton swr={issues} />
+							{issues.total > 0 &&
 
-							</Chunk>
+								<Chunk>
+									<List
+										variant={{
+											small: 'linear',
+										}}
+										items={issues.data}
+										paginated={true}
+										renderItem={(item, i) => (
+											<Chunk key={i}>
+												{ !item.last &&
+													<Link href={getTldrPageUrl({ tldrId: item.id })}>
+														<Text>{item.title} {item.created_at}</Text>
+													</Link>
+												}
+											</Chunk>
+										)}
+									/>
+									<LoadMoreButton swr={issues} />
+								</Chunk>
+
+							}
 						</Section>
 					</Bounds>
 				</Stripe>
