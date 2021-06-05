@@ -12,6 +12,8 @@ const mailer = require('./mailer/mailer.service.js');
 const authmanagement = require('./authmanagement/authmanagement.service.js');
 const usersSavedtldrs = require('./users_savedtldrs/users_savedtldrs.service.js');
 const tldrsVotes = require('./tldrs_votes/tldrs_votes.service.js');
+const issues = require('./issues/issues.service.js');
+const issueComments = require('./issue-comments/issue-comments.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(shows);
@@ -28,4 +30,6 @@ module.exports = function (app) {
   app.configure(authmanagement);
   app.configure(usersSavedtldrs);
   app.configure(tldrsVotes);
+  app.configure(issues);
+  app.configure(issueComments);
 };

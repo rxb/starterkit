@@ -122,20 +122,6 @@ class MyDocument extends Document {
 						</Head>
 
 						<body>
-							{/*
-							MATCHMEDIA HACK
-							at wider screens, prevent showing flash of narrow-screen styling
-							
-							<script dangerouslySetInnerHTML={{
-								__html: `
-									if(window.innerWidth > ${BREAKPOINT_SIZES.medium}){
-										document.body.style.display = 'none';
-										window.addEventListener('load', function() {
-											document.body.style.display = '';
-										})
-									}
-								`}} />
-							*/}
 							<Main />
 							<NextScript />
 						</body>

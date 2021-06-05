@@ -504,11 +504,11 @@ export const TldrSearch = (props) => {
 			}
 		}
 	};
+
 	// event handlers only get first render
 	const handleKeyPressRef = useRef(_handleKeyPress);
 	handleKeyPressRef.current = _handleKeyPress;
 	const handleKeyPress = (e) => handleKeyPressRef.current(e);
-
 
 	// OUTCLICK 
 	const searchOuter = useRef(null);
@@ -521,11 +521,11 @@ export const TldrSearch = (props) => {
 			exitSearch();
 		}
 	};
+
 	// event handlers only get first render
 	const handleDocumentClickRef = useRef(_handleDocumentClick);
 	handleDocumentClickRef.current = _handleDocumentClick;
 	const handleDocumentClick = (e) => handleDocumentClickRef.current(e);
-
 
 	// SEARCH MODE ACTIVATED OR NOT
 	// check on mount, also on ui state change
@@ -633,7 +633,6 @@ export const TldrSearch = (props) => {
 			setSelectedIndex( s.length ? 0 : -1);
 		}
 	})
-
 
 
 	// HEADER
@@ -809,7 +808,6 @@ const TldrSearchResults = (props) => {
 						borderRadius: METRICS.borderRadius
 					}}>
 						
-
 					<Link
 						href={item._url}
 					>
@@ -823,7 +821,7 @@ const TldrSearchResults = (props) => {
 							</FlexItem>
 							<FlexItem nbsp>
 								<Text>{ item._type=="search" ? `Search "${item.searchString}"` : item.name}</Text>
-								<Text type="micro" color="hint">{item.keywords}{item._url}</Text>
+								<Text type="micro" color="hint">{item.keywords}</Text>
 							</FlexItem>
 						</Flex>
 					</Link>
