@@ -1,7 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
-const { setDefaultSort, getFullModel } = require('../common_hooks.js');
+const { setDefaultSort, getFullModel, protectUserFields } = require('../common_hooks.js');
 
 const includeAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');

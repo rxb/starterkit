@@ -18,6 +18,8 @@ export const getOauthPageUrl = (options) => buildUrl('/oauth', options);
 export const getLoginPageUrl = (options) => buildUrl('/login', options);
 export const getRegisterPageUrl = (options) => buildUrl('/register', options);
 export const getSavedPageUrl = (options) => buildUrl('/saved', options);
+export const getIssuesPageUrl = (options) => buildUrl('/issues', options);
+export const getIssuePageUrl = (options) => buildUrl('/issue', options);
 
 
 const loginRedirectKey = "loginRedirect";

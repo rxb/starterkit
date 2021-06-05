@@ -40,8 +40,8 @@ module.exports = function (app) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
     issues.hasMany(models.issue_comments);
-    issueComments.belongsTo(models.users, { foreignKey: 'authorId' })
-    issueComments.belongsTo(models.tldrs, { foreignKey: 'tldrId' })
+    issues.belongsTo(models.users, { foreignKey: 'authorId' })
+    issues.belongsTo(models.tldrs, { foreignKey: 'tldrId' })
 
   };
 

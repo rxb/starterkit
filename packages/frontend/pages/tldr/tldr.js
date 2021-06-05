@@ -10,7 +10,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast, addDelayedToast, updateUi } from '@/actions';
 
 // URLS
-import { saveLoginRedirect, getProfilePageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl } from '../../components/tldr/urls';
+import { saveLoginRedirect, getProfilePageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl, getIssuesPageUrl } from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -403,6 +403,7 @@ function Tldr(props) {
 									</Chunk>
 
 									<Chunk border>
+									<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
 										<Flex>
 											<FlexItem>
 												<Text weight="strong">Open issues (13)</Text>
@@ -415,6 +416,7 @@ function Tldr(props) {
 												/>
 											</FlexItem>
 										</Flex>
+									</Link>
 									</Chunk>
 
 									<Chunk border>
