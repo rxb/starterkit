@@ -10,7 +10,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
 // URLS
-import { getTldrPageUrl, getIssuePageUrl } from '../../components/tldr/urls';
+import { detourIfAuthNeeded, getTldrPageUrl, getIssuePageUrl, getIssueEditPageUrl } from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -50,6 +50,7 @@ import { LoadMoreButton, Emptiness } from '@/components/tldr/components';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
+import Router from 'next/router'
 
 
 
@@ -99,10 +100,7 @@ function Issues(props) {
 										<Chunk>
 											<Button
 												onPress={() => {
-													alert('woo');
-													/*
-													detourIfAuthNeeded(getTldrEditPageUrl(), authentication, dispatch, Router);
-													*/
+													detourIfAuthNeeded(getIssueEditPageUrl({tldrId: tldr.data.id}), authentication, dispatch, Router);
 												}}
 												label="Open an issue"
 												style={{ alignSelf: 'center' }}

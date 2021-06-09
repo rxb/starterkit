@@ -26,7 +26,15 @@ module.exports = function (app) {
     },
     tldrId: {
       type: DataTypes.INTEGER
-    }
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
   }, {
     hooks: {
       beforeCount(options) {
@@ -40,7 +48,7 @@ module.exports = function (app) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
     issues.hasMany(models.issue_comments);
-    issues.belongsTo(models.users, { foreignKey: 'authorId' })
+    issues.belongsTo(models.users, { foreignKey: 'authorId', as: "author" })
     issues.belongsTo(models.tldrs, { foreignKey: 'tldrId' })
 
   };

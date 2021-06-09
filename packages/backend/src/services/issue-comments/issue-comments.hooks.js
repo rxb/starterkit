@@ -8,7 +8,7 @@ const includeAssociations = (context) => {
   const { users } = sequelize.models;
   context.params.sequelize = {
     ...context.params.sequelize,
-    include: [users]
+    include: ["author"]
   }
   return context;
 }

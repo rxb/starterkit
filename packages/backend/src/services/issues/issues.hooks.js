@@ -5,10 +5,10 @@ const { setDefaultSort, getFullModel, protectUserFields } = require('../common_h
 
 const includeAssociations = (context) => {
   const sequelize = context.app.get('sequelizeClient');
-  const { users } = sequelize.models;
+  //const { users } = sequelize.models;
   context.params.sequelize = {
     ...context.params.sequelize,
-    include: [users]
+    include: ["author"]
   }
   return context;
 }
@@ -76,9 +76,7 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [
-      getFullModel()
-    ],
+    create: [],
     update: [],
     patch: [],
     remove: []

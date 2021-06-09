@@ -93,7 +93,14 @@ export const fetcher = (url, token = '') => request(url, { token: token });
 
 // BUILDQS
 export const buildQs = (params) => {
-   return (params) ? "?" + Object.keys(params).map(key => key + '=' + params[key]).join('&') : '';
+   return (params) ? "?" + Object.keys(params).map(key => {
+		if(Array.isArray(params[key])){
+			return params[key].map(v => `${key}[]=${v}`).join('&'); // express style qs array
+		}
+		else{
+			return `${key}=${params[key]}`;
+		}		
+	}).join('&') : '';
 }
 
 
@@ -110,10 +117,11 @@ export const pageHelper = (swr) => {
       swr.total = swr.data?.[0]?.total || 0;
       swr.isEmpty = swr.data?.[0]?.items?.length === 0;
       swr.pageSize = swr.data?.[0]?.limit || 0;
+      swr.pageCount = Math.ceil(swr.total / swr.pageSize);
       swr.isReachingEnd =
          swr.isEmpty || (swr.data && swr.data[swr.data.length - 1]?.items.length < swr.pageSize);
       swr.isRefreshing = swr.isValidating && swr.data && swr.data.length === swr.size;
-      //{ data, error, mutate, size, setSize, isValidating, isLoadingInitialData, isLoadingMore, total, isEmpty, pageSize, isReachingEnd, isRefreshing }
+      //{ data, error, mutate, size, setSize, isValidating, isLoadingInitialData, isLoadingMore, total, isEmpty, pageSize, isReachingEnd, isRefreshing, pageCount }
    }
    else {
       // data is a page object {total, offset, limit, items}

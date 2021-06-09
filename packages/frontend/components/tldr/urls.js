@@ -1,6 +1,13 @@
 const buildUrl = (pageUrl, params) => {
 	const pageRoot = "/tldr"
-	const qs = (params) ? "?" + Object.keys(params).map(key => key + '=' + params[key]).join('&') : '';
+	const qs = (params) ? "?" + Object.keys(params).map(key => {
+		if(Array.isArray(params[key])){
+			return params[key].map(v => `${key}[]=${v}`).join('&'); // express style qs array
+		}
+		else{
+			return `${key}=${params[key]}`;
+		}		
+	}).join('&') : '';
 	return pageRoot + pageUrl + qs;
 }
 
@@ -20,7 +27,7 @@ export const getRegisterPageUrl = (options) => buildUrl('/register', options);
 export const getSavedPageUrl = (options) => buildUrl('/saved', options);
 export const getIssuesPageUrl = (options) => buildUrl('/issues', options);
 export const getIssuePageUrl = (options) => buildUrl('/issue', options);
-
+export const getIssueEditPageUrl = (options) => buildUrl('/issueedit', options);
 
 const loginRedirectKey = "loginRedirect";
 export const getLoginRedirect = () => {

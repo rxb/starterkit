@@ -20,7 +20,15 @@ module.exports = function (app) {
     },
     issueId: {
       type: DataTypes.INTEGER
-    }
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
   }, {
     hooks: {
       beforeCount(options) {
@@ -34,7 +42,7 @@ module.exports = function (app) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
 
-    issueComments.belongsTo(models.users, { foreignKey: 'authorId' })
+    issueComments.belongsTo(models.users, { foreignKey: 'authorId', as: "author" })
   };
 
   return issueComments;
