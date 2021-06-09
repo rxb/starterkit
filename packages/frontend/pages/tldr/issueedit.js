@@ -47,6 +47,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
+import {LoadingPage} from '@/components/tldr/components';
 import Router from 'next/router'
 import Head from 'next/head'
 
@@ -56,17 +57,15 @@ import { Utils } from 'cinderblock';
 const { runValidations, readFileAsDataUrl } = Utils;
 
 
-const Edit = (props) => {
-	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
-	
-	const { tldrId, issueId } = props;
 
+
+
+// TODO: move all forms into small components like this
+// this way, formstate ONLY re-renders the form, not anything outside it
+const EditForm = (props) => {
 	const dispatch = useDispatch();
-	const authentication = useSelector(state => state.authentication);
-	const user = authentication.user || {};
-	const tldr = useSWR(getTldrUrl(tldrId));
-
-
+	const { tldr, authentication } = props;
+ 
 	const formState = useFormState({
 		initialFields: {
 			title: '',
@@ -80,9 +79,10 @@ const Edit = (props) => {
 	});
 
 	const submitForm = async () => {
+		
 		const submitFields = { 
 			...formState.fields,
-			tldrId: tldrId 
+			tldrId: tldr.id 
 		};
 		const error = runValidations(submitFields, {
 			title: {
@@ -100,30 +100,14 @@ const Edit = (props) => {
 		if (!error) {
 			formState.setLoading(true);
 			try {
-				// is there even a cause for a full issue edit?
-				/*
-				// PATCH or POST
-				if (issueId != undefined) {
-					const issue = await request(getTldrUrl(tldrId), {
-						method: 'PATCH',
-						data: submitFields,
-						token: authentication.accessToken
-					});
-					const toastMessage = "Settings updated!";
-					dispatch(addDelayedToast(toastMessage));
-					Router.push({ pathname: getTldrPageUrl(), query: { tldrId: tldr.id } })
-				}
-				else {
-				*/
-					const issue = await request(getIssueUrl(), {
-						method: 'POST',
-						data: submitFields,
-						token: authentication.accessToken
-					});
-					const toastMessage = "Issue posted!";
-					dispatch(addDelayedToast(toastMessage));
-					Router.push({ pathname: getIssuePageUrl(), query: { issueId: issue.id } })
-				/*}*/
+				const issue = await request(getIssueUrl(), {
+					method: 'POST',
+					data: submitFields,
+					token: authentication.accessToken
+				});
+				const toastMessage = "Issue posted!";
+				dispatch(addDelayedToast(toastMessage));
+				Router.push({ pathname: getIssuePageUrl(), query: { issueId: issue.id } })
 			}
 			catch (error) {
 				console.log(error);
@@ -133,10 +117,52 @@ const Edit = (props) => {
 		}
 	}
 
-	// DIVERT TO ERROR PAGE
+
+	return(
+		<form>
+			<Chunk>
+				<Label for="title">Title</Label>
+				<TextInput
+					id="title"
+					value={formState.getFieldValue('title')}
+					onChange={e => formState.setFieldValue('title', e.target.value)}
+					/>
+				<FieldError error={formState.error?.fieldErrors?.title} />
+			</Chunk>
+			<Chunk>
+				<Label for="body">Body</Label>
+				<TextInput
+					multiline={true}
+					numberOfLines={4}
+					id="body"
+					value={formState.getFieldValue('body')}
+					onChange={e => formState.setFieldValue('body', e.target.value)}
+					/>
+				<FieldError error={formState.error?.fieldErrors?.body} />
+			</Chunk>
+			<Chunk>
+				<Button
+					label="Post issue"
+					onPress={ submitForm }
+					isLoading={formState.loading}
+					/>
+			</Chunk>
+		</form>
+	)
+}
+
+const Edit = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+	const { tldrId, issueId, isServer } = props;
+
+	const dispatch = useDispatch();
+	const authentication = useSelector(state => state.authentication);
+	const tldr = useSWR(getTldrUrl(tldrId));
+
+
+	// DIVERT PAGE?
 	if (!authentication.user ) {
-		// not logged in or trying to edit something I don't own
-		return <ErrorPage statusCode={401} />
+		return (authentication.loading) ? <LoadingPage /> : <ErrorPage statusCode={401} />;
 	}
 
 	// RENDER
@@ -147,41 +173,15 @@ const Edit = (props) => {
 					<Bounds style={{ maxWidth: 640 }}>
 						<Section>
 							<Chunk>
-								<Text>{tldr.data?.currentTldrVersionContent?.title}</Text>
+								<Text>{/*tldr.data?.currentTldrVersionContent?.title*/}</Text>
 								<Text type="pageHead">Create issue</Text>
 							</Chunk>
 						</Section>
 						<Section>
-							<form>
-								
-								<Chunk>
-									<Label for="category">Title</Label>
-									<TextInput
-										id="urlKey"
-										value={formState.getFieldValue('title')}
-										onChange={e => formState.setFieldValue('title', e.target.value)}
-										/>
-									<FieldError error={formState.error?.fieldErrors?.title} />
-								</Chunk>
-								<Chunk>
-									<Label for="category">Body</Label>
-									<TextInput
-										multiline={true}
-										numberOfLines={4}
-										id="urlKey"
-										value={formState.getFieldValue('body')}
-										onChange={e => formState.setFieldValue('body', e.target.value)}
-										/>
-									<FieldError error={formState.error?.fieldErrors?.body} />
-								</Chunk>
-								<Chunk>
-									<Button
-										label="Post issue"
-										onPress={submitForm}
-										isLoading={formState.loading}
-									/>
-								</Chunk>
-							</form>
+							<EditForm 
+								tldr={tldr}
+								authentication={authentication}
+								/>
 						</Section>
 					</Bounds>
 				</Stripe>

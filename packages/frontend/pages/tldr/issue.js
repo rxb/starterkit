@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useState, useEffect } from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -182,7 +182,7 @@ function Issue(props) {
 
 	const dispatch = useDispatch();
 	const authentication = useSelector(state => state.authentication);
-	const user = authentication.user || {};
+	const user = authentication.user;
 
 	// ISSUE
 	const issue = useSWR(getIssueUrl(issueId));
@@ -193,6 +193,11 @@ function Issue(props) {
 	// most recent page
 	const issueCommentsKey = [getIssueCommentsUrl({ issueId, $limit: PAGE_SIZE, "$sort[createdAt]": -1 }), authentication.accessToken];
 	const issueComments = useSWR(issueCommentsKey);
+	const [issueCommentsData, setIssueCommentsData] = useState();
+	useEffect(() => {
+		const items = issueComments.data?.items || [];
+		setIssueCommentsData([...items].reverse()) 
+	}, [issueComments]);
 
 	// if needed, backfill
 	// starting at oldest, infinite to "most recent page"
@@ -210,10 +215,9 @@ function Issue(props) {
 
 	return (
 		<Page>
-
 			<TldrHeader />
 
-			{ issueComments.data && issue.data &&
+			{ issue.data &&
 				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
 						<Section>
@@ -230,34 +234,35 @@ function Issue(props) {
 								</Section>
 								<Section>
 
-									{backfillIssueComments.total > 0 &&
+									{backfillIssueComments?.total > 0 &&
 										<View style={{backgroundColor: 'pink'}}>
 										<List
 											variant="linear"
 											paginated={true}
 											items={backfillIssueComments.data}
 											renderItem={renderComment}
-										/>
+											/>
 										<LoadMoreButton swr={backfillIssueComments} />
 										</View>
 									}
 
-									{issueComments.data.total > 0 &&
+									{issueCommentsData &&
 										<List
 											variant="linear"
-											items={[...issueComments.data.items].reverse()}
+											items={issueCommentsData}
 											renderItem={renderComment}
-										/>
+											/>
 									}
 
-									<CommentForm
-										issue={issue}
-										issueComments={issueComments}
-										authentication={authentication}
-										user={user}
-										issueCommentsKey={issueCommentsKey}
-									/>
-
+									{ user && issueCommentsData &&
+										<CommentForm
+											issue={issue}
+											issueComments={issueComments}
+											authentication={authentication}
+											user={user}
+											issueCommentsKey={issueCommentsKey}
+											/>
+									}
 								</Section>
 							</FlexItem>
 							<FlexItem growFactor={1}>

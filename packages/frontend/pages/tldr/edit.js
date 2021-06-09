@@ -46,10 +46,9 @@ import {
 	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from '../../components/tldr/TldrHeader';
+import TldrHeader from '@/components/tldr/TldrHeader';
+import {LoadingPage} from '@/components/tldr/components';
 import Router from 'next/router'
-import Head from 'next/head'
-
 
 
 // SCREEN-SPECIFIC
@@ -69,7 +68,6 @@ const buildUrlKey = (pieces = []) => {
 	const wordArray = pieces.join(' ').split(' ');
 	const stoplessWordArray = stopword.removeStopwords(wordArray);
 	return cleanUrlKey(stoplessWordArray.join(' ').trim());
-
 }
 
 const editValidations = {
@@ -221,11 +219,18 @@ const Edit = (props) => {
 		}
 	}
 
-	// DIVERT TO ERROR PAGE
-	if (!authentication.user || (tldr && tldr.authorId && user.id && (tldr.authorId != user.id))) {
-		// not logged in or trying to edit something I don't own
-		return <ErrorPage statusCode={401} />
+
+	// DIVERT PAGE?
+	// not logged in or trying to edit something I don't own
+	if (!authentication.user || (tldr && tldr.authorId && user.id && (tldr.authorId != user.id)) ) {
+		if (authentication.loading) {
+			return <LoadingPage />;
+		}
+		else{
+			return <ErrorPage statusCode={401} />;
+		}
 	}
+
 
 	// RENDER
 	if (tldrId != undefined) {

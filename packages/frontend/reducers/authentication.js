@@ -1,9 +1,15 @@
-const authentication = (state = {}, action) => {
+const startingState = { loading: true };
+const authentication = (state = startingState, action) => {
 	switch (action.type) {
 		case 'LOG_IN_SUCCESS':
-			return { ...action.payload };
+			return { 
+				...action.payload,
+				loading: false 
+			};
 		case 'LOG_OUT':
-			return {};
+			return {
+				loading: false
+			};
 		default:
 			return state
 	}

@@ -44,12 +44,16 @@ import {
 	ThemeContext,
 	designConstants
 } from 'cinderblock';
+
 const { MEDIA_QUERIES_SINGLE } = designConstants;
-import StyleSheet from 'react-native-media-query';
+import Page from '@/components/Page';
+import TldrHeader from '@/components/tldr/TldrHeader';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
+
+import StyleSheet from 'react-native-media-query';
 import Router, { useRouter } from 'next/router'
 import Markdown from 'markdown-to-jsx';
-import { v4 as uuid } from 'uuid';
+import { ActivityIndicator } from 'react-native';
 
 const smallCardMinHeight = 220;
 
@@ -595,7 +599,6 @@ export const TldrSearch = (props) => {
 		return cleanup;
 	}, [searchMode]);
 
-
 	// SELECTED AUTOCOMPLETE ITEM
 	const startingIndex = -1;
 	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
@@ -830,4 +833,23 @@ const TldrSearchResults = (props) => {
 		))}
 		</>
 	);
+}
+
+export const LoadingPage = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+
+	return (
+		<Page>
+			<TldrHeader />
+			<Stripe style={{flex: 1}}>
+				<View style={styles.absoluteCenter}>
+					<ActivityIndicator
+						style={{marginTop: -16}}
+						size='large'
+						color={SWATCHES.tint}
+						/>
+				</View>
+			</Stripe>
+		</Page>
+	)
 }
