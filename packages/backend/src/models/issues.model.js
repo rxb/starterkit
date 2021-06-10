@@ -49,7 +49,7 @@ module.exports = function (app) {
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
     issues.hasMany(models.issue_comments);
     issues.belongsTo(models.users, { foreignKey: 'authorId', as: "author" })
-    issues.belongsTo(models.tldrs, { foreignKey: 'tldrId' })
+    issues.belongsTo(models.tldrs, { foreignKey: 'tldrId', as: "tldr" })
 
   };
 

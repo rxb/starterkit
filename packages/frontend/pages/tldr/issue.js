@@ -10,7 +10,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast } from '@/actions';
 
 // URLS
-import { getTldrPageUrl, getIssuePageUrl } from '@/components/tldr/urls';
+import { getTldrPageUrl, getIssuePageUrl, getIssuesPageUrl } from '@/components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -186,6 +186,7 @@ function Issue(props) {
 
 	// ISSUE
 	const issue = useSWR(getIssueUrl(issueId));
+	const tldr = useSWR( issue.data?.tldrId ? getTldrUrl(issue.data.tldrId) : null);
 
 	// ISSUE COMMENTS
 	const PAGE_SIZE = 12;
@@ -217,11 +218,22 @@ function Issue(props) {
 		<Page>
 			<TldrHeader />
 
-			{ issue.data &&
+			{ issue.data && tldr.data &&
 				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
 						<Section>
 							<Chunk>
+								<Text type="small" color="secondary">
+									<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
+										{tldr.data.author.urlKey}/{tldr.data.urlKey}  
+									</Link>
+									&nbsp;&raquo;&nbsp;
+									<Link href={getIssuesPageUrl({tldrId: tldr.data.id})}>
+										issues 
+									</Link>
+								</Text>
+									
+								
 								<Text type="pageHead">{issue.data.title}</Text>
 							</Chunk>
 						</Section>
@@ -233,6 +245,9 @@ function Issue(props) {
 									</Chunk>
 								</Section>
 								<Section>
+									<Chunk>
+										<Text type="sectionHead">Discussion</Text>
+									</Chunk>
 
 									{backfillIssueComments?.total > 0 &&
 										<View style={{backgroundColor: 'pink'}}>

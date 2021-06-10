@@ -84,12 +84,28 @@ function Issues(props) {
 				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
 						<Section>
-							<Chunk>
-								<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
-									<Text type="small" color="secondary">{tldr.data.author.urlKey}/{tldr.data.urlKey}</Text>
-								</Link>
-								<Text type="pageHead">Issues</Text>
-							</Chunk>
+							<Flex>
+								<FlexItem>
+									<Chunk>
+										<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
+											<Text type="small" color="secondary">{tldr.data.author.urlKey}/{tldr.data.urlKey}</Text>
+										</Link>
+										<Text type="pageHead">Issues</Text>
+									</Chunk>
+								</FlexItem>
+								<FlexItem shrink justify="flex-end">
+									<Chunk>
+										<Button
+											onPress={() => {
+												detourIfAuthNeeded(getIssueEditPageUrl({tldrId: tldr.data.id}), authentication, dispatch, Router);
+											}}
+											label="Open an issue"
+											style={{ alignSelf: 'center' }}
+										/>
+									</Chunk>
+								</FlexItem>
+							</Flex>
+
 						</Section>
 						<Section border>
 							{issues.total == 0 &&
@@ -119,9 +135,20 @@ function Issues(props) {
 										items={issues.data}
 										paginated={true}
 										renderItem={(item, i) => (
-											<Chunk key={i}>
-														<Text>{item.title} {item.created_at}</Text>
-											</Chunk>
+											<Link href={getIssuePageUrl({issueId: item.id})}>
+												<Chunk key={i}>
+													<Flex>
+														<FlexItem>
+															<Text type="big">{item.title}</Text>
+															<Text type="small" color="secondary">opened {dayjs(item.createdAt).fromNow()} by {item.author.urlKey}</Text>
+														</FlexItem>
+														<FlexItem>
+															<Text>14 comments</Text>
+														</FlexItem>
+													</Flex>
+
+												</Chunk>
+											</Link>
 										)}
 									/>
 									<LoadMoreButton swr={issues} />

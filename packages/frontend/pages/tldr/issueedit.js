@@ -10,7 +10,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import { getIssuePageUrl, getTldrPageUrl } from '../../components/tldr/urls';
+import { getIssuePageUrl, getTldrPageUrl, getIssuesPageUrl } from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -131,7 +131,7 @@ const EditForm = (props) => {
 		
 		const submitFields = { 
 			...formState.fields,
-			tldrId: tldr.id 
+			tldrId: tldr.data.id 
 		};
 		const error = runValidations(submitFields, {
 			title: {
@@ -253,9 +253,15 @@ const Edit = (props) => {
 					<Bounds style={{ maxWidth: 640 }}>
 						<Section>
 							<Chunk>
-								<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
-									<Text type="small" color="secondary">{tldr.data.author.urlKey}/{tldr.data.urlKey}</Text>
-								</Link>
+								<Text type="small" color="secondary">
+									<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
+										{tldr.data.author.urlKey}/{tldr.data.urlKey}  
+									</Link>
+									&nbsp;&raquo;&nbsp;
+									<Link href={getIssuesPageUrl({tldrId: tldr.data.id})}>
+										issues 
+									</Link>
+								</Text>
 								<Text type="pageHead">Create issue</Text>
 							</Chunk>
 						</Section>

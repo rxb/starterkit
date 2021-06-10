@@ -3,16 +3,16 @@ const { setField } = require('feathers-authentication-hooks');
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 const { setDefaultSort, getFullModel, protectUserFields } = require('../common_hooks.js');
 
-const includeAssociations = (context) => {
-  const sequelize = context.app.get('sequelizeClient');
-  //const { users } = sequelize.models;
-  context.params.sequelize = {
-    ...context.params.sequelize,
-    include: ["author"]
+const includeAssociations = (associations) => {
+  return async (context) => {
+    const sequelize = context.app.get('sequelizeClient');
+    context.params.sequelize = {
+      ...context.params.sequelize,
+      include: associations
+    }
+    return context;
   }
-  return context;
 }
-
 const subtractFromArray = (originalArray, subtractArray) => (
   originalArray.filter(value => !subtractArray.includes(value))
 );
@@ -44,10 +44,10 @@ module.exports = {
     all: [],
     find: [
       setDefaultSort({ field: 'createdAt', order: 1 }),
-      includeAssociations,
+      includeAssociations(["author"]),
     ],
     get: [
-      includeAssociations,
+      includeAssociations(["author"]),
     ],
     create: [
       authenticate('jwt'),
