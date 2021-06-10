@@ -19,6 +19,7 @@ import {
 	Button,
 	Card,
 	CheckBox,
+	Chip,
 	Chunk,
 	Flex,
 	FlexItem,
@@ -52,7 +53,13 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import Router from 'next/router'
 
-
+const Tag = (props) => {
+	return(
+		<View style={{alignSelf: 'flex-start', background: 'pink', paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2}}>
+			<Text type="micro" style={{color: 'red'}}>{props.label.toUpperCase()}</Text>
+		</View>
+	);
+}
 
 function Issues(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
@@ -139,10 +146,16 @@ function Issues(props) {
 												<Chunk key={i}>
 													<Flex>
 														<FlexItem>
+															<Tag 
+																label="Suggestion" 
+																/>
 															<Text type="big">{item.title}</Text>
 															<Text type="small" color="secondary">opened {dayjs(item.createdAt).fromNow()} by {item.author.urlKey}</Text>
 														</FlexItem>
-														<FlexItem>
+														<FlexItem shrink>
+															<Chip label="open" />
+														</FlexItem>
+														<FlexItem shrink>
 															<Text>14 comments</Text>
 														</FlexItem>
 													</Flex>

@@ -61,7 +61,8 @@ dayjs.extend(relativeTime)
 const DownVotePrompt = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
-		onRequestClose
+		onRequestClose,
+		tldr
 	} = props;
 	return (
 		<Section>
@@ -73,7 +74,10 @@ const DownVotePrompt = (props) => {
 			</Chunk>
 			<Chunk>
 				<Button
-					onPress={onRequestClose}
+					onPress={()=>{
+						onRequestClose();
+						Router.push(getIssuesPageUrl({tldrId: tldr.data.id}));
+					}}
 					label="Open an issue"
 					width="full"
 				/>
@@ -268,7 +272,7 @@ function Tldr(props) {
 			vote(nextVote);
 			if (nextVote) {
 				setTimeout(() => {
-					dispatch(addPrompt(<DownVotePrompt />))
+					dispatch(addPrompt(<DownVotePrompt tldr={tldr} />))
 				}, 400);
 			}
 		}, "downvoteTldr");
