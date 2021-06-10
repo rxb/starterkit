@@ -10,7 +10,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast, addDelayedToast } from '@/actions';
 
 // URLS
-import { getIssuePageUrl } from '../../components/tldr/urls';
+import { getIssuePageUrl, getTldrPageUrl } from '../../components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -56,8 +56,56 @@ import Head from 'next/head'
 import { Utils } from 'cinderblock';
 const { runValidations, readFileAsDataUrl } = Utils;
 
-
-
+const CategoryField = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+	const { 
+		formState, 
+		onChange = () => {} 
+	} = props;
+	const categories = [
+		{id: 1, name: "Unclear"},
+		{id: 2, name: "Typo"},
+		{id: 3, name: "Not factual"},
+		{id: 4, name: "Additional info"},
+		{id: 5, name: "Miscategorized"},
+		{id: 6, name: "Spam"},
+		{id: 7, name: "Not really a card"},
+		{id: 8, name: "Some other problem"}
+	]
+	return (
+		<>
+			<List
+				style={styles.pseudoLineHeight}
+				variant={{
+					small: 'grid',
+				}}
+				itemsInRow={{
+					medium: 2,
+				}}
+				items={categories}
+				renderItem={(category, i) => {
+					const selected = category.id == formState.getFieldValue('categoryId');
+					return (
+						<Touch onPress={() => {
+							formState.setFieldValue('categoryId', category.id);
+							onChange();
+						}}>
+							<View style={[
+								styles.input,
+								(selected)
+									? { backgroundColor: SWATCHES.tint }
+									: {}
+							]}>
+								<Text inverted={selected}>{category.name}</Text>
+							</View>
+						</Touch>
+					)
+				}}
+			/>
+			<FieldError error={formState.error?.fieldErrors?.categoryId} />
+		</>
+	);
+}
 
 
 // TODO: move all forms into small components like this
@@ -68,6 +116,7 @@ const EditForm = (props) => {
  
 	const formState = useFormState({
 		initialFields: {
+			categoryId: null,
 			title: '',
 			body: ''
 		},
@@ -117,36 +166,67 @@ const EditForm = (props) => {
 		}
 	}
 
+	const [formStep, setFormStep] = useState(0);
 
 	return(
 		<form>
-			<Chunk>
-				<Label for="title">Title</Label>
-				<TextInput
-					id="title"
-					value={formState.getFieldValue('title')}
-					onChange={e => formState.setFieldValue('title', e.target.value)}
-					/>
-				<FieldError error={formState.error?.fieldErrors?.title} />
-			</Chunk>
-			<Chunk>
-				<Label for="body">Body</Label>
-				<TextInput
-					multiline={true}
-					numberOfLines={4}
-					id="body"
-					value={formState.getFieldValue('body')}
-					onChange={e => formState.setFieldValue('body', e.target.value)}
-					/>
-				<FieldError error={formState.error?.fieldErrors?.body} />
-			</Chunk>
-			<Chunk>
-				<Button
-					label="Post issue"
-					onPress={ submitForm }
-					isLoading={formState.loading}
-					/>
-			</Chunk>
+			<RevealBlock visible={formStep >= 0} delay={300}>
+				<Chunk>
+					<Label>What is busted about this?</Label>
+					<CategoryField 
+						formState={formState} 
+						/>
+					{(formStep == 0) &&
+						<Chunk>
+							<Button
+								onPress={() => {
+									const error = runValidations(formState.fields, {
+										categoryId: {
+											notNull: {
+												msg: "Category can't be blank"
+											},
+										},
+									});
+									formState.setError(error);
+									if (!error) {
+										setFormStep(1);
+									}
+								}}
+								label="Next"
+							/>
+						</Chunk>
+						}	
+				</Chunk>
+			</RevealBlock>
+			<RevealBlock visible={formStep >= 1} scrollIntoView={true}>
+				<Chunk>
+					<Label for="title">Title</Label>
+					<TextInput
+						id="title"
+						value={formState.getFieldValue('title')}
+						onChange={e => formState.setFieldValue('title', e.target.value)}
+						/>
+					<FieldError error={formState.error?.fieldErrors?.title} />
+				</Chunk>
+				<Chunk>
+					<Label for="body">Body</Label>
+					<TextInput
+						multiline={true}
+						numberOfLines={4}
+						id="body"
+						value={formState.getFieldValue('body')}
+						onChange={e => formState.setFieldValue('body', e.target.value)}
+						/>
+					<FieldError error={formState.error?.fieldErrors?.body} />
+				</Chunk>
+				<Chunk>
+					<Button
+						label="Post issue"
+						onPress={ submitForm }
+						isLoading={formState.loading}
+						/>
+				</Chunk>
+			</RevealBlock>
 		</form>
 	)
 }
@@ -173,7 +253,9 @@ const Edit = (props) => {
 					<Bounds style={{ maxWidth: 640 }}>
 						<Section>
 							<Chunk>
-								<Text>{/*tldr.data?.currentTldrVersionContent?.title*/}</Text>
+								<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
+									<Text type="small" color="secondary">{tldr.data.author.urlKey}/{tldr.data.urlKey}</Text>
+								</Link>
 								<Text type="pageHead">Create issue</Text>
 							</Chunk>
 						</Section>

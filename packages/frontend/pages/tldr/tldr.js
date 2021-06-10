@@ -467,7 +467,7 @@ function Tldr(props) {
 				</Stripe>
 			}
 
-			{ relatedTldrs.data &&
+			{ tldr.data && relatedTldrs.data &&
 				<Stripe style={{ backgroundColor: SWATCHES.backgroundShade }}>
 					<Bounds>
 

@@ -56,7 +56,6 @@ import Router from 'next/router'
 
 function Issues(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-
 	const { tldrId } = props;
 
 	const dispatch = useDispatch();
@@ -79,7 +78,6 @@ function Issues(props) {
 
 	return (
 		<Page>
-
 			<TldrHeader />
 
 			{ issues.data && tldr.data &&
@@ -87,7 +85,9 @@ function Issues(props) {
 					<Bounds>
 						<Section>
 							<Chunk>
-								<Text>{tldr.data.currentTldrVersionContent.title}</Text>
+								<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
+									<Text type="small" color="secondary">{tldr.data.author.urlKey}/{tldr.data.urlKey}</Text>
+								</Link>
 								<Text type="pageHead">Issues</Text>
 							</Chunk>
 						</Section>
@@ -96,7 +96,7 @@ function Issues(props) {
 								<Chunk>
 									<Emptiness
 										label={`No issues for this card yet`}
-									>
+										>
 										<Chunk>
 											<Button
 												onPress={() => {
@@ -105,14 +105,12 @@ function Issues(props) {
 												label="Open an issue"
 												style={{ alignSelf: 'center' }}
 											/>
-											
 										</Chunk>
 									</Emptiness>
 								</Chunk>
 							}
 
 							{issues.total > 0 &&
-
 								<Chunk>
 									<List
 										variant={{
@@ -128,8 +126,8 @@ function Issues(props) {
 									/>
 									<LoadMoreButton swr={issues} />
 								</Chunk>
-
 							}
+
 						</Section>
 					</Bounds>
 				</Stripe>

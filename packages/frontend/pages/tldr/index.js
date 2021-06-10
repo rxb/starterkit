@@ -114,7 +114,7 @@ function TldrHome(props) {
 
 	// DIVERT TO ERROR PAGE
 	// error from getInitialProps or the swr
-	if (categories.error) {
+	if ( categories.error ) {
 		const error = categories.error;
 		return <ErrorPage statusCode={error.code} />
 	}

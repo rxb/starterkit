@@ -48,8 +48,8 @@ import {
 	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from '../../components/tldr/TldrHeader';
-import { TldrCardSmall, CreateTldrCardSmall, LoadMoreButton, Emptiness } from '../../components/tldr/components';
+import TldrHeader from '@/components/tldr/TldrHeader';
+import { TldrCardSmall, CreateTldrCardSmall, LoadMoreButton, Emptiness, LoadingPage } from '@/components/tldr/components';
 
 
 
@@ -73,7 +73,7 @@ function Saved(props) {
 	const PAGE_SIZE = 12;
 
 	const tldrs = pageHelper(useSWRInfinite(
-		(index) => [getTldrsUrl({ selfSaved: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken]
+		(index) => authentication.accessToken ? [getTldrsUrl({ selfSaved: true, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken] : null
 	));
 
 	// DIVERT TO ERROR PAGE
@@ -107,7 +107,6 @@ function Saved(props) {
 										<Button
 											href={getIndexPageUrl()}
 											label="Go explore cards"
-											size="small"
 											/>
 									</Chunk>
 								</Emptiness>

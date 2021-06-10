@@ -259,7 +259,7 @@ const Edit = (props) => {
 										label="Save"
 										onPress={submitForm}
 										isLoading={formState.loading}
-									/>
+										/>
 								</Chunk>
 							</form>
 						</Section>

@@ -48,7 +48,8 @@ import {
 	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from '../../components/tldr/TldrHeader';
+import TldrHeader from '@/components/tldr/TldrHeader';
+import {LoadingPage} from '@/components/tldr/components';
 import Router from 'next/router'
 import Head from 'next/head'
 
@@ -270,9 +271,9 @@ const EditProfile = (props) => {
 		}
 	}
 
-	// DIVERT TO ERROR PAGE
-	if (!authentication.user) {
-		return <ErrorPage statusCode={401} />
+	// DIVERT PAGE?
+	if (!authentication.user ) {
+		return (authentication.loading) ? <LoadingPage /> : <ErrorPage statusCode={401} />;
 	}
 
 	// RENDER

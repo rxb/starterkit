@@ -47,12 +47,10 @@ import {
 	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from '../../components/tldr/TldrHeader';
-import { TldrCardSmall, TldrCard } from '../../components/tldr/components';
+import TldrHeader from '@/components/tldr/TldrHeader';
+import { TldrCardSmall, TldrCard, LoadingPage } from '@/components/tldr/components';
 import Router from 'next/router'
 import Head from 'next/head'
-
-
 
 
 
@@ -172,9 +170,14 @@ function VersionEdit(props) {
 	}
 
 	// DIVERT TO ERROR PAGE
-	if (!authentication.user || (tldr.authorId && user.id && (tldr.authorId != user.id))) {
-		// not logged in or trying to edit something I don't own
-		return <ErrorPage statusCode={401} />
+	// not logged in or trying to edit something I don't own
+	if (!authentication.user || (tldr && tldr.authorId && user.id && (tldr.authorId != user.id)) ) {
+		if (authentication.loading) {
+			return <LoadingPage />;
+		}
+		else{
+			return <ErrorPage statusCode={401} />;
+		}
 	}
 
 	// RENDER
