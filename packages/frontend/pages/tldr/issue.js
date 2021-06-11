@@ -7,7 +7,7 @@ import useSWR, { useSWRInfinite, mutate, cache } from 'swr';
 
 // REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { addPrompt, addToast } from '@/actions';
+import { addPrompt, addToast, updateUi } from '@/actions';
 
 // URLS
 import { getTldrPageUrl, getIssuePageUrl, getIssuesPageUrl } from '@/components/tldr/urls';
@@ -181,6 +181,7 @@ function Issue(props) {
 	const { issueId } = props;
 
 	const dispatch = useDispatch();
+	const ui = useSelector(state => state.ui);
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user;
 
@@ -269,7 +270,7 @@ function Issue(props) {
 											/>
 									}
 
-									{ user && issueCommentsData &&
+									{ authentication.user && issueCommentsData &&
 										<CommentForm
 											issue={issue}
 											issueComments={issueComments}
@@ -278,6 +279,43 @@ function Issue(props) {
 											issueCommentsKey={issueCommentsKey}
 											/>
 									}
+
+									{ !authentication.user && issueCommentsData &&
+										<Chunk border inline style={{backgroundColor: SWATCHES.shade, paddingHorizontal: METRICS.space}}>
+
+											{!ui.probablyHasAccount && 
+												<Button 
+													size="small"
+													label="Sign up"
+													onPress={()=>{
+														dispatch(updateUi({
+															logInModalVisible: true,
+															logInModalOptions: {
+																authUi: 'register'
+															}
+														}));
+													}}
+													/>
+											}
+											{ui.probablyHasAccount && 
+												<Button 
+													size="small"
+													label="Log in"
+													onPress={()=>{
+														dispatch(updateUi({
+															logInModalVisible: true,
+															logInModalOptions: {
+																authUi: 'login'
+															}
+														}));
+													}}
+													/>
+											}
+
+											<Text> to join this conversation</Text>
+										</Chunk>
+									}
+
 								</Section>
 							</FlexItem>
 							<FlexItem growFactor={1}>
