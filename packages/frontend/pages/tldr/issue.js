@@ -141,8 +141,7 @@ const CommentForm = (props) => {
 					maxLength={1000}
 				/>
 				<FieldError error={formState.error?.fieldErrors?.body} />
-			</Chunk>
-			<Chunk>
+
 				<Button
 					onPress={() => submitCommentForm(formState, props)}
 					isLoading={formState.loading}
@@ -244,6 +243,7 @@ function Issue(props) {
 									<Chunk>
 										<Text>{issue.data.body}</Text>
 									</Chunk>
+								
 								</Section>
 								<Section>
 									<Chunk>
