@@ -165,8 +165,11 @@ const renderComment = (item, i) => {
 					/>
 				</FlexItem>
 				<FlexItem>
-					<Text>{item.body} {dayjs(item.createdAt).format('L LT')}</Text>
-					<Text>{item.author.name}</Text>
+					<Text type="small" weight="strong">{item.author.name} </Text>
+					<Text>{item.body}</Text>
+				</FlexItem>
+				<FlexItem shrink>
+					<Text nowrap type="small" color="secondary">{dayjs(item.createdAt).fromNow()}</Text>
 				</FlexItem>
 			</Flex>
 		</Chunk>
@@ -232,14 +235,16 @@ function Issue(props) {
 										issues 
 									</Link>
 								</Text>
-									
-								
 								<Text type="pageHead">{issue.data.title}</Text>
 							</Chunk>
 						</Section>
 						<Flex>
 							<FlexItem growFactor={2}>
 								<Section>
+									<Chunk>
+										<Text>posted by {issue.data.author.name} {dayjs(issue.data.createdAt).fromNow()}</Text>
+										<Text></Text>
+									</Chunk>
 									<Chunk>
 										<Text>{issue.data.body}</Text>
 									</Chunk>

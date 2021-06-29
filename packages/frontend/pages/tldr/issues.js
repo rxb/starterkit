@@ -53,10 +53,38 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import Router from 'next/router'
 
+
 const Tag = (props) => {
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+	const { color, size, style } = props;
+	
+	let textType;
+	switch(size){
+		case 'small':
+			textType = 'micro';
+			break;
+		default:
+			textType = 'small';
+	}
+
+	let backgroundColor, textColor;
+	switch(color){
+		case 'green':
+			backgroundColor = '#C1E1C1';
+			textColor = 'green';
+			break;
+		case 'red':
+			backgroundColor = 'pink';
+			textColor = 'red';
+			break;
+		default: 
+			backgroundColor = SWATCHES.shade;
+			textColor = SWATCHES.textSecondary;
+	}
+
 	return(
-		<View style={{alignSelf: 'flex-start', background: 'pink', paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2}}>
-			<Text type="micro" style={{color: 'red'}}>{props.label.toUpperCase()}</Text>
+		<View style={[{alignSelf: 'flex-start', backgroundColor: backgroundColor, paddingHorizontal: 4, paddingVertical: 0, borderRadius: 2, marginVertical: 2, textAlign: 'center'}, style]}>
+			<Text type={textType} style={{color: textColor}}>{props.label.toUpperCase()}</Text>
 		</View>
 	);
 }
@@ -88,7 +116,8 @@ function Issues(props) {
 			<TldrHeader />
 
 			{ issues.data && tldr.data &&
-				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
+				<>
+				<Stripe style={{ flex: 1 }}>
 					<Bounds>
 						<Section>
 							<Flex>
@@ -106,7 +135,7 @@ function Issues(props) {
 											onPress={() => {
 												detourIfAuthNeeded(getIssueEditPageUrl({tldrId: tldr.data.id}), authentication, dispatch, Router);
 											}}
-											label="Open an issue"
+											label="New issue"
 											style={{ alignSelf: 'center' }}
 										/>
 									</Chunk>
@@ -114,8 +143,9 @@ function Issues(props) {
 							</Flex>
 
 						</Section>
-						<Section border>
+						
 							{issues.total == 0 &&
+							<Section border>
 								<Chunk>
 									<Emptiness
 										label={`No issues for this card yet`}
@@ -125,15 +155,18 @@ function Issues(props) {
 												onPress={() => {
 													detourIfAuthNeeded(getIssueEditPageUrl({tldrId: tldr.data.id}), authentication, dispatch, Router);
 												}}
-												label="Open an issue"
+												label="New issue"
 												style={{ alignSelf: 'center' }}
 											/>
 										</Chunk>
 									</Emptiness>
 								</Chunk>
+								</Section>
 							}
 
 							{issues.total > 0 &&
+						
+							<Section borderedContent>
 								<Chunk>
 									<List
 										variant={{
@@ -141,22 +174,37 @@ function Issues(props) {
 										}}
 										items={issues.data}
 										paginated={true}
+										linearFirstChildPlain={false}
 										renderItem={(item, i) => (
 											<Link href={getIssuePageUrl({issueId: item.id})}>
 												<Chunk key={i}>
 													<Flex>
-														<FlexItem>
-															<Tag 
-																label="Suggestion" 
-																/>
-															<Text type="big">{item.title}</Text>
-															<Text type="small" color="secondary">opened {dayjs(item.createdAt).fromNow()} by {item.author.urlKey}</Text>
+														<FlexItem growFactor={3}>
+															<Tag label="Suggestion" size="small"/>
+															<Text weight="strong">{item.title}</Text>
+															
 														</FlexItem>
-														<FlexItem shrink>
-															<Chip label="open" />
+														<FlexItem justify="center" growFactor={3}>
+															<Text type="small" color="secondary" nowrap>opened {dayjs(item.createdAt).fromNow()} by {item.author.urlKey}</Text>
 														</FlexItem>
-														<FlexItem shrink>
-															<Text>14 comments</Text>
+														<FlexItem justify="center" growFactor={1}>
+															<Text nowrap type="small" color="secondary" nowrap>14 comments</Text>
+														</FlexItem>
+														<FlexItem shrink justify="center" >
+															<View style={{
+																backgroundColor: 'green',
+																width: 20,
+																height: 20,
+																borderRadius: 20,
+																alignItems: 'center',
+																justifyContent: 'center'
+															}}>
+																<Icon 
+																	shape="Check"
+																	color="white"
+																	size="xsmall"
+																	/>
+															</View>
 														</FlexItem>
 													</Flex>
 
@@ -166,11 +214,27 @@ function Issues(props) {
 									/>
 									<LoadMoreButton swr={issues} />
 								</Chunk>
+								</Section>
+								
+								
+								
 							}
 
-						</Section>
+						
 					</Bounds>
 				</Stripe>
+				<Stripe style={{backgroundColor: SWATCHES.shade}}>
+					<Bounds>
+
+						<Section>
+										<Chunk>
+											<Text type="sectionHead">About issues and stuff</Text>
+										</Chunk>
+							</Section>
+					</Bounds>
+
+				</Stripe>
+				</>
 			}
 		</Page>
 	);
