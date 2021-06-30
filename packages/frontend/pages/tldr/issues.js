@@ -179,16 +179,24 @@ function Issues(props) {
 											<Link href={getIssuePageUrl({issueId: item.id})}>
 												<Chunk key={i}>
 													<Flex>
-														<FlexItem growFactor={3}>
-															<Tag label="Suggestion" size="small"/>
-															<Text weight="strong">{item.title}</Text>
-															
-														</FlexItem>
-														<FlexItem justify="center" growFactor={3}>
-															<Text type="small" color="secondary" nowrap>opened {dayjs(item.createdAt).fromNow()} by {item.author.urlKey}</Text>
-														</FlexItem>
-														<FlexItem justify="center" growFactor={1}>
-															<Text nowrap type="small" color="secondary" nowrap>14 comments</Text>
+														<FlexItem>
+															<Flex direction="column" switchDirection="large">
+																<FlexItem>
+																	<Tag label="Suggestion" size="small"/>
+																</FlexItem>
+																<FlexItem growFactor={3}>
+																	
+																	<Text weight="strong">{item.title}</Text>
+																	
+																</FlexItem>
+																<FlexItem justify="center" growFactor={3}>
+																	<Text type="small" color="secondary" nowrap>opened {dayjs(item.createdAt).fromNow()} by {item.author.urlKey}</Text>
+																</FlexItem>
+																<FlexItem justify="center" growFactor={2}>
+																	<Text nowrap type="small" color="secondary" nowrap>14 comments</Text>
+																</FlexItem>
+																
+															</Flex>
 														</FlexItem>
 														<FlexItem shrink justify="center" >
 															<View style={{
@@ -207,7 +215,7 @@ function Issues(props) {
 															</View>
 														</FlexItem>
 													</Flex>
-
+													
 												</Chunk>
 											</Link>
 										)}
