@@ -161,15 +161,15 @@ const renderComment = (item, i) => {
 					<Avatar
 						source={{ uri: item.author.photoUrl }}
 						style={{ marginBottom: METRICS.pseudoLineHeight }}
-						size="medium"
+						size="small"
 					/>
 				</FlexItem>
 				<FlexItem>
-					<Text type="small" weight="strong">{item.author.name} </Text>
+					<Text  weight="strong" type="small">{item.author.name} </Text>
 					<Text>{item.body}</Text>
 				</FlexItem>
 				<FlexItem shrink>
-					<Text nowrap type="small" color="secondary">{dayjs(item.createdAt).fromNow()}</Text>
+					<Text nowrap type="small"  color="hint">{dayjs(item.createdAt).fromNow()}</Text>
 				</FlexItem>
 			</Flex>
 		</Chunk>
@@ -222,39 +222,82 @@ function Issue(props) {
 			<TldrHeader />
 
 			{ issue.data && tldr.data &&
-				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
+				<Stripe style={{ flex: 1}}>
 					<Bounds>
-						<Section>
-							<Chunk>
-								<Text type="small" color="secondary">
-									<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
-										{tldr.data.author.urlKey}/{tldr.data.urlKey}  
-									</Link>
-									&nbsp;&raquo;&nbsp;
-									<Link href={getIssuesPageUrl({tldrId: tldr.data.id})}>
-										issues 
-									</Link>
-								</Text>
-								<Text type="pageHead">{issue.data.title}</Text>
-							</Chunk>
-						</Section>
-						<Flex>
-							<FlexItem growFactor={2}>
+						
+						<Flex direction="column" switchDirection="large" reverseSwitchDirection>
+						<FlexItem growFactor={2}>
 								<Section>
+									<Card>
+										<Sectionless>
 									<Chunk>
-										<Text>posted by {issue.data.author.name} {dayjs(issue.data.createdAt).fromNow()}</Text>
-										<Text></Text>
+										<Flex>
+											<FlexItem>
+												<Text type="small" color="secondary">Current status:</Text>
+												<Text weight="strong">Open</Text>
+											</FlexItem>
+											<FlexItem shrink justify="center">
+												<View style={{
+													backgroundColor: 'green',
+													width: 20,
+													height: 20,
+													borderRadius: 20,
+													alignItems: 'center',
+													justifyContent: 'center'
+													}}>
+													<Icon 
+														shape="Check"
+														color="white"
+														size="xsmall"
+														/>
+												</View>
+											</FlexItem>
+										</Flex>
 									</Chunk>
-									<Chunk>
+									</Sectionless>
+									</Card>
+								</Section>
+							</FlexItem>
+
+
+							<FlexItem growFactor={5}>
+							<Section>
+								<Chunk>
+									<Text type="small" color="secondary">
+										<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
+											{tldr.data.author.urlKey}/{tldr.data.urlKey}  
+										</Link>
+										&nbsp;&raquo;&nbsp;
+										<Link href={getIssuesPageUrl({tldrId: tldr.data.id})}>
+											issues 
+										</Link>
+									</Text>
+									<Text type="pageHead">{issue.data.title}</Text>
+								</Chunk>
+								<Chunk>
 										<Text>{issue.data.body}</Text>
 									</Chunk>
-								
+									<Flex>
+										<FlexItem shrink>
+											<Chunk>
+											<Avatar
+												source={{ uri: issue.data.author.photoUrl }}
+												style={{ marginBottom: METRICS.pseudoLineHeight }}
+												size="medium"
+											/>
+											</Chunk>
+										</FlexItem>
+										<FlexItem>
+											<Chunk>
+												<Text weight="strong">opened by {issue.data.author.name}</Text>
+												<Text color="hint">{dayjs(issue.data.createdAt).fromNow()}</Text>
+											</Chunk>
+										</FlexItem>
+									</Flex>
+									
 								</Section>
-								<Section>
-									<Chunk>
-										<Text type="sectionHead">Discussion</Text>
-									</Chunk>
-
+							
+								<Section border>
 									{backfillIssueComments?.total > 0 &&
 										<View style={{backgroundColor: 'pink'}}>
 										<List
@@ -274,8 +317,8 @@ function Issue(props) {
 											renderItem={renderComment}
 											/>
 									}
-
 									{ authentication.user && issueCommentsData &&
+									
 										<CommentForm
 											issue={issue}
 											issueComments={issueComments}
@@ -283,15 +326,20 @@ function Issue(props) {
 											user={user}
 											issueCommentsKey={issueCommentsKey}
 											/>
+									
 									}
+									</Section>
+
+		
 
 									{ !authentication.user && issueCommentsData &&
-										<Chunk border inline style={{backgroundColor: SWATCHES.shade, paddingHorizontal: METRICS.space}}>
+										<Section border>
+										<Chunk inline>
 
 											{!ui.probablyHasAccount && 
 												<Button 
 													size="small"
-													label="Sign up"
+													label="Sign up to join discussion"
 													onPress={()=>{
 														dispatch(updateUi({
 															logInModalVisible: true,
@@ -305,7 +353,7 @@ function Issue(props) {
 											{ui.probablyHasAccount && 
 												<Button 
 													size="small"
-													label="Log in"
+													label="Log in to join discussion"
 													onPress={()=>{
 														dispatch(updateUi({
 															logInModalVisible: true,
@@ -317,24 +365,15 @@ function Issue(props) {
 													/>
 											}
 
-											<Text> to join this conversation</Text>
 										</Chunk>
+										</Section>
 									}
+								
+							</FlexItem>
 
-								</Section>
-							</FlexItem>
-							<FlexItem growFactor={1}>
-								<Section>
-									<Chunk>
-										<Text>{issue.data.author.name}</Text>
-									</Chunk>
-									<Chunk>
-										<Text>{dayjs(issue.data.createdAt).format('L LT')}</Text>
-									</Chunk>
-								</Section>
-							</FlexItem>
+							
 						</Flex>
-
+						
 					</Bounds>
 				</Stripe>
 			}
