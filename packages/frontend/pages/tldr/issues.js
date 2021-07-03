@@ -44,7 +44,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
-import { LoadMoreButton, Emptiness } from '@/components/tldr/components';
+import { LoadMoreButton, Emptiness, Tag } from '@/components/tldr/components';
 
 
 // SCREEN-SPECIFIC 
@@ -54,40 +54,7 @@ dayjs.extend(relativeTime)
 import Router from 'next/router'
 
 
-const Tag = (props) => {
-	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-	const { color, size, style } = props;
-	
-	let textType;
-	switch(size){
-		case 'small':
-			textType = 'micro';
-			break;
-		default:
-			textType = 'small';
-	}
 
-	let backgroundColor, textColor;
-	switch(color){
-		case 'green':
-			backgroundColor = '#C1E1C1';
-			textColor = 'green';
-			break;
-		case 'red':
-			backgroundColor = 'pink';
-			textColor = 'red';
-			break;
-		default: 
-			backgroundColor = SWATCHES.shade;
-			textColor = SWATCHES.textSecondary;
-	}
-
-	return(
-		<View style={[{alignSelf: 'flex-start', backgroundColor: backgroundColor, paddingHorizontal: 4, paddingVertical: 0, borderRadius: 2, marginVertical: 2, textAlign: 'center'}, style]}>
-			<Text type={textType} style={{color: textColor}}>{props.label.toUpperCase()}</Text>
-		</View>
-	);
-}
 
 function Issues(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
@@ -117,7 +84,7 @@ function Issues(props) {
 
 			{ issues.data && tldr.data &&
 				<>
-				<Stripe style={{ flex: 1 }}>
+				<Stripe style={{ minHeight: '70vh' }}>
 					<Bounds>
 						<Section>
 							<Flex>
@@ -231,7 +198,7 @@ function Issues(props) {
 						
 					</Bounds>
 				</Stripe>
-				<Stripe style={{backgroundColor: SWATCHES.shade}}>
+				<Stripe style={{flex: 1, backgroundColor: SWATCHES.shade}}>
 					<Bounds>
 
 						<Section>

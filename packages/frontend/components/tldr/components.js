@@ -853,3 +853,38 @@ export const LoadingPage = (props) => {
 		</Page>
 	)
 }
+
+export const Tag = (props) => {
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+	const { color, size, style } = props;
+	
+	let textType;
+	switch(size){
+		case 'small':
+			textType = 'micro';
+			break;
+		default:
+			textType = 'small';
+	}
+
+	let backgroundColor, textColor;
+	switch(color){
+		case 'green':
+			backgroundColor = '#C1E1C1';
+			textColor = 'green';
+			break;
+		case 'red':
+			backgroundColor = 'pink';
+			textColor = 'red';
+			break;
+		default: 
+			backgroundColor = SWATCHES.shade;
+			textColor = SWATCHES.textSecondary;
+	}
+
+	return(
+		<View style={[{alignSelf: 'flex-start', backgroundColor: backgroundColor, paddingHorizontal: 4, paddingVertical: 0, borderRadius: 2, marginVertical: 2, textAlign: 'center'}, styles.pseudoLineHeight, style]}>
+			<Text type={textType} style={{color: textColor}}>{props.label.toUpperCase()}</Text>
+		</View>
+	);
+}

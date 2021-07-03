@@ -45,7 +45,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
-import { LoadMoreButton, Emptiness } from '@/components/tldr/components';
+import { LoadMoreButton, Emptiness, Tag } from '@/components/tldr/components';
 
 
 // SCREEN-SPECIFIC 
@@ -165,11 +165,11 @@ const renderComment = (item, i) => {
 					/>
 				</FlexItem>
 				<FlexItem>
-					<Text  weight="strong" type="small">{item.author.name} </Text>
+					<Text weight="strong" type="small">{item.author.name} </Text>
 					<Text>{item.body}</Text>
 				</FlexItem>
 				<FlexItem shrink>
-					<Text nowrap type="small"  color="hint">{dayjs(item.createdAt).fromNow()}</Text>
+					<Text nowrap type="small" color="hint">{dayjs(item.createdAt).fromNow()}</Text>
 				</FlexItem>
 			</Flex>
 		</Chunk>
@@ -189,7 +189,7 @@ function Issue(props) {
 
 	// ISSUE
 	const issue = useSWR(getIssueUrl(issueId));
-	const tldr = useSWR( issue.data?.tldrId ? getTldrUrl(issue.data.tldrId) : null);
+	const tldr = useSWR(issue.data?.tldrId ? getTldrUrl(issue.data.tldrId) : null);
 
 	// ISSUE COMMENTS
 	const PAGE_SIZE = 12;
@@ -200,14 +200,14 @@ function Issue(props) {
 	const [issueCommentsData, setIssueCommentsData] = useState();
 	useEffect(() => {
 		const items = issueComments.data?.items || [];
-		setIssueCommentsData([...items].reverse()) 
+		setIssueCommentsData([...items].reverse())
 	}, [issueComments]);
 
 	// if needed, backfill
 	// starting at oldest, infinite to "most recent page"
 	const needsBackfill = (issueComments.data && issueComments.data.total > PAGE_SIZE);
 	const nins = issueComments.data?.items.map(item => item.id);
-	const backfillIssueComments = pageHelper(useSWRInfinite( needsBackfill ? (index) => [getIssueCommentsUrl({ issueId, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index, "id[$nin]": nins }), authentication.accessToken] : null ));
+	const backfillIssueComments = pageHelper(useSWRInfinite(needsBackfill ? (index) => [getIssueCommentsUrl({ issueId, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index, "id[$nin]": nins }), authentication.accessToken] : null));
 
 
 	// DIVERT TO ERROR PAGE
@@ -221,70 +221,78 @@ function Issue(props) {
 		<Page>
 			<TldrHeader />
 
-			{ issue.data && tldr.data &&
-				<Stripe style={{ flex: 1}}>
+			{issue.data && tldr.data &&
+				<>
+		
+				<Stripe style={{ flex: 1 }}>
 					<Bounds>
 						
 						<Flex direction="column" switchDirection="large" reverseSwitchDirection>
-						<FlexItem growFactor={2}>
+							<FlexItem growFactor={2}>
 								<Section>
-									<Card>
-										<Sectionless>
 									<Chunk>
-										<Flex>
-											<FlexItem>
-												<Text type="small" color="secondary">Current status:</Text>
-												<Text weight="strong">Open</Text>
-											</FlexItem>
-											<FlexItem shrink justify="center">
-												<View style={{
-													backgroundColor: 'green',
-													width: 20,
-													height: 20,
-													borderRadius: 20,
-													alignItems: 'center',
-													justifyContent: 'center'
-													}}>
-													<Icon 
-														shape="Check"
-														color="white"
-														size="xsmall"
-														/>
-												</View>
-											</FlexItem>
-										</Flex>
+										<Card style={{ backgroundColor: SWATCHES.notwhite }}>
+											<Sectionless>
+												<Chunk>
+													<Flex>
+														<FlexItem>
+															<Text type="small" color="secondary">Current status:</Text>
+															<Text weight="strong">Open</Text>
+														</FlexItem>
+														<FlexItem shrink justify="center">
+															<View style={{
+																backgroundColor: 'green',
+																width: 20,
+																height: 20,
+																borderRadius: 20,
+																alignItems: 'center',
+																justifyContent: 'center'
+															}}>
+																<Icon
+																	shape="Check"
+																	color="white"
+																	size="xsmall"
+																/>
+															</View>
+														</FlexItem>
+													</Flex>
+												</Chunk>
+											</Sectionless>
+										</Card>
 									</Chunk>
-									</Sectionless>
-									</Card>
 								</Section>
 							</FlexItem>
 
 
 							<FlexItem growFactor={5}>
-							<Section>
-								<Chunk>
+								<Section>
+									<Chunk>
 									<Text type="small" color="secondary">
-										<Link href={getTldrPageUrl({tldrId: tldr.data.id})}>
-											{tldr.data.author.urlKey}/{tldr.data.urlKey}  
-										</Link>
-										&nbsp;&raquo;&nbsp;
-										<Link href={getIssuesPageUrl({tldrId: tldr.data.id})}>
-											issues 
-										</Link>
-									</Text>
-									<Text type="pageHead">{issue.data.title}</Text>
-								</Chunk>
-								<Chunk>
+								<Link href={getTldrPageUrl({ tldrId: tldr.data.id })}>
+									{tldr.data.author.urlKey}/{tldr.data.urlKey}
+								</Link>
+								&nbsp;&raquo;&nbsp;
+								<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
+									issues
+								</Link>
+							</Text>
+										<Text type="pageHead">{issue.data.title}</Text>
+										<Tag label="Suggestion" size="small"/>									
+
+									</Chunk>
+									
+									<Chunk>
+										
 										<Text>{issue.data.body}</Text>
 									</Chunk>
 									<Flex>
 										<FlexItem shrink>
 											<Chunk>
-											<Avatar
-												source={{ uri: issue.data.author.photoUrl }}
-												style={{ marginBottom: METRICS.pseudoLineHeight }}
-												size="medium"
-											/>
+												<Avatar
+													source={{ uri: issue.data.author.photoUrl }}
+													style={{ marginBottom: METRICS.pseudoLineHeight }}
+													size="medium"
+												/>
 											</Chunk>
 										</FlexItem>
 										<FlexItem>
@@ -294,19 +302,19 @@ function Issue(props) {
 											</Chunk>
 										</FlexItem>
 									</Flex>
-									
+
 								</Section>
-							
+
 								<Section border>
 									{backfillIssueComments?.total > 0 &&
-										<View style={{backgroundColor: 'pink'}}>
-										<List
-											variant="linear"
-											paginated={true}
-											items={backfillIssueComments.data}
-											renderItem={renderComment}
+										<View style={{ backgroundColor: 'pink' }}>
+											<List
+												variant="linear"
+												paginated={true}
+												items={backfillIssueComments.data}
+												renderItem={renderComment}
 											/>
-										<LoadMoreButton swr={backfillIssueComments} />
+											<LoadMoreButton swr={backfillIssueComments} />
 										</View>
 									}
 
@@ -315,32 +323,32 @@ function Issue(props) {
 											variant="linear"
 											items={issueCommentsData}
 											renderItem={renderComment}
-											/>
+										/>
 									}
-									{ authentication.user && issueCommentsData &&
-									
+									{authentication.user && issueCommentsData &&
+
 										<CommentForm
 											issue={issue}
 											issueComments={issueComments}
 											authentication={authentication}
 											user={user}
 											issueCommentsKey={issueCommentsKey}
-											/>
-									
+										/>
+
 									}
-									</Section>
+								</Section>
 
-		
 
-									{ !authentication.user && issueCommentsData &&
-										<Section border>
+
+								{!authentication.user && issueCommentsData &&
+									<Section border>
 										<Chunk inline>
 
-											{!ui.probablyHasAccount && 
-												<Button 
+											{!ui.probablyHasAccount &&
+												<Button
 													size="small"
 													label="Sign up to join discussion"
-													onPress={()=>{
+													onPress={() => {
 														dispatch(updateUi({
 															logInModalVisible: true,
 															logInModalOptions: {
@@ -348,13 +356,13 @@ function Issue(props) {
 															}
 														}));
 													}}
-													/>
+												/>
 											}
-											{ui.probablyHasAccount && 
-												<Button 
+											{ui.probablyHasAccount &&
+												<Button
 													size="small"
 													label="Log in to join discussion"
-													onPress={()=>{
+													onPress={() => {
 														dispatch(updateUi({
 															logInModalVisible: true,
 															logInModalOptions: {
@@ -362,20 +370,21 @@ function Issue(props) {
 															}
 														}));
 													}}
-													/>
+												/>
 											}
 
 										</Chunk>
-										</Section>
-									}
-								
+									</Section>
+								}
+
 							</FlexItem>
 
-							
+
 						</Flex>
-						
+
 					</Bounds>
 				</Stripe>
+				</>
 			}
 		</Page>
 	);
