@@ -223,167 +223,167 @@ function Issue(props) {
 
 			{issue.data && tldr.data &&
 				<>
-		
-				<Stripe style={{ flex: 1 }}>
-					<Bounds>
-						
-						<Flex direction="column" switchDirection="large" reverseSwitchDirection>
-							<FlexItem growFactor={2}>
-								<Section>
-									<Chunk>
-										<Card style={{ backgroundColor: SWATCHES.notwhite }}>
-											<Sectionless>
-												<Chunk>
-													<Flex>
-														<FlexItem>
-															<Text type="small" color="secondary">Current status:</Text>
-															<Text weight="strong">Open</Text>
-														</FlexItem>
-														<FlexItem shrink justify="center">
-															<View style={{
-																backgroundColor: 'green',
-																width: 20,
-																height: 20,
-																borderRadius: 20,
-																alignItems: 'center',
-																justifyContent: 'center'
-															}}>
-																<Icon
-																	shape="Check"
-																	color="white"
-																	size="xsmall"
-																/>
-															</View>
-														</FlexItem>
-													</Flex>
-												</Chunk>
-											</Sectionless>
-										</Card>
-									</Chunk>
-								</Section>
-							</FlexItem>
 
+					<Stripe style={{ flex: 1 }}>
+						<Bounds>
 
-							<FlexItem growFactor={5}>
-								<Section>
-									<Chunk>
-									<Text type="small" color="secondary">
-								<Link href={getTldrPageUrl({ tldrId: tldr.data.id })}>
-									{tldr.data.author.urlKey}/{tldr.data.urlKey}
-								</Link>
-								&nbsp;&raquo;&nbsp;
-								<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
-									issues
-								</Link>
-							</Text>
-										<Text type="pageHead">{issue.data.title}</Text>
-										<Tag label="Suggestion" size="small"/>									
-
-									</Chunk>
-									
-									<Chunk>
-										
-										<Text>{issue.data.body}</Text>
-									</Chunk>
-									<Flex>
-										<FlexItem shrink>
-											<Chunk>
-												<Avatar
-													source={{ uri: issue.data.author.photoUrl }}
-													style={{ marginBottom: METRICS.pseudoLineHeight }}
-													size="medium"
-												/>
-											</Chunk>
-										</FlexItem>
-										<FlexItem>
-											<Chunk>
-												<Text weight="strong">opened by {issue.data.author.name}</Text>
-												<Text color="hint">{dayjs(issue.data.createdAt).fromNow()}</Text>
-											</Chunk>
-										</FlexItem>
-									</Flex>
-
-								</Section>
-
-								<Section border>
-									{backfillIssueComments?.total > 0 &&
-										<View style={{ backgroundColor: 'pink' }}>
-											<List
-												variant="linear"
-												paginated={true}
-												items={backfillIssueComments.data}
-												renderItem={renderComment}
-											/>
-											<LoadMoreButton swr={backfillIssueComments} />
-										</View>
-									}
-
-									{issueCommentsData &&
-										<List
-											variant="linear"
-											items={issueCommentsData}
-											renderItem={renderComment}
-										/>
-									}
-									{authentication.user && issueCommentsData &&
-
-										<CommentForm
-											issue={issue}
-											issueComments={issueComments}
-											authentication={authentication}
-											user={user}
-											issueCommentsKey={issueCommentsKey}
-										/>
-
-									}
-								</Section>
-
-
-
-								{!authentication.user && issueCommentsData &&
-									<Section border>
-										<Chunk inline>
-
-											{!ui.probablyHasAccount &&
-												<Button
-													size="small"
-													label="Sign up to join discussion"
-													onPress={() => {
-														dispatch(updateUi({
-															logInModalVisible: true,
-															logInModalOptions: {
-																authUi: 'register'
-															}
-														}));
-													}}
-												/>
-											}
-											{ui.probablyHasAccount &&
-												<Button
-													size="small"
-													label="Log in to join discussion"
-													onPress={() => {
-														dispatch(updateUi({
-															logInModalVisible: true,
-															logInModalOptions: {
-																authUi: 'login'
-															}
-														}));
-													}}
-												/>
-											}
-
+							<Flex direction="column" switchDirection="large" reverseSwitchDirection>
+								<FlexItem growFactor={2}>
+									<Section>
+										<Chunk>
+											<Card style={{ backgroundColor: SWATCHES.notwhite }}>
+												<Sectionless>
+													<Chunk>
+														<Flex>
+															<FlexItem>
+																<Text type="small" color="secondary">Current status:</Text>
+																<Text weight="strong">Open</Text>
+															</FlexItem>
+															<FlexItem shrink justify="center">
+																<View style={{
+																	backgroundColor: 'green',
+																	width: 20,
+																	height: 20,
+																	borderRadius: 20,
+																	alignItems: 'center',
+																	justifyContent: 'center'
+																}}>
+																	<Icon
+																		shape="Check"
+																		color="white"
+																		size="xsmall"
+																	/>
+																</View>
+															</FlexItem>
+														</Flex>
+													</Chunk>
+												</Sectionless>
+											</Card>
 										</Chunk>
 									</Section>
-								}
-
-							</FlexItem>
+								</FlexItem>
 
 
-						</Flex>
+								<FlexItem growFactor={5}>
+									<Section>
+										<Chunk>
+											<Text type="small" color="secondary">
+												<Link href={getTldrPageUrl({ tldrId: tldr.data.id })}>
+													{tldr.data.author.urlKey}/{tldr.data.urlKey}
+												</Link>
+												&nbsp;&raquo;&nbsp;
+												<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
+													issues
+												</Link>
+											</Text>
+											<Text type="pageHead">{issue.data.title}</Text>
+											<Tag label="Suggestion" size="small" />
 
-					</Bounds>
-				</Stripe>
+										</Chunk>
+
+										<Chunk>
+
+											<Text>{issue.data.body}</Text>
+										</Chunk>
+										<Flex>
+											<FlexItem shrink>
+												<Chunk>
+													<Avatar
+														source={{ uri: issue.data.author.photoUrl }}
+														style={{ marginBottom: METRICS.pseudoLineHeight }}
+														size="medium"
+													/>
+												</Chunk>
+											</FlexItem>
+											<FlexItem>
+												<Chunk>
+													<Text weight="strong">opened by {issue.data.author.name}</Text>
+													<Text color="hint">{dayjs(issue.data.createdAt).fromNow()}</Text>
+												</Chunk>
+											</FlexItem>
+										</Flex>
+
+									</Section>
+
+									<Section border>
+										{backfillIssueComments?.total > 0 &&
+											<View style={{ backgroundColor: 'pink' }}>
+												<List
+													variant="linear"
+													paginated={true}
+													items={backfillIssueComments.data}
+													renderItem={renderComment}
+												/>
+												<LoadMoreButton swr={backfillIssueComments} />
+											</View>
+										}
+
+										{issueCommentsData &&
+											<List
+												variant="linear"
+												items={issueCommentsData}
+												renderItem={renderComment}
+											/>
+										}
+										{authentication.user && issueCommentsData &&
+
+											<CommentForm
+												issue={issue}
+												issueComments={issueComments}
+												authentication={authentication}
+												user={user}
+												issueCommentsKey={issueCommentsKey}
+											/>
+
+										}
+									</Section>
+
+
+
+									{!authentication.user && issueCommentsData &&
+										<Section border>
+											<Chunk inline>
+
+												{!ui.probablyHasAccount &&
+													<Button
+														size="small"
+														label="Sign up to join discussion"
+														onPress={() => {
+															dispatch(updateUi({
+																logInModalVisible: true,
+																logInModalOptions: {
+																	authUi: 'register'
+																}
+															}));
+														}}
+													/>
+												}
+												{ui.probablyHasAccount &&
+													<Button
+														size="small"
+														label="Log in to join discussion"
+														onPress={() => {
+															dispatch(updateUi({
+																logInModalVisible: true,
+																logInModalOptions: {
+																	authUi: 'login'
+																}
+															}));
+														}}
+													/>
+												}
+
+											</Chunk>
+										</Section>
+									}
+
+								</FlexItem>
+
+
+							</Flex>
+
+						</Bounds>
+					</Stripe>
 				</>
 			}
 		</Page>

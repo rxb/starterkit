@@ -43,12 +43,14 @@ import {
 	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from '../../components/tldr/TldrHeader';
+import TldrHeader from '@/components/tldr/TldrHeader';
 import Router, { useRouter } from 'next/router'
 
 
 // SCREEN-SPECIFIC
-import { TldrCardSmall, TldrCard, DeletePrompt } from '../../components/tldr/components';
+import { TldrCardSmall, TldrCard, DeletePrompt } from '@/components/tldr/components';
+import { abbreviateNumber } from '@/components/utils';
+
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
@@ -70,9 +72,9 @@ const DownVotePrompt = (props) => {
 			</Chunk>
 			<Chunk>
 				<Button
-					onPress={()=>{
+					onPress={() => {
 						onRequestClose();
-						Router.push(getIssuesPageUrl({tldrId: tldr.data.id}));
+						Router.push(getIssuesPageUrl({ tldrId: tldr.data.id }));
 					}}
 					label="Open an issue"
 					width="full"
@@ -204,7 +206,7 @@ function Tldr(props) {
 		setPostAuthAction(hashAction);
 	}, []);
 	useEffect(() => {
-		if (user.id && postAuthAction) {
+		if (user.id && tldr.data, postAuthAction) {
 			switch (postAuthAction) {
 				case 'upvoteTldr':
 					upvoteTldr();
@@ -218,7 +220,7 @@ function Tldr(props) {
 			}
 			setPostAuthAction(null);
 		}
-	}, [user.id, postAuthAction]);
+	}, [user.id, postAuthAction, tldr.data]);
 
 	const doOrAuth = (fn, actionOnReturn) => {
 		if (!authentication.accessToken) {
@@ -318,7 +320,7 @@ function Tldr(props) {
 				<pre>{JSON.stringify(tldr.data, null, 2)}</pre>
 				*/}
 
-			{ tldr.data &&
+			{tldr.data &&
 				<Stripe style={{/*paddingTop: 0,*/ backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
 						<Flex direction="column" switchDirection="large">
@@ -331,9 +333,9 @@ function Tldr(props) {
 							</FlexItem>
 							<FlexItem growFactor={0} style={{ flexBasis: 350, flex: 0 }}>
 								<Section>
-									<Flex style={{ marginTop: METRICS.space * 2.5 }}>
-										<FlexItem shrink>
-											<Chunk>
+									<Chunk border style={{ marginTop: METRICS.space * 3 }}>
+										<Flex>
+											<FlexItem shrink>
 												<Button
 													color={tldr.data.currentUserVote == 1 ? 'primary' : 'secondary'}
 													style={{ borderBottomRightRadius: 0, borderBottomLeftRadius: 0, marginBottom: 1 }}
@@ -346,15 +348,28 @@ function Tldr(props) {
 													shape="ArrowDown"
 													onPress={downvoteTldr}
 												/>
-											</Chunk>
-										</FlexItem>
-										<FlexItem justify="center">
-											<Chunk>
+
+											</FlexItem>
+											<FlexItem justify="center">
+
+												{/*
 												<Text type="big">18.7k</Text>
 												<Text type="micro" color="hint">95% positive</Text>
-											</Chunk>
-										</FlexItem>
-									</Flex>
+												*/}
+												<Text type="big">{abbreviateNumber(tldr.data.voteResult)}</Text>
+												<Text type="big">{tldr.data.voteResult}</Text>
+												
+													{tldr.data.voteResult >= 0 && 
+														<Text type="micro" color="hint">{tldr.data.votePositivity}% upvotes</Text>
+													}
+													{tldr.data.voteResult < 0 && 
+														<Text type="micro" color="hint">{100-tldr.data.votePositivity}% downvotes</Text>
+													}
+												
+
+											</FlexItem>
+										</Flex>
+									</Chunk>
 
 									<Chunk border>
 										{canEdit &&
@@ -403,20 +418,20 @@ function Tldr(props) {
 									</Chunk>
 
 									<Chunk border>
-									<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
-										<Flex>
-											<FlexItem>
-												<Text weight="strong">Open issues (13)</Text>
-												<Text type="small" color="secondary">Help improve this card</Text>
-											</FlexItem>
-											<FlexItem shrink justify="center" style={{ paddingHorizontal: 3 }}>
-												<Icon
-													color={SWATCHES.textSecondary}
-													shape="MessageCircle"
-												/>
-											</FlexItem>
-										</Flex>
-									</Link>
+										<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
+											<Flex>
+												<FlexItem>
+													<Text weight="strong">Open issues (13)</Text>
+													<Text type="small" color="secondary">Help improve this card</Text>
+												</FlexItem>
+												<FlexItem shrink justify="center" style={{ paddingHorizontal: 3 }}>
+													<Icon
+														color={SWATCHES.textSecondary}
+														shape="MessageCircle"
+													/>
+												</FlexItem>
+											</Flex>
+										</Link>
 									</Chunk>
 
 									<Chunk border>
@@ -467,7 +482,7 @@ function Tldr(props) {
 				</Stripe>
 			}
 
-			{ tldr.data && relatedTldrs.data &&
+			{tldr.data && relatedTldrs.data &&
 				<Stripe style={{ backgroundColor: SWATCHES.backgroundShade }}>
 					<Bounds>
 

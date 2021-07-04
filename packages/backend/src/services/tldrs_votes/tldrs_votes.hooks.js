@@ -29,6 +29,7 @@ const updateVoteTally = async (context) => {
   return context;
 }
 
+
 module.exports = {
   before: {
     all: [],
