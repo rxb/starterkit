@@ -47,7 +47,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
-import {LoadingPage} from '@/components/tldr/components';
+import {LoadingPage, ISSUE_STATUS} from '@/components/tldr/components';
 import Router from 'next/router'
 import Head from 'next/head'
 
@@ -131,7 +131,8 @@ const EditForm = (props) => {
 		
 		const submitFields = { 
 			...formState.fields,
-			tldrId: tldr.data.id 
+			tldrId: tldr.data.id,
+			status: ISSUE_STATUS.OPEN 
 		};
 		const error = runValidations(submitFields, {
 			title: {

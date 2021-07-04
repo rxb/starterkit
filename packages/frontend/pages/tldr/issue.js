@@ -45,7 +45,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
-import { LoadMoreButton, Emptiness, Tag } from '@/components/tldr/components';
+import { LoadMoreButton, Emptiness, Tag, IssueStatusIcon, ISSUE_STATUS } from '@/components/tldr/components';
 
 
 // SCREEN-SPECIFIC 
@@ -237,23 +237,18 @@ function Issue(props) {
 														<Flex>
 															<FlexItem>
 																<Text type="small" color="secondary">Current status:</Text>
-																<Text weight="strong">Open</Text>
+																{ issue.data.status == ISSUE_STATUS.OPEN  &&
+																	<Text weight="strong">Open</Text>
+																}
+																{ issue.data.status == ISSUE_STATUS.CLOSED  &&
+																	<Text weight="strong">Closed</Text>
+																}											
 															</FlexItem>
 															<FlexItem shrink justify="center">
-																<View style={{
-																	backgroundColor: 'green',
-																	width: 20,
-																	height: 20,
-																	borderRadius: 20,
-																	alignItems: 'center',
-																	justifyContent: 'center'
-																}}>
-																	<Icon
-																		shape="Check"
-																		color="white"
-																		size="xsmall"
+																<IssueStatusIcon
+																	size="small"
+																	status={issue.data.status}
 																	/>
-																</View>
 															</FlexItem>
 														</Flex>
 													</Chunk>

@@ -421,7 +421,7 @@ function Tldr(props) {
 										<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
 											<Flex>
 												<FlexItem>
-													<Text weight="strong">Open issues (13)</Text>
+													<Text weight="strong">Issues</Text>
 													<Text type="small" color="secondary">Help improve this card</Text>
 												</FlexItem>
 												<FlexItem shrink justify="center" style={{ paddingHorizontal: 3 }}>

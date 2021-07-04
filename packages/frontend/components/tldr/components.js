@@ -888,3 +888,57 @@ export const Tag = (props) => {
 		</View>
 	);
 }
+
+export const IssueStatusIcon = (props) => {
+
+	const {
+		size = medium,
+		status
+	} = props;
+
+	let color, shape;
+	switch(status){
+
+		case ISSUE_STATUS.CLOSED:
+			color = 'red';
+			shape = 'X';
+			break;
+		case ISSUE_STATUS.OPEN:
+		default:
+			color = 'green';
+			shape = 'Check';
+			break;
+	}
+
+	let iconSize;
+	switch(size){
+		case 'medium':
+			iconSize = 32
+			break;
+		case 'small':
+			iconSize = 20
+			break;
+	}
+
+	return(
+		<View style={{
+			backgroundColor: color,
+			width: iconSize,
+			height: iconSize,
+			borderRadius: iconSize,
+			alignItems: 'center',
+			justifyContent: 'center'
+		}}>
+			<Icon
+				shape={shape}
+				color="white"
+				size="xsmall"
+			/>
+		</View>
+	);
+}
+
+export const ISSUE_STATUS = {
+	CLOSED: -1,
+	OPEN: 1
+}

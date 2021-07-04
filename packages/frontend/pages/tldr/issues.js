@@ -44,7 +44,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
-import { LoadMoreButton, Emptiness, Tag } from '@/components/tldr/components';
+import { LoadMoreButton, Emptiness, Tag, IssueStatusIcon, ISSUE_STATUS } from '@/components/tldr/components';
 
 
 // SCREEN-SPECIFIC 
@@ -52,8 +52,6 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import Router from 'next/router'
-
-
 
 
 function Issues(props) {
@@ -167,20 +165,10 @@ function Issues(props) {
 																</Flex>
 															</FlexItem>
 															<FlexItem shrink justify="center" >
-																<View style={{
-																	backgroundColor: 'green',
-																	width: 20,
-																	height: 20,
-																	borderRadius: 20,
-																	alignItems: 'center',
-																	justifyContent: 'center'
-																}}>
-																	<Icon
-																		shape="Check"
-																		color="white"
-																		size="xsmall"
+																<IssueStatusIcon
+																	size="small"
+																	status={item.status}
 																	/>
-																</View>
 															</FlexItem>
 														</Flex>
 
@@ -191,11 +179,7 @@ function Issues(props) {
 										<LoadMoreButton swr={issues} />
 									</Chunk>
 								</Section>
-
-
-
 							}
-
 
 						</Bounds>
 					</Stripe>
