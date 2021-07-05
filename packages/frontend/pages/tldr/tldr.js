@@ -316,9 +316,6 @@ function Tldr(props) {
 
 			<TldrHeader />
 
-			{/*
-				<pre>{JSON.stringify(tldr.data, null, 2)}</pre>
-				*/}
 
 			{tldr.data &&
 				<Stripe style={{/*paddingTop: 0,*/ backgroundColor: SWATCHES.notwhite }}>
