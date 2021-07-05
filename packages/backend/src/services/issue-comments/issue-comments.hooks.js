@@ -36,6 +36,20 @@ const mustBeOwnerOrAdmin = (options) => {
   );
 }
 
+// COMMENTS COUNT
+const updateCommentsCount = async (context) => {
+  const comments = await context.service.find({
+    query: {
+      issueId: context.data.issueId,
+      $limit: 0 // count
+    }
+  });
+  const issue = await context.app.service('issues').patch(context.data.issueId, {
+    commentCount: comments.total
+  });
+  return context;
+}
+
 module.exports = {
   before: {
     all: [],
@@ -74,11 +88,14 @@ module.exports = {
     find: [],
     get: [],
     create: [
+      updateCommentsCount,
       getFullModel()
     ],
     update: [],
     patch: [],
-    remove: []
+    remove: [
+      updateCommentsCount
+    ]
   },
 
   error: {

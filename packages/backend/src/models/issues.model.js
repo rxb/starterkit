@@ -27,6 +27,10 @@ module.exports = function (app) {
     tldrId: {
       type: DataTypes.INTEGER
     },
+    commentCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE

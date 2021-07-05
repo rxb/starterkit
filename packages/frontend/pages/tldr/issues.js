@@ -159,7 +159,7 @@ function Issues(props) {
 																		<Text type="small" color="secondary" nowrap>opened {dayjs(item.createdAt).fromNow()} by {item.author.urlKey}</Text>
 																	</FlexItem>
 																	<FlexItem justify="center" growFactor={2}>
-																		<Text nowrap type="small" color="secondary" nowrap>14 comments</Text>
+																		<Text nowrap type="small" color="secondary" nowrap>{item.commentCount} comments</Text>
 																	</FlexItem>
 
 																</Flex>

@@ -39,6 +39,22 @@ const mustBeOwnerOrAdmin = (options) => {
   );
 }
 
+// ISSUES COUNT
+// should this be total issues or open issues?
+const updateIssuesCount = async (context) => {
+  const issues = await context.service.find({
+    query: {
+      //status: 1, // open issues
+      tldrId: context.data.tldrId,
+      $limit: 0 // count
+    }
+  });
+  const tldr = await context.app.service('tldrs').patch(context.data.tldrId, {
+    issueCount: issues.total
+  });
+  return context;
+}
+
 module.exports = {
   before: {
     all: [],
@@ -76,10 +92,14 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      updateIssuesCount
+    ],
     update: [],
     patch: [],
-    remove: []
+    remove: [
+      updateIssuesCount
+    ]
   },
 
   error: {

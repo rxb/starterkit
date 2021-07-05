@@ -316,7 +316,6 @@ function Tldr(props) {
 
 			<TldrHeader />
 
-
 			{tldr.data &&
 				<Stripe style={{/*paddingTop: 0,*/ backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
@@ -418,7 +417,7 @@ function Tldr(props) {
 										<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
 											<Flex>
 												<FlexItem>
-													<Text weight="strong">Issues</Text>
+													<Text weight="strong">Issues ({tldr.data.issueCount})</Text>
 													<Text type="small" color="secondary">Help improve this card</Text>
 												</FlexItem>
 												<FlexItem shrink justify="center" style={{ paddingHorizontal: 3 }}>
