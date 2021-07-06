@@ -45,7 +45,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
-import { LoadMoreButton, Emptiness, Tag, IssueStatusIcon, ISSUE_STATUS } from '@/components/tldr/components';
+import { LoadMoreButton, Emptiness, Tag, IssueStatusIcon, ISSUE_STATUS, ISSUE_STATUS_KEYS, ISSUE_TYPES } from '@/components/tldr/components';
 
 
 // SCREEN-SPECIFIC 
@@ -57,7 +57,7 @@ import { Utils } from 'cinderblock';
 const { runValidations, readFileAsDataUrl } = Utils;
 
 
-const submitCommentForm = async (formState, props) => {
+const submitCommentForm = async (formState, props, extraFields) => {
 
 	// TODO: consider optimistic posting
 	// There are currently issues for useSWRInfinite
@@ -70,9 +70,10 @@ const submitCommentForm = async (formState, props) => {
 	// 1. the newest 20 comments. this is a regular swr, not infinite and can be optimistically added to
 	// 2. the oldest 20 comments. this is an infinite swr that keeps adding pages until it meets #1
 
-
+	const { closeIssue } = extraFields || {};
 
 	const {
+		dispatch,
 		issue,
 		issueComments,
 		issueCommentsKey,
@@ -83,7 +84,7 @@ const submitCommentForm = async (formState, props) => {
 	const error = runValidations(formState.fields, {
 		body: {
 			notEmpty: {
-				msg: "Comment can't be blank"
+				msg: closeIssue ? "Add a reason for closing in comment" : "Comment can't be blank"
 			}
 		}
 	});
@@ -103,6 +104,7 @@ const submitCommentForm = async (formState, props) => {
 		mutate(issueCommentsKey, newIssueCommentsData, false); // optimistic mutate
 
 		try {
+			// post comment
 			formState.resetFields();
 			await request(getIssueCommentUrl(), {
 				method: 'POST',
@@ -110,6 +112,17 @@ const submitCommentForm = async (formState, props) => {
 				token: authentication.accessToken
 			});
 			mutate(issueCommentsKey); // trigger refresh from server
+
+			// optionally close issue
+			if(closeIssue){
+				await request(getIssueUrl(issue.data.id), {
+					method: 'PATCH',
+					data: { status: ISSUE_STATUS_KEYS.CLOSED },
+					token: authentication.accessToken
+				});
+				issue.mutate();
+				dispatch(addToast("Issue closed!"));
+			}
 		}
 		catch (error) {
 			formState.setError(error); // display server errors
@@ -122,6 +135,7 @@ const submitCommentForm = async (formState, props) => {
 
 const CommentForm = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+	const { user, issue } = props;
 
 	const formState = useFormState({
 		initialFields: { body: '' }
@@ -142,11 +156,20 @@ const CommentForm = (props) => {
 				/>
 				<FieldError error={formState.error?.fieldErrors?.body} />
 
-				<Button
-					onPress={() => submitCommentForm(formState, props)}
-					isLoading={formState.loading}
-					label="Post Comment"
-				/>
+				<Inline>
+					<Button
+						onPress={() => submitCommentForm(formState, props)}
+						isLoading={formState.loading}
+						label="Post comment"
+						/>{ user.id && user.id == issue.data.authorId && 
+						<Button
+							color="secondary"
+							onPress={() => submitCommentForm(formState, props, {closeIssue: true})}
+							isLoading={formState.loading}
+							label="Close this issue"
+							/>
+					}
+				</Inline>
 			</Chunk>
 		</form>
 	);
@@ -237,12 +260,7 @@ function Issue(props) {
 														<Flex>
 															<FlexItem>
 																<Text type="small" color="secondary">Current status:</Text>
-																{ issue.data.status == ISSUE_STATUS.OPEN  &&
-																	<Text weight="strong">Open</Text>
-																}
-																{ issue.data.status == ISSUE_STATUS.CLOSED  &&
-																	<Text weight="strong">Closed</Text>
-																}											
+																<Text weight="strong">{ISSUE_STATUS[issue.data.status].label}</Text>
 															</FlexItem>
 															<FlexItem shrink justify="center">
 																<IssueStatusIcon
@@ -272,7 +290,10 @@ function Issue(props) {
 												</Link>
 											</Text>
 											<Text type="pageHead">{issue.data.title}</Text>
-											<Tag label="Suggestion" size="small" />
+											<Tag 
+												label={ISSUE_TYPES[issue.data.type].label} 
+												size="small" 
+												/>
 
 										</Chunk>
 
@@ -293,7 +314,7 @@ function Issue(props) {
 											<FlexItem>
 												<Chunk>
 													<Text weight="strong">opened by {issue.data.author.name}</Text>
-													<Text color="hint">{dayjs(issue.data.createdAt).fromNow()}</Text>
+													<Text color="secondary" type="small">{dayjs(issue.data.createdAt).fromNow()}</Text>
 												</Chunk>
 											</FlexItem>
 										</Flex>
@@ -320,6 +341,13 @@ function Issue(props) {
 												renderItem={renderComment}
 											/>
 										}
+
+										{ issueComments.data?.total == 0 && 
+											<Chunk>
+												<Text color="hint">No comments yet</Text>
+											</Chunk>
+										}
+
 										{authentication.user && issueCommentsData &&
 
 											<CommentForm
@@ -328,6 +356,7 @@ function Issue(props) {
 												authentication={authentication}
 												user={user}
 												issueCommentsKey={issueCommentsKey}
+												dispatch={dispatch}
 											/>
 
 										}

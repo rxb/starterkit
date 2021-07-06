@@ -44,7 +44,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
-import { LoadMoreButton, Emptiness, Tag, IssueStatusIcon, ISSUE_STATUS } from '@/components/tldr/components';
+import { LoadMoreButton, Emptiness, Tag, IssueStatusIcon, ISSUE_TYPES } from '@/components/tldr/components';
 
 
 // SCREEN-SPECIFIC 
@@ -148,7 +148,10 @@ function Issues(props) {
 															<FlexItem>
 																<Flex direction="column" switchDirection="large">
 																	<FlexItem>
-																		<Tag label="Suggestion" size="small" />
+																		<Tag 
+																			label={ISSUE_TYPES[item.type].label} 
+																			size="small" 
+																			/>
 																	</FlexItem>
 																	<FlexItem growFactor={3}>
 

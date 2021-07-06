@@ -868,19 +868,8 @@ export const Tag = (props) => {
 	}
 
 	let backgroundColor, textColor;
-	switch(color){
-		case 'green':
-			backgroundColor = '#C1E1C1';
-			textColor = 'green';
-			break;
-		case 'red':
-			backgroundColor = 'pink';
-			textColor = 'red';
-			break;
-		default: 
-			backgroundColor = SWATCHES.shade;
-			textColor = SWATCHES.textSecondary;
-	}
+	backgroundColor = SWATCHES.shade;
+	textColor = SWATCHES.textSecondary;
 
 	return(
 		<View style={[{alignSelf: 'flex-start', backgroundColor: backgroundColor, paddingHorizontal: 4, paddingVertical: 0, borderRadius: 2, marginVertical: 2, textAlign: 'center'}, styles.pseudoLineHeight, style]}>
@@ -896,19 +885,7 @@ export const IssueStatusIcon = (props) => {
 		status
 	} = props;
 
-	let color, shape;
-	switch(status){
-
-		case ISSUE_STATUS.CLOSED:
-			color = 'red';
-			shape = 'X';
-			break;
-		case ISSUE_STATUS.OPEN:
-		default:
-			color = 'green';
-			shape = 'Check';
-			break;
-	}
+	const {color, shape, label} = ISSUE_STATUS[status];
 
 	let iconSize;
 	switch(size){
@@ -938,7 +915,39 @@ export const IssueStatusIcon = (props) => {
 	);
 }
 
-export const ISSUE_STATUS = {
+
+export const ISSUE_TYPES_KEYS = {
+	OTHER: 		0,
+	UNCLEAR: 	1,
+	TYPO: 		2,
+	FALSE: 		3,
+	MOREINFO: 	4,
+	MISCATEGORIZED: 5,
+	SPAM: 		6,
+	NOTCARD: 	7,
+}
+
+export const ISSUE_TYPES = {
+	[ISSUE_TYPES_KEYS.UNCLEAR]: 			{label: "Unclear", sort: 0},
+	[ISSUE_TYPES_KEYS.TYPO]: 				{label: "Typo", sort: 1},
+	[ISSUE_TYPES_KEYS.FALSE]:  			{label: "Correction", sort: 2},
+	[ISSUE_TYPES_KEYS.MOREINFO]: 			{label: "Additional info", sort: 3},
+	[ISSUE_TYPES_KEYS.MISCATEGORIZED]: 	{label: "Miscategorized", sort: 4},
+	[ISSUE_TYPES_KEYS.SPAM]:				{label: "Spam", sort: 5},
+	[ISSUE_TYPES_KEYS.NOTCARD]:			{label: "Not really a card", sort: 6},
+	[ISSUE_TYPES_KEYS.OTHER]: 				{label: "Other", sort: 1000},
+}
+
+
+
+
+// maybe convert this to the ISSUE_TYPES style?
+export const ISSUE_STATUS_KEYS = {
 	CLOSED: -1,
 	OPEN: 1
+}
+
+export const ISSUE_STATUS = {
+	[ISSUE_STATUS_KEYS.CLOSED]: 			{label: "Closed", shape: "X", color: "red"},
+	[ISSUE_STATUS_KEYS.OPEN]: 				{label: "Open", shape: "Check", color: "green"},
 }

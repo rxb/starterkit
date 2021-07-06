@@ -13,19 +13,28 @@ module.exports = function (app) {
       type: DataTypes.INTEGER
     },
     title: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
     body: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
     status: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      defaultValue: 1, // open
+      allowNull: false,
+    },
+    type: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     authorId: {
       type: DataTypes.INTEGER
     },
     tldrId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     commentCount: {
       type: DataTypes.INTEGER,

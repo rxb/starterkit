@@ -47,7 +47,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
-import {LoadingPage, ISSUE_STATUS} from '@/components/tldr/components';
+import {LoadingPage, ISSUE_STATUS, ISSUE_TYPES} from '@/components/tldr/components';
 import Router from 'next/router'
 import Head from 'next/head'
 
@@ -56,22 +56,18 @@ import Head from 'next/head'
 import { Utils } from 'cinderblock';
 const { runValidations, readFileAsDataUrl } = Utils;
 
-const CategoryField = (props) => {
+// turn ISSUE_TYPES into a nice array for form
+const issueTypes = Object.keys(ISSUE_TYPES).map( (key) => {
+	return {id: key, label: ISSUE_TYPES[key].label}
+}).sort( (a,b) => (a.sort > b.sort) ? 1 : -1 );
+
+const TypeField = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const { 
 		formState, 
 		onChange = () => {} 
 	} = props;
-	const categories = [
-		{id: 1, name: "Unclear"},
-		{id: 2, name: "Typo"},
-		{id: 3, name: "Not factual"},
-		{id: 4, name: "Additional info"},
-		{id: 5, name: "Miscategorized"},
-		{id: 6, name: "Spam"},
-		{id: 7, name: "Not really a card"},
-		{id: 8, name: "Some other problem"}
-	]
+
 	return (
 		<>
 			<List
@@ -82,12 +78,12 @@ const CategoryField = (props) => {
 				itemsInRow={{
 					medium: 2,
 				}}
-				items={categories}
-				renderItem={(category, i) => {
-					const selected = category.id == formState.getFieldValue('categoryId');
+				items={issueTypes}
+				renderItem={(type, i) => {
+					const selected = type.id == formState.getFieldValue('type');
 					return (
 						<Touch onPress={() => {
-							formState.setFieldValue('categoryId', category.id);
+							formState.setFieldValue('type', type.id);
 							onChange();
 						}}>
 							<View style={[
@@ -96,13 +92,13 @@ const CategoryField = (props) => {
 									? { backgroundColor: SWATCHES.tint }
 									: {}
 							]}>
-								<Text inverted={selected}>{category.name}</Text>
+								<Text inverted={selected}>{type.label}</Text>
 							</View>
 						</Touch>
 					)
 				}}
 			/>
-			<FieldError error={formState.error?.fieldErrors?.categoryId} />
+			<FieldError error={formState.error?.fieldErrors?.type} />
 		</>
 	);
 }
@@ -116,9 +112,9 @@ const EditForm = (props) => {
  
 	const formState = useFormState({
 		initialFields: {
-			categoryId: null,
 			title: '',
-			body: ''
+			body: '',
+			type: null
 		},
 		toastableErrors: {
 			BadRequest: 'Something went wrong',
@@ -174,7 +170,7 @@ const EditForm = (props) => {
 			<RevealBlock visible={formStep >= 0} delay={300}>
 				<Chunk>
 					<Label>What is busted about this?</Label>
-					<CategoryField 
+					<TypeField 
 						formState={formState} 
 						/>
 					{(formStep == 0) &&
@@ -182,9 +178,9 @@ const EditForm = (props) => {
 							<Button
 								onPress={() => {
 									const error = runValidations(formState.fields, {
-										categoryId: {
+										type: {
 											notNull: {
-												msg: "Category can't be blank"
+												msg: "Pick an issue type"
 											},
 										},
 									});
