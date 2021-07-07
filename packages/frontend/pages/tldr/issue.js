@@ -239,7 +239,7 @@ function Issue(props) {
 	const needsBackfill = (issueComments.data && issueComments.data.total > PAGE_SIZE);
 	const nins = issueComments.data?.items.map(item => item.id);
 	const backfillIssueComments = pageHelper(useSWRInfinite(needsBackfill ? (index) => [getIssueCommentsUrl({ issueId, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index, "id[$nin]": nins }), authentication.accessToken] : null));
-
+	const hiddenCommentsCount = (needsBackfill) ? backfillIssueComments.total - backfillIssueComments.data?.length * backfillIssueComments.pageSize : 0;
 
 	// DIVERT TO ERROR PAGE
 	// error from getInitialProps or the swr
@@ -331,19 +331,31 @@ function Issue(props) {
 
 									<Section border>
 										{backfillIssueComments?.total > 0 &&
-											<View style={{ backgroundColor: 'pink' }}>
+											<View style={{ /*backgroundColor: 'pink'*/ }}>
 												<List
 													variant="linear"
 													paginated={true}
 													items={backfillIssueComments.data}
 													renderItem={renderComment}
 												/>
-												<LoadMoreButton swr={backfillIssueComments} />
+												<LoadMoreButton 
+													style={{
+														borderTopWidth: 1,
+														borderTopColor: SWATCHES.borderSecondary,
+														//alignItems: 'center',
+														paddingTop: METRICS.space,
+														//backgroundColor: SWATCHES.notwhite,
+													}}
+													label={`Expand ${hiddenCommentsCount} comments`}
+													swr={backfillIssueComments} 
+													size="small"
+													/>
 											</View>
 										}
 
 										{issueCommentsData &&
 											<List
+												linearFirstChildPlain={!needsBackfill}
 												variant="linear"
 												items={issueCommentsData}
 												renderItem={renderComment}

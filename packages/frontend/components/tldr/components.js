@@ -432,21 +432,26 @@ export const LoadMoreButton = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
 		swr,
-		label = "Load more"
+		label = "Load more",
+		style,
+		size 
 	} = props;
 	return (
 		<>
 			{ !swr.isReachingEnd &&
-				<Chunk>
-					<Button
-						isLoading={swr.isLoadingMore}
-						color="secondary"
-						onPress={() => {
-							swr.setSize(swr.size + 1)
-						}}
-						label={label}
-					/>
-				</Chunk>
+				<View style={style}>
+					<Chunk>
+						<Button
+							size={size}
+							isLoading={swr.isLoadingMore}
+							color="secondary"
+							onPress={() => {
+								swr.setSize(swr.size + 1)
+							}}
+							label={label}
+						/>
+					</Chunk>
+				</View>
 			}
 		</>
 	);
@@ -941,7 +946,8 @@ export const ISSUE_TYPES = {
 
 
 
-// maybe convert this to the ISSUE_TYPES style?
+// negative status numbers are closed
+// if this ever needs multiple close types
 export const ISSUE_STATUS_KEYS = {
 	CLOSED: -1,
 	OPEN: 1
