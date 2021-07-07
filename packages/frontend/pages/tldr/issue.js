@@ -93,7 +93,7 @@ const submitCommentForm = async (formState, props, extraFields) => {
 	if (!error) {
 		const oldIssueCommentsData = cache.get(issueCommentsKey); // get cache
 		const oldFields = { ...formState.fields };
-		const newItemData = { ...formState.fields, issueId: issue.data.id };
+		const newItemData = { ...formState.fields, issueId: issue.data.id, type: statusChange };
 		const newIssueCommentsData = {
 			...oldIssueCommentsData,
 			items: [{
@@ -114,7 +114,7 @@ const submitCommentForm = async (formState, props, extraFields) => {
 			mutate(issueCommentsKey); // trigger refresh from server
 
 			// optionally close issue
-			if(statusChange){
+			if (statusChange) {
 				await request(getIssueUrl(issue.data.id), {
 					method: 'PATCH',
 					data: { status: statusChange },
@@ -162,21 +162,21 @@ const CommentForm = (props) => {
 						onPress={() => submitCommentForm(formState, props)}
 						isLoading={formState.loading}
 						label="Post comment"
-						/>{ canChangeStatus && issue.data.status == ISSUE_STATUS_KEYS.OPEN && 
+					/>{canChangeStatus && issue.data.status == ISSUE_STATUS_KEYS.OPEN &&
 						<Button
 							color="secondary"
-							onPress={() => submitCommentForm(formState, props, {statusChange: ISSUE_STATUS_KEYS.CLOSED})}
+							onPress={() => submitCommentForm(formState, props, { statusChange: ISSUE_STATUS_KEYS.CLOSED })}
 							isLoading={formState.loading}
 							label="Close this issue"
-							/>
-						}{ canChangeStatus && issue.data.status == ISSUE_STATUS_KEYS.CLOSED && 
-							<Button
-								color="secondary"
-								onPress={() => submitCommentForm(formState, props, {statusChange: ISSUE_STATUS_KEYS.OPEN})}
-								isLoading={formState.loading}
-								label="Reopen this issue"
-								/>
-						}
+						/>
+					}{canChangeStatus && issue.data.status == ISSUE_STATUS_KEYS.CLOSED &&
+						<Button
+							color="secondary"
+							onPress={() => submitCommentForm(formState, props, { statusChange: ISSUE_STATUS_KEYS.OPEN })}
+							isLoading={formState.loading}
+							label="Reopen this issue"
+						/>
+					}
 				</Inline>
 			</Chunk>
 		</form>
@@ -187,6 +187,7 @@ const renderComment = (item, i) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 	return (
 		<Chunk key={i}>
+
 			<Flex>
 				<FlexItem shrink>
 					<Avatar
@@ -197,6 +198,13 @@ const renderComment = (item, i) => {
 				</FlexItem>
 				<FlexItem>
 					<Text weight="strong" type="small">{item.author.name} </Text>
+					{item.type &&
+						<View style={{ alignSelf: 'flex-start', paddingHorizontal: 5, marginTop: 3, borderRadius: 3, backgroundColor: ISSUE_STATUS[item.type].color }}>
+							<Text type="micro" weight="bold" inverted>
+								{`Issue ${ISSUE_STATUS[item.type].pastVerb}`.toUpperCase()}
+							</Text>
+						</View>
+					}
 					<Text>{item.body}</Text>
 				</FlexItem>
 				<FlexItem shrink>
@@ -274,7 +282,7 @@ function Issue(props) {
 																<IssueStatusIcon
 																	size="small"
 																	status={issue.data.status}
-																	/>
+																/>
 															</FlexItem>
 														</Flex>
 													</Chunk>
@@ -298,10 +306,10 @@ function Issue(props) {
 												</Link>
 											</Text>
 											<Text type="pageHead">{issue.data.title}</Text>
-											<Tag 
-												label={ISSUE_TYPES[issue.data.type].label} 
-												size="small" 
-												/>
+											<Tag
+												label={ISSUE_TYPES[issue.data.type].label}
+												size="small"
+											/>
 
 										</Chunk>
 
@@ -338,7 +346,7 @@ function Issue(props) {
 													items={backfillIssueComments.data}
 													renderItem={renderComment}
 												/>
-												<LoadMoreButton 
+												<LoadMoreButton
 													style={{
 														borderTopWidth: 1,
 														borderTopColor: SWATCHES.borderSecondary,
@@ -347,9 +355,9 @@ function Issue(props) {
 														//backgroundColor: SWATCHES.notwhite,
 													}}
 													label={`Expand ${hiddenCommentsCount} comments`}
-													swr={backfillIssueComments} 
+													swr={backfillIssueComments}
 													size="small"
-													/>
+												/>
 											</View>
 										}
 
@@ -362,7 +370,7 @@ function Issue(props) {
 											/>
 										}
 
-										{ issueComments.data?.total == 0 && 
+										{issueComments.data?.total == 0 &&
 											<Chunk>
 												<Text color="hint">No comments yet</Text>
 											</Chunk>

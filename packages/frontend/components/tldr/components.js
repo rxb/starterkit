@@ -954,6 +954,6 @@ export const ISSUE_STATUS_KEYS = {
 }
 
 export const ISSUE_STATUS = {
-	[ISSUE_STATUS_KEYS.CLOSED]: 			{label: "Closed", shape: "X", color: "red"},
-	[ISSUE_STATUS_KEYS.OPEN]: 				{label: "Open", shape: "Check", color: "green"},
+	[ISSUE_STATUS_KEYS.CLOSED]: 			{label: "Closed", shape: "X", color: "red", pastVerb: "closed"},
+	[ISSUE_STATUS_KEYS.OPEN]: 				{label: "Open", shape: "Check", color: "green", pastVerb: "reopened"},
 }
