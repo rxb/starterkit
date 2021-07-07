@@ -70,7 +70,7 @@ const submitCommentForm = async (formState, props, extraFields) => {
 	// 1. the newest 20 comments. this is a regular swr, not infinite and can be optimistically added to
 	// 2. the oldest 20 comments. this is an infinite swr that keeps adding pages until it meets #1
 
-	const { closeIssue } = extraFields || {};
+	const { statusChange } = extraFields || {};
 
 	const {
 		dispatch,
@@ -84,7 +84,7 @@ const submitCommentForm = async (formState, props, extraFields) => {
 	const error = runValidations(formState.fields, {
 		body: {
 			notEmpty: {
-				msg: closeIssue ? "Add a reason for closing in comment" : "Comment can't be blank"
+				msg: statusChange ? "Add a reason in the comment" : "Comment can't be blank"
 			}
 		}
 	});
@@ -114,14 +114,13 @@ const submitCommentForm = async (formState, props, extraFields) => {
 			mutate(issueCommentsKey); // trigger refresh from server
 
 			// optionally close issue
-			if(closeIssue){
+			if(statusChange){
 				await request(getIssueUrl(issue.data.id), {
 					method: 'PATCH',
-					data: { status: ISSUE_STATUS_KEYS.CLOSED },
+					data: { status: statusChange },
 					token: authentication.accessToken
 				});
 				issue.mutate();
-				dispatch(addToast("Issue closed!"));
 			}
 		}
 		catch (error) {
@@ -140,6 +139,8 @@ const CommentForm = (props) => {
 	const formState = useFormState({
 		initialFields: { body: '' }
 	});
+
+	const canChangeStatus = user.id && user.id == issue.data.authorId;
 
 	return (
 		<form>
@@ -161,14 +162,21 @@ const CommentForm = (props) => {
 						onPress={() => submitCommentForm(formState, props)}
 						isLoading={formState.loading}
 						label="Post comment"
-						/>{ user.id && user.id == issue.data.authorId && 
+						/>{ canChangeStatus && issue.data.status == ISSUE_STATUS_KEYS.OPEN && 
 						<Button
 							color="secondary"
-							onPress={() => submitCommentForm(formState, props, {closeIssue: true})}
+							onPress={() => submitCommentForm(formState, props, {statusChange: ISSUE_STATUS_KEYS.CLOSED})}
 							isLoading={formState.loading}
 							label="Close this issue"
 							/>
-					}
+						}{ canChangeStatus && issue.data.status == ISSUE_STATUS_KEYS.CLOSED && 
+							<Button
+								color="secondary"
+								onPress={() => submitCommentForm(formState, props, {statusChange: ISSUE_STATUS_KEYS.OPEN})}
+								isLoading={formState.loading}
+								label="Reopen this issue"
+								/>
+						}
 				</Inline>
 			</Chunk>
 		</form>
