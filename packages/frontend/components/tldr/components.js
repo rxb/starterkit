@@ -861,20 +861,40 @@ export const LoadingPage = (props) => {
 
 export const Tag = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-	const { color, size, style } = props;
+	const { 
+		color = 'shade', 
+		size = 'medium', 
+		style 
+	} = props;
 	
-	let textType;
-	switch(size){
-		case 'small':
-			textType = 'micro';
-			break;
-		default:
-			textType = 'small';
+	// SIZE ATTRIBUTES
+	const sizeMap = {
+		small: { 
+			textType: 'micro' 
+		},
+		medium: {
+			textType: 'small'
+		}
 	}
+	const {textType} = sizeMap[size];
 
-	let backgroundColor, textColor;
-	backgroundColor = SWATCHES.shade;
-	textColor = SWATCHES.textSecondary;
+	// COLOR ATTRIBUTES
+	const colorMap = {
+		shade: {
+			backgroundColor: SWATCHES.shade,
+			textColor: SWATCHES.tint	
+		},
+		red: {
+			backgroundColor: 'red',
+			textColor: 'white'	
+		},
+		green: {
+			backgroundColor: 'green',
+			textColor: 'white'	
+		}
+	}
+	const {backgroundColor, textColor} = colorMap[color];
+
 
 	return(
 		<View style={[{alignSelf: 'flex-start', backgroundColor: backgroundColor, paddingHorizontal: 4, paddingVertical: 0, borderRadius: 2, marginVertical: 2, textAlign: 'center'}, styles.pseudoLineHeight, style]}>

@@ -90,6 +90,104 @@ const DownVotePrompt = (props) => {
 	);
 };
 
+const DownloadPrompt = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+	const {
+		onRequestClose,
+		tldr
+	} = props;
+	const fakeDownload = () => {
+		alert('Pretend this works');
+	}
+
+	return (
+		<Section>
+			<Chunk>
+				<Text type="sectionHead">Download</Text>
+			</Chunk>
+			<Touch onPress={fakeDownload}>
+			<Chunk border>
+				<Flex>
+					<FlexItem shrink>
+						<Icon
+							shape="Image" 
+							/>
+					</FlexItem>
+					<FlexItem>
+						<Text>TikTok-size images</Text>
+					</FlexItem>
+				</Flex>
+			</Chunk>
+			</Touch>
+			<Touch onPress={fakeDownload}>
+			<Chunk border>
+				<Flex>
+					<FlexItem shrink>
+						<Icon
+							shape="Image" 
+							/>
+					</FlexItem>
+					<FlexItem>
+						<Text>Instagram-size images</Text>
+					</FlexItem>
+				</Flex>
+			</Chunk>
+			</Touch>
+			<Touch onPress={fakeDownload}>
+			<Chunk border>
+				<Flex>
+					<FlexItem shrink>
+						<Icon
+							shape="Monitor" 
+							/>
+					</FlexItem>
+					<FlexItem>
+						<Text>PPT slides</Text>
+					</FlexItem>
+				</Flex>
+			</Chunk>
+			</Touch>
+			<Touch onPress={fakeDownload}>
+				<Chunk border>
+					<Flex>
+						<FlexItem shrink>
+							<Icon
+								shape="Printer" 
+								/>
+						</FlexItem>
+						<FlexItem>
+							<Text>Printable PDF</Text>
+						</FlexItem>
+					</Flex>
+				</Chunk>
+			</Touch>
+			<Touch onPress={fakeDownload}>
+				<Chunk border>
+					<Flex>
+						<FlexItem shrink>
+							<Icon
+								shape="FileText" 
+								/>
+						</FlexItem>
+						<FlexItem>
+							<Text>Text (Markdown)</Text>
+						</FlexItem>
+					</Flex>
+				</Chunk>
+			</Touch>
+
+			<Chunk>
+				<Button
+					onPress={onRequestClose}
+					color="secondary"
+					label="Cancel"
+					width="full"
+				/>
+			</Chunk>
+		</Section>
+	);
+};
+
 
 const SharePrompt = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
@@ -130,6 +228,7 @@ const SharePrompt = (props) => {
 			</Chunk>
 			<Chunk>
 				<FakeInput
+					style={{paddingRight: 48}}
 					label={shareData.url}
 					shape="Copy"
 					onPress={() => {
@@ -407,6 +506,9 @@ function Tldr(props) {
 													shape="DownloadCloud"
 													color="secondary"
 													width="full"
+													onPress={()=>{
+														dispatch(addPrompt(<DownloadPrompt />));
+													}}
 												/>
 												<Text type="micro" color="hint" style={{ alignSelf: 'center' }}>Download</Text>
 											</FlexItem>

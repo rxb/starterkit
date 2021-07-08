@@ -56,6 +56,7 @@ dayjs.extend(relativeTime).extend(localizedFormat);
 import { Utils } from 'cinderblock';
 const { runValidations, readFileAsDataUrl } = Utils;
 
+const PAGE_SIZE = 16;
 
 const submitCommentForm = async (formState, props, extraFields) => {
 
@@ -96,6 +97,7 @@ const submitCommentForm = async (formState, props, extraFields) => {
 		const newItemData = { ...formState.fields, issueId: issue.data.id, type: statusChange };
 		const newIssueCommentsData = {
 			...oldIssueCommentsData,
+			total: oldIssueCommentsData.total + 1,
 			items: [{
 				...newItemData,
 				author: user
@@ -198,13 +200,16 @@ const renderComment = (item, i) => {
 				</FlexItem>
 				<FlexItem>
 					<Text weight="strong" type="small">{item.author.name} </Text>
+
 					{item.type &&
-						<View style={{ alignSelf: 'flex-start', paddingHorizontal: 5, marginTop: 3, borderRadius: 3, backgroundColor: ISSUE_STATUS[item.type].color }}>
-							<Text type="micro" weight="bold" inverted>
-								{`Issue ${ISSUE_STATUS[item.type].pastVerb}`.toUpperCase()}
-							</Text>
-						</View>
+						<Tag
+							label={ISSUE_STATUS[item.type].pastVerb}
+							size="small"
+							color={ISSUE_STATUS[item.type].color}
+							style={{marginTop: 4, marginBottom: 2}}
+							/>
 					}
+
 					<Text>{item.body}</Text>
 				</FlexItem>
 				<FlexItem shrink>
@@ -231,7 +236,6 @@ function Issue(props) {
 	const tldr = useSWR(issue.data?.tldrId ? getTldrUrl(issue.data.tldrId) : null);
 
 	// ISSUE COMMENTS
-	const PAGE_SIZE = 12;
 
 	// most recent page
 	const issueCommentsKey = [getIssueCommentsUrl({ issueId, $limit: PAGE_SIZE, "$sort[createdAt]": -1 }), authentication.accessToken];
@@ -292,7 +296,6 @@ function Issue(props) {
 									</Section>
 								</FlexItem>
 
-
 								<FlexItem growFactor={5}>
 									<Section>
 										<Chunk>
@@ -310,11 +313,9 @@ function Issue(props) {
 												label={ISSUE_TYPES[issue.data.type].label}
 												size="small"
 											/>
-
 										</Chunk>
 
 										<Chunk>
-
 											<Text>{issue.data.body}</Text>
 										</Chunk>
 										<Flex>
@@ -334,12 +335,11 @@ function Issue(props) {
 												</Chunk>
 											</FlexItem>
 										</Flex>
-
 									</Section>
 
 									<Section border>
 										{backfillIssueComments?.total > 0 &&
-											<View style={{ /*backgroundColor: 'pink'*/ }}>
+											<View>
 												<List
 													variant="linear"
 													paginated={true}
@@ -377,7 +377,6 @@ function Issue(props) {
 										}
 
 										{authentication.user && issueCommentsData &&
-
 											<CommentForm
 												issue={issue}
 												issueComments={issueComments}
@@ -386,16 +385,13 @@ function Issue(props) {
 												issueCommentsKey={issueCommentsKey}
 												dispatch={dispatch}
 											/>
-
 										}
+
 									</Section>
-
-
 
 									{!authentication.user && issueCommentsData &&
 										<Section border>
 											<Chunk inline>
-
 												{!ui.probablyHasAccount &&
 													<Button
 														size="small"
@@ -424,16 +420,11 @@ function Issue(props) {
 														}}
 													/>
 												}
-
 											</Chunk>
 										</Section>
 									}
-
 								</FlexItem>
-
-
 							</Flex>
-
 						</Bounds>
 					</Stripe>
 				</>
