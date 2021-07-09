@@ -36,7 +36,14 @@ exports.Communication = class Communication {
           from: this.fromEmail,
           to: 'boenigk@gmail.com',
           subject: 'Someone said something',
-          html: `said stuff ${data.message} ${JSON.stringify(data.user)}`
+          text: `###
+            CONTACT FORM MESSAGE:
+            ${data.message} 
+            
+            ###
+            FROM: 
+            ${data.user.name} ${data.user.email}
+          `
         }  
         break;
       default:
