@@ -137,6 +137,7 @@ const ContactPage = (props) => {
 											value={formState.getFieldValue('message')}
 											onChange={e => formState.setFieldValue('message', e.target.value)}
 											style={{minHeight: '30vh'}}
+											placeholder="Your message"
 										/>
 										<FieldError error={formState.error?.fieldErrors?.message} />
 							
