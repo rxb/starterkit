@@ -26,8 +26,9 @@ exports.Communication = class Communication {
       return Promise.all(data.map(current => this.create(current, params)));
     }
 
-    // for now...
-    // use POST to launch new messages 
+    // FOR NOW
+    // using POST to launch new messages 
+    // data.type directs the message
     let email;
     switch(data.type){
       case 'contact':
@@ -35,7 +36,7 @@ exports.Communication = class Communication {
           from: this.fromEmail,
           to: 'boenigk@gmail.com',
           subject: 'Someone said something',
-          html: `said stuff ${data.message}`
+          html: `said stuff ${data.message} ${JSON.stringify(data.user)}`
         }  
         break;
       default:

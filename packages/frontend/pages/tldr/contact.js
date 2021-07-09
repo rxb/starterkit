@@ -60,10 +60,10 @@ import feathersClient from 'components/FeathersClient';
 const ContactPage = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
-	const { message = "" } = props;
-
 	const dispatch = useDispatch();
+	const authentication = useSelector(state => state.authentication);
 
+	const { message } = props;
 	const [messageSent, setMessageSent] = useState(false);
 
 	const formState = useFormState({
@@ -99,7 +99,8 @@ const ContactPage = (props) => {
 					data: {
 						...submitFields,
 						type: 'contact'
-					}
+					},
+					token: authentication.accessToken
 				});
 				formState.setLoading(false);
 				setMessageSent(true);
