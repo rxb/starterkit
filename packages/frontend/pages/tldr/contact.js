@@ -94,9 +94,12 @@ const ContactPage = (props) => {
 			formState.setLoading(true);
 			try {
 				// update password
-				const requestUser = await request(getCommunicationUrl(), {
+				const sendCommunication = await request(getCommunicationUrl(), {
 					method: 'POST',
-					data: submitFields
+					data: {
+						...submitFields,
+						type: 'contact'
+					}
 				});
 				formState.setLoading(false);
 				setMessageSent(true);

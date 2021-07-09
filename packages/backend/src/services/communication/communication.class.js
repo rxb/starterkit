@@ -28,8 +28,27 @@ exports.Communication = class Communication {
 
     // for now...
     // use POST to launch new messages 
-    console.log('here we go communicating');
-    console.log(data);
+    let email;
+    switch(data.type){
+      case 'contact':
+        email = {
+          from: this.fromEmail,
+          to: 'boenigk@gmail.com',
+          subject: 'Someone said something',
+          html: `said stuff ${data.message}`
+        }  
+        break;
+      default:
+        break;
+    }
+
+    if(email){
+      this.app.service('mailer').create(email).then(function (result) {
+        console.log('Sent email', result)
+      }).catch(err => {
+        console.log('Error sending email', err)
+      })
+    }
 
     return data;
   }
