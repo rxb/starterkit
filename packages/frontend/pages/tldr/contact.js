@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useCallback, useRef, useContext } from 'react';
 
 // SWR
-import { request, getAuthManagmentUrl } from '@/swr';
+import { request, getCommunicationUrl } from '@/swr';
 import useSWR, { mutate } from 'swr';
 
 // REDUX
@@ -94,12 +94,12 @@ const ContactPage = (props) => {
 			formState.setLoading(true);
 			try {
 				// update password
-				const requestUser = await request(getAuthManagmentUrl(), {
+				const requestUser = await request(getCommunicationUrl(), {
 					method: 'POST',
 					data: submitFields
 				});
 				formState.setLoading(false);
-				setRequestSentTo(true);
+				setMessageSent(true);
 			}
 			catch (error) {
 				console.log(error);
@@ -119,16 +119,15 @@ const ContactPage = (props) => {
 						<Chunk>
 							<Text type="pageHead">Contact us</Text>
 						</Chunk>
-						
-						
+
 					</Section>
 					{!messageSent &&
 						<>
-						<form>
-						<Section>
-						<Chunk>
-							<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet.</Text>
-						</Chunk>
+							<form>
+								<Section border>
+									<Chunk>
+										<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet.</Text>
+									</Chunk>
 									<Chunk>
 										<TextInput
 											id="message"
@@ -136,40 +135,40 @@ const ContactPage = (props) => {
 											numberOfLines={6}
 											value={formState.getFieldValue('message')}
 											onChange={e => formState.setFieldValue('message', e.target.value)}
-											style={{minHeight: '30vh'}}
+											style={{ minHeight: '30vh' }}
 											placeholder="Your message"
 										/>
 										<FieldError error={formState.error?.fieldErrors?.message} />
-							
+
 										<Button
 											label="Send message"
 											onPress={submitForm}
 											isLoading={formState.loading}
 										/>
 									</Chunk>
-									
-					
-								</Section>
-								</form>
-								</>
-							}
 
-							<RevealBlock visible={messageSent}>
-							<Section border>
-								<Chunk>
-									<Text>Go click the link in the email to reset your password.</Text>
-								</Chunk>
-								<Chunk>
-									<Button
-										color="secondary"
-										onPress={() => setMessageSent(false)}
-										label="Resend email"
-									/>
-								</Chunk>
-								</Section>
-							</RevealBlock>
 
-						
+								</Section>
+							</form>
+						</>
+					}
+
+					<RevealBlock visible={messageSent}>
+						<Section border>
+							<Chunk>
+								<Text>Message sent! We'll get back to you or something</Text>
+							</Chunk>
+							<Chunk>
+								<Button
+									color="secondary"
+									onPress={() => setMessageSent(false)}
+									label="Go back"
+								/>
+							</Chunk>
+						</Section>
+					</RevealBlock>
+
+
 				</Bounds>
 			</Stripe>
 		</Page>

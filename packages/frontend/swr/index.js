@@ -35,6 +35,7 @@ export const getTldrsVotesUrl = (params) => `${apiHost}/tldrs-votes/${buildQs(pa
 
 
 export const getAuthManagmentUrl = () => `${apiHost}/authmanagement/`;
+export const getCommunicationUrl = () => `${apiHost}/communication/`;
 
 
 // REQUEST
