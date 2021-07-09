@@ -1,4 +1,21 @@
+const buildContactEmailText = (data) => 
 
+
+`TLDR CONTACT PAGE
+
+#########
+MESSAGE
+#########
+${data.message} 
+
+#########
+FROM
+#########
+${data.user.urlKey} 
+${data.user.name} 
+${data.user.email}
+${data.serverUrl}/tldr/profile?userId=${data.user.id}
+`;
 
 
 /* eslint-disable no-unused-vars */
@@ -35,15 +52,8 @@ exports.Communication = class Communication {
         email = {
           from: this.fromEmail,
           to: 'boenigk@gmail.com',
-          subject: 'Someone said something',
-          text: `###
-            CONTACT FORM MESSAGE:
-            ${data.message} 
-            
-            ###
-            FROM: 
-            ${data.user.name} ${data.user.email}
-          `
+          subject: `TLDR CONTACT: ${data.user.email}`,
+          text: buildContactEmailText({...data, serverUrl: this.serverUrl})
         }  
         break;
       default:
