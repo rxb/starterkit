@@ -153,7 +153,7 @@ function Issues(props) {
 																			size="small" 
 																			/>
 																	</FlexItem>
-																	<FlexItem growFactor={3}>
+																	<FlexItem justify="center" growFactor={3}>
 
 																		<Text weight="strong">{item.title}</Text>
 

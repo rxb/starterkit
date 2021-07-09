@@ -870,13 +870,13 @@ export const Tag = (props) => {
 	// SIZE ATTRIBUTES
 	const sizeMap = {
 		small: { 
-			textType: 'micro' 
+			textStyle: {fontSize: 11, lineHeight: 16} 
 		},
 		medium: {
-			textType: 'small'
+			textStyle: {fontSize: 12, lineHeight: 20}
 		}
 	}
-	const {textType} = sizeMap[size];
+	const {textStyle} = sizeMap[size];
 
 	// COLOR ATTRIBUTES
 	const colorMap = {
@@ -897,8 +897,8 @@ export const Tag = (props) => {
 
 
 	return(
-		<View style={[{alignSelf: 'flex-start', backgroundColor: backgroundColor, paddingHorizontal: 4, paddingVertical: 0, borderRadius: 2, marginVertical: 2, textAlign: 'center'}, styles.pseudoLineHeight, style]}>
-			<Text type={textType} style={{color: textColor}}>{props.label.toUpperCase()}</Text>
+		<View style={[{alignSelf: 'flex-start', backgroundColor: backgroundColor, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 2, textAlign: 'center'}, styles.pseudoLineHeight, style]}>
+			<Text style={[{color: textColor}, textStyle]}>{props.label.toUpperCase()}</Text>
 		</View>
 	);
 }
