@@ -52,9 +52,6 @@ import Head from 'next/head'
 
 
 
-
-
-
 // SCREEN-SPECIFIC
 import { RegisterForm, RegisterHeader } from 'components/authComponents';
 
@@ -66,10 +63,10 @@ const Register = (props) => {
 	const user = authentication.user || {};
 
 	useEffect(() => {
-		if (user) {
+		if (user.id) {
 			Router.push({ pathname: getIndexPageUrl() })
 		}
-	}, []);
+	}, [user]);
 
 	return (
 		<Page>

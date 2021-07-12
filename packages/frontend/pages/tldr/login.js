@@ -63,10 +63,10 @@ const Login = (props) => {
 	const user = authentication.user || {};
 
 	useEffect(() => {
-		if (user) {
+		if (user.id) {
 			Router.push({ pathname: getIndexPageUrl() })
 		}
-	}, []);
+	}, [user]);
 
 	const { error } = props;
 
