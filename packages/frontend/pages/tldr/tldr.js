@@ -10,7 +10,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { addPrompt, addToast, addDelayedToast, updateUi } from '@/actions';
 
 // URLS
-import { saveLoginRedirect, getProfilePageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl, getIssuesPageUrl } from '../../components/tldr/urls';
+import { saveLoginRedirect, getProfilePageUrl, getVersionEditPageUrl, getTldrEditPageUrl, getTldrPageUrl, getIssuesPageUrl, getContactPageUrl } from '@/components/tldr/urls';
 
 // COMPONENTS
 import {
@@ -80,7 +80,10 @@ const DownVotePrompt = (props) => {
 					width="full"
 				/>
 				<Button
-					onPress={onRequestClose}
+					onPress={() => {
+						onRequestClose();
+						Router.push(getContactPageUrl({ message: encodeURIComponent(`Reporting card:\r\n${location.href}\r\n\r\nOptional details:\r\n`) }));
+					}}
 					color="secondary"
 					label="Report this card"
 					width="full"

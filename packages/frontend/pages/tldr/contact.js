@@ -63,7 +63,7 @@ const ContactPage = (props) => {
 	const dispatch = useDispatch();
 	const authentication = useSelector(state => state.authentication);
 
-	const { message } = props;
+	const { message = '' } = props;
 	const [messageSent, setMessageSent] = useState(false);
 
 	const formState = useFormState({
@@ -117,8 +117,8 @@ const ContactPage = (props) => {
 	return (
 		<Page>
 			<TldrHeader />
-			<Stripe>
-				<Bounds style={{ maxWidth: 640 }}>
+			<Stripe style={{flex: 1}}>
+				<Bounds medium sparse>
 					<Section>
 						<Chunk>
 							<Text type="pageHead">Contact us</Text>
@@ -128,22 +128,19 @@ const ContactPage = (props) => {
 					{!messageSent &&
 						<>
 							<form>
-								<Section border>
-									<Chunk>
-										<Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet.</Text>
-									</Chunk>
+								<Section>
 									<Chunk>
 										<TextInput
 											id="message"
 											multiline={true}
-											numberOfLines={6}
+											numberOfLines={8}
 											value={formState.getFieldValue('message')}
 											onChange={e => formState.setFieldValue('message', e.target.value)}
-											style={{ minHeight: '30vh' }}
 											placeholder="Your message"
 										/>
 										<FieldError error={formState.error?.fieldErrors?.message} />
-
+									</Chunk>
+									<Chunk>
 										<Button
 											label="Send message"
 											onPress={submitForm}
@@ -183,11 +180,11 @@ const ContactPage = (props) => {
 ContactPage.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const { store, req, pathname, query } = context;
-	const { email } = query;
+	const { message } = query;
 	const isServer = !!req;
 	return {
 		isServer,
-		email
+		message
 	}
 }
 

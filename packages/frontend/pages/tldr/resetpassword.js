@@ -139,8 +139,8 @@ const PasswordReset = (props) => {
 	return (
 		<Page>
 			<TldrHeader />
-			<Stripe>
-				<Bounds style={{ maxWidth: 640 }}>
+			<Stripe style={{flex: 1}}>
+				<Bounds small sparse>
 					<Section>
 						<Chunk>
 							<Text type="pageHead">Reset password</Text>

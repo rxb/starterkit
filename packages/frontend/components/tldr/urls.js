@@ -28,6 +28,8 @@ export const getSavedPageUrl = (options) => buildUrl('/saved', options);
 export const getIssuesPageUrl = (options) => buildUrl('/issues', options);
 export const getIssuePageUrl = (options) => buildUrl('/issue', options);
 export const getIssueEditPageUrl = (options) => buildUrl('/issueedit', options);
+export const getContactPageUrl = (options) => buildUrl('/contact', options);
+
 
 const loginRedirectKey = "loginRedirect";
 export const getLoginRedirect = () => {

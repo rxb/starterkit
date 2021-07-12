@@ -74,8 +74,8 @@ const Register = (props) => {
 	return (
 		<Page>
 			<TldrHeader />
-			<Stripe>
-				<Bounds style={{ maxWidth: 480 }}>
+			<Stripe style={{flex: 1}}>
+				<Bounds small sparse>
 					<Section>
 						<Chunk>
 							<RegisterHeader toggleHref={getLoginPageUrl()} />
