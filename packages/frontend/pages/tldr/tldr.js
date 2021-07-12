@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState, useContext } from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
-import { request, buildQs, getTldrUrl, getUsersSavedTldrsUrl, getTldrsVotesUrl } from '@/swr';
+import { request, buildQs, pageHelper, getTldrUrl, getTldrsUrl, getUsersSavedTldrsUrl, getTldrsVotesUrl } from '@/swr';
 import useSWR, { mutate } from 'swr';
 
 // REDUX
@@ -291,13 +291,10 @@ function Tldr(props) {
 	const user = authentication.user || {};
 
 	const tldr = useSWR([getTldrUrl(props.tldrId), authentication.accessToken], { initialData: props.tldr });
-
 	const canEdit = (user?.id && tldr?.data?.authorId && user.id == tldr.data.authorId);
 
-	// TODO: get actual related tldrs
-	const relatedTldrs = tldr.data ?
-		{ data: [tldr.data, tldr.data, tldr.data, tldr.data,] } :
-		{ data: [] };
+	const relatedTldrs = pageHelper(useSWR( tldr.data ? getTldrsUrl({categoryId: tldr.data.categoryId, "id[$nin][]": tldr.data.id, "$limit": 4}) : null ));
+	
 
 	// POST-AUTH ACTION
 	// check if hash action passed back from oauth, reg
@@ -603,7 +600,7 @@ function Tldr(props) {
 								}}
 								scrollItemWidth={300}
 
-								items={relatedTldrs.data}
+								items={relatedTldrs.data.items}
 
 								renderItem={(item, i) => {
 									return (
