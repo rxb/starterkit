@@ -1,3 +1,28 @@
+const buildHtmlEmail = require('../mailer/buildHtmlEmail');
+
+/*
+const buildContactPageEmail = (data, config) => {
+  const bodyContent = `
+      <h1>From contact page</h1>
+      <p>${data.message}</p>
+      <br />
+      <h2>Sent by</h2>
+      <p>@${data.user.urlKey}<br />
+      ${data.user.name}<br />
+      ${data.user.email}<br />
+      ${config.serverUrl}/tldr/profile?userId=${data.user.id}</p>
+  `.trim();
+  return {
+    from: config.serverSenderEmail,
+    to: config.adminRecipientEmail,
+    replyTo: data.user.email,
+    subject: `From contact page: ${data.user.urlKey}`,
+    html: buildHtmlEmail(config, bodyContent)
+  };
+}
+*/
+
+
 module.exports = function (app) {
   // i think this needs to get sent to the client
   // that then posts it to the backend
@@ -19,51 +44,66 @@ module.exports = function (app) {
 
   return {
     notifier: function (type, user, notifierOptions) {
-      // why datavalues instead of an array?
 
-      let tokenLink
-      let email
+      let tokenLink, email, bodyContent
       switch (type) {
+
         case 'resendVerifySignup': //sending the user the verification email
           tokenLink = getLink('verify', user.verifyToken)
+          bodyContent = `
+              <h1>Verify your email</h1>
+              <p>Follow this link to verify your account: <a href="${tokenLink}">${tokenLink}</a></p>
+          `.trim();
           email = {
             from: fromEmail,
             to: user.email,
-            subject: 'Verify Signup',
-            html: tokenLink
-          }
+            subject: `Verify your email`,
+            html: buildHtmlEmail({}, bodyContent)
+          };
           return sendEmail(email)
           break
 
         case 'verifySignup': // confirming verification
           tokenLink = getLink('verify', user.verifyToken)
+          bodyContent = `
+              <h1>Welcome!</h1>
+              <p>Thanks for verifying your email.</p>
+          `.trim();
           email = {
             from: fromEmail,
             to: user.email,
-            subject: 'Confirm Signup',
-            html: 'Thanks for verifying your email'
-          }
+            subject: `Welcome!`,
+            html: buildHtmlEmail({}, bodyContent)
+          };
           return sendEmail(email)
           break
-
+          
         case 'sendResetPwd':
           tokenLink = getLink('resetpassword', user.resetToken)
+          bodyContent = `
+              <h1>Reset your password</h1>
+              <p>Follow this link to reset your password: <a href="${tokenLink}">${tokenLink}</a></p>
+          `.trim();
           email = {
             from: fromEmail,
             to: user.email,
-            subject: 'Reset your password',
-            html: `Here you go: ${tokenLink}`
-          }
+            subject: `Reset your password`,
+            html: buildHtmlEmail({}, bodyContent)
+          };
           return sendEmail(email)
           break
 
         case 'resetPwd':
+          bodyContent = `
+              <h1>Your password was reset</h1>
+              <p>Hope you were the one who did it</p>
+          `.trim();
           email = {
             from: fromEmail,
             to: user.email,
-            subject: 'Your password was reset',
-            html: `Hope you were the one who did it`
-          }
+            subject: `Your password was reset`,
+            html: buildHtmlEmail({}, bodyContent)
+          };
           return sendEmail(email)
           break
 

@@ -122,7 +122,7 @@ const PasswordRequest = (props) => {
 		<Page>
 			<TldrHeader />
 			<Stripe style={{flex: 1}}>
-				<Bounds small sparse>
+				<Bounds medium sparse>
 					<Section>
 						<Chunk>
 							<Text type="pageHead">Reset password</Text>
@@ -131,8 +131,7 @@ const PasswordRequest = (props) => {
 					<Section>
 						<form>
 
-							{!requestSentTo &&
-								<>
+							<RevealBlock visible={!requestSentTo} animateExit={false}>
 									<Chunk>
 										<Label for="email">Email address</Label>
 										<TextInput
@@ -152,10 +151,9 @@ const PasswordRequest = (props) => {
 											isLoading={formState.loading}
 										/>
 									</Chunk>
-								</>
-							}
+							</RevealBlock>
 
-							<RevealBlock visible={requestSentTo}>
+							<RevealBlock visible={requestSentTo} animateExit={false}>
 								<Chunk>
 									<Text>Email sent to {requestSentTo}.</Text>
 									<Text>Go click the link in the email to reset your password.</Text>

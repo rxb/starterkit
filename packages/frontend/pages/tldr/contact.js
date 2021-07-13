@@ -130,19 +130,19 @@ const ContactPage = (props) => {
 							<form>
 								<Section>
 									<Chunk>
+										<Label>Your message</Label>
 										<TextInput
 											id="message"
 											multiline={true}
-											numberOfLines={8}
+											numberOfLines={6}
 											value={formState.getFieldValue('message')}
 											onChange={e => formState.setFieldValue('message', e.target.value)}
-											placeholder="Your message"
 										/>
 										<FieldError error={formState.error?.fieldErrors?.message} />
 									</Chunk>
 									<Chunk>
 										<Button
-											label="Send message"
+											label="Send"
 											onPress={submitForm}
 											isLoading={formState.loading}
 										/>
@@ -154,7 +154,7 @@ const ContactPage = (props) => {
 						</>
 					}
 
-					<RevealBlock visible={messageSent}>
+					<RevealBlock visible={messageSent} animateExit={false}>
 						<Section border>
 							<Chunk>
 								<Text>Message sent! We'll get back to you or something</Text>
