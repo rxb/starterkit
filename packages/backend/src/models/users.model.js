@@ -44,6 +44,20 @@ module.exports = function (app) {
         }
       }
     },
+    notifyOwnedIssues: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    notifyParticipatedIssues: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    urlKey: {
+      type: DataTypes.TEXT
+    },
+    bio: {
+      type: DataTypes.TEXT
+    },
     photoId: {
       type: DataTypes.STRING,
       allowNull: true
