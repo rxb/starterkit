@@ -52,14 +52,13 @@ import TldrHeader from '../../components/tldr/TldrHeader';
 import { TldrCardSmall, CreateTldrCardSmall, LoadMoreButton, Emptiness } from '../../components/tldr/components';
 
 
-
-
-
 // SCREEN-SPECIFIC
 import Router from 'next/router'
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 dayjs.extend(relativeTime)
+dayjs.extend(LocalizedFormat)
 
 function TldrProfile(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
@@ -98,37 +97,77 @@ function TldrProfile(props) {
 		<Page>
 			<TldrHeader />
 
-			{ userId && user.data && authorTldrs.data &&
+			{userId && user.data && authorTldrs.data &&
 				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
 						<Section>
+							<Chunk style={{ paddingBottom: METRICS.pseudoLineHeight }}>
+								<Avatar
+									source={{ uri: user.data.photoUrl }}
+									size="xlarge"
+								/>
+							</Chunk>
+							<Chunk>
+								<Text type="pageHead">{user.data.name}</Text>
+								<Text color="secondary">@{user.data.urlKey}</Text>
+							</Chunk>
+						</Section>
+						<Section border>
+							<Flex direction="column" switchDirection="large">
 
-							<Flex>
-								<FlexItem shrink justify="center">
+								{user.data.bio &&
+									<FlexItem growFactor={2}>
+										<Chunk style={{ maxWidth: 650 }}>
+											<Text>{user.data.bio}</Text>
+										</Chunk>
+									</FlexItem>
+								}
+								<FlexItem  growFactor={1}>
 									<Chunk>
-										<Avatar
-											source={{ uri: user.data.photoUrl }}
-											size="large"
-										/>
+										{user.data.link &&
+											<Link href={user.data.link}>
+												<Text nowrap>
+													<Icon
+														shape="Globe"
+														color={SWATCHES.tint}
+														size="small"
+													/>
+													<Text color="tint"> {user.data.link}</Text>
+												</Text>
+											</Link>
+										}
+										<Flex direction="row">
+
+											<FlexItem shrink>
+												<Text nowrap>
+													<Icon
+														shape="MapPin"
+														color={SWATCHES.textHint}
+														size="small"
+													/>
+													<Text> USA</Text>
+												</Text>
+											</FlexItem>
+											<FlexItem shrink>
+												<Text nowrap>
+													<Icon
+														shape="Calendar"
+														color={SWATCHES.textHint}
+														size="small"
+
+													/>
+													<Text> Joined {dayjs(user.data.createdAt).format('LL')}</Text>
+												</Text>
+											</FlexItem>
+											
+										</Flex>
+
 									</Chunk>
-								</FlexItem>
-								<FlexItem>
-									<Chunk>
-										<Text type="pageHead">{user.data.name}</Text>
-										<Text>@{user.data.urlKey}</Text>
-									</Chunk>
+
 								</FlexItem>
 
-								{/*isSelf && 
-										<FlexItem shrink justify="flex-end">
-											<Chunk>
-												<Link href={getProfileEditPageUrl()}> 
-													<Button color="secondary" label="Settings" />
-												</Link>
-											</Chunk>
-										</FlexItem>
-									*/}
 							</Flex>
+
 
 						</Section>
 						<Section border>
@@ -139,11 +178,11 @@ function TldrProfile(props) {
 								>
 									{isSelf &&
 										<Chunk>
-												<Button
-													href={getTldrEditPageUrl()}
-													label="Create a new card"
-													size="small"
-												/>
+											<Button
+												href={getTldrEditPageUrl()}
+												label="Create a new card"
+												size="small"
+											/>
 										</Chunk>
 									}
 								</Emptiness>
@@ -154,7 +193,7 @@ function TldrProfile(props) {
 									<Chunk>
 										<Text type="sectionHead">
 											{authorTldrs.total} cards
-											</Text>
+										</Text>
 									</Chunk>
 
 									<List
@@ -175,12 +214,12 @@ function TldrProfile(props) {
 												getVersionEditPageUrl({ tldrId: item.id });
 											return (
 												<Chunk key={i}>
-													{ !item.last &&
+													{!item.last &&
 														<Link href={href}>
 															<TldrCardSmall tldr={item} user={authentication.user} />
 														</Link>
 													}
-													{ item.last &&
+													{item.last &&
 														<Link href={getTldrEditPageUrl()}>
 															<CreateTldrCardSmall />
 														</Link>
