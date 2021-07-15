@@ -2,10 +2,12 @@ const { Forbidden } = require('@feathersjs/errors');
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 const { hashPassword, protect } = require('@feathersjs/authentication-local').hooks;
-const { allowAnonymous, saveAndGetNewImageReference, protectUserFields, checkForSelfId } = require('../common_hooks.js');
+const { allowAnonymous, saveAndGetNewImageReference, protectUserFields, checkForSelfId, convertFalsyToNull } = require('../common_hooks.js');
 
 const makeUid = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 const makeRandomPassword = () => Math.random().toString(36).substr(10);
+
+
 
 // todo: add admin access
 const mustBeOwnerOrAdmin = (options) => {
@@ -83,7 +85,8 @@ module.exports = {
       // create user is the only create that doesn't need to be authed already
       fillTempValues(),
       hashPassword('password'),
-      saveAndGetNewImageReference()
+      saveAndGetNewImageReference(),
+      convertFalsyToNull({fields: ["link"]})
     ],
     update: [
       hashPassword('password'),
@@ -92,6 +95,7 @@ module.exports = {
       mustBeOwnerOrAdmin(),
       preventChangesToAuthFields(),
       saveAndGetNewImageReference(),
+      convertFalsyToNull({fields: ["link"]})
     ],
     patch: [
       // authManagement pre-hashes password when setting it from the reset method
@@ -100,7 +104,8 @@ module.exports = {
       checkForSelfId({ key: 'id' }),
       mustBeOwnerOrAdmin(),
       preventChangesToAuthFields(),
-      saveAndGetNewImageReference()
+      saveAndGetNewImageReference(),
+      convertFalsyToNull({fields: ["link"]})
     ],
     remove: [
       authenticate('jwt'),

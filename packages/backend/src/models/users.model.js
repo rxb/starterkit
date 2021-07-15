@@ -52,8 +52,14 @@ module.exports = function (app) {
       type: DataTypes.BOOLEAN,
       defaultValue: true
     },
-    urlKey: {
-      type: DataTypes.TEXT
+    link: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      validate: {
+        isUrl: {
+          msg: "Link must be a valid url"
+        }
+      }
     },
     bio: {
       type: DataTypes.TEXT

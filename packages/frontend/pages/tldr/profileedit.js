@@ -55,8 +55,6 @@ import Head from 'next/head'
 
 
 
-
-
 // SCREEN-SPECIFIC
 import { Utils } from 'cinderblock';
 const { runValidations, pushError, readFileAsDataUrl } = Utils;
@@ -110,6 +108,38 @@ const UrlKeyField = (props) => {
 	);
 }
 
+const BioField = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+	const { formState } = props;
+	return (
+		<>
+			<TextInput
+				id="bio"
+				multiline
+				numberOfLines={4}
+				value={formState.getFieldValue('bio')}
+				onChange={e => formState.setFieldValue('bio', e.target.value)}
+			/>
+			<FieldError error={formState.error?.fieldErrors?.bio} />
+		</>
+	);
+}
+
+const LinkField = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+	const { formState } = props;
+	return (
+		<>
+			<TextInput
+				id="link"
+				spellCheck={false}
+				value={formState.getFieldValue('link')}
+				onChange={e => formState.setFieldValue('link', e.target.value)}
+			/>
+			<FieldError error={formState.error?.fieldErrors?.link} />
+		</>
+	);
+}
 
 
 const PhotoField = (props) => {
@@ -168,6 +198,11 @@ const profileEditValidations = {
 			msg: "Password must be at least 8 characters long"
 		}
 	},
+	link: {
+		isUrl: {
+			msg: "Link must be a valid url"
+		}
+	},
 };
 
 
@@ -187,6 +222,8 @@ const EditProfile = (props) => {
 			urlKey: '',
 			photoUrl: '',
 			photoId: '',
+			bio: '',
+			link: '',
 			...(isSignup ? false : { email: '' }) // don't need to patch fields that aren't shown
 		},
 		toastableErrors: {
@@ -221,14 +258,14 @@ const EditProfile = (props) => {
 			profileComplete: true,  // profile is complete if you've done this flow even once
 			tempValues: []
 		};
-		let error = runValidations(submitFields, profileEditValidations);
 
+		// run validations
+		let error = runValidations(submitFields, profileEditValidations);
 
 		// custom frontend password confirmation match
 		if (submitFields["password"] != submitFields["confirm-password"]) {
 			error = pushError(error, "password", "Your passwords don't match")
 		}
-
 
 		// display errors that exist
 		formState.setError(error);
@@ -342,45 +379,35 @@ const EditProfile = (props) => {
 										<Label for="photo">Pick a profile photo</Label>
 										<PhotoField formState={formState} />
 									</Chunk>
+									{(formStep == 2) &&
+										<Chunk>
+											<Button
+												label="Next"
+												onPress={()=>{
+													setFormStep(3)
+												}}
+											/>
+										</Chunk>
+									}
+								</RevealBlock>
+								<RevealBlock visible={formStep >= 3}>
+									<Chunk>
+										<Label for="bio">Short bio</Label>
+										<BioField formState={formState} />
+									</Chunk>
+									<Chunk>
+										<Label for="link">Link</Label>
+										<LinkField formState={formState} />
+									</Chunk>
 									<Chunk>
 										<Button
 											label="Next"
 											onPress={submitForm}
 											isLoading={formState.loading}
 										/>
-										{/*
-									<Inline>
-									<Button 
-										color="secondary"
-										label="Skip"
-										onPress={()=>{
-											setButtonAttempt('skip');
-											submitForm()
-										}}
-										isLoading={formState.loading && buttonAttempt == 'skip'}
-										/>
-									<Button 
-										label="Upload"
-										onPress={ ()=>{
-											const error = runValidations(formState.fields, {
-												photoUrl: {
-													notEmpty: {
-														msg: "Select a photo to upload"
-													}
-												}
-											});
-											formState.setError(error);
-											if(!error){
-												setButtonAttempt('upload');
-												submitForm();
-											} 
-										}}
-										isLoading={formState.loading && buttonAttempt == 'upload'}
-										/>
-									</Inline>
-									*/}
 									</Chunk>
 								</RevealBlock>
+
 
 							</form>
 
@@ -416,6 +443,14 @@ const EditProfile = (props) => {
 								<Chunk>
 									<Label for="photo">Photo</Label>
 									<PhotoField formState={formState} />
+								</Chunk>
+								<Chunk>
+									<Label for="bio">Bio</Label>
+									<BioField formState={formState} />
+								</Chunk>
+								<Chunk>
+									<Label for="link">Link</Label>
+									<LinkField formState={formState} />
 								</Chunk>
 								<Chunk>
 									<Label for="email">Email</Label>

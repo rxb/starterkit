@@ -4,6 +4,21 @@ const _ = require('lodash');
 
 module.exports = {
 
+  // REST has trouble submitting null
+  // and some validations really need null, not an empty string
+  convertFalsyToNull: (options) => {
+    const fields = options.fields;
+    return async (context) => {
+      fields.forEach( f => {
+        if( !context.data[f] ){
+          context.data[f] = null
+        }
+      });
+      return context;
+    }
+  },
+
+
   checkForSelfId: (options) => {
     const { key } = options;
     // sets id to the id of logged-in user when "self" used as id
