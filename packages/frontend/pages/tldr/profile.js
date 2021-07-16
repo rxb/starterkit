@@ -126,13 +126,14 @@ function TldrProfile(props) {
 									<Chunk>
 										{user.data.link &&
 											<Link href={user.data.link}>
-												<Text nowrap>
+												<Text nowrap style={{marginBottom: 1}}>
 													<Icon
 														shape="Globe"
 														color={SWATCHES.tint}
 														size="small"
+														style={{verticalAlign: 'middle'}}
 													/>
-													<Text color="tint"> {user.data.link}</Text>
+													<Text color="tint" type="small" style={{verticalAlign: 'middle'}}> {user.data.link}</Text>
 												</Text>
 											</Link>
 										}
@@ -144,8 +145,9 @@ function TldrProfile(props) {
 														shape="MapPin"
 														color={SWATCHES.textHint}
 														size="small"
+														style={{verticalAlign: 'middle'}}
 													/>
-													<Text> USA</Text>
+													<Text type="small" style={{verticalAlign: 'middle'}}> USA</Text>
 												</Text>
 											</FlexItem>
 											<FlexItem shrink>
@@ -154,9 +156,9 @@ function TldrProfile(props) {
 														shape="Calendar"
 														color={SWATCHES.textHint}
 														size="small"
-
+														style={{verticalAlign: 'middle'}}
 													/>
-													<Text> Joined {dayjs(user.data.createdAt).format('LL')}</Text>
+													<Text  type="small" style={{verticalAlign: 'middle'}}> Joined {dayjs(user.data.createdAt).format('LL')}</Text>
 												</Text>
 											</FlexItem>
 
