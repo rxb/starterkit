@@ -113,16 +113,16 @@ function TldrProfile(props) {
 							</Chunk>
 						</Section>
 						<Section border>
-							<Flex direction="column" switchDirection="large">
+							<Flex direction="column" switchDirection="large" section>
 
 								{user.data.bio &&
-									<FlexItem growFactor={2}>
-										<Chunk style={{ maxWidth: 650 }}>
+									<FlexItem growFactor={2} section>
+										<Chunk>
 											<Text>{user.data.bio}</Text>
 										</Chunk>
 									</FlexItem>
 								}
-								<FlexItem  growFactor={1}>
+								<FlexItem growFactor={1} section>
 									<Chunk>
 										{user.data.link &&
 											<Link href={user.data.link}>
@@ -159,7 +159,7 @@ function TldrProfile(props) {
 													<Text> Joined {dayjs(user.data.createdAt).format('LL')}</Text>
 												</Text>
 											</FlexItem>
-											
+
 										</Flex>
 
 									</Chunk>
