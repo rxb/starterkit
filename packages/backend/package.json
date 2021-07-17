@@ -37,6 +37,7 @@
     "@feathersjs/express": "^5.0.0-pre.3",
     "@feathersjs/feathers": "^5.0.0-pre.3",
     "@feathersjs/socketio": "^5.0.0-pre.3",
+    "accept-language-parser": "^1.5.0",
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.9",
     "compression": "^1.7.4",

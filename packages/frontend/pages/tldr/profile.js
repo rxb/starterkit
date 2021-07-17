@@ -48,11 +48,12 @@ import {
 	ThemeContext
 } from 'cinderblock';
 import Page from '@/components/Page';
-import TldrHeader from '../../components/tldr/TldrHeader';
-import { TldrCardSmall, CreateTldrCardSmall, LoadMoreButton, Emptiness } from '../../components/tldr/components';
+import TldrHeader from '@/components/tldr/TldrHeader';
+import { TldrCardSmall, CreateTldrCardSmall, LoadMoreButton, Emptiness } from '@/components/tldr/components';
 
 
 // SCREEN-SPECIFIC
+import { COUNTRIES } from '@/components/utils';
 import Router from 'next/router'
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -138,18 +139,19 @@ function TldrProfile(props) {
 											</Link>
 										}
 										<Flex direction="row">
-
-											<FlexItem shrink>
-												<Text nowrap>
-													<Icon
-														shape="MapPin"
-														color={SWATCHES.textHint}
-														size="small"
-														style={{verticalAlign: 'middle'}}
-													/>
-													<Text type="small" style={{verticalAlign: 'middle'}}> USA</Text>
-												</Text>
-											</FlexItem>
+											{user.data.country && 
+												<FlexItem shrink>
+													<Text nowrap>
+														<Icon
+															shape="MapPin"
+															color={SWATCHES.textHint}
+															size="small"
+															style={{verticalAlign: 'middle'}}
+														/>
+														<Text type="small" style={{verticalAlign: 'middle'}}> {COUNTRIES[user.data.country]}</Text>
+													</Text>
+												</FlexItem>
+											}
 											<FlexItem shrink>
 												<Text nowrap>
 													<Icon
@@ -158,7 +160,7 @@ function TldrProfile(props) {
 														size="small"
 														style={{verticalAlign: 'middle'}}
 													/>
-													<Text  type="small" style={{verticalAlign: 'middle'}}> Joined {dayjs(user.data.createdAt).format('LL')}</Text>
+													<Text  type="small" style={{verticalAlign: 'middle'}}> Joined {dayjs(user.data.createdAt).format('L')}</Text>
 												</Text>
 											</FlexItem>
 

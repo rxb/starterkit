@@ -61,6 +61,9 @@ module.exports = function (app) {
         }
       }
     },
+    country: {
+      type: DataTypes.TEXT,
+    },
     bio: {
       type: DataTypes.TEXT
     },

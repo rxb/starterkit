@@ -58,8 +58,9 @@ import Head from 'next/head'
 // SCREEN-SPECIFIC
 import { Utils } from 'cinderblock';
 const { runValidations, pushError, readFileAsDataUrl } = Utils;
+import { COUNTRIES, COUNTRY_CODES_ALPHA } from '@/components/utils';
 import feathersClient from 'components/FeathersClient';
-import { OauthButtons } from '../../components/tldr/components';
+import { OauthButtons } from '@/components/tldr/components';
 
 
 const cleanUrlKey = (dirtyUrlKey) => {
@@ -141,6 +142,29 @@ const LinkField = (props) => {
 	);
 }
 
+const CountryField = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+	const { formState } = props;
+	return (
+		<>
+			<Picker
+				onValueChange={(itemValue, itemIndex) => formState.setFieldValue('country', itemValue)}
+				selectedValue={formState.getFieldValue('country')}
+				id="country"
+				>
+				<Picker.Item label="" value="" />
+				{COUNTRY_CODES_ALPHA.map( cc => {
+					return(
+						<Picker.Item label={COUNTRIES[cc]} value={cc} />
+					);
+				})}				
+			</Picker>
+			<FieldError error={formState.error?.fieldErrors?.country} />
+		</>
+	);
+}
+
+
 
 const PhotoField = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
@@ -216,6 +240,12 @@ const EditProfile = (props) => {
 	const [formStep, setFormStep] = useState(0);
 	const [buttonAttempt, setButtonAttempt] = useState();
 
+	/*
+	const fetchInitialCountry = () => {
+		return (window.navigator.language) ? window.navigator.language.split("-")[1].toUpperCase() : '';
+	}
+	*/
+
 	const formState = useFormState({
 		initialFields: {
 			name: '',
@@ -224,6 +254,7 @@ const EditProfile = (props) => {
 			photoId: '',
 			bio: '',
 			link: '',
+			country: '',
 			...(isSignup ? false : { email: '' }) // don't need to patch fields that aren't shown
 		},
 		toastableErrors: {
@@ -384,7 +415,7 @@ const EditProfile = (props) => {
 											<Button
 												label="Next"
 												onPress={()=>{
-													setFormStep(3)
+						 							setFormStep(3)
 												}}
 											/>
 										</Chunk>
@@ -401,14 +432,12 @@ const EditProfile = (props) => {
 									</Chunk>
 									<Chunk>
 										<Button
-											label="Next"
+											label="Done"
 											onPress={submitForm}
 											isLoading={formState.loading}
 										/>
 									</Chunk>
 								</RevealBlock>
-
-
 							</form>
 
 						</Section>
@@ -451,6 +480,23 @@ const EditProfile = (props) => {
 								<Chunk>
 									<Label for="link">Link</Label>
 									<LinkField formState={formState} />
+								</Chunk>
+								<Chunk>
+									<Label for="country">Country</Label>
+									<CountryField formState={formState} />
+								</Chunk>
+								<Chunk>
+									<Label for="notifications">Receive notifications</Label>
+									<CheckBox
+										value={formState.getFieldValue('notifyOwnedIssues')}
+										onChange={() => formState.setFieldValue('notifyOwnedIssues', !formState.getFieldValue('notifyOwnedIssues'))}
+										label="About your cards"
+										/>
+									<CheckBox
+										value={formState.getFieldValue('notifyParticipatedIssues')}
+										onChange={() => formState.setFieldValue('notifyParticipatedIssues', !formState.getFieldValue('notifyParticipatedIssues'))}
+										label="About issues you've commented on"
+										/>
 								</Chunk>
 								<Chunk>
 									<Label for="email">Email</Label>

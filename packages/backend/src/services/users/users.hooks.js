@@ -3,11 +3,10 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 const { hashPassword, protect } = require('@feathersjs/authentication-local').hooks;
 const { allowAnonymous, saveAndGetNewImageReference, protectUserFields, checkForSelfId, convertFalsyToNull } = require('../common_hooks.js');
+const acceptLanguageParser = require('accept-language-parser');
 
 const makeUid = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 const makeRandomPassword = () => Math.random().toString(36).substr(10);
-
-
 
 // todo: add admin access
 const mustBeOwnerOrAdmin = (options) => {
@@ -21,8 +20,6 @@ const mustBeOwnerOrAdmin = (options) => {
     }
   );
 }
-
-
 
 const preventChangesToAuthFields = (options) => {
   return iff(
@@ -65,6 +62,12 @@ const fillTempValues = (options) => {
       if (!context.data.password) {
         context.data.password = makeRandomPassword();
         // password doesn't need to be pushed to tempValues, that's a password reset
+      }
+      // attempt to add country if no country
+      if (!context.data.country) {
+        const languages = acceptLanguageParser.parse(context.params.headers["accept-language"]);
+        context.data.country = (languages && languages.length > 0) ? languages[0].region : '';
+        // not going to push this this as tempValue though. they can see it and change it
       }
       context.data.tempValues = tempValues;
     }
