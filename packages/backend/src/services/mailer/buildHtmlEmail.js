@@ -269,7 +269,7 @@ module.exports = (config, bodyContent) => {
     <![endif]-->
     </head>
     <body>
-      <span class="preheader">${config.preheader}</span>
+      <span class="preheader">${(config.preheader) ? config.preheader : ''}</span>
       <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
         <tr>
           <td align="center">

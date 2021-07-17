@@ -1,27 +1,5 @@
 const buildHtmlEmail = require('../mailer/buildHtmlEmail');
 
-/*
-const buildContactPageEmail = (data, config) => {
-  const bodyContent = `
-      <h1>From contact page</h1>
-      <p>${data.message}</p>
-      <br />
-      <h2>Sent by</h2>
-      <p>@${data.user.urlKey}<br />
-      ${data.user.name}<br />
-      ${data.user.email}<br />
-      ${config.serverUrl}/tldr/profile?userId=${data.user.id}</p>
-  `.trim();
-  return {
-    from: config.serverSenderEmail,
-    to: config.adminRecipientEmail,
-    replyTo: data.user.email,
-    subject: `From contact page: ${data.user.urlKey}`,
-    html: buildHtmlEmail(config, bodyContent)
-  };
-}
-*/
-
 
 module.exports = function (app) {
   // i think this needs to get sent to the client

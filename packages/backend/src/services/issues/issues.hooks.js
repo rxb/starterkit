@@ -2,6 +2,7 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 const { setDefaultSort, getFullModel, protectUserFields } = require('../common_hooks.js');
+const buildHtmlEmail = require('../mailer/buildHtmlEmail');
 
 const includeAssociations = (associations) => {
   return async (context) => {
@@ -55,6 +56,36 @@ const updateIssuesCount = async (context) => {
   return context;
 }
 
+const sendIssueCreateEmail = async (context) => {
+
+  // config
+  const serverUrl = context.app.get('clientServer');
+  const fromEmail = context.app.get('fromEmail');
+  const tldr = await context.app.service('tldrs').get(context.dispatch.tldrId);
+
+  // build email
+  const linkBack = `${serverUrl}/tldr/issue?issueId=${context.dispatch.id}`;
+  const bodyContent = `
+    <h1>New issue: ${context.dispatch.title}</h1>
+    <p><b>@${context.dispatch.author.urlKey}</b> opened a new issue about your card <b>${tldr.urlKey}</b>.</p>
+    <p>See the full issue here: <a href="${linkBack}">${linkBack}</a></p>
+  `.trim();
+  const email = {
+    from: fromEmail,
+    to: tldr.author.email,
+    subject: `New Issue: ${context.dispatch.title}`,
+    html: buildHtmlEmail({}, bodyContent)
+  };
+
+  // send
+  context.app.service('mailer').create(email).then(function (result) {
+    console.log('Sent email', result)
+  }).catch(err => {
+    console.log('Error sending email', err)
+  });
+  return context;
+}
+
 module.exports = {
   before: {
     all: [],
@@ -87,18 +118,28 @@ module.exports = {
   },
 
   after: {
-    all: [
+    all: [],
+    find: [
       protectUserFields('users.')
     ],
-    find: [],
-    get: [],
-    create: [
-      updateIssuesCount
+    get: [
+      protectUserFields('users.')
     ],
-    update: [],
-    patch: [],
+    create: [
+      updateIssuesCount,
+      getFullModel(),
+      sendIssueCreateEmail,
+      protectUserFields('users.')
+    ],
+    update: [
+      protectUserFields('users.')
+    ],
+    patch: [
+      protectUserFields('users.')
+    ],
     remove: [
-      updateIssuesCount
+      updateIssuesCount,
+      protectUserFields('users.')
     ]
   },
 
