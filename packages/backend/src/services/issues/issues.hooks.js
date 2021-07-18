@@ -63,11 +63,17 @@ const sendIssueCreateEmail = async (context) => {
   const fromEmail = context.app.get('fromEmail');
   const tldr = await context.app.service('tldrs').get(context.dispatch.tldrId);
 
+  // don't send if notifications are turned off
+  if(!tldr.author.notifyOwnedIssues){
+    return context;
+  }
+
   // build email
   const linkBack = `${serverUrl}/tldr/issue?issueId=${context.dispatch.id}`;
   const bodyContent = `
     <h1>New issue: ${context.dispatch.title}</h1>
     <p><b>@${context.dispatch.author.urlKey}</b> opened a new issue about your card <b>${tldr.urlKey}</b>.</p>
+    <p>${context.dispatch.body}</p>
     <p>See the full issue here: <a href="${linkBack}">${linkBack}</a></p>
   `.trim();
   const email = {
