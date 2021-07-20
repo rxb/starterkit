@@ -188,13 +188,13 @@ function VersionEdit(props) {
 				<title>Edit tldr</title>
 			</Head>
 			<Stripe>
-				<Bounds>
+				<Bounds large>
 					<Section>
 						<Text type="pageHead">Edit card</Text>
 					</Section>
 				</Bounds>
 				<Sticky>
-					<Bounds>
+					<Bounds large>
 						<Section>
 							<Tabs
 								selectedValue={selectedTab}
@@ -213,7 +213,7 @@ function VersionEdit(props) {
 					</Bounds>
 				</Sticky>
 
-				<Bounds>
+				<Bounds large>
 					<form>
 
 						<Section>
@@ -305,14 +305,12 @@ function VersionEdit(props) {
 							}
 
 							{(selectedTab == 'preview') &&
-								<View style={{ maxWidth: 640, marginHorizontal: 'auto' }}>
 									<Chunk>
 										<TldrCard
 											tldr={tldr}
 											thisVersion={previewVersion}
 										/>
 									</Chunk>
-								</View>
 							}
 						</Section>
 
