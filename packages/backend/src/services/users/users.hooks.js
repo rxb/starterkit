@@ -8,6 +8,20 @@ const acceptLanguageParser = require('accept-language-parser');
 const makeUid = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 const makeRandomPassword = () => Math.random().toString(36).substr(10);
 
+// UNPACK RESULT
+// a utility function, not a hook
+// unpacks result/dispatch even if it's still a sequelize object
+// usually used in an after hook
+const unpackResult = ( context ) => {
+  const result = context.dispatch || context.result;
+  if (typeof result === 'object' && !Array.isArray(result)) {
+    const data = typeof result.toJSON === 'function'
+      ? result.toJSON() : result;
+      return data;
+  }
+  return result;
+}
+
 // todo: add admin access
 const mustBeOwnerOrAdmin = (options) => {
   return iff(
@@ -123,7 +137,13 @@ module.exports = {
       protectUserFields()
     ],
     get: [
-      protectUserFields("", ['email', 'notifyOwnedIssues', 'notifyParticipatedIssues'])
+      protectUserFields("", (context) => {
+        // user gets to access an extra few of their own attributes 
+        const result = unpackResult(context);
+        if(context.params.user && context.params.user.id == result.id){
+          return ['email', 'notifyOwnedIssues', 'notifyParticipatedIssues']
+        }
+      })
     ],
     create: [
       protectUserFields()
