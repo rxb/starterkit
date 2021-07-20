@@ -2,7 +2,7 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 const { setDefaultSort, getFullModel, protectUserFields } = require('../common_hooks.js');
-const buildHtmlEmail = require('../mailer/buildHtmlEmail');
+const {buildHtmlEmail, renderButton} = require('../mailer/htmlEmail');
 
 
 const includeAssociations = (context) => {
@@ -60,12 +60,13 @@ const sendIssueCommentEmail = async (context) => {
   const fromEmail = context.app.get('fromEmail');
 
   const issue = await context.app.service('issues').get(context.dispatch.issueId);
+  const tldr = await context.app.service('tldrs').get(issue.tldrId);
 
   // get recipients to notify
   // maybe there's a feathers way to do this but for now
   // just custom query this stuff
   const sequelize = context.app.get('sequelizeClient');
-  const result = await sequelize.query(`
+  const [result, metadata] = await sequelize.query(`
     SELECT 
       DISTINCT users.email AS email
       FROM issue_comments
@@ -82,27 +83,25 @@ const sendIssueCommentEmail = async (context) => {
         issues.id = ${context.dispatch.issueId}  
         AND users."notifyOwnedIssues" = true
   `);
-  console.log(result);
   const bccEmails = result.map( r => r.email);
 
   // build email
   const linkBack = `${serverUrl}/tldr/issue?issueId=${context.dispatch.issueId}`;
+  const truncate = (input, length) => input.length > length ? `${input.substring(0, length)}...` : input;
   const bodyContent = `
-    <h1>New issue comment: ${issue.title}</h1>
-    <p><b>@${context.dispatch.author.urlKey}</b> posted a new comment on the issue <b>${issue.title}</b>.</p>
-    <p>${context.dispatch.body}</p>
-    <p>See the full issue here: <a href="${linkBack}">${linkBack}</a></p>
+    <p><b>@${context.dispatch.author.urlKey}</b> posted:<br/> 
+    ${truncate(context.dispatch.body, 140)}</p>
+    ${renderButton('See the full issue', linkBack)}
   `.trim();
   const email = {
-    from: fromEmail,
+    from: `"@${context.dispatch.author.urlKey}" ${fromEmail}`,
     to: fromEmail,
-    cc: bccEmails,
-    subject: `New issue comment: ${context.dispatch.title}`,
+    bcc: bccEmails,
+    subject: `Re: [${tldr.urlKey}] ${issue.title}`,
     html: buildHtmlEmail({}, bodyContent)
   };
 
   // send
-  console.log(JSON.stringify(email));
   context.app.service('mailer').create(email).then(function (result) {
     console.log('Sent email', result)
   }).catch(err => {
@@ -145,26 +144,26 @@ module.exports = {
   after: {
     all: [],
     find: [
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     get: [
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     create: [
       updateCommentsCount,
       getFullModel(),
       sendIssueCommentEmail,
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     update: [
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     patch: [
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     remove: [
       updateCommentsCount,
-      protectUserFields('users.')
+      protectUserFields('author.')
     ]
   },
 

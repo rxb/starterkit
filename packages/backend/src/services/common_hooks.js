@@ -36,10 +36,26 @@ module.exports = {
     }
   },
 
-  protectUserFields: (prefix = "") => {
-    const fields = ['password', 'verifyToken', 'verifyShortToken', 'verifyExpires', 'verifyChanges', 'resetToken', 'resetShortToken', 'resetExpires', 'facebookId', 'googleId', 'redditId', 'appleId'];
-    const prefixedFields = fields.map(field => prefix + field);
-    return iff(isProvider('external'), protect(...prefixedFields));
+  protectUserFields: (prefix = "", allowFieldsOrFn) => {
+    let fields = ['password', 'verifyToken', 'verifyShortToken', 'verifyExpires', 'verifyChanges', 'resetToken', 'resetShortToken', 'resetExpires', 'facebookId', 'googleId', 'redditId', 'appleId', 'email', 'notifyOwnedIssues', 'notifyParticipatedIssues'];
+    
+    return async (context) => {
+      // expose specific (normally protected) fields
+      const allowFields = (allowFieldsOrFn instanceof Function) 
+        ? allowFieldsOrFn(context) : allowFieldsOrFn;
+      if(allowFields){
+        fields = fields.filter( ( f ) => !allowFields.includes( f ) );
+      }
+
+      // sometimes it's in an association and has a prefix like author.
+      const prefixedFields = fields.map(field => prefix + field);
+
+      // only do any of this if it's an external call
+      if(isProvider('external')){
+        context = protect(...prefixedFields)(context);
+      }
+      return context;
+    }
   },
 
   setDefaultSort: (options) => {

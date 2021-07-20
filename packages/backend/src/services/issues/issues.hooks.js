@@ -2,7 +2,7 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { setField } = require('feathers-authentication-hooks');
 const { iff, isProvider, preventChanges } = require('feathers-hooks-common');
 const { setDefaultSort, getFullModel, protectUserFields } = require('../common_hooks.js');
-const buildHtmlEmail = require('../mailer/buildHtmlEmail');
+const {buildHtmlEmail, renderButton} = require('../mailer/htmlEmail');
 
 const includeAssociations = (associations) => {
   return async (context) => {
@@ -79,7 +79,7 @@ const sendIssueCreateEmail = async (context) => {
   const email = {
     from: fromEmail,
     to: tldr.author.email,
-    subject: `New Issue: ${context.dispatch.title}`,
+    subject: `[${tldr.urlKey}] ${context.dispatch.title}`,
     html: buildHtmlEmail({}, bodyContent)
   };
 
@@ -126,26 +126,26 @@ module.exports = {
   after: {
     all: [],
     find: [
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     get: [
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     create: [
       updateIssuesCount,
       getFullModel(),
       sendIssueCreateEmail,
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     update: [
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     patch: [
-      protectUserFields('users.')
+      protectUserFields('author.')
     ],
     remove: [
       updateIssuesCount,
-      protectUserFields('users.')
+      protectUserFields('author.')
     ]
   },
 

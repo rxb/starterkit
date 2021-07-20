@@ -1,4 +1,4 @@
-const buildHtmlEmail = require('../mailer/buildHtmlEmail');
+const {buildHtmlEmail, renderButton} = require('../mailer/htmlEmail');
 
 const buildContactPageEmail = (data, config) => {
   const bodyContent = `

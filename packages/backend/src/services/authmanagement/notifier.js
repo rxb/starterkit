@@ -1,4 +1,4 @@
-const buildHtmlEmail = require('../mailer/buildHtmlEmail');
+const {buildHtmlEmail, renderButton} = require('../mailer/htmlEmail');
 
 
 module.exports = function (app) {

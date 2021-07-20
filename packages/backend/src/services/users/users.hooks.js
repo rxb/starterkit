@@ -118,17 +118,25 @@ module.exports = {
   },
 
   after: {
-    all: [
-      // Make sure the password field is never sent to the client
-      // Always must be the last hook
+    all: [],
+    find: [
       protectUserFields()
     ],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+    get: [
+      protectUserFields("", ['email', 'notifyOwnedIssues', 'notifyParticipatedIssues'])
+    ],
+    create: [
+      protectUserFields()
+    ],
+    update: [
+      protectUserFields()
+    ],
+    patch: [
+      protectUserFields()
+    ],
+    remove: [
+      protectUserFields()
+    ]
   },
 
   error: {
