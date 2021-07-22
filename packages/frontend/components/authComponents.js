@@ -102,16 +102,18 @@ export const LoginLocalForm = (props) => {
 				<Chunk>
 					<TextInput
 						id="email"
+						autoCompleteType="username"
 						value={formState.getFieldValue('email')}
 						onChange={e => formState.setFieldValue('email', e.target.value)}
 						keyboardType="email-address"
 						placeholder="Email"
 						onSubmitEditing={onSubmit}
+						spellCheck={false}
 					/>
 					<PasswordInput
 						placeholder="Password"
 						id="password"
-						autoCompleteType="new-password"
+						autoCompleteType="current-password"
 						value={formState.getFieldValue('password')}
 						onChange={e => formState.setFieldValue('password', e.target.value)}
 						onSubmitEditing={onSubmit}
@@ -227,6 +229,7 @@ export const RegisterLocalForm = (props) => {
 					autoCompleteType="email"
 					textContentType="emailAddress"
 					keyboardType="email-address"
+					spellCheck={false}
 					value={formState.getFieldValue('email')}
 					onChange={e => formState.setFieldValue('email', e.target.value)}
 				/>

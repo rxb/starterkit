@@ -6,10 +6,13 @@ import { ThemeContext, styleConfig, designConstants, initMediaProvider } from 'c
 const { BREAKPOINT_SIZES } = designConstants;
 
 class MyDocument extends Document {
+
+	/*
 	static async getInitialProps(ctx) {
 		const initialProps = await Document.getInitialProps(ctx)
 		return { ...initialProps }
 	}
+	*/
 
 	static async getInitialProps({ renderPage }) {
 		AppRegistry.registerComponent('Main', () => Main)
@@ -62,6 +65,7 @@ class MyDocument extends Document {
 										}
 										input:focus, textarea:focus, select:focus, .focus{
 											outline: none;
+											border-width: 1px;
 											border-color: ${SWATCHES.tint};
 											background-color: transparent;
 											//box-shadow: 0 0 0 3px ${SWATCHES.focus};

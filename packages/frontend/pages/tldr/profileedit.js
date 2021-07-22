@@ -76,6 +76,7 @@ const NameField = (props) => {
 	return (
 		<>
 			<TextInput
+				autoCompleteType="name"
 				spellCheck={false}
 				id="name"
 				value={formState.getFieldValue('name')}

@@ -244,17 +244,18 @@ function VersionEdit(props) {
 											<Reorderable key={item.stepid} index={i} id={item.stepid} moveItem={moveStep}>
 												<Chunk>
 													<View
-														style={{ paddingLeft: 18 }}
+														style={{ paddingLeft: 11 }}
 													>
 														<View
 															style={{
 																position: 'absolute',
-																top: 6,
-																bottom: 6,
+																top: 8,
+																bottom: 8,
 																left: 0,
-																width: 14,
-																backgroundColor: SWATCHES.shade,
-																borderRadius: METRICS.borderRadius,
+																width: 6,
+																backgroundColor: SWATCHES.tint,
+																opacity: .75,
+																borderRadius: 4,
 																cursor: 'pointer'
 															}}
 														/>

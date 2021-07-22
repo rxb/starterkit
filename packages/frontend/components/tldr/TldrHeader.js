@@ -42,7 +42,7 @@ import {
 	useFormState,
 	View, ThemeContext
 } from 'cinderblock';
-import {TldrSearch, TldrSearchInHeader} from './components';
+import { TldrSearch, TldrSearchInHeader } from './components';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import feathersClient from '@/components/FeathersClient'; // already instantiated so we can share
 import Router from 'next/router'
@@ -96,7 +96,7 @@ function TldrHeader(props) {
 
 	// auth action with redirect through auth if needed	
 	const createButtonOnPress = () => {
-		detourIfAuthNeeded( getTldrEditPageUrl(), authentication, dispatch, Router);
+		detourIfAuthNeeded(getTldrEditPageUrl(), authentication, dispatch, Router);
 	}
 
 	return (
@@ -110,9 +110,9 @@ function TldrHeader(props) {
 						</Inline>
 					</Link>
 				</FlexItem>
-				
+
 				<FlexItem justify="center">
-					<View style={styles['hide']} dataSet={{ media: ids["showAt__large"]}}>
+					<View style={styles['hide']} dataSet={{ media: ids["showAt__large"] }}>
 						<TldrSearch variant="header" />
 					</View>
 				</FlexItem>
@@ -120,26 +120,30 @@ function TldrHeader(props) {
 					shrink
 					align="flex-end"
 					justify="center"
-					dataSet={{ media: ids["hideAt__large"]}}
+					dataSet={{ media: ids["hideAt__large"] }}
 				>
-					<Button
-						onPress={()=>{
+					<Touch
+						onPress={() => {
 							dispatch(updateUi({ searchOverlayActive: true }))
-						}}
-						shape="Search"
-						color="secondary"
-					/>
+						}}>
+						<Icon
+							shape="Search"
+							color={SWATCHES.tint}
+						/>
+					</Touch>
 				</FlexItem>
 				<FlexItem
 					shrink
 					align="flex-end"
 					justify="center"
 				>
-					<Button
-						onPress={createButtonOnPress}
-						shape="File"
-						color="secondary"
-					/>
+					<Touch
+						onPress={createButtonOnPress}>
+						<Icon
+							shape="PlusSquare"
+							color={SWATCHES.tint}
+						/>
+					</Touch>
 				</FlexItem>
 				<FlexItem
 					shrink
@@ -156,7 +160,9 @@ function TldrHeader(props) {
 									/>
 									<Icon
 										shape="ChevronDown"
-										size="small" color={SWATCHES.hint}
+										size="xsmall" 
+										color={SWATCHES.textHint}
+										style={{marginLeft: -3}}
 									/>
 								</Inline>
 							</ConnectedDropdownTouch>
