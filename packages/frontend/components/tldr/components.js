@@ -778,7 +778,7 @@ const _TldrSearchInput = (props) => {
 				}}
 				spellCheck={false}
 				clearButtonMode="while-editing"
-				keyboard="web-search"
+				keyboardType="web-search"
 				onKeyPress={handleKeyPress}
 				onChange={e => {
 					formState.setFieldValue('search', e.target.value)
