@@ -94,11 +94,11 @@ export const TldrCard = (props) => {
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
 	const content = thisVersion.content;
 
-	const {styles: activeStyles, ids: activeIds} = StyleSheet.create({
+	const { styles: activeStyles, ids: activeIds } = StyleSheet.create({
 		'tldrSectionless': {
-			[MEDIA_QUERIES_SINGLE.medium]:{
-				paddingHorizontal: 30, 
-				paddingTop: 30, 
+			[MEDIA_QUERIES_SINGLE.medium]: {
+				paddingHorizontal: 30,
+				paddingTop: 30,
 				paddingBottom: 10,
 			}
 		}
@@ -106,13 +106,13 @@ export const TldrCard = (props) => {
 
 	return (
 		<Card shadow style={[{ borderRadius: 12 }, style]}>
-			<Sectionless 
+			<Sectionless
 				style={[
 					{ backgroundColor: "#4353ff" },
 					activeStyles.tldrSectionless,
-				]}		
+				]}
 				dataSet={{ media: activeIds.tldrSectionless }}
-				>
+			>
 				<Chunk style={{ paddingBottom: 4 }}>
 					<Flex>
 						<FlexItem>
@@ -142,10 +142,10 @@ export const TldrCard = (props) => {
 					<Text inverted style={{ fontStyle: 'italic', marginTop: 8 }}>{content.blurb}</Text>
 				</Chunk>
 			</Sectionless>
-			<Sectionless 
-				style={activeStyles.tldrSectionless}		
+			<Sectionless
+				style={activeStyles.tldrSectionless}
 				dataSet={{ media: activeIds.tldrSectionless }}
-				>
+			>
 				<View>
 					{content.steps.map((step, i) => (
 						<View
@@ -169,7 +169,7 @@ export const TldrCard = (props) => {
 								<Text type="big"><Markdown>{step.head}</Markdown></Text>
 								<Text color="secondary"><Markdown>{step.body}</Markdown></Text>
 							</View>
-							{ showReferences &&
+							{showReferences &&
 								<View
 									style={{
 										marginTop: METRICS.space / 2,
@@ -434,11 +434,11 @@ export const LoadMoreButton = (props) => {
 		swr,
 		label = "Load more",
 		style,
-		size 
+		size
 	} = props;
 	return (
 		<>
-			{ !swr.isReachingEnd &&
+			{!swr.isReachingEnd &&
 				<View style={style}>
 					<Chunk>
 						<Button
@@ -463,7 +463,7 @@ const catMatch = (s, categories) => {
 	const newCats = categories.filter(v => {
 		return (v.name && v.name.match(re)) || (v.keywords && v.keywords.match(re));
 	});
-	return s ? [{'_type': 'search', searchString: s}].concat(newCats) : newCats;
+	return s ? [{ '_type': 'search', searchString: s }].concat(newCats) : newCats;
 }
 
 export const TldrSearch = (props) => {
@@ -473,7 +473,7 @@ export const TldrSearch = (props) => {
 	const dispatch = useDispatch();
 	const ui = useSelector(state => state.ui);
 	const inputRef = useRef();
-	
+
 	// FETCH CATEGORY DATA
 	// once on mount, don't use SWR
 	const [categories, setCategories] = useState([]);
@@ -482,7 +482,7 @@ export const TldrSearch = (props) => {
 		request(getCategoriesUrl({ '$limit': 1000, '$sort[name]': 1 }))
 			.then(response => {
 				const categories = response.items.map(item => ({
-					...item, 
+					...item,
 					'_url': getCategoryPageUrl({ categoryId: item.id })
 				}));
 				setSearchResults(categories)
@@ -492,22 +492,22 @@ export const TldrSearch = (props) => {
 
 	// KEY PRESSES
 	const _handleKeyPress = (e) => {
-		if(searchMode){
+		if (searchMode) {
 			if (e.keyCode === 27) {
 				// esc
 				exitSearch();
 			}
-			else if(e.keyCode === 40){
+			else if (e.keyCode === 40) {
 				// down
 				e.preventDefault();
 				updateSelectedIndex(+1);
 			}
-			else if(e.keyCode === 38){
+			else if (e.keyCode === 38) {
 				// up
 				e.preventDefault();
 				updateSelectedIndex(-1);
 			}
-			else if(e.keyCode === 13){
+			else if (e.keyCode === 13) {
 				// enter (don't preventDefault, form submit needs it)
 				chooseSelectedIndex();
 			}
@@ -522,7 +522,7 @@ export const TldrSearch = (props) => {
 	// OUTCLICK 
 	const searchOuter = useRef(null);
 	const _handleDocumentClick = (e) => {
-		if(searchMode && variant=='header'){
+		if (searchMode && variant == 'header') {
 			if (ReactDOM.findDOMNode(searchOuter.current).contains(e.target)) {
 				return false;
 			}
@@ -540,47 +540,47 @@ export const TldrSearch = (props) => {
 	// check on mount, also on ui state change
 	const [searchMode, _setSearchMode] = useState();
 	const setSearchMode = (mode) => {
-		if(searchMode != mode){
+		if (searchMode != mode) {
 			formState.setFieldValue('search', '');
 		}
-		setSelectedIndex( formState.getFieldValue('search') ? 0 : startingIndex);
+		setSelectedIndex(formState.getFieldValue('search') ? 0 : startingIndex);
 		_setSearchMode(mode);
 	}
-	
+
 	// WATCH UI for SEARCH MODE
-	useEffect(()=>{
-		if(variant == 'header'){
+	useEffect(() => {
+		if (variant == 'header') {
 			setSearchMode(ui.searchHeaderActive);
 		}
-		else if(variant == 'overlay'){
+		else if (variant == 'overlay') {
 			setSearchMode(ui.searchOverlayActive);
 		}
 	}, [ui.searchOverlayActive, ui.searchHeaderActive]);
 
 	// EXIT SEARCH
 	const exitSearch = () => {
-		if(variant == 'header'){
+		if (variant == 'header') {
 			dispatch(updateUi({ searchHeaderActive: false }));
 		}
-		else if(variant == 'overlay'){
+		else if (variant == 'overlay') {
 			dispatch(updateUi({ searchOverlayActive: false }));
 		}
 	}
 
 	// HANDLE SEARCH FOCUS
 	const handleSearchFocus = () => {
-		if(variant=='header'){
+		if (variant == 'header') {
 			dispatch(updateUi({ searchHeaderActive: true }));
 		}
 	}
 
 	// EXPLICITLY SET SEARCH FOCUS
 	const setSearchFocus = (focus) => {
-		if(focus){
+		if (focus) {
 			inputRef.current?.focus();
 			handleSearchFocus();
 		}
-		else{
+		else {
 			inputRef.current?.blur();
 		}
 	}
@@ -593,12 +593,12 @@ export const TldrSearch = (props) => {
 		document.removeEventListener("keydown", handleKeyPress, false);
 	}
 	useEffect(() => {
-		if(searchMode){
+		if (searchMode) {
 			console.log('add listeners');
 			document.addEventListener('click', handleDocumentClick, false);
-			document.addEventListener("keydown", handleKeyPress, false);	
+			document.addEventListener("keydown", handleKeyPress, false);
 		}
-		else{
+		else {
 			cleanup();
 		}
 		return cleanup;
@@ -608,15 +608,15 @@ export const TldrSearch = (props) => {
 	const startingIndex = -1;
 	const [selectedIndex, setSelectedIndex] = useState(startingIndex);
 	const updateSelectedIndex = (offset) => {
-		if(selectedIndex+offset <= startingIndex){
+		if (selectedIndex + offset <= startingIndex) {
 			setSelectedIndex(startingIndex);
 			setSearchFocus(true);
 		}
-		else if(selectedIndex+offset >= searchResults.length){
+		else if (selectedIndex + offset >= searchResults.length) {
 			setSelectedIndex(0);
 		}
-		else{
-			setSelectedIndex(selectedIndex+offset);
+		else {
+			setSelectedIndex(selectedIndex + offset);
 		}
 	}
 
@@ -624,7 +624,7 @@ export const TldrSearch = (props) => {
 	const chooseSelectedIndex = () => {
 		// going to let form submit handle text search since this might lag
 		const url = searchResults[selectedIndex]?._url;
-		if(url){
+		if (url) {
 			Router.push(url);
 		}
 	}
@@ -638,57 +638,58 @@ export const TldrSearch = (props) => {
 		onChange: (fields) => {
 			const s = fields.search;
 			setSearchResults(catMatch(s, categories));
-			setSelectedIndex( s.length ? 0 : -1);
+			setSelectedIndex(s.length ? 0 : -1);
 		}
 	})
 
 
 	// HEADER
-	if (variant == 'header'){
+	if (variant == 'header') {
 		return (
-		<View ref={searchOuter}>	
-			<TldrSearchInput 
-				ref={inputRef}
-				formState={formState} 
-				autoFocus={false} 
-				onFocus={handleSearchFocus}
-				onKeyPress={handleKeyPress}
+			<View ref={searchOuter}>
+				<TldrSearchInput
+					showSearchIcon={true}
+					ref={inputRef}
+					formState={formState}
+					autoFocus={false}
+					onFocus={handleSearchFocus}
+					onKeyPress={handleKeyPress}
 				/>
-			<RevealBlock
-				visible={searchMode}
-				duration={60}
-				delay={10}
-				offset={20}
-				fromTop
-			>
-				<View
-					style={{
-						backgroundColor: 'white',
-						borderColor: SWATCHES.border,
-						borderWidth: 1,
-						top: '100%',
-						marginTop: -7,
-						left: 16, right: 16,
-						position: 'absolute'
-					}}
+				<RevealBlock
+					visible={searchMode}
+					duration={60}
+					delay={10}
+					offset={20}
+					fromTop
 				>
-					<Sectionless>
-						<TldrSearchResults
-							searchString={formState.getFieldValue('search')}
-							searchResults={searchResults}
-							selectedIndex={selectedIndex}
+					<View
+						style={{
+							backgroundColor: 'white',
+							borderColor: SWATCHES.border,
+							borderWidth: 1,
+							top: '100%',
+							marginTop: -7,
+							left: 16, right: 16,
+							position: 'absolute'
+						}}
+					>
+						<Sectionless>
+							<TldrSearchResults
+								searchString={formState.getFieldValue('search')}
+								searchResults={searchResults}
+								selectedIndex={selectedIndex}
 							/>
-					</Sectionless>
-				</View>
-			</RevealBlock>
-		</View>
+						</Sectionless>
+					</View>
+				</RevealBlock>
+			</View>
 		)
 	}
 
 	// OVERLAY 
-	else if(variant == 'overlay'){
-		if(!searchMode){
-			return <View style={{display: 'none'}}/>
+	else if (variant == 'overlay') {
+		if (!searchMode) {
+			return <View style={{ display: 'none' }} />
 		}
 		return (
 			<View style={{
@@ -702,35 +703,36 @@ export const TldrSearch = (props) => {
 					<Flex>
 						<FlexItem shrink justify="center">
 							<Touch
-								onPress={()=>{
+								onPress={() => {
 									exitSearch();
 								}}>
 								<Icon
 									shape="ArrowLeft"
 									color={SWATCHES.tint}
-									/>
-								</Touch>
+								/>
+							</Touch>
 						</FlexItem>
 						<FlexItem justify="center">
-							<TldrSearchInput 
+							<TldrSearchInput
+								showSearchIcon={false}
 								ref={inputRef}
-								formState={formState} 
-								autoFocus={true} 
+								formState={formState}
+								autoFocus={true}
 								onKeyPress={handleKeyPress}
 								onFocus={handleSearchFocus}
-								/>
+							/>
 						</FlexItem>
-						
+
 					</Flex>
 				</Header>
 				<Stripe>
 					<Bounds>
-						<Section style={{paddingTop: METRICS.space/2}}>
+						<Section style={{ paddingTop: METRICS.space / 2 }}>
 							<TldrSearchResults
 								searchString={formState.getFieldValue('search')}
 								searchResults={searchResults}
 								selectedIndex={selectedIndex}
-								/>
+							/>
 						</Section>
 					</Bounds>
 				</Stripe>
@@ -740,35 +742,37 @@ export const TldrSearch = (props) => {
 }
 
 
-const _TldrSearchInput = (props) => {	
+const _TldrSearchInput = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	const {
 		innerRef,
 		formState,
 		autoFocus,
-		onFocus = ()=>{},
-		onKeyPress = ()=>{}
+		onFocus = () => { },
+		onKeyPress = () => { },
+		showSearchIcon = true
 	} = props;
 
-	const handleKeyPress = (e) =>{
-		if(e.keyCode === 40){
+	const handleKeyPress = (e) => {
+		if (e.keyCode === 40) {
 			// arrow down
 			// blur so autocomplete event handler can take over
 			e.preventDefault();
 			innerRef.current.blur();
 		}
-		onKeyPress(e); 
+		onKeyPress(e);
 	}
 
-	return(
+	return (
 		<form>
 			<TextInput
 				ref={innerRef}
 				style={{
 					paddingVertical: 6,
 					borderRadius: 20,
-					marginVertical: 0
+					marginVertical: 0,
+					...(showSearchIcon ? { paddingLeft: 36 } : {})
 				}}
 				wrapperStyle={{
 					// for autocomplete, maybe should be ported back
@@ -786,10 +790,26 @@ const _TldrSearchInput = (props) => {
 				onFocus={onFocus}
 				value={formState.getFieldValue('search')}
 				autoFocus={autoFocus}
-				onSubmitEditing={()=>{
+				onSubmitEditing={() => {
 					Router.push({ pathname: getSearchPageUrl(), query: { q: formState.getFieldValue('search') } })
 				}}
-				/>
+			>
+				{showSearchIcon &&
+					<View style={{
+						position: 'absolute',
+						left: 5, top: 0, bottom: 0,
+						width: 31,
+						justifyContent: 'center',
+						alignItems: 'center'
+					}}>
+						<Icon
+							shape="Search"
+							color={SWATCHES.border}
+							style={{ width: 20, height: 20 }}
+						/>
+					</View>
+				}
+			</TextInput>
 		</form>
 	)
 };
@@ -807,38 +827,38 @@ const TldrSearchResults = (props) => {
 		searchResults,
 		selectedIndex
 	} = props;
-	return(
+	return (
 		<>
 
-		{searchResults.map((item, i) => (
-			<Chunk key={i}>
-				<View style={{
-						backgroundColor: selectedIndex == i ? SWATCHES.shade :'transparent',
-						padding: METRICS.space/2,
-						margin: -1*METRICS.space/2,
+			{searchResults.map((item, i) => (
+				<Chunk key={i}>
+					<View style={{
+						backgroundColor: selectedIndex == i ? SWATCHES.shade : 'transparent',
+						padding: METRICS.space / 2,
+						margin: -1 * METRICS.space / 2,
 						borderRadius: METRICS.borderRadius
 					}}>
-						
-					<Link
-						href={item._url}
-					>
-						<Flex nbsp>
-							<FlexItem shrink nbsp justify="center">
-								<Icon 
-									shape={item._type=="search" ? "Search" : "List"}
-									size="small"
-									color={SWATCHES.textHint}
-									/>								
-							</FlexItem>
-							<FlexItem nbsp>
-								<Text>{ item._type=="search" ? `Search "${item.searchString}"` : item.name}</Text>
-								<Text type="micro" color="hint">{item.keywords}</Text>
-							</FlexItem>
-						</Flex>
-					</Link>
-				</View>
-			</Chunk>
-		))}
+
+						<Link
+							href={item._url}
+						>
+							<Flex nbsp>
+								<FlexItem shrink nbsp justify="center">
+									<Icon
+										shape={item._type == "search" ? "Search" : "List"}
+										size="small"
+										color={SWATCHES.textHint}
+									/>
+								</FlexItem>
+								<FlexItem nbsp>
+									<Text>{item._type == "search" ? `Search "${item.searchString}"` : item.name}</Text>
+									<Text type="micro" color="hint">{item.keywords}</Text>
+								</FlexItem>
+							</Flex>
+						</Link>
+					</View>
+				</Chunk>
+			))}
 		</>
 	);
 }
@@ -849,13 +869,13 @@ export const LoadingPage = (props) => {
 	return (
 		<Page>
 			<TldrHeader />
-			<Stripe style={{flex: 1}}>
+			<Stripe style={{ flex: 1 }}>
 				<View style={styles.absoluteCenter}>
 					<ActivityIndicator
-						style={{marginTop: -16}}
+						style={{ marginTop: -16 }}
 						size='large'
 						color={SWATCHES.tint}
-						/>
+					/>
 				</View>
 			</Stripe>
 		</Page>
@@ -864,44 +884,44 @@ export const LoadingPage = (props) => {
 
 export const Tag = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-	const { 
-		color = 'shade', 
-		size = 'medium', 
-		style 
+	const {
+		color = 'shade',
+		size = 'medium',
+		style
 	} = props;
-	
+
 	// SIZE ATTRIBUTES
 	const sizeMap = {
-		small: { 
-			textStyle: {fontSize: 11, lineHeight: 16} 
+		small: {
+			textStyle: { fontSize: 11, lineHeight: 16 }
 		},
 		medium: {
-			textStyle: {fontSize: 12, lineHeight: 20}
+			textStyle: { fontSize: 12, lineHeight: 20 }
 		}
 	}
-	const {textStyle} = sizeMap[size];
+	const { textStyle } = sizeMap[size];
 
 	// COLOR ATTRIBUTES
 	const colorMap = {
 		shade: {
 			backgroundColor: SWATCHES.shade,
-			textColor: SWATCHES.tint	
+			textColor: SWATCHES.tint
 		},
 		red: {
 			backgroundColor: 'red',
-			textColor: 'white'	
+			textColor: 'white'
 		},
 		green: {
 			backgroundColor: 'green',
-			textColor: 'white'	
+			textColor: 'white'
 		}
 	}
-	const {backgroundColor, textColor} = colorMap[color];
+	const { backgroundColor, textColor } = colorMap[color];
 
 
-	return(
-		<View style={[{alignSelf: 'flex-start', backgroundColor: backgroundColor, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 2, textAlign: 'center'}, styles.pseudoLineHeight, style]}>
-			<Text style={[{color: textColor}, textStyle]}>{props.label.toUpperCase()}</Text>
+	return (
+		<View style={[{ alignSelf: 'flex-start', backgroundColor: backgroundColor, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 2, textAlign: 'center' }, styles.pseudoLineHeight, style]}>
+			<Text style={[{ color: textColor }, textStyle]}>{props.label.toUpperCase()}</Text>
 		</View>
 	);
 }
@@ -913,10 +933,10 @@ export const IssueStatusIcon = (props) => {
 		status
 	} = props;
 
-	const {color, shape, label} = ISSUE_STATUS[status];
+	const { color, shape, label } = ISSUE_STATUS[status];
 
 	let iconSize;
-	switch(size){
+	switch (size) {
 		case 'medium':
 			iconSize = 32
 			break;
@@ -925,7 +945,7 @@ export const IssueStatusIcon = (props) => {
 			break;
 	}
 
-	return(
+	return (
 		<View style={{
 			backgroundColor: color,
 			width: iconSize,
@@ -945,25 +965,25 @@ export const IssueStatusIcon = (props) => {
 
 
 export const ISSUE_TYPES_KEYS = {
-	OTHER: 		0,
-	UNCLEAR: 	1,
-	TYPO: 		2,
-	FALSE: 		3,
-	MOREINFO: 	4,
+	OTHER: 0,
+	UNCLEAR: 1,
+	TYPO: 2,
+	FALSE: 3,
+	MOREINFO: 4,
 	MISCATEGORIZED: 5,
-	SPAM: 		6,
-	NOTCARD: 	7,
+	SPAM: 6,
+	NOTCARD: 7,
 }
 
 export const ISSUE_TYPES = {
-	[ISSUE_TYPES_KEYS.UNCLEAR]: 			{label: "Unclear", sort: 0},
-	[ISSUE_TYPES_KEYS.TYPO]: 				{label: "Typo", sort: 1},
-	[ISSUE_TYPES_KEYS.FALSE]:  			{label: "Correction", sort: 2},
-	[ISSUE_TYPES_KEYS.MOREINFO]: 			{label: "Additional info", sort: 3},
-	[ISSUE_TYPES_KEYS.MISCATEGORIZED]: 	{label: "Miscategorized", sort: 4},
-	[ISSUE_TYPES_KEYS.SPAM]:				{label: "Spam", sort: 5},
-	[ISSUE_TYPES_KEYS.NOTCARD]:			{label: "Not really a card", sort: 6},
-	[ISSUE_TYPES_KEYS.OTHER]: 				{label: "Other", sort: 1000},
+	[ISSUE_TYPES_KEYS.UNCLEAR]: { label: "Unclear", sort: 0 },
+	[ISSUE_TYPES_KEYS.TYPO]: { label: "Typo", sort: 1 },
+	[ISSUE_TYPES_KEYS.FALSE]: { label: "Correction", sort: 2 },
+	[ISSUE_TYPES_KEYS.MOREINFO]: { label: "Additional info", sort: 3 },
+	[ISSUE_TYPES_KEYS.MISCATEGORIZED]: { label: "Miscategorized", sort: 4 },
+	[ISSUE_TYPES_KEYS.SPAM]: { label: "Spam", sort: 5 },
+	[ISSUE_TYPES_KEYS.NOTCARD]: { label: "Not really a card", sort: 6 },
+	[ISSUE_TYPES_KEYS.OTHER]: { label: "Other", sort: 1000 },
 }
 
 
@@ -977,6 +997,6 @@ export const ISSUE_STATUS_KEYS = {
 }
 
 export const ISSUE_STATUS = {
-	[ISSUE_STATUS_KEYS.CLOSED]: 			{label: "Closed", shape: "X", color: "red", pastVerb: "closed"},
-	[ISSUE_STATUS_KEYS.OPEN]: 				{label: "Open", shape: "Check", color: "green", pastVerb: "reopened"},
+	[ISSUE_STATUS_KEYS.CLOSED]: { label: "Closed", shape: "X", color: "red", pastVerb: "closed" },
+	[ISSUE_STATUS_KEYS.OPEN]: { label: "Open", shape: "Check", color: "green", pastVerb: "reopened" },
 }

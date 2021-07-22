@@ -25,7 +25,6 @@ module.exports = withBundleAnalyzer(withTM({
 			config.resolve.alias[item] = path.resolve(__dirname, '.', 'node_modules', item);
 		});
 		
-
 		config.plugins = config.plugins || []
 		config.plugins.push(new webpack.IgnorePlugin(/\/iconv-loader$/)); // something about rn-markdown needs this
 
