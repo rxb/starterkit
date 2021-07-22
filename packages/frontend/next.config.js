@@ -7,9 +7,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const withTM = require('next-transpile-modules')(['cinderblock', 'react-native-media-query', 'react-native-web']);
 
 module.exports = withBundleAnalyzer(withTM({
-	future: {
-		webpack5: true,
-	},
+	webpack5: true,
 	webpack: (config, options) => {
 
 		const webpack = require('webpack')
