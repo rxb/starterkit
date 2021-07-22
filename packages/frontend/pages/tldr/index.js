@@ -41,6 +41,7 @@ import {
 	View,
 	ThemeContext
 } from 'cinderblock';
+import {BREAKPOINT_SIZES} from 'cinderblock/styles/designConstants';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
 import { TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton } from '../../components/tldr/components';
@@ -132,7 +133,7 @@ function TldrHome(props) {
 								}}
 								itemsInRow={{
 									small: 2,
-									medium: 3,
+									medium: 2,
 									large: 4,
 									xlarge: 5
 								}}
@@ -145,6 +146,7 @@ function TldrHome(props) {
 										</Link>
 									</Chunk>
 								)}
+								itemIds={catListIds.catListItem}
 							/>
 						</Section>
 					</Bounds>
@@ -152,9 +154,17 @@ function TldrHome(props) {
 				}
 		</Page>
 	);
-
-
 }
+
+// just really needed an extra breakpoint for 3 categories across width
+// TODO: consider adding to breakpoints?
+const {styles: catListStyles, ids: catListIds} = StyleSheet.create({
+	catListItem: {
+		'@media screen and (min-width: 640px) and (max-width: 839px)': {
+			flexBasis: `33.33%`,
+		},
+	}
+});
 
 TldrHome.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
