@@ -254,7 +254,7 @@ function VersionEdit(props) {
 																left: 0,
 																width: 6,
 																backgroundColor: SWATCHES.tint,
-																opacity: .75,
+																opacity: .25,
 																borderRadius: 4,
 																cursor: 'pointer'
 															}}

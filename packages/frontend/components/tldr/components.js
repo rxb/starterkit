@@ -116,15 +116,15 @@ export const TldrCard = (props) => {
 				<Chunk style={{ paddingBottom: 4 }}>
 					<Flex>
 						<FlexItem>
-							<Inline>
+							<Inline nowrap>
 								<Avatar style={{ height: 12, width: 12, opacity: .75 }} source={{ uri: 'https://randomuser.me/api/portraits/women/18.jpg' }} />
 								<Text type="small" inverted color="secondary">
 									@{tldr.author.urlKey} / {tldr.urlKey}
 								</Text>
 							</Inline>
 						</FlexItem>
-						<FlexItem style={{ alignItems: 'flex-end' }}>
-							<Inline>
+						<FlexItem shrink style={{ alignItems: 'flex-end' }}>
+							<Inline nowrap>
 								<Text type="small" inverted color="secondary">
 									v.{thisVersion.version}
 								</Text>
@@ -700,6 +700,17 @@ export const TldrSearch = (props) => {
 			}}>
 				<Header>
 					<Flex>
+						<FlexItem shrink justify="center">
+							<Touch
+								onPress={()=>{
+									exitSearch();
+								}}>
+								<Icon
+									shape="ArrowLeft"
+									color={SWATCHES.tint}
+									/>
+								</Touch>
+						</FlexItem>
 						<FlexItem justify="center">
 							<TldrSearchInput 
 								ref={inputRef}
@@ -709,15 +720,7 @@ export const TldrSearch = (props) => {
 								onFocus={handleSearchFocus}
 								/>
 						</FlexItem>
-						<FlexItem shrink>
-							<Button
-								onPress={()=>{
-									exitSearch();
-								}}
-								shape="X"
-								color="secondary"
-								/>
-						</FlexItem>
+						
 					</Flex>
 				</Header>
 				<Stripe>
