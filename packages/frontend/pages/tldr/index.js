@@ -123,8 +123,28 @@ function TldrHome(props) {
 	return (
 		<Page>
 			<TldrHeader />
+				<Stripe>
+					<Bounds>
+						<Section>
+							
+								<Chunk>
+									<Text type="hero" color="tint">
+										tldr.cards
+									</Text>
+								</Chunk>
+								<Chunk>
+									<Text type="big">Brutally concise and useful index cards</Text>
+									<Text type="big">to make you non-helpless about big subjects.</Text>
+								</Chunk>
+								<Chunk>
+									<Text type="big">Created and improved by everyone.</Text>
+								</Chunk>
+						</Section>
+					</Bounds>
+				</Stripe>
+
 				{ categories.data && 
-				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite }}>
+				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite}} border>
 					<Bounds>
 						<Section>
 							<List
