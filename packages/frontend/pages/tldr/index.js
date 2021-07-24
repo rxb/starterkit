@@ -124,22 +124,40 @@ function TldrHome(props) {
 		<Page>
 			<TldrHeader />
 				<Stripe>
-					<Bounds>
-						<Section>
-							
-								<Chunk>
-									<Text type="hero" color="tint">
-										tldr.cards
-									</Text>
-								</Chunk>
-								<Chunk>
-									<Text type="big">Brutally concise and useful index cards</Text>
-									<Text type="big">to make you non-helpless about big subjects.</Text>
-								</Chunk>
-								<Chunk>
-									<Text type="big">Created and improved by everyone.</Text>
-								</Chunk>
-						</Section>
+					<Bounds style={{minHeight: '27vw', justifyContent: 'center'}}>
+						<Flex>
+							<FlexItem>
+								<Section>
+									<Chunk>
+										<Text type="hero" color="tint">
+											tldr.cards
+										</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="big">Brutally concise and useful index cards</Text>
+										<Text type="big">to make you non-helpless about big subjects.</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="big" style={{fontWeight: METRICS.textBodyWeight}}>Written and improved by everyone.</Text>
+									</Chunk>
+							</Section>
+							</FlexItem>
+							<FlexItem>
+								<Section style={{height: '100%'}}>
+									<View
+										style={{
+											height: '100%', width: '100%', 
+											outline: '1px dashed pink',
+											alignItems: 'center',
+											justifyContent: 'center'
+										}}
+										>
+										<Text style={{color: 'pink'}}>card box illustration</Text>
+									</View>
+								</Section>	
+							</FlexItem>
+						</Flex>
+
 					</Bounds>
 				</Stripe>
 

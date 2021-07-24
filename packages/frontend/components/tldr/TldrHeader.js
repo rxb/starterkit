@@ -110,9 +110,8 @@ function TldrHeader(props) {
 						</Inline>
 					</Link>
 				</FlexItem>
-
 				<FlexItem justify="center">
-					<View style={styles['hide']} dataSet={{ media: ids["showAt__large"] }}>
+					<View style={[styles['hide'], {marginHorizontal: 'auto', maxWidth: 800, width: '100%'}]} dataSet={{ media: ids["showAt__large"] }}>
 						<TldrSearch variant="header" />
 					</View>
 				</FlexItem>
