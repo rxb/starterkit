@@ -122,7 +122,9 @@ function TldrHome(props) {
 
 	return (
 		<Page>
-			<TldrHeader />
+			<TldrHeader 
+				hideWordmark={false} 
+				/>
 				<Stripe>
 					<Bounds style={{minHeight: '27vw', justifyContent: 'center'}}>
 						<Flex>
@@ -135,10 +137,10 @@ function TldrHome(props) {
 									</Chunk>
 									<Chunk>
 										<Text type="big">Brutally concise and useful index cards</Text>
-										<Text type="big">to make you non-helpless about big subjects.</Text>
+										<Text type="big">that make you non-helpless about big subjects</Text>
 									</Chunk>
 									<Chunk>
-										<Text type="big" style={{fontWeight: METRICS.textBodyWeight}}>Written and improved by everyone.</Text>
+										<Text type="big" style={{fontWeight: METRICS.textBodyWeight}}>Written and improved by everyone</Text>
 									</Chunk>
 							</Section>
 							</FlexItem>
@@ -147,7 +149,7 @@ function TldrHome(props) {
 									<View
 										style={{
 											height: '100%', width: '100%', 
-											outline: '1px dashed pink',
+											outline: '1px dotted pink',
 											alignItems: 'center',
 											justifyContent: 'center'
 										}}

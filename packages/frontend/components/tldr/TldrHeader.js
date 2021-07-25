@@ -88,6 +88,13 @@ const UserDropdown = (props) => {
 function TldrHeader(props) {
 	const { styles, ids, SWATCHES, METRICS } = useContext(ThemeContext);
 
+	const { 
+		hideLogo,
+		hideWordmark,
+		position = "static",
+		type = "separated"
+	} = props
+
 	// data from redux
 	const dispatch = useDispatch();
 	const authentication = useSelector(state => state.authentication);
@@ -100,18 +107,25 @@ function TldrHeader(props) {
 	}
 
 	return (
-		<Header position="static">
+		<Header 
+			position={position}
+			type={type}
+			>
 			<Flex direction="row">
+				{ !hideLogo && 
 				<FlexItem shrink justify="center">
 					<Link href={getIndexPageUrl()}>
 						<Inline nowrap>
 							<Icon shape="FileText" color={SWATCHES.tint} />
-							<Text weight="strong" color="tint" type="big">tldr</Text>
+							{ !hideWordmark &&
+								<Text weight="strong" color="tint" type="big">tldr</Text>
+							}
 						</Inline>
 					</Link>
 				</FlexItem>
+				}
 				<FlexItem justify="center">
-					<View style={[styles['hide'], {marginHorizontal: 'auto', maxWidth: 800, width: '100%'}]} dataSet={{ media: ids["showAt__large"] }}>
+					<View style={[styles['hide'], {marginHorizontal: (hideLogo) ? 0 : 'auto', maxWidth: 600, width: '100%'}]} dataSet={{ media: ids["showAt__large"] }}>
 						<TldrSearch variant="header" />
 					</View>
 				</FlexItem>
