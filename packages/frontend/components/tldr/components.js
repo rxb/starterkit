@@ -963,6 +963,59 @@ export const IssueStatusIcon = (props) => {
 	);
 }
 
+const {styles: indexStyles, ids: indexIds} = StyleSheet.create({
+	categoryCard1: {
+		marginVertical: 0,
+		zIndex: 10,
+		minHeight: 180,
+	},
+	categoryCard2: { 
+		marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9 
+	},
+	categoryCard3: { 
+		marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8 
+	},
+})
+
+
+export const CategoryItem = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+
+	const {
+		category,
+		color = SWATCHES.tint
+	} = props;
+	return (
+
+		<Chunk>
+			<View style={{ position: 'relative', marginRight: 10, marginBottom: 18 }}>
+				<Card style={[
+					indexStyles.categoryCard1, 
+					{backgroundColor: color}
+					//{backgroundColor: category.style.primaryColor}
+				]}>
+					<View style={{
+						height: 60,
+						backgroundColor: 'rgba(255, 255, 255, .35)',
+					}} />
+					<Sectionless style={{
+						paddingTop: METRICS.space,
+						flex: 1,
+					}}>
+						<Chunk style={{ flex: 0 }}>
+							<Text type="big" inverted>{category.name}</Text>
+							<Text type="small" style={{ textAlign: 'left' }} color="secondary" inverted>1,263 cards</Text>
+						</Chunk>
+					</Sectionless>
+				</Card>
+				<Card style={indexStyles.categoryCard2} />
+				<Card style={indexStyles.categoryCard3} />
+			</View>
+		</Chunk>
+
+	)
+}
+
 
 export const ISSUE_TYPES_KEYS = {
 	OTHER: 0,

@@ -23,6 +23,10 @@ module.exports = function (app) {
         is: /^[a-zA-Z0-9_-]*$/
       }
     },
+    style: {
+      type: DataTypes.JSONB,
+      defatultValue: {"primaryColor": "#ffff00"}
+    },
     tldrCount: {
       type: DataTypes.INTEGER,
       defaultValue: 0

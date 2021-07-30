@@ -44,7 +44,7 @@ import {
 import {BREAKPOINT_SIZES} from 'cinderblock/styles/designConstants';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
-import { TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton } from '../../components/tldr/components';
+import { CategoryItem, TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton } from '@/components/tldr/components';
 import StyleSheet from 'react-native-media-query';
 
 
@@ -52,56 +52,12 @@ import StyleSheet from 'react-native-media-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
-import { TESTCOLORS1 as TESTCOLORS } from '../../components/tldr/testcolors';
 
-const {styles: indexStyles, ids: indexIds} = StyleSheet.create({
-	categoryCard1: {
-		marginVertical: 0,
-		zIndex: 10,
-		minHeight: 180,
-	},
-	categoryCard2: { 
-		marginVertical: 0, position: 'absolute', top: 5, right: -5, bottom: -5, left: 5, zIndex: 9 
-	},
-	categoryCard3: { 
-		marginVertical: 0, position: 'absolute', top: 10, right: -10, bottom: -10, left: 10, zIndex: 8 
-	},
-})
+//import { TESTCOLORS1 as TESTCOLORS } from '@/components/tldr/testcolors';
+import { SHORTLIST1 as TESTCOLORS } from '@/components/tldr/testcolors';
 
 
-const CategoryItem = (props) => {
-	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
-	const {
-		category,
-		color = SWATCHES.tint
-	} = props;
-	return (
-
-		<Chunk>
-			<View style={{ position: 'relative', marginRight: 10, marginBottom: 18 }}>
-				<Card style={[indexStyles.categoryCard1, {backgroundColor: color}]}>
-					<View style={{
-						height: 60,
-						backgroundColor: 'rgba(255, 255, 255, .35)',
-					}} />
-					<Sectionless style={{
-						paddingTop: METRICS.space,
-						flex: 1,
-					}}>
-						<Chunk style={{ flex: 0 }}>
-							<Text type="big" inverted>{category.name}</Text>
-							<Text type="small" style={{ textAlign: 'left' }} inverted>1,263 cards</Text>
-						</Chunk>
-					</Sectionless>
-				</Card>
-				<Card style={indexStyles.categoryCard2} />
-				<Card style={indexStyles.categoryCard3} />
-			</View>
-		</Chunk>
-
-	)
-}
 
 function TldrHome(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
@@ -126,12 +82,36 @@ function TldrHome(props) {
 				hideWordmark={false} 
 				/>
 				<Stripe>
-					<Bounds style={{minHeight: '27vw', justifyContent: 'center'}}>
-						<Flex>
-							<FlexItem>
+					{false &&
+				<Bounds style={{minHeight: '27vw', justifyContent: 'center', alignItems: 'center'}}>
 								<Section>
 									<Chunk>
-										<Text type="hero" color="tint">
+										<Text 
+											type="hero" 
+											style={{textAlign: 'center'}}
+											>
+											tldr.cards
+										</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="big" style={{textAlign: 'center'}}>Brutally concise and useful index cards</Text>
+										<Text type="big" style={{textAlign: 'center'}}>that make you non-helpless about big subjects</Text>
+									</Chunk>
+									<Chunk>
+										<Text type="big" style={{fontWeight: METRICS.textBodyWeight, textAlign: 'center'}}>Written and improved by everyone</Text>
+									</Chunk>
+							</Section>
+							
+
+					</Bounds>
+					}
+					{ true &&
+					<Bounds style={{minHeight: '27vw', justifyContent: 'center'}}>
+						<Flex>
+							<FlexItem growFactor={3}>
+								<Section>
+									<Chunk>
+										<Text type="hero">
 											tldr.cards
 										</Text>
 									</Chunk>
@@ -144,7 +124,7 @@ function TldrHome(props) {
 									</Chunk>
 							</Section>
 							</FlexItem>
-							<FlexItem>
+							<FlexItem growFactor={2}>
 								<Section style={{height: '100%'}}>
 									<View
 										style={{
@@ -161,6 +141,7 @@ function TldrHome(props) {
 						</Flex>
 
 					</Bounds>
+									}
 				</Stripe>
 
 				{ categories.data && 
@@ -182,7 +163,7 @@ function TldrHome(props) {
 								renderItem={(category, i) => (
 									<Chunk key={i}>
 										<Link href={getCategoryPageUrl({ categoryId: category.id })}>
-											<CategoryItem category={category} color={TESTCOLORS[category.id - 2 % TESTCOLORS.length]} />
+											<CategoryItem category={category} color={TESTCOLORS[category.id - 1 % TESTCOLORS.length]} />
 										</Link>
 									</Chunk>
 								)}
