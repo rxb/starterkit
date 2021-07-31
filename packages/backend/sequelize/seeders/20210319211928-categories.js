@@ -37,8 +37,8 @@ const categories = [
 		urlKey: 'fitness-wellness'
 	},
 	{
-		name: 'Biohacking',
-		urlKey: 'bio-hacking'
+		name: 'Health',
+		urlKey: 'health'
 	},
 	{
 		name: 'Emergency Prep',

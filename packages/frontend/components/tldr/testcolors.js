@@ -74,3 +74,64 @@ export const TESTCOLORS10 = ["#76B9E1","#EF464E","#2200aa","#fcbf18","#EF6A63","
 export const TESTCOLORS_SCRATCH = ["#029874","#4d07a8","#009900","#FFA501","#FF6D00","#FCC200","#2763ff","#0096C8","#004E8B","#01a19a","#283494","#FFB000","#7F0ACF","#F37321","#D31D52","#e61e00","#d04bdb","#a51ec1","#0baef7","#c63030","#0f6800","#007C79","#f7941e","#006DC8","#ff5000","#32aa32"];
 
 export const SHORTLIST1 = ["#FCC200","#005000","#4d07a8","#32aa32","#FF4000","#EE0000","#FF3C96","#0baef7","#00bea0","#50c88c","#FF8500","#6c64ff","#00635a","#7a4fdc","#2200aa","#213e74","#64C8FF","#a51ec1","#c676ff","#2763ff","#ff5000","#FC93C6"];
+
+
+export const STARBRITE = [
+"#F898C8",
+"#E91E63",
+"#D62518",
+"#AD0000",
+"#FA7A00",
+"#CDDC39",
+"#00D8A0",
+"#1BA77B",
+"#004C71",
+"#1AADE0",
+"#0069BD",
+"#333399",
+"#56418C",
+"#212321",
+"#E63300",
+"#DE6900",
+]
+
+const shuffleArray = (arr) => arr.sort(() => Math.random() - 0.5);
+
+// 3 color interpolate
+// export const CATEGORY_COLORS = ['#ffa500', '#fa9c2c', '#f59341', '#ef8a52', '#e98161', '#e2786f', '#dc6f7b', '#d46688', '#cc5d94', '#c354a0', '#b94bac', '#ae41b8', '#a138c4', '#932ed0', '#8224db', '#6c19e7', '#4e0df3', '#0000ff'];
+
+// 3 color interpolate
+// export const CATEGORY_COLORS = 
+['#ff0000', '#f80023', '#f10038', '#ea004a', '#e3005b', '#db006b', '#d2007a', '#c90089', '#c00097', '#b600a5', '#aa00b2', '#9f00be', '#9100cb', '#8300d6', '#7200e1', '#5d00ec', '#4200f6', '#0000ff']
+
+// wes anderson shortlist
+export const CATEGORY_COLORS = ['#258CD6', '#159417', '#F0BA2A', '#F52D3C']
+
+
+// ###############################
+// FUCK COLORS, MY SOUL IS GRAY
+// ###############################
+
+// NO COLOR
+// kind of meh, but also whatever. could get icons for visual interest
+// export const CATEGORY_COLORS = [];
+
+// PERIODIC TABLE / DEWEY DECIMAL 
+// major groupings of categories share a color
+// export const CATEGORY_COLORS = []; // TODO
+
+// PERIODIC TABLE-ISH
+// groupings share a color, but L values are unique
+// export const CATEGORY_COLORS = []; // TODO
+
+// BIPHASIC COLORS OR OTHER CARTOGRAPHIC 
+// export const CATEGORY_COLORS = []; // TODO
+
+// CRAYOLA BOX / CREATIVE MORNINGS
+// just color explosion, who cares
+// but are there enough categories to seem like an explosion?
+// export const CATEGORY_COLORS = []; // TODO
+
+// TRUE RAINBOW / SPECTRUM
+// just rotate through hue bro
+// export const CATEGORY_COLORS = []; // TODO

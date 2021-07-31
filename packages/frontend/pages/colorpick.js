@@ -86,9 +86,9 @@ function sortColorsBySpectrum(hexColorsArr) {
 import Page from '@/components/Page';
 import {CategoryItem} from '@/components/tldr/components';
 
-import { TESTCOLORS1, TESTCOLORS10, SHORTLIST1 } from '@/components/tldr/testcolors';
-const TESTCOLORS = TESTCOLORS10;
-const PICKEDCOLORS = SHORTLIST1;
+import { TESTCOLORS1, TESTCOLORS8, SHORTLIST1 } from '@/components/tldr/testcolors';
+const TESTCOLORS = TESTCOLORS8;
+const PICKEDCOLORS = [];
 
 class ColorTest extends React.Component {
 

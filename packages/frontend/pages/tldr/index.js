@@ -53,10 +53,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
-//import { TESTCOLORS1 as TESTCOLORS } from '@/components/tldr/testcolors';
-import { SHORTLIST1 as TESTCOLORS } from '@/components/tldr/testcolors';
-
-
+import { CATEGORY_COLORS } from '@/components/tldr/testcolors';
 
 
 function TldrHome(props) {
@@ -80,6 +77,7 @@ function TldrHome(props) {
 		<Page>
 			<TldrHeader 
 				hideWordmark={false} 
+				type="transparent"
 				/>
 				<Stripe>
 					{false &&
@@ -124,7 +122,9 @@ function TldrHome(props) {
 									</Chunk>
 							</Section>
 							</FlexItem>
+							{/*
 							<FlexItem growFactor={2}>
+
 								<Section style={{height: '100%'}}>
 									<View
 										style={{
@@ -138,6 +138,7 @@ function TldrHome(props) {
 									</View>
 								</Section>	
 							</FlexItem>
+							*/}
 						</Flex>
 
 					</Bounds>
@@ -163,7 +164,7 @@ function TldrHome(props) {
 								renderItem={(category, i) => (
 									<Chunk key={i}>
 										<Link href={getCategoryPageUrl({ categoryId: category.id })}>
-											<CategoryItem category={category} color={TESTCOLORS[category.id - 1 % TESTCOLORS.length]} />
+											<CategoryItem category={category} color={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
 										</Link>
 									</Chunk>
 								)}
