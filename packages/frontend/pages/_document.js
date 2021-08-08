@@ -67,7 +67,7 @@ class MyDocument extends Document {
 											outline: none;
 											border-width: 1px;
 											border-color: ${SWATCHES.tint};
-											background-color: transparent;
+											background-color: ${SWATCHES.backgroundWhite};
 											//box-shadow: 0 0 0 3px ${SWATCHES.focus};
 											zIndex: 2;
 										}

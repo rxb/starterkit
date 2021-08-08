@@ -467,7 +467,7 @@ const catMatch = (s, categories) => {
 }
 
 export const TldrSearch = (props) => {
-	const { variant = 'header' } = props;
+	const { variant = 'header', hero, style } = props;
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	const dispatch = useDispatch();
@@ -559,6 +559,7 @@ export const TldrSearch = (props) => {
 
 	// EXIT SEARCH
 	const exitSearch = () => {
+		inputRef.current?.blur();
 		if (variant == 'header') {
 			dispatch(updateUi({ searchHeaderActive: false }));
 		}
@@ -646,17 +647,20 @@ export const TldrSearch = (props) => {
 	// HEADER
 	if (variant == 'header') {
 		return (
-			<View ref={searchOuter}>
+			<View ref={searchOuter} style={style}>
 				<TldrSearchInput
+					active={searchMode}
 					showSearchIcon={true}
 					ref={inputRef}
 					formState={formState}
 					autoFocus={false}
 					onFocus={handleSearchFocus}
 					onKeyPress={handleKeyPress}
+					hero={hero}
 				/>
 				<RevealBlock
 					visible={searchMode}
+					animateExit={false}
 					duration={60}
 					delay={10}
 					offset={20}
@@ -669,7 +673,7 @@ export const TldrSearch = (props) => {
 							borderWidth: 1,
 							top: '100%',
 							marginTop: -7,
-							left: 16, right: 16,
+							left: 0, right: 0,
 							position: 'absolute'
 						}}
 					>
@@ -744,15 +748,21 @@ export const TldrSearch = (props) => {
 
 const _TldrSearchInput = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-
 	const {
+		active,
 		innerRef,
 		formState,
 		autoFocus,
-		onFocus = () => { },
+		onFocus = () => {},
 		onKeyPress = () => { },
-		showSearchIcon = true
+		showSearchIcon = true,
+		hero
 	} = props;
+
+	const [updateVersion, setUpdateVersion] = useState(0);
+	useEffect(()=>{
+		setUpdateVersion(updateVersion + 1);
+	}, [active]);
 
 	const handleKeyPress = (e) => {
 		if (e.keyCode === 40) {
@@ -764,20 +774,37 @@ const _TldrSearchInput = (props) => {
 		onKeyPress(e);
 	}
 
+	const inputStyles = hero ? {
+		backgroundColor: SWATCHES.backgroundWhite,
+		paddingVertical: 8,
+		borderRadius: 20,
+		marginVertical: 0,
+		fontSize: METRICS.bigSize,
+		lineHeight: METRICS.bigLineHeight
+	} : {
+		paddingVertical: 6,
+		borderRadius: 20,
+		marginVertical: 0
+	}
+
+	const inputFocusStyles = {
+		borderBottomLeftRadius: 0,
+		borderBottomRightRadius: 0,
+	};
+
 	return (
 		<form>
 			<TextInput
+				updateVersion={updateVersion}
 				ref={innerRef}
 				style={{
-					paddingVertical: 6,
-					borderRadius: 20,
-					marginVertical: 0,
+					...inputStyles,
+					...(active ? inputFocusStyles : {} ),
 					...(showSearchIcon ? { paddingLeft: 36 } : {})
 				}}
 				wrapperStyle={{
 					// for autocomplete, maybe should be ported back
 					zIndex: 2,
-					backgroundColor: 'white',
 					marginVertical: METRICS.pseudoLineHeight
 				}}
 				spellCheck={false}
@@ -978,7 +1005,7 @@ const {styles: indexStyles, ids: indexIds} = StyleSheet.create({
 })
 
 
-export const CategoryItem = (props) => {
+export const CategoryItemBak = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 
 	const {
@@ -1016,6 +1043,43 @@ export const CategoryItem = (props) => {
 	)
 }
 
+export const CategoryItem = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+
+	const {
+		category,
+		color = SWATCHES.tint
+	} = props;
+	return (
+
+		<Chunk>
+			<View style={{ position: 'relative', marginRight: 10, marginBottom: 18 }}>
+				<Card style={[
+					indexStyles.categoryCard1, 
+					{backgroundColor: color}
+					//{backgroundColor: category.style.primaryColor}
+				]}>
+					<View style={{
+						height: 60,
+						backgroundColor: 'rgba(255, 255, 255, .35)',
+					}} />
+					<Sectionless style={{
+						paddingTop: METRICS.space,
+						flex: 1,
+					}}>
+						<Chunk style={{ flex: 0 }}>
+							<Text type="big" inverted>{category.name}</Text>
+							<Text type="small" style={{ textAlign: 'left' }} color="secondary" inverted>1,263 cards</Text>
+						</Chunk>
+					</Sectionless>
+				</Card>
+				<Card style={indexStyles.categoryCard2} />
+				<Card style={indexStyles.categoryCard3} />
+			</View>
+		</Chunk>
+
+	)
+}
 
 export const ISSUE_TYPES_KEYS = {
 	OTHER: 0,

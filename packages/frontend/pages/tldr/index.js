@@ -39,12 +39,14 @@ import {
 	Touch,
 	useMediaContext,
 	View,
-	ThemeContext
+	ThemeContext,
+	designConstants
 } from 'cinderblock';
-import {BREAKPOINT_SIZES} from 'cinderblock/styles/designConstants';
+
+import {MEDIA_QUERIES_SINGLE} from 'cinderblock/styles/designConstants';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
-import { CategoryItem, TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton } from '@/components/tldr/components';
+import { CategoryItem, TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton, TldrSearch } from '@/components/tldr/components';
 import StyleSheet from 'react-native-media-query';
 
 
@@ -55,6 +57,13 @@ dayjs.extend(relativeTime)
 
 import { CATEGORY_COLORS } from '@/components/tldr/testcolors';
 
+
+const TextFeature = (props) => {
+	const styleKey = props.less ? 'textFeatureLess' : 'textFeature';
+	return(
+		<Text style={[homeStyles[styleKey], props.style]} styleIds={homeIds[styleKey]}>{props.children}</Text>
+	)
+}; 
 
 function TldrHome(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
@@ -77,78 +86,44 @@ function TldrHome(props) {
 		<Page>
 			<TldrHeader 
 				hideWordmark={false} 
+				hideLogo={true}
+				hideSearch={true}
 				type="transparent"
 				/>
 				<Stripe>
-					{false &&
-				<Bounds style={{minHeight: '27vw', justifyContent: 'center', alignItems: 'center'}}>
-								<Section>
-									<Chunk>
-										<Text 
-											type="hero" 
-											style={{textAlign: 'center'}}
-											>
-											tldr.cards
-										</Text>
-									</Chunk>
-									<Chunk>
-										<Text type="big" style={{textAlign: 'center'}}>Brutally concise and useful index cards</Text>
-										<Text type="big" style={{textAlign: 'center'}}>that make you non-helpless about big subjects</Text>
-									</Chunk>
-									<Chunk>
-										<Text type="big" style={{fontWeight: METRICS.textBodyWeight, textAlign: 'center'}}>Written and improved by everyone</Text>
-									</Chunk>
+					<View style={homeStyles.heroStripe} dataSet={{ media: homeIds.heroStripe}} >
+						<Bounds>
+							<Section>
+								<Chunk>
+									<TextFeature>Brutally concise &amp; useful cards</TextFeature>
+									<TextFeature>that make you non-helpless</TextFeature>
+									<TextFeature>about important skills &amp; subjects</TextFeature>
+								</Chunk>
+								<Chunk>
+									<TextFeature less>Written and improved by everyone</TextFeature>
+								</Chunk>
 							</Section>
-							
-
-					</Bounds>
-					}
-					{ true &&
-					<Bounds style={{minHeight: '27vw', justifyContent: 'center'}}>
-						<Flex>
-							<FlexItem growFactor={3}>
-								<Section>
-									<Chunk>
-										<Text type="hero">
-											tldr.cards
-										</Text>
-									</Chunk>
-									<Chunk>
-										<Text type="big">Brutally concise and useful index cards</Text>
-										<Text type="big">that make you non-helpless about big subjects</Text>
-									</Chunk>
-									<Chunk>
-										<Text type="big" style={{fontWeight: METRICS.textBodyWeight}}>Written and improved by everyone</Text>
-									</Chunk>
-							</Section>
-							</FlexItem>
-							{/*
-							<FlexItem growFactor={2}>
-
-								<Section style={{height: '100%'}}>
-									<View
-										style={{
-											height: '100%', width: '100%', 
-											outline: '1px dotted pink',
-											alignItems: 'center',
-											justifyContent: 'center'
-										}}
-										>
-										<Text style={{color: 'pink'}}>card box illustration</Text>
-									</View>
-								</Section>	
-							</FlexItem>
-							*/}
-						</Flex>
-
-					</Bounds>
-									}
+						</Bounds>
+					</View>
 				</Stripe>
 
 				{ categories.data && 
 				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite}} border>
+
 					<Bounds>
 						<Section>
+							<TldrSearch 
+								variant="header" 
+								hero={true}
+								style={{
+									marginTop: -68,
+									marginBottom: 48,
+									zIndex: 5,
+									width: '100%',
+									maxWidth: 680,
+									marginHorizontal: 'auto'
+								}} 
+								/>
 							<List
 								variant={{
 									small: 'grid',
@@ -168,7 +143,7 @@ function TldrHome(props) {
 										</Link>
 									</Chunk>
 								)}
-								itemIds={catListIds.catListItem}
+								itemIds={homeIds.catListItem}
 							/>
 						</Section>
 					</Bounds>
@@ -180,7 +155,36 @@ function TldrHome(props) {
 
 // just really needed an extra breakpoint for 3 categories across width
 // TODO: consider adding to breakpoints?
-const {styles: catListStyles, ids: catListIds} = StyleSheet.create({
+const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
+	heroStripe: {
+		minHeight: 200,
+		justifyContent: 'center',
+		[MEDIA_QUERIES_SINGLE.large]: {
+			minHeight: 260,
+			paddingBottom: 16
+		}
+	},
+	textFeature: {
+		textAlign: 'center',
+		fontSize: 22,
+		lineHeight: 22*1.3,
+		fontWeight: 600,
+		[MEDIA_QUERIES_SINGLE.large]: {
+			fontSize: 28,
+			lineHeight: 28*1.25,
+		}
+	},
+	textFeatureLess: {
+		textAlign: 'center',
+		fontSize: 20,
+		lineHeight: 20*1.3,
+		fontWeight: 300,
+		color: designConstants.SWATCHES.textSecondary,
+		[MEDIA_QUERIES_SINGLE.large]: {
+			fontSize: 25,
+			lineHeight: 25*1.25,
+		}
+	},
 	catListItem: {
 		'@media screen and (min-width: 640px) and (max-width: 839px)': {
 			flexBasis: `33.33%`,

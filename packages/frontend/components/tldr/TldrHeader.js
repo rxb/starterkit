@@ -91,6 +91,7 @@ function TldrHeader(props) {
 	const { 
 		hideLogo,
 		hideWordmark,
+		hideSearch,
 		position = "static",
 		type = "separated"
 	} = props
@@ -112,22 +113,21 @@ function TldrHeader(props) {
 			type={type}
 			>
 			<Flex direction="row">
-				{ !hideLogo && 
 				<FlexItem shrink justify="center">
-					<Link href={getIndexPageUrl()}>
-						<Inline nowrap>
-							<Icon shape="FileText" color={SWATCHES.tint} />
-							{ !hideWordmark &&
-								<Text weight="strong" color="tint" type="big">tldr</Text>
-							}
-						</Inline>
+					<Link href={getIndexPageUrl()} style={{height: '100%'}}>
+						<Image 
+							source={{uri: '/static/tldr_logo.svg'}}
+							style={{width: 45*197/150, height: 45, resizeMode: 'contain'}}
+							/>
 					</Link>
 				</FlexItem>
-				}
+				
 				<FlexItem justify="center">
-					<View style={[styles['hide'], {marginHorizontal: (hideLogo) ? 0 : 'auto', maxWidth: 600, width: '100%'}]} dataSet={{ media: ids["showAt__large"] }}>
+				{ !hideSearch && 
+					<View style={[styles['hide'], {marginHorizontal: 'auto', maxWidth: 600, width: '100%'}]} dataSet={{ media: ids["showAt__large"] }}>
 						<TldrSearch variant="header" />
 					</View>
+				}
 				</FlexItem>
 				<FlexItem
 					shrink

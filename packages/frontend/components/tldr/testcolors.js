@@ -97,15 +97,24 @@ export const STARBRITE = [
 
 const shuffleArray = (arr) => arr.sort(() => Math.random() - 0.5);
 
-// 3 color interpolate
-// export const CATEGORY_COLORS = ['#ffa500', '#fa9c2c', '#f59341', '#ef8a52', '#e98161', '#e2786f', '#dc6f7b', '#d46688', '#cc5d94', '#c354a0', '#b94bac', '#ae41b8', '#a138c4', '#932ed0', '#8224db', '#6c19e7', '#4e0df3', '#0000ff'];
+//export const CATEGORY_COLORS = TESTCOLORS3;
+export const CATEGORY_COLORS =TESTCOLORS1;
+
 
 // 3 color interpolate
-// export const CATEGORY_COLORS = 
-['#ff0000', '#f80023', '#f10038', '#ea004a', '#e3005b', '#db006b', '#d2007a', '#c90089', '#c00097', '#b600a5', '#aa00b2', '#9f00be', '#9100cb', '#8300d6', '#7200e1', '#5d00ec', '#4200f6', '#0000ff']
+//export const CATEGORY_COLORS = ['#ffa500', '#fa9c2c', '#f59341', '#ef8a52', '#e98161', '#e2786f', '#dc6f7b', '#d46688', '#cc5d94', '#c354a0', '#b94bac', '#ae41b8', '#a138c4', '#932ed0', '#8224db', '#6c19e7', '#4e0df3', '#0000ff'];
+
+// 3 color interpolate
+//export const CATEGORY_COLORS = ['#ff0000', '#f80023', '#f10038', '#ea004a', '#e3005b', '#db006b', '#d2007a', '#c90089', '#c00097', '#b600a5', '#aa00b2', '#9f00be', '#9100cb', '#8300d6', '#7200e1', '#5d00ec', '#4200f6', '#0000ff']
+
+// MAP KEY 1
+//export const CATEGORY_COLORS = [ "#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#abdda4","#66c2a5","#3288bd","#5e4fa2"]
 
 // wes anderson shortlist
-export const CATEGORY_COLORS = ['#258CD6', '#159417', '#F0BA2A', '#F52D3C']
+// export const CATEGORY_COLORS = ['#258CD6', '#159417', '#F0BA2A', '#F52D3C']
+
+// hot colors shortlist
+// export const CATEGORY_COLORS = ["#FF4000","#009922","#0646fa"];
 
 
 // ###############################
