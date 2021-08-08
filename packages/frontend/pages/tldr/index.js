@@ -95,7 +95,10 @@ function TldrHome(props) {
 						<Bounds>
 							<Section>
 								<Chunk>
+									{/*
 									<TextFeature>Brutally concise &amp; useful cards</TextFeature>
+									*/}
+									<TextFeature>Quick and useful cards</TextFeature>
 									<TextFeature>that make you non-helpless</TextFeature>
 									<TextFeature>about important skills &amp; subjects</TextFeature>
 								</Chunk>
@@ -158,10 +161,11 @@ function TldrHome(props) {
 const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 	heroStripe: {
 		minHeight: 200,
+		paddingBottom: 15,
 		justifyContent: 'center',
 		[MEDIA_QUERIES_SINGLE.large]: {
-			minHeight: 260,
-			paddingBottom: 16
+			minHeight: 230,
+			paddingBottom: 20
 		}
 	},
 	textFeature: {
@@ -170,8 +174,8 @@ const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 		lineHeight: 22*1.3,
 		fontWeight: 600,
 		[MEDIA_QUERIES_SINGLE.large]: {
-			fontSize: 28,
-			lineHeight: 28*1.25,
+			fontSize: 26,
+			lineHeight: 26*1.25,
 		}
 	},
 	textFeatureLess: {
@@ -181,8 +185,8 @@ const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 		fontWeight: 300,
 		color: designConstants.SWATCHES.textSecondary,
 		[MEDIA_QUERIES_SINGLE.large]: {
-			fontSize: 25,
-			lineHeight: 25*1.25,
+			fontSize: 23,
+			lineHeight: 23*1.25,
 		}
 	},
 	catListItem: {

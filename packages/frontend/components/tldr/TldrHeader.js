@@ -113,11 +113,11 @@ function TldrHeader(props) {
 			type={type}
 			>
 			<Flex direction="row">
-				<FlexItem shrink justify="center">
-					<Link href={getIndexPageUrl()} style={{height: '100%'}}>
+				<FlexItem shrink justify="center" align="center">
+					<Link href={getIndexPageUrl()} style={{height: '100%', justifyContent: 'center'}}>
 						<Image 
 							source={{uri: '/static/tldr_logo.svg'}}
-							style={{width: 45*197/150, height: 45, resizeMode: 'contain'}}
+							style={{width: 37*197/150, height: 37, resizeMode: 'contain'}}
 							/>
 					</Link>
 				</FlexItem>

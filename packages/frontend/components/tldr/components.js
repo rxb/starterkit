@@ -467,7 +467,7 @@ const catMatch = (s, categories) => {
 }
 
 export const TldrSearch = (props) => {
-	const { variant = 'header', hero, style } = props;
+	const { variant = 'header', hero, placeholder, style } = props;
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
 	const dispatch = useDispatch();
@@ -657,6 +657,7 @@ export const TldrSearch = (props) => {
 					onFocus={handleSearchFocus}
 					onKeyPress={handleKeyPress}
 					hero={hero}
+					placeholder={placeholder}
 				/>
 				<RevealBlock
 					visible={searchMode}
@@ -724,6 +725,7 @@ export const TldrSearch = (props) => {
 								autoFocus={true}
 								onKeyPress={handleKeyPress}
 								onFocus={handleSearchFocus}
+								placeholder={placeholder}
 							/>
 						</FlexItem>
 
@@ -756,7 +758,8 @@ const _TldrSearchInput = (props) => {
 		onFocus = () => {},
 		onKeyPress = () => { },
 		showSearchIcon = true,
-		hero
+		hero,
+		placeholder
 	} = props;
 
 	const [updateVersion, setUpdateVersion] = useState(0);
@@ -779,7 +782,6 @@ const _TldrSearchInput = (props) => {
 		paddingVertical: 8,
 		borderRadius: 20,
 		marginVertical: 0,
-		fontSize: METRICS.bigSize,
 		lineHeight: METRICS.bigLineHeight
 	} : {
 		paddingVertical: 6,
@@ -817,6 +819,7 @@ const _TldrSearchInput = (props) => {
 				onFocus={onFocus}
 				value={formState.getFieldValue('search')}
 				autoFocus={autoFocus}
+				placeholder={placeholder}
 				onSubmitEditing={() => {
 					Router.push({ pathname: getSearchPageUrl(), query: { q: formState.getFieldValue('search') } })
 				}}
