@@ -47,7 +47,7 @@
     "feathers-authentication-management": "^3.1.0",
     "feathers-blob": "^2.6.0",
     "feathers-hooks-common": "^5.0.6",
-    "feathers-mailer": "^3.0.1",
+    "feathers-mailer": "^3.1.0",
     "feathers-permissions": "^2.1.4",
     "feathers-sequelize": "^6.2.0",
     "fs-blob-store": "^6.0.0",
@@ -58,15 +58,15 @@
     "multer": "^2.0.0-alpha.7",
     "node-geocoder": "^3.27.0",
     "nodemailer-sendgrid-transport": "^0.2.0",
-    "pg": "^8.6.0",
+    "pg": "^8.7.1",
     "sequelize": "^6.6.5",
     "serve-favicon": "^2.5.0",
-    "sharp": "^0.28.3",
+    "sharp": "^0.29.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^7.31.0",
-    "mocha": "^9.0.2",
+    "eslint": "^7.32.0",
+    "mocha": "^9.0.3",
     "request": "^2.88.2",
     "request-promise": "^4.2.6"
   }

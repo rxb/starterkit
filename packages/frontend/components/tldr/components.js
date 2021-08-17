@@ -834,7 +834,7 @@ const _TldrSearchInput = (props) => {
 					}}>
 						<Icon
 							shape="Search"
-							color={SWATCHES.border}
+							color={hero ? SWATCHES.textSecondary : SWATCHES.border }
 							style={{ width: 20, height: 20 }}
 						/>
 					</View>
@@ -1071,6 +1071,46 @@ export const CategoryItem = (props) => {
 						flex: 1,
 					}}>
 						<Chunk style={{ flex: 0 }}>
+							<Text type="big" inverted>{category.name}</Text>
+							<Text type="small" style={{ textAlign: 'left' }} color="secondary" inverted>1,263 cards</Text>
+						</Chunk>
+					</Sectionless>
+				</Card>
+				<Card style={indexStyles.categoryCard2} />
+				<Card style={indexStyles.categoryCard3} />
+			</View>
+		</Chunk>
+
+	)
+}
+
+export const CategoryItem2 = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+
+	const {
+		category,
+		color = SWATCHES.tint
+	} = props;
+	return (
+
+		<Chunk>
+			<View style={{ position: 'relative', marginRight: 10, marginBottom: 18 }}>
+				<Card style={[
+					indexStyles.categoryCard1, 
+					{backgroundColor: color},
+					{minHeight: 170}
+					//{backgroundColor: category.style.primaryColor}
+				]}>
+					<View style={{
+						height: 45,
+						backgroundColor: 'rgba(255, 255, 255, .2)',
+					}} />
+					<Sectionless style={{
+						paddingTop: METRICS.space,
+						flex: 1,
+						justifyContent: 'flex-end'
+					}}>
+						<Chunk >
 							<Text type="big" inverted>{category.name}</Text>
 							<Text type="small" style={{ textAlign: 'left' }} color="secondary" inverted>1,263 cards</Text>
 						</Chunk>

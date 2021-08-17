@@ -46,7 +46,7 @@ import {
 import {MEDIA_QUERIES_SINGLE} from 'cinderblock/styles/designConstants';
 import Page from '@/components/Page';
 import TldrHeader from '../../components/tldr/TldrHeader';
-import { CategoryItem, TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton, TldrSearch } from '@/components/tldr/components';
+import { CategoryItem, CategoryItem2, TldrCardSmall, CreateTldrCardSmall, CategoryCardSmall, LoadMoreButton, TldrSearch } from '@/components/tldr/components';
 import StyleSheet from 'react-native-media-query';
 
 
@@ -142,10 +142,11 @@ function TldrHome(props) {
 								renderItem={(category, i) => (
 									<Chunk key={i}>
 										<Link href={getCategoryPageUrl({ categoryId: category.id })}>
-											<CategoryItem category={category} color={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
+											<CategoryItem2 category={category} color={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
 										</Link>
 									</Chunk>
 								)}
+								listIds={homeIds.catList}
 								itemIds={homeIds.catListItem}
 							/>
 						</Section>
@@ -189,9 +190,17 @@ const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 			lineHeight: 23*1.25,
 		}
 	},
+	catList: {
+		[MEDIA_QUERIES_SINGLE.xlarge]: {
+			marginLeft: -1 * designConstants.METRICS.space*1.5,
+		},
+	},
 	catListItem: {
 		'@media screen and (min-width: 640px) and (max-width: 839px)': {
 			flexBasis: `33.33%`,
+		},
+		[MEDIA_QUERIES_SINGLE.xlarge]: {
+			paddingLeft: designConstants.METRICS.space*1.5,
 		},
 	}
 });
