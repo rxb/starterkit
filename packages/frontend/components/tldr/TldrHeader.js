@@ -135,15 +135,17 @@ function TldrHeader(props) {
 					justify="center"
 					dataSet={{ media: ids["hideAt__large"] }}
 				>
-					<Touch
-						onPress={() => {
-							dispatch(updateUi({ searchOverlayActive: true }))
-						}}>
-						<Icon
-							shape="Search"
-							color={SWATCHES.tint}
-						/>
-					</Touch>
+					{ !hideSearch && 
+						<Touch
+							onPress={() => {
+								dispatch(updateUi({ searchOverlayActive: true }))
+							}}>
+							<Icon
+								shape="Search"
+								color={SWATCHES.tint}
+							/>
+						</Touch>
+					}
 				</FlexItem>
 				<FlexItem
 					shrink
@@ -151,12 +153,22 @@ function TldrHeader(props) {
 					justify="center"
 				>
 					<Touch
+						dataSet={{ media: ids["hideAt__large"] }}
 						onPress={createButtonOnPress}>
 						<Icon
-							shape="PlusSquare"
+							shape="Plus"
 							color={SWATCHES.tint}
 						/>
 					</Touch>
+					<Button
+						shape="Plus"
+						size="small" 
+						label="Create" 
+						color="secondary"
+						onPress={createButtonOnPress}
+						style={styles.hide}
+						dataSet={{ media: ids["showAt__large"] }}
+						/>	
 				</FlexItem>
 				<FlexItem
 					shrink
@@ -182,7 +194,7 @@ function TldrHeader(props) {
 						}
 
 						{!user.id && ui.probablyHasAccount &&
-							<Touch onPress={() => {
+							<Button size="small" label="Sign in" color="secondary" onPress={() => {
 								dispatch(updateUi({
 									logInModalVisible: true,
 									logInModalOptions: {
@@ -190,19 +202,18 @@ function TldrHeader(props) {
 									}
 								}));
 							}}>
-								<Text color="tint" nowrap>Log in</Text>
-							</Touch>
+							</Button>
 						}
 
 						{!user.id && !ui.probablyHasAccount &&
-							<Touch onPress={() => {
+							<Button size="small" label="Sign up" color="secondary" onPress={() => {
 								dispatch(updateUi({
 									logInModalVisible: true,
 									logInModalOptions: {
 										authUi: 'register'
 									}
 								}));
-							}}><Text color="tint" nowrap>Sign up</Text></Touch>
+							}}></Button>
 						}
 
 					</Fragment>

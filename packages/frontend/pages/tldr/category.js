@@ -86,7 +86,7 @@ function Category(props) {
 					<Bounds>
 						<Section>
 							<Chunk>
-								<Text>Category</Text>
+								<Text type="pageHeadKicker" color="secondary">Category</Text>
 								<Text type="pageHead">{category.data.name}</Text>
 							</Chunk>
 						</Section>

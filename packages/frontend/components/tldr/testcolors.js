@@ -97,8 +97,33 @@ export const STARBRITE = [
 
 const shuffleArray = (arr) => arr.sort(() => Math.random() - 0.5);
 
+
+export const PSEUDORANDOM = [
+   "#549EFF",
+   "#229B49",
+   "#F7A927",
+   "#F56D98",
+   "#F02424",
+   "#D38334",
+   "#474780",
+   "#215DE5",
+   "#C9A284",
+   "#9D4EE0",
+   "#18C1ED",
+   "#DC3600",
+   "#799AFF",
+   "#41B65B",
+   "#686C33",
+   "#FF7968",
+   "#B19067",
+   "#E32A6D",
+   "#1888EC",
+   "#05D7B8"
+]
+
+
 //export const CATEGORY_COLORS = TESTCOLORS3;
-export const CATEGORY_COLORS =TESTCOLORS1;
+export const CATEGORY_COLORS = PSEUDORANDOM;
 
 
 // 3 color interpolate

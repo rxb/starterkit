@@ -85,8 +85,6 @@ function TldrHome(props) {
 	return (
 		<Page>
 			<TldrHeader 
-				hideWordmark={false} 
-				hideLogo={true}
 				hideSearch={true}
 				type="transparent"
 				/>
