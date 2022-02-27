@@ -7,6 +7,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const withTM = require('next-transpile-modules')(['cinderblock', 'react-native-media-query', 'react-native-web']);
 
 module.exports = withBundleAnalyzer(withTM({
+	
 	webpack5: true,
 	webpack: (config, options) => {
 
@@ -25,8 +26,10 @@ module.exports = withBundleAnalyzer(withTM({
 			config.resolve.alias[item] = path.resolve(__dirname, '.', 'node_modules', item);
 		});
 		
+		/*
 		config.plugins = config.plugins || []
 		config.plugins.push(new webpack.IgnorePlugin(/\/iconv-loader$/)); // something about rn-markdown needs this
+		*/
 
 		config.resolve.extensions = [
 			'.web.js',
