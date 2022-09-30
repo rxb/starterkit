@@ -35,7 +35,7 @@ import {
 	ThemeContext
 } from 'cinderblock';
 import CinderblockPage from '../components/starterkit/CinderblockPage';
-import LoginForm from '../components/LoginForm';
+import { LoginForm } from 'components/authComponents';
 import ShowCard from '../components/starterkit/ShowCard';
 import Head from 'next/head'
 
@@ -75,6 +75,7 @@ const FakePrompt = (props) => {
 
 function Hello() {
 
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 	const shows = pageHelper(useSWR(getShowsUrl()));
 
 	// data from redux

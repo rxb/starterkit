@@ -8,7 +8,6 @@ const withTM = require('next-transpile-modules')(['cinderblock', 'react-native-m
 
 module.exports = withBundleAnalyzer(withTM({
 	
-	webpack5: true,
 	webpack: (config, options) => {
 
 		const webpack = require('webpack')
