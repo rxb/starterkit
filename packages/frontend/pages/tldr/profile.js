@@ -8,7 +8,8 @@ import {
 	getUserUrl,
 	getTldrsUrl,
 } from '@/swr';
-import useSWR, { mutate, useSWRInfinite } from 'swr';
+import useSWR, { mutate } from 'swr';
+import useSWRInfinite from 'swr/infinite' 
 
 // REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';

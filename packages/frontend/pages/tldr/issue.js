@@ -3,7 +3,8 @@ import ErrorPage from 'next/error'
 
 // SWR
 import { request, pageHelper, getTldrUrl, getIssueUrl, getIssueCommentsUrl, getIssueCommentUrl } from '@/swr';
-import useSWR, { useSWRInfinite, mutate, cache } from 'swr';
+import useSWR, { mutate, cache } from 'swr';
+import useSWRInfinite from 'swr/infinite' 
 
 // REDUX
 import { connect, useDispatch, useSelector } from 'react-redux';
