@@ -73,7 +73,7 @@ function TldrHome(props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	const categories = pageHelper(useSWR( getCategoriesUrl({ '$limit': 1000 }), { initialData: props.categoriesData }
+	const categories = pageHelper(useSWR( getCategoriesUrl({ '$limit': 1000 }), { fallbackData: props.categoriesData }
 	));
 
 	// DIVERT TO ERROR PAGE

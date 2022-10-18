@@ -290,7 +290,7 @@ function Tldr(props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	const tldr = useSWR([getTldrUrl(props.tldrId), authentication.accessToken], { initialData: props.tldr });
+	const tldr = useSWR([getTldrUrl(props.tldrId), authentication.accessToken], { fallbackData: props.tldr });
 	const canEdit = (user?.id && tldr?.data?.authorId && user.id == tldr.data.authorId);
 
 	const relatedTldrs = pageHelper(useSWR( tldr.data ? getTldrsUrl({categoryId: tldr.data.categoryId, "id[$nin][]": tldr.data.id, "$limit": 4}) : null ));

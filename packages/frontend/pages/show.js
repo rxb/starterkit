@@ -207,7 +207,7 @@ function Show(props) {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	const show = useSWR(getShowUrl(props.showId), { initialData: props.show }); // passing from getInitialProps
+	const show = useSWR(getShowUrl(props.showId), { fallbackData: props.show }); // passing from getInitialProps
 	const { data: showData = {}, error: showError, mutate: showMutate } = show;
 
 	// TODO: implement pagination

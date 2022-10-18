@@ -1,4 +1,3 @@
-import useSWR, { mutate } from 'swr'
 export const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
 // URL BUILDERS
@@ -111,9 +110,9 @@ export const pageHelper = (swr) => {
    swr.isInfinite = (typeof swr.size !== "undefined");
    if (swr.isInfinite) {
       // .data is an array of page objects [{total, offset, limit, items}, ...]
-      swr.isLoadingInitialData = !swr.data && !swr.error;
+      swr.isLoadingFallbackData = !swr.data && !swr.error;
       swr.isLoadingMore =
-         swr.isLoadingInitialData ||
+         swr.isLoadingFallbackData ||
          (swr.size > 0 && swr.data && typeof swr.data[swr.size - 1] === "undefined");
       swr.total = swr.data?.[0]?.total || 0;
       swr.isEmpty = swr.data?.[0]?.items?.length === 0;
@@ -122,7 +121,7 @@ export const pageHelper = (swr) => {
       swr.isReachingEnd =
          swr.isEmpty || (swr.data && swr.data[swr.data.length - 1]?.items.length < swr.pageSize);
       swr.isRefreshing = swr.isValidating && swr.data && swr.data.length === swr.size;
-      //{ data, error, mutate, size, setSize, isValidating, isLoadingInitialData, isLoadingMore, total, isEmpty, pageSize, isReachingEnd, isRefreshing, pageCount }
+      //{ data, error, mutate, size, setSize, isValidating, isLoadingFallbackData, isLoadingMore, total, isEmpty, pageSize, isReachingEnd, isRefreshing, pageCount }
    }
    else {
       // data is a page object {total, offset, limit, items}

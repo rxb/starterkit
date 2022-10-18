@@ -19,9 +19,9 @@
     "cross-env": "^7.0.3"
   },
   "dependencies": {
-    "@feathersjs/authentication-client": "^5.0.0-pre.17",
-    "@feathersjs/authentication-oauth": "^5.0.0-pre.17",
-    "@feathersjs/client": "^5.0.0-pre.17",
+    "@feathersjs/authentication-client": "^5.0.0-pre.31",
+    "@feathersjs/authentication-oauth": "^5.0.0-pre.31",
+    "@feathersjs/client": "^5.0.0-pre.31",
     "accounting": "^0.4.1",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-react-native-web": "^0.18.9",
