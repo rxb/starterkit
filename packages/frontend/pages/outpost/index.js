@@ -27,7 +27,6 @@ import {
 	Touch,
 	View,
 	useMediaContext,
-	,
 	ThemeContext
 } from 'cinderblock';
 

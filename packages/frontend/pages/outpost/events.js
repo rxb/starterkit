@@ -144,6 +144,13 @@ const EventForm = (props) => {
 function Events(props) {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
 
+	const thisCardStyle = {
+		borderWidth: 0,
+		shadowRadius: 16,
+		shadowColor: 'rgba(0,0,0,.15)',
+		marginBottom: METRICS.pseudoLineHeight
+	}
+
 	const areas = AREAS.slice(0, 12);
 
 	const authentication = useSelector(state => state.authentication);
@@ -481,9 +488,3 @@ function Events(props) {
 
 export default Events;
 
-const thisCardStyle = {
-	borderWidth: 0,
-	shadowRadius: 16,
-	shadowColor: 'rgba(0,0,0,.15)',
-	marginBottom: METRICS.pseudoLineHeight
-}

@@ -224,8 +224,12 @@ const profileEditValidations = {
 		}
 	},
 	link: {
-		isUrl: {
-			msg: "Link must be a valid url"
+		// non-simple format for extra params like allowNull
+		allowNull: true,
+		validate: {
+			isUrl: {
+				msg: "Link must be a valid url"
+			}
 		}
 	},
 };
