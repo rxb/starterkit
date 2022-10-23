@@ -31,7 +31,9 @@ app.use(session({secret: 'grant'}))
 // Load app configuration
 app.configure(configuration());
 // Enable security, CORS, compression, favicon and body parsing
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
 app.use(cors());
 app.use(compress());
 app.use(express.json({ limit: '5mb' }));
