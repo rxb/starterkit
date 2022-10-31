@@ -132,10 +132,24 @@ function TldrHome(props) {
 									<FlexItem>
 										<View style={homeStyles.explainBlock} dataSet={{ media: homeIds.explainBlock}}>
 										<Chunk>
-											<Text style={[homeStyles.explainText, {fontWeight: 600}]} dataSet={{ media: homeIds.explainText}}>
-												Brutally concise &amp; userful cards{"\n"}
-												with the most essential knowlege{"\n"}
-												about big subjects &amp; skills{"\n"}
+											{/*
+											<Text style={[homeStyles.explainText, {fontWeight: 500}]} dataSet={{ media: homeIds.explainText}}>
+												Brutally concise cards{"\n"}
+												with the most useful knowledge{"\n"}
+												about big subjects &amp; skills
+											</Text>
+											*/}
+											{/*
+											<Text style={[homeStyles.explainText, {fontWeight: 500}]} dataSet={{ media: homeIds.explainText}}>
+												Brutally concise cards{"\n"}
+												with key knowledge{"\n"}
+												about big subjects &amp; skills
+											</Text>
+											*/}
+											<Text style={[homeStyles.explainText, {fontWeight: 500}]} dataSet={{ media: homeIds.explainText}}>
+												Audaciously concise cards{"\n"}
+												with the most useful knowledge{"\n"}
+												about big subjects &amp; skills
 											</Text>
 										</Chunk>
 										<Chunk>
@@ -206,6 +220,7 @@ function TldrHome(props) {
 const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 	heroStripe: {
 		minHeight: 200,
+		paddingTop: 15,
 		paddingBottom: 15,
 		justifyContent: 'center',
 		[MEDIA_QUERIES_SINGLE.large]: {
@@ -216,49 +231,61 @@ const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 	},
 
 	heroTextTop: {
-		fontSize: 60,
-		lineHeight: 60,
+		/*
+		fontSize: 54,
+		lineHeight: 58,
+		*/
+		fontSize: 42,
+		lineHeight: 42,
 		fontWeight: 700,
-		letterSpacing: '-.001em',
+		letterSpacing: '-.01em',
+		textAlign: 'center',
 		[MEDIA_QUERIES_SINGLE.large]: {
+			textAlign: 'left',
 			fontSize: 74,
 			lineHeight: 78,
 		}
 	},
 
 	heroTextBottom: {
-		letterSpacing: '-.001em',
-		fontSize: 34,
-		lineHeight: 34,
+		/*
+		fontSize: 28,
+		lineHeight: 28,
+		*/
+		fontSize: 42,
+		lineHeight: 42,
+		letterSpacing: '-.01em',
 		fontWeight: 700,
-		marginBottom: 4,
+		textAlign: 'center',
 		[MEDIA_QUERIES_SINGLE.large]: {
+			textAlign: 'left',
 			fontSize: 36,
 			lineHeight: 42,
 		}
 	},
 
 	explainBlock: {
-		//alignSelf: 'flex-start',
-		//marginTop: 2,
 		/*
 		borderTopWidth: 1,
 		borderTopColor: designConstants.SWATCHES.border,
 		paddingTop: 16,
+		paddingHorizontal: 8,
+		alignSelf: 'center',
 		*/
-		maxWidth: 305,
+		paddingTop: 4,
 		[MEDIA_QUERIES_SINGLE.large]: {
 			alignSelf: 'flex-end',
-			marginTop: 6,
+			marginTop: 0,
 			borderTopWidth: 0,
-			paddingTop: 0,
-			paddingRight: 0
+			paddingTop: 12,
+			paddingHorizontal: 0
 		}
 	},
 
 	explainText: {
-		lineHeight: 23,
+		lineHeight: 22,
 		fontSize: 16,
+		textAlign: 'center',
 		[MEDIA_QUERIES_SINGLE.large]: {
 			textAlign: 'right',
 			lineHeight: 23,
