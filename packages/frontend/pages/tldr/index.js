@@ -130,14 +130,18 @@ function TldrHome(props) {
 										</Chunk>
 									</FlexItem>
 									<FlexItem>
-										<Chunk style={homeStyles.explainBlock} dataSet={{ media: homeIds.explainBlock}}>
-											<Text style={homeStyles.explainText} dataSet={{ media: homeIds.explainText}} weight="strong">
+										<View style={homeStyles.explainBlock} dataSet={{ media: homeIds.explainBlock}}>
+										<Chunk>
+											<Text style={[homeStyles.explainText, {fontWeight: 600}]} dataSet={{ media: homeIds.explainText}}>
 												Brutally concise &amp; userful cards{"\n"}
 												with the most essential knowlege{"\n"}
 												about big subjects &amp; skills{"\n"}
 											</Text>
+										</Chunk>
+										<Chunk>
 											<Text style={homeStyles.explainText} dataSet={{ media: homeIds.explainText}} color="secondary">Written and improved by everyone</Text>
 										</Chunk>
+										</View>
 									</FlexItem>
 								</Flex>
 								</View>
@@ -202,7 +206,6 @@ function TldrHome(props) {
 const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 	heroStripe: {
 		minHeight: 200,
-		paddingTop: 10,
 		paddingBottom: 15,
 		justifyContent: 'center',
 		[MEDIA_QUERIES_SINGLE.large]: {
@@ -213,40 +216,53 @@ const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 	},
 
 	heroTextTop: {
-		fontSize: 64,
-		lineHeight: 64,
+		fontSize: 60,
+		lineHeight: 60,
 		fontWeight: 700,
-		marginBottom: 4,
 		letterSpacing: '-.001em',
 		[MEDIA_QUERIES_SINGLE.large]: {
-			fontSize: 72,
-			lineHeight: 72,
+			fontSize: 74,
+			lineHeight: 78,
 		}
 	},
 
 	heroTextBottom: {
 		letterSpacing: '-.001em',
-		fontSize: 28,
-		lineHeight: 28,
+		fontSize: 34,
+		lineHeight: 34,
 		fontWeight: 700,
+		marginBottom: 4,
 		[MEDIA_QUERIES_SINGLE.large]: {
-			fontSize: 32,
-			lineHeight: 32,
+			fontSize: 36,
+			lineHeight: 42,
 		}
 	},
 
 	explainBlock: {
-		marginTop: 8,
+		//alignSelf: 'flex-start',
+		//marginTop: 2,
+		/*
+		borderTopWidth: 1,
+		borderTopColor: designConstants.SWATCHES.border,
+		paddingTop: 16,
+		*/
+		maxWidth: 305,
 		[MEDIA_QUERIES_SINGLE.large]: {
+			alignSelf: 'flex-end',
 			marginTop: 6,
+			borderTopWidth: 0,
+			paddingTop: 0,
+			paddingRight: 0
 		}
 	},
 
 	explainText: {
 		lineHeight: 23,
-		marginBottom: 5,
+		fontSize: 16,
 		[MEDIA_QUERIES_SINGLE.large]: {
 			textAlign: 'right',
+			lineHeight: 23,
+			fontSize: 16
 		}
 	},
 
