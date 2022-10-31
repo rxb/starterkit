@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState, useContext } from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
-import { request, buildQs, pageHelper, getTldrUrl, getTldrsUrl, getUsersSavedTldrsUrl, getTldrsVotesUrl } from '@/swr';
+import { request, buildQs, pageHelper, getTldrUrl, getTldrsUrl, getUsersSavedTldrsUrl, getTldrsVotesUrl, getCategoryUrl } from '@/swr';
 import useSWR, { mutate } from 'swr';
 
 // REDUX
@@ -292,7 +292,7 @@ function Tldr(props) {
 
 	const tldr = useSWR([getTldrUrl(props.tldrId), authentication.accessToken], { fallbackData: props.tldr });
 	const canEdit = (user?.id && tldr?.data?.authorId && user.id == tldr.data.authorId);
-
+	const category = useSWR( tldr.data ? getCategoryUrl(tldr.data.categoryId) : null );
 	const relatedTldrs = pageHelper(useSWR( tldr.data ? getTldrsUrl({categoryId: tldr.data.categoryId, "id[$nin][]": tldr.data.id, "$limit": 4}) : null ));
 	
 
@@ -422,7 +422,7 @@ function Tldr(props) {
 							<FlexItem growFactor={1}>
 								<Section style={{ paddingBottom: 0 }}>
 									<Chunk>
-										<TldrCard tldr={tldr.data} />
+										<TldrCard tldr={tldr.data} color={category.data.color} />
 									</Chunk>
 								</Section>
 							</FlexItem>
@@ -608,7 +608,7 @@ function Tldr(props) {
 											<Link
 												href={getTldrPageUrl({ tldrId: item.id })}
 											>
-												<TldrCardSmall tldr={item} />
+												<TldrCardSmall tldr={item} color={category.data.color} />
 											</Link>
 										</Chunk>
 									);

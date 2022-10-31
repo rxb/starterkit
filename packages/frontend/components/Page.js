@@ -12,6 +12,7 @@ import {
 
 import NProgress from 'nprogress'
 import Router from 'next/router'
+import Head from 'next/head'
 
 import {
 	Avatar,
@@ -95,6 +96,12 @@ function Page(props) {
 
 	return (
 		<View style={{ minHeight: '100vh', flex: 1 }}>
+
+			<Head>
+				<link rel="preconnect" href="https://fonts.googleapis.com" /> 
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> 
+				<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet" />
+			</Head>
 
 			{props.children}
 

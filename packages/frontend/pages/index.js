@@ -209,11 +209,14 @@ function Hello() {
 									<Chunk>
 										<Text>Consectetur Lorem amet qui do. Veniam officia pariatur dolore exercitation. Enim elit do deserunt qui commodo aliquip adipisicing aliqua ea occaecat!</Text>
 									</Chunk>
+								</Section>
 
 									{!user.id &&
 										<LoginForm />
 									}
-
+									
+								<Section>
+								
 									<Chunk>
 										<Button
 											onPress={toggleModal}

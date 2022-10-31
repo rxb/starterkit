@@ -112,6 +112,7 @@ function Category(props) {
 													<TldrCardSmall
 														user={user}
 														tldr={item}
+														color={category.data.color}
 														dispatch={dispatch}
 														mutate={tldrs.mutate}
 													/>

@@ -93,17 +93,54 @@ function TldrHome(props) {
 					<View style={homeStyles.heroStripe} dataSet={{ media: homeIds.heroStripe}} >
 						<Bounds>
 							<Section>
+								{/*
 								<Chunk>
-									{/*
-									<TextFeature>Brutally concise &amp; useful cards</TextFeature>
-									*/}
+									<TextFeature>Brutally concise &amp; useful cards</TextFeature>									
+									<TextFeature>that make you non-helpless</TextFeature>
+									<TextFeature>about important skills &amp; subjects</TextFeature>
+								</Chunk>
+								*/}
+								{/*
+								<Chunk>
 									<TextFeature>Quick and useful cards</TextFeature>
 									<TextFeature>that make you non-helpless</TextFeature>
 									<TextFeature>about important skills &amp; subjects</TextFeature>
 								</Chunk>
+								*/}
+								{/*
+								<Chunk>
+									<TextFeature>Quick cards</TextFeature>
+									<TextFeature>to make you non-helpless</TextFeature>
+									<TextFeature>about big subjects &amp; skills</TextFeature>
+								</Chunk>
 								<Chunk>
 									<TextFeature less>Written and improved by everyone</TextFeature>
 								</Chunk>
+								*/}
+								<View style={{
+									maxWidth: 790, 
+									alignSelf: 'center',
+									width: '100%'
+								}}>
+								<Flex direction="column" switchDirection="large">
+									<FlexItem>
+										<Chunk>
+											<Text style={homeStyles.heroTextTop} dataSet={{ media: homeIds.heroTextTop}}>Get smart</Text>
+											<Text style={homeStyles.heroTextBottom} dataSet={{ media: homeIds.heroTextBottom}}>enough to start</Text>
+										</Chunk>
+									</FlexItem>
+									<FlexItem>
+										<Chunk style={homeStyles.explainBlock} dataSet={{ media: homeIds.explainBlock}}>
+											<Text style={homeStyles.explainText} dataSet={{ media: homeIds.explainText}} weight="strong">
+												Brutally concise &amp; userful cards{"\n"}
+												with the most essential knowlege{"\n"}
+												about big subjects &amp; skills{"\n"}
+											</Text>
+											<Text style={homeStyles.explainText} dataSet={{ media: homeIds.explainText}} color="secondary">Written and improved by everyone</Text>
+										</Chunk>
+									</FlexItem>
+								</Flex>
+								</View>
 							</Section>
 						</Bounds>
 					</View>
@@ -141,7 +178,11 @@ function TldrHome(props) {
 								renderItem={(category, i) => (
 									<Chunk key={i}>
 										<Link href={getCategoryPageUrl({ categoryId: category.id })}>
-											<CategoryItem2 category={category} color={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
+											{/* 
+											<CategoryItem2 category={category} color={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />											
+											*/}
+											<CategoryItem2 category={category} color={category.color} />
+
 										</Link>
 									</Chunk>
 								)}
@@ -161,13 +202,55 @@ function TldrHome(props) {
 const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 	heroStripe: {
 		minHeight: 200,
+		paddingTop: 10,
 		paddingBottom: 15,
 		justifyContent: 'center',
 		[MEDIA_QUERIES_SINGLE.large]: {
+			paddingTop: 0,
 			minHeight: 230,
-			paddingBottom: 20
+			paddingBottom: 20,
 		}
 	},
+
+	heroTextTop: {
+		fontSize: 64,
+		lineHeight: 64,
+		fontWeight: 700,
+		marginBottom: 4,
+		letterSpacing: '-.001em',
+		[MEDIA_QUERIES_SINGLE.large]: {
+			fontSize: 72,
+			lineHeight: 72,
+		}
+	},
+
+	heroTextBottom: {
+		letterSpacing: '-.001em',
+		fontSize: 28,
+		lineHeight: 28,
+		fontWeight: 700,
+		[MEDIA_QUERIES_SINGLE.large]: {
+			fontSize: 32,
+			lineHeight: 32,
+		}
+	},
+
+	explainBlock: {
+		marginTop: 8,
+		[MEDIA_QUERIES_SINGLE.large]: {
+			marginTop: 6,
+		}
+	},
+
+	explainText: {
+		lineHeight: 23,
+		marginBottom: 5,
+		[MEDIA_QUERIES_SINGLE.large]: {
+			textAlign: 'right',
+		}
+	},
+
+	/*
 	textFeature: {
 		textAlign: 'center',
 		fontSize: 22,
@@ -189,6 +272,8 @@ const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 			lineHeight: 23*1.25,
 		}
 	},
+	*/
+
 	catList: {
 		[MEDIA_QUERIES_SINGLE.xlarge]: {
 			marginLeft: -1 * designConstants.METRICS.space*1.5,

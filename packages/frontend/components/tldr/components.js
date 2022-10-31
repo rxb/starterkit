@@ -89,7 +89,8 @@ export const TldrCard = (props) => {
 
 	const {
 		tldr,
-		style
+		style,
+		color = SWATCHES.tint
 	} = props;
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
 	const content = thisVersion.content;
@@ -108,7 +109,7 @@ export const TldrCard = (props) => {
 		<Card shadow style={[{ borderRadius: 12 }, style]}>
 			<Sectionless
 				style={[
-					{ backgroundColor: "#4353ff" },
+					{ backgroundColor: color },
 					activeStyles.tldrSectionless,
 				]}
 				dataSet={{ media: activeIds.tldrSectionless }}

@@ -19,6 +19,9 @@ module.exports = {
       name: {
         type: Sequelize.TEXT
       },
+      color: {
+        type: Sequelize.TEXT
+      },
       description: {
         type: Sequelize.TEXT
       },

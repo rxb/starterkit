@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -68,6 +68,18 @@ function Search(props) {
 		(index) => [getTldrsUrl({_search: q, $limit: PAGE_SIZE, $skip: PAGE_SIZE * index }), authentication.accessToken] 
 	));
 
+	const categories = pageHelper(useSWR( getCategoriesUrl({ '$limit': 1000 }), { fallbackData: props.categoriesData }));
+
+	const [categoryLookup, setCategoryLookup] = useState();
+	useEffect(()=>{
+		let categoriesById = {};
+		categories.data.items.forEach((c)=>{
+			categoriesById[c.id] = c;
+		});
+		setCategoryLookup(categoriesById);
+	}, [categories]);
+
+
 	// DIVERT TO ERROR PAGE
 	// error from getInitialProps or the swr
 	if (tldrs.error) {
@@ -113,6 +125,7 @@ function Search(props) {
 														tldr={item}
 														dispatch={dispatch}
 														mutate={tldrs.mutate}
+														color={categoryLookup ? categoryLookup[item.categoryId].color : null}
 													/>
 												</Link>
 											}
