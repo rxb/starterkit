@@ -151,9 +151,7 @@ function TldrHome(props) {
 												with the most useful knowledge{"\n"}
 												about big subjects &amp; skills
 											</Text>
-										</Chunk>
-										<Chunk>
-											<Text style={homeStyles.explainText} dataSet={{ media: homeIds.explainText}} color="secondary">Written and improved by everyone</Text>
+											<Text style={[homeStyles.explainText, {marginTop: 12}]} dataSet={{ media: homeIds.explainText}} color="secondary">Written and improved by everyone</Text>
 										</Chunk>
 										</View>
 									</FlexItem>
@@ -242,8 +240,8 @@ const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 		textAlign: 'center',
 		[MEDIA_QUERIES_SINGLE.large]: {
 			textAlign: 'left',
-			fontSize: 74,
-			lineHeight: 78,
+			fontSize: 72,
+			lineHeight: 74,
 		}
 	},
 
@@ -277,7 +275,6 @@ const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 			alignSelf: 'flex-end',
 			marginTop: 0,
 			borderTopWidth: 0,
-			paddingTop: 12,
 			paddingHorizontal: 0
 		}
 	},
