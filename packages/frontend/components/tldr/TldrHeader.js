@@ -147,6 +147,7 @@ function TldrHeader(props) {
 						</Touch>
 					}
 				</FlexItem>
+				{user && user.id &&
 				<FlexItem
 					shrink
 					align="flex-end"
@@ -170,6 +171,7 @@ function TldrHeader(props) {
 						dataSet={{ media: ids["showAt__large"] }}
 						/>	
 				</FlexItem>
+				}
 				<FlexItem
 					shrink
 					align="flex-end"

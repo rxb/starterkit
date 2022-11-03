@@ -878,7 +878,7 @@ const TldrSearchResults = (props) => {
 									<Icon
 										shape={item._type == "search" ? "Search" : "List"}
 										size="small"
-										color={SWATCHES.textHint}
+										color={item.color ? item.color : SWATCHES.textHint}
 									/>
 								</FlexItem>
 								<FlexItem nbsp>

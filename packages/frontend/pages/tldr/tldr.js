@@ -422,7 +422,7 @@ function Tldr(props) {
 							<FlexItem growFactor={1}>
 								<Section style={{ paddingBottom: 0 }}>
 									<Chunk>
-										<TldrCard tldr={tldr.data} color={category.data.color} />
+										<TldrCard tldr={tldr.data} color={category?.data?.color} />
 									</Chunk>
 								</Section>
 							</FlexItem>
