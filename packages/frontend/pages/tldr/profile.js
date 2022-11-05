@@ -127,48 +127,48 @@ function TldrProfile(props) {
 							}
 							<Chunk>
 								<Flex direction="column" switchDirection="large">
-								{user.data.link &&
-									<FlexItem shrink>
-										<Link href={user.data.link}>
-											<Text nowrap style={{marginBottom: 1}}>
-												<Icon
-													shape="Globe"
-													color={SWATCHES.tint}
-													size="small"
-													style={{verticalAlign: 'middle'}}
-												/>
-												<Text color="tint" type="small" style={{verticalAlign: 'middle'}}> {user.data.link}</Text>
-											</Text>
-										</Link>
-									</FlexItem>
-									}
-									<FlexItem shrink>
-									<Flex direction="row">
-									{user.data.country && 
+									{user.data.link &&
 										<FlexItem shrink>
-											<Text nowrap>
-												<Icon
-													shape="MapPin"
-													color={SWATCHES.textHint}
-													size="small"
-													style={{verticalAlign: 'middle'}}
-												/>
-												<Text type="small" style={{verticalAlign: 'middle'}}> {COUNTRIES[user.data.country]}</Text>
-											</Text>
+											<Link href={user.data.link}>
+												<Text nowrap style={{marginBottom: 1}}>
+													<Icon
+														shape="Globe"
+														color={SWATCHES.tint}
+														size="small"
+														style={{verticalAlign: 'middle'}}
+													/>
+													<Text color="tint" type="small" style={{verticalAlign: 'middle'}}> {user.data.link}</Text>
+												</Text>
+											</Link>
 										</FlexItem>
-									}
-									<FlexItem shrink>
-										<Text nowrap>
-											<Icon
-												shape="Calendar"
-												color={SWATCHES.textHint}
-												size="small"
-												style={{verticalAlign: 'middle'}}
-											/>
-											<Text  type="small" style={{verticalAlign: 'middle'}}> Joined {dayjs(user.data.createdAt).format('L')}</Text>
-										</Text>
-									</FlexItem>
-									</Flex>
+										}
+										<FlexItem shrink>
+											<Flex direction="row">
+											{user.data.country && 
+												<FlexItem shrink>
+													<Text nowrap>
+														<Icon
+															shape="MapPin"
+															color={SWATCHES.textHint}
+															size="small"
+															style={{verticalAlign: 'middle'}}
+														/>
+														<Text type="small" style={{verticalAlign: 'middle'}}> {COUNTRIES[user.data.country]}</Text>
+													</Text>
+												</FlexItem>
+											}
+											<FlexItem shrink>
+												<Text nowrap>
+													<Icon
+														shape="Calendar"
+														color={SWATCHES.textHint}
+														size="small"
+														style={{verticalAlign: 'middle'}}
+													/>
+													<Text  type="small" style={{verticalAlign: 'middle'}}> Joined {dayjs(user.data.createdAt).format('L')}</Text>
+												</Text>
+											</FlexItem>
+										</Flex>
 									</FlexItem>
 								</Flex>
 
