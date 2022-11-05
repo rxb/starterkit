@@ -16,7 +16,7 @@ module.exports = {
 
       {
         "redditId": null,
-        "password": "secret",
+        "password": "supersecret",
         "facebookId": null,
         "email": "test@example.com",
         "photoId": "1c4f149127c5972bc76b4685c399033fee26f3575fa3d413d07e9b23780ffc35.jpeg",
@@ -27,7 +27,7 @@ module.exports = {
       },
       {
         "redditId": null,
-        "password": "secret",
+        "password": "supersecret",
         "facebookId": null,
         "email": "test2@example.com",
         "photoId": "d8f8788a028e602c00a15e1c732136c754ea5b02978a32170747310cc461c5cd.jpeg",

@@ -115,6 +115,70 @@ function TldrProfile(props) {
 							</Chunk>
 						</Section>
 						<Section border>
+							{user.data.bio &&
+								<Chunk>
+									<View style={{
+											maxWidth: 740,
+											//marginBottom: METRICS.space * 0.5
+										}}>
+										<Text>{user.data.bio}</Text>									
+									</View>
+								</Chunk>
+							}
+							<Chunk>
+								<Flex direction="column" switchDirection="large">
+								{user.data.link &&
+									<FlexItem shrink>
+										<Link href={user.data.link}>
+											<Text nowrap style={{marginBottom: 1}}>
+												<Icon
+													shape="Globe"
+													color={SWATCHES.tint}
+													size="small"
+													style={{verticalAlign: 'middle'}}
+												/>
+												<Text color="tint" type="small" style={{verticalAlign: 'middle'}}> {user.data.link}</Text>
+											</Text>
+										</Link>
+									</FlexItem>
+									}
+									<FlexItem shrink>
+									<Flex direction="row">
+									{user.data.country && 
+										<FlexItem shrink>
+											<Text nowrap>
+												<Icon
+													shape="MapPin"
+													color={SWATCHES.textHint}
+													size="small"
+													style={{verticalAlign: 'middle'}}
+												/>
+												<Text type="small" style={{verticalAlign: 'middle'}}> {COUNTRIES[user.data.country]}</Text>
+											</Text>
+										</FlexItem>
+									}
+									<FlexItem shrink>
+										<Text nowrap>
+											<Icon
+												shape="Calendar"
+												color={SWATCHES.textHint}
+												size="small"
+												style={{verticalAlign: 'middle'}}
+											/>
+											<Text  type="small" style={{verticalAlign: 'middle'}}> Joined {dayjs(user.data.createdAt).format('L')}</Text>
+										</Text>
+									</FlexItem>
+									</Flex>
+									</FlexItem>
+								</Flex>
+
+
+							</Chunk>
+
+
+						</Section>
+						{/*
+						<Section border>
 							<Flex direction="column" switchDirection="large" section>
 
 								{user.data.bio &&
@@ -124,6 +188,7 @@ function TldrProfile(props) {
 										</Chunk>
 									</FlexItem>
 								}
+								
 								<FlexItem growFactor={1} section>
 									<Chunk>
 										{user.data.link &&
@@ -175,6 +240,8 @@ function TldrProfile(props) {
 
 
 						</Section>
+						*/}
+
 						<Section border>
 
 							{authorTldrs.total == 0 &&

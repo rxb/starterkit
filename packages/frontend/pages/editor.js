@@ -1,4 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback, useRef, useContext } from 'react';
+import ContentEditable from "react-contenteditable";
+
 
 // SWR
 import { request } from '@/swr';
@@ -50,29 +52,6 @@ import Router from 'next/router'
 import Head from 'next/head'
 
 
-const TestTextInput = (props) => {
-	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
-
-	const handleFocus = () => {
-		console.log('start')
-	}
-
-	const handleBlur = () => {
-		console.log('stop')
-	}
-
-	return(
-		<View 
-			focusable={true}
-			style={[styles.input, styles.textInput]}
-			onFocus={handleFocus}
-			onBlur={handleBlur}
-			>
-
-		</View>
-	);
-}
-
 
 const Editor = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
@@ -82,6 +61,8 @@ const Editor = (props) => {
 	const formState = useFormState({
 		initialFields: {}
 	});
+
+
 
 	return (
 		<Page>
@@ -94,22 +75,64 @@ const Editor = (props) => {
 					</Section>
 					<Section>
 						<Chunk>
-							<Label>Dummy</Label>
-							<TextInput  
-								value={formState.getFieldValue('dummy')}
-								onChange={e => formState.setFieldValue('dummy', e.target.value)}
+							<View style={styles.input}>
+							<ContentEditable
+								style={{fontWeight: 800, fontSize: 32}}
+								tagName="p"
+								html={formState.getFieldValue('title')} // innerHTML of the editable div
+								onChange={e => formState.setFieldValue('title', e.target.value)} // handle innerHTML change
+								placeholder="This is the title"
 								/>
+							<ContentEditable
+								style={{fontStyle: 'italic'}}
+								tagName="p"
+								html={formState.getFieldValue('subtitle')} // innerHTML of the editable div
+								onChange={e => formState.setFieldValue('subtitle', e.target.value)} // handle innerHTML change
+								placeholder="This is the subtitle"
+								/>
+							<ContentEditable
+								style={{fontWeight: 600}}
+								tagName="p"
+								html={formState.getFieldValue('head1')} // innerHTML of the editable div
+								onChange={e => formState.setFieldValue('head1', e.target.value)} // handle innerHTML change
+								placeholder="Item 1 headline"
+								/>
+							<ContentEditable
+								tagName="p"
+								html={formState.getFieldValue('details1')} // innerHTML of the editable div
+								onChange={e => formState.setFieldValue('details1', e.target.value)} // handle innerHTML change
+								placeholder="Item 1 details"
+								/>	
+							</View>
+				
 						</Chunk>
+					</Section>
+					<Section>
 						<Chunk>
-							<Label>Demo</Label>
-							<TestTextInput 
-								value={formState.getFieldValue('demo')}
-								onChange={e => formState.setFieldValue('demo', e.target.value)}
-								multiline
-								numberOfLines={4}
-								showCounter={true}
-								maxLength={1000}
+							<View style={styles.input}>
+							<TextInput
+								style={{fontWeight: 800, fontSize: 32, marginBottom: 20}}
+								value={formState.getFieldValue('title')} // innerHTML of the editable div
+								onChange={e => formState.setFieldValue('title', e.target.value)} // handle innerHTML change
+								placeholder="This is the title"
 								/>
+							<TextInput
+								style={{fontStyle: 'italic', marginBottom: 20}}
+								value={formState.getFieldValue('subtitle')} // innerHTML of the editable div
+								onChange={e => formState.setFieldValue('subtitle', e.target.value)} // handle innerHTML change
+								placeholder="This is the subtitle"
+								/>
+							<View 
+								focusable={true}
+								style={styles.input}
+								>
+									what
+							</View>
+							<textarea>
+								kjdslfkjdslk
+							</textarea>
+							</View>
+				
 						</Chunk>
 					</Section>
 					<Section border>

@@ -118,6 +118,12 @@ class MyDocument extends Document {
 										}
 										*/
 
+										[contenteditable=true]:empty:before {
+											content: attr(placeholder);
+											display: block;
+											color: #aaa;
+										 }
+
 									`}}
 							/>
 
