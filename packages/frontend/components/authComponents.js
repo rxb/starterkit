@@ -68,7 +68,12 @@ export const LoginLocalForm = (props) => {
 
 	const formState = useFormState({
 		'__note': 'LoginForm',
-		initialFields: props.initialFields
+		initialFields: props.initialFields,
+		toastableErrors: {
+			BadRequest: 'Something went wrong',
+			NotAuthenticated: 'Sorry. Check your info and try again?'
+		},
+		addToast: msg => dispatch(addToast(msg))
 	});
 
 	const onSubmit = async () => {
@@ -89,6 +94,7 @@ export const LoginLocalForm = (props) => {
 			}
 		}
 		catch (error) {
+			console.log('login error');
 			console.log(error);
 			formState.setError(error);
 			formState.setLoading(false);

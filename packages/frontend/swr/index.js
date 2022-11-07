@@ -33,7 +33,7 @@ export const getUsersSavedTldrsUrl = (params) => `${apiHost}/users-savedtldrs/${
 export const getTldrsVotesUrl = (params) => `${apiHost}/tldrs-votes/${buildQs(params)}`;
 
 
-export const getAuthManagmentUrl = () => `${apiHost}/authmanagement/`;
+export const getAuthManagmentUrl = () => `${apiHost}/auth-management/`;
 export const getCommunicationUrl = () => `${apiHost}/communication/`;
 
 

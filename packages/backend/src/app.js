@@ -55,6 +55,8 @@ app.configure(authentication);
 
 // Set up our services (see `services/index.js`)
 app.configure(services);
+const serviceList = Object.keys(app.services);
+console.log(serviceList.join('\n'));
 
 // Set up event channels (see channels.js)
 app.configure(channels);

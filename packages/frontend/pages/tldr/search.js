@@ -70,7 +70,9 @@ function Search(props) {
 
 	const categories = pageHelper(useSWR( getCategoriesUrl({ '$limit': 1000 }), { fallbackData: props.categoriesData }));
 
-	const [categoryLookup, setCategoryLookup] = useState();
+	
+	const [categoryLookup, setCategoryLookup] = useState({});
+	/*
 	useEffect(()=>{
 		let categoriesById = {};
 		categories.data.items.forEach((c)=>{
@@ -78,7 +80,7 @@ function Search(props) {
 		});
 		setCategoryLookup(categoriesById);
 	}, [categories]);
-
+	*/
 
 	// DIVERT TO ERROR PAGE
 	// error from getInitialProps or the swr
@@ -125,7 +127,7 @@ function Search(props) {
 														tldr={item}
 														dispatch={dispatch}
 														mutate={tldrs.mutate}
-														color={categoryLookup ? categoryLookup[item.categoryId].color : null}
+														color={categoryLookup[item.categoryId] ? categoryLookup[item.categoryId].color : null}
 													/>
 												</Link>
 											}

@@ -245,8 +245,11 @@ function TldrProfile(props) {
 						<Section border>
 
 							{authorTldrs.total == 0 &&
+							<>
+							
+
 								<Emptiness
-									label="No cards yet"
+									label={isSelf ? "You haven't created any cards yet" : `@${user.data.urlKey} hasn't created any cards yet`}
 								>
 									{isSelf &&
 										<Chunk>
@@ -258,6 +261,7 @@ function TldrProfile(props) {
 										</Chunk>
 									}
 								</Emptiness>
+							</>
 							}
 
 							{authorTldrs.total > 0 &&

@@ -14,7 +14,7 @@ module.exports = async function (app) {
 		before: { all: [disallow('external')] }
 	})
 
-	/*
+	
 	// Send a test email on load
 	const email = {
 		from: 'TLDR.cards <info@tldr.cards>',
@@ -25,6 +25,6 @@ module.exports = async function (app) {
 	app.service('mailer').create(email)
 		.then(result => console.log(result))
 		.catch(err => console.log(err));
-	*/
+	
 
 };

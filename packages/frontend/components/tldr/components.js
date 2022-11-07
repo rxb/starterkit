@@ -64,7 +64,7 @@ export const Emptiness = (props) => {
 		label = "No results"
 	} = props;
 	return (
-		<View style={{ minHeight: '55vh' }}>
+		<View style={{ minHeight: '55vh', background: SWATCHES.shade, borderRadius: METRICS.cardBorderRadius }}>
 			<View style={styles.absoluteCenter}>
 				<Chunk style={{ alignItems: 'center' }}>
 					<View style={styles.pseudoLineHeight}>
