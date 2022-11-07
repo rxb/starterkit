@@ -51,27 +51,8 @@ import { CategoryItem, CategoryItem2, TldrCardSmall, CreateTldrCardSmall, Catego
 import StyleSheet from 'react-native-media-query';
 
 
-// SCREEN-SPECIFIC 
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime'
-dayjs.extend(relativeTime)
-
-import { CATEGORY_COLORS } from '@/components/tldr/testcolors';
-
-
-const TextFeature = (props) => {
-	const styleKey = props.less ? 'textFeatureLess' : 'textFeature';
-	return(
-		<Text style={[homeStyles[styleKey], props.style]} styleIds={homeIds[styleKey]}>{props.children}</Text>
-	)
-}; 
-
-function TldrHome(props) {
+const CategoriesStripe = (props) => {
 	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
-
-	const dispatch = useDispatch();
-	const authentication = useSelector(state => state.authentication);
-	const user = authentication.user || {};
 
 	const categories = pageHelper(useSWR( getCategoriesUrl({ '$limit': 1000 }), { fallbackData: props.categoriesData }
 	));
@@ -80,8 +61,79 @@ function TldrHome(props) {
 	// error from getInitialProps or the swr
 	if ( categories.error ) {
 		const error = categories.error;
-		return <ErrorPage statusCode={error.code} />
+		return (
+			<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite}} border>
+				<Bounds>
+					<Section>
+						<Chunk>
+							<Text>There's a problem. Sorry about that.</Text>
+						</Chunk>
+					</Section>
+				</Bounds>
+			</Stripe>
+		)
 	}
+
+
+	return(
+		<>
+		{ categories.data && 
+			<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite}} border>
+
+				<Bounds>
+					<Section>
+						<TldrSearch 
+							variant="header" 
+							hero={true}
+							style={{
+								marginTop: -68,
+								marginBottom: 48,
+								zIndex: 5,
+								width: '100%',
+								maxWidth: 680,
+								marginHorizontal: 'auto'
+							}} 
+							/>
+						<List
+							variant={{
+								small: 'grid',
+							}}
+							itemsInRow={{
+								small: 2,
+								medium: 2,
+								large: 4,
+								xlarge: 5
+							}}
+							scrollItemWidth={300}
+							items={categories.data.items}
+							renderItem={(category, i) => (
+								<Chunk key={i}>
+									<Link href={getCategoryPageUrl({ categoryId: category.id })}>
+										{/* 
+										<CategoryItem2 category={category} color={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />											
+										*/}
+										<CategoryItem2 category={category} color={category.color} />
+
+									</Link>
+								</Chunk>
+							)}
+							listIds={homeIds.catList}
+							itemIds={homeIds.catListItem}
+						/>
+					</Section>
+				</Bounds>
+			</Stripe>
+			}
+		</>
+	);
+}
+
+function TldrHome(props) {
+	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+
+	const dispatch = useDispatch();
+	const authentication = useSelector(state => state.authentication);
+	const user = authentication.user || {};
 
 	return (
 		<Page>
@@ -93,30 +145,6 @@ function TldrHome(props) {
 					<View style={homeStyles.heroStripe} dataSet={{ media: homeIds.heroStripe}} >
 						<Bounds>
 							<Section>
-								{/*
-								<Chunk>
-									<TextFeature>Brutally concise &amp; useful cards</TextFeature>									
-									<TextFeature>that make you non-helpless</TextFeature>
-									<TextFeature>about important skills &amp; subjects</TextFeature>
-								</Chunk>
-								*/}
-								{/*
-								<Chunk>
-									<TextFeature>Quick and useful cards</TextFeature>
-									<TextFeature>that make you non-helpless</TextFeature>
-									<TextFeature>about important skills &amp; subjects</TextFeature>
-								</Chunk>
-								*/}
-								{/*
-								<Chunk>
-									<TextFeature>Quick cards</TextFeature>
-									<TextFeature>to make you non-helpless</TextFeature>
-									<TextFeature>about big subjects &amp; skills</TextFeature>
-								</Chunk>
-								<Chunk>
-									<TextFeature less>Written and improved by everyone</TextFeature>
-								</Chunk>
-								*/}
 								<View style={{
 									maxWidth: 790, 
 									alignSelf: 'center',
@@ -162,53 +190,8 @@ function TldrHome(props) {
 					</View>
 				</Stripe>
 
-				{ categories.data && 
-				<Stripe style={{ flex: 1, backgroundColor: SWATCHES.notwhite}} border>
+				<CategoriesStripe categoriesData={props.categoriesData} />
 
-					<Bounds>
-						<Section>
-							<TldrSearch 
-								variant="header" 
-								hero={true}
-								style={{
-									marginTop: -68,
-									marginBottom: 48,
-									zIndex: 5,
-									width: '100%',
-									maxWidth: 680,
-									marginHorizontal: 'auto'
-								}} 
-								/>
-							<List
-								variant={{
-									small: 'grid',
-								}}
-								itemsInRow={{
-									small: 2,
-									medium: 2,
-									large: 4,
-									xlarge: 5
-								}}
-								scrollItemWidth={300}
-								items={categories.data.items}
-								renderItem={(category, i) => (
-									<Chunk key={i}>
-										<Link href={getCategoryPageUrl({ categoryId: category.id })}>
-											{/* 
-											<CategoryItem2 category={category} color={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />											
-											*/}
-											<CategoryItem2 category={category} color={category.color} />
-
-										</Link>
-									</Chunk>
-								)}
-								listIds={homeIds.catList}
-								itemIds={homeIds.catListItem}
-							/>
-						</Section>
-					</Bounds>
-				</Stripe>
-				}
 		</Page>
 	);
 }

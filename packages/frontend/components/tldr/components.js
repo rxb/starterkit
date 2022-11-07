@@ -477,6 +477,7 @@ export const TldrSearch = (props) => {
 
 	// FETCH CATEGORY DATA
 	// once on mount, don't use SWR
+	// maybe move this into redux?
 	const [categories, setCategories] = useState([]);
 	const [searchResults, setSearchResults] = useState([]);
 	useEffect(() => {
