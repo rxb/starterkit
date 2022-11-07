@@ -31,7 +31,6 @@ const themedStyleConfig = {
 import feathersClient from '../components/FeathersClient';
 import Router from 'next/router'
 
-
 // CHECK FOR BAD OAUTH
 // this is hacky, but I don't know how else to detect it
 const checkForBadOauth = (error) => {
@@ -66,6 +65,7 @@ function ThisApp(props) {
 		// customize UI for likely return visitor
 		const probablyHasAccount = !!localStorage.getItem("probablyHasAccount");
 		dispatch(updateUi({ probablyHasAccount: probablyHasAccount }));
+
 	}, [])
 
 

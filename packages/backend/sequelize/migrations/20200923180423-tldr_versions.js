@@ -20,9 +20,6 @@ module.exports = {
       content: {
         type: Sequelize.JSONB
       },
-      versionName: {
-        type: Sequelize.STRING
-      },
       tldrId: {
         type: Sequelize.INTEGER
       }

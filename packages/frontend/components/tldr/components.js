@@ -90,7 +90,7 @@ export const TldrCard = (props) => {
 	const {
 		tldr,
 		style,
-		color = SWATCHES.tint
+		color = (props.tldr.category) ? props.tldr.category.color : SWATCHES.shade,
 	} = props;
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;
 	const content = thisVersion.content;
@@ -232,7 +232,7 @@ export const TldrCardSmall = (props) => {
 		tldr,
 		dispatch,
 		mutate,
-		color = SWATCHES.tint,
+		color = (props.tldr.category) ? props.tldr.category.color : SWATCHES.shade,
 		style
 	} = props;
 	const thisVersion = props.thisVersion || tldr.currentTldrVersion;

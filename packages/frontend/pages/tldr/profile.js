@@ -117,10 +117,7 @@ function TldrProfile(props) {
 						<Section border>
 							{user.data.bio &&
 								<Chunk>
-									<View style={{
-											maxWidth: 740,
-											//marginBottom: METRICS.space * 0.5
-										}}>
+									<View style={{ maxWidth: 740 }}>
 										<Text>{user.data.bio}</Text>									
 									</View>
 								</Chunk>
@@ -171,83 +168,14 @@ function TldrProfile(props) {
 										</Flex>
 									</FlexItem>
 								</Flex>
-
-
 							</Chunk>
-
-
 						</Section>
-						{/*
-						<Section border>
-							<Flex direction="column" switchDirection="large" section>
 
-								{user.data.bio &&
-									<FlexItem growFactor={2} section>
-										<Chunk>
-											<Text>{user.data.bio}</Text>
-										</Chunk>
-									</FlexItem>
-								}
-								
-								<FlexItem growFactor={1} section>
-									<Chunk>
-										{user.data.link &&
-											<Link href={user.data.link}>
-												<Text nowrap style={{marginBottom: 1}}>
-													<Icon
-														shape="Globe"
-														color={SWATCHES.tint}
-														size="small"
-														style={{verticalAlign: 'middle'}}
-													/>
-													<Text color="tint" type="small" style={{verticalAlign: 'middle'}}> {user.data.link}</Text>
-												</Text>
-											</Link>
-										}
-										<Flex direction="row">
-											{user.data.country && 
-												<FlexItem shrink>
-													<Text nowrap>
-														<Icon
-															shape="MapPin"
-															color={SWATCHES.textHint}
-															size="small"
-															style={{verticalAlign: 'middle'}}
-														/>
-														<Text type="small" style={{verticalAlign: 'middle'}}> {COUNTRIES[user.data.country]}</Text>
-													</Text>
-												</FlexItem>
-											}
-											<FlexItem shrink>
-												<Text nowrap>
-													<Icon
-														shape="Calendar"
-														color={SWATCHES.textHint}
-														size="small"
-														style={{verticalAlign: 'middle'}}
-													/>
-													<Text  type="small" style={{verticalAlign: 'middle'}}> Joined {dayjs(user.data.createdAt).format('L')}</Text>
-												</Text>
-											</FlexItem>
-
-										</Flex>
-
-									</Chunk>
-
-								</FlexItem>
-
-							</Flex>
-
-
-						</Section>
-						*/}
 
 						<Section border>
 
 							{authorTldrs.total == 0 &&
 							<>
-							
-
 								<Emptiness
 									label={isSelf ? "You haven't created any cards yet" : `@${user.data.urlKey} hasn't created any cards yet`}
 								>
@@ -292,7 +220,10 @@ function TldrProfile(props) {
 												<Chunk key={i}>
 													{!item.last &&
 														<Link href={href}>
-															<TldrCardSmall tldr={item} user={authentication.user} />
+															<TldrCardSmall 
+																tldr={item} 
+																user={authentication.user} 
+																/>
 														</Link>
 													}
 													{item.last &&

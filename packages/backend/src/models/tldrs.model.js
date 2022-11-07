@@ -104,7 +104,7 @@ module.exports = function (app) {
       foreignKey: 'authorId',
       as: "author"
     });
-    tldrs.belongsTo(models.users, {
+    tldrs.belongsTo(models.categories, {
       foreignKey: 'categoryId',
       as: "category"
     });

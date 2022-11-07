@@ -17,6 +17,7 @@ const populateTldrAssociations = async (context) => {
     include: [
       "author",
       "currentTldrVersion",
+      "category"
     ]
   }, appendArrayMerge);
   return context;

@@ -292,7 +292,9 @@ function Tldr(props) {
 
 	const tldr = useSWR([getTldrUrl(props.tldrId), authentication.accessToken], { fallbackData: props.tldr });
 	const canEdit = (user?.id && tldr?.data?.authorId && user.id == tldr.data.authorId);
-	const category = useSWR( tldr.data ? getCategoryUrl(tldr.data.categoryId) : null );
+	
+	//const category = useSWR( tldr.data ? getCategoryUrl(tldr.data.categoryId) : null );
+	
 	const relatedTldrs = pageHelper(useSWR( tldr.data ? getTldrsUrl({categoryId: tldr.data.categoryId, "id[$nin][]": tldr.data.id, "$limit": 4}) : null ));
 	
 
@@ -422,7 +424,7 @@ function Tldr(props) {
 							<FlexItem growFactor={1}>
 								<Section style={{ paddingBottom: 0 }}>
 									<Chunk>
-										<TldrCard tldr={tldr.data} color={category?.data?.color} />
+										<TldrCard tldr={tldr.data} />
 									</Chunk>
 								</Section>
 							</FlexItem>
@@ -608,7 +610,9 @@ function Tldr(props) {
 											<Link
 												href={getTldrPageUrl({ tldrId: item.id })}
 											>
-												<TldrCardSmall tldr={item} color={category.data.color} />
+												<TldrCardSmall 
+													tldr={item} 
+													/>
 											</Link>
 										</Chunk>
 									);
