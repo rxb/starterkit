@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useEffect, useState } from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
-import { request, pageHelper, getTldrsUrl, getCategoriesUrl, getCategoryUrl } from '@/swr';
+import { request, pageHelper, getTldrsUrl } from '@/swr';
 import useSWR, { mutate } from 'swr';
 import useSWRInfinite from 'swr/infinite' 
 

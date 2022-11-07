@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState, useContext } from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
-import { request, buildQs, pageHelper, getTldrUrl, getTldrsUrl, getUsersSavedTldrsUrl, getTldrsVotesUrl, getCategoryUrl } from '@/swr';
+import { request, buildQs, pageHelper, getTldrUrl, getTldrsUrl, getUsersSavedTldrsUrl, getTldrsVotesUrl } from '@/swr';
 import useSWR, { mutate } from 'swr';
 
 // REDUX
@@ -178,7 +178,6 @@ const DownloadPrompt = (props) => {
 					</Flex>
 				</Chunk>
 			</Touch>
-
 			<Chunk>
 				<Button
 					onPress={onRequestClose}
@@ -292,9 +291,7 @@ function Tldr(props) {
 
 	const tldr = useSWR([getTldrUrl(props.tldrId), authentication.accessToken], { fallbackData: props.tldr });
 	const canEdit = (user?.id && tldr?.data?.authorId && user.id == tldr.data.authorId);
-	
-	//const category = useSWR( tldr.data ? getCategoryUrl(tldr.data.categoryId) : null );
-	
+		
 	const relatedTldrs = pageHelper(useSWR( tldr.data ? getTldrsUrl({categoryId: tldr.data.categoryId, "id[$nin][]": tldr.data.id, "$limit": 4}) : null ));
 	
 
