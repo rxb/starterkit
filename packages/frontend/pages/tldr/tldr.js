@@ -420,13 +420,106 @@ function Tldr(props) {
 						<Flex direction="column" switchDirection="large">
 							<FlexItem growFactor={1}>
 								<Section style={{ paddingBottom: 0 }}>
+
+								<Chunk>
+									<Flex>
+										<FlexItem>
+										<Flex>
+											<FlexItem shrink>
+												<Button
+													color={tldr.data.currentUserVote == 1 ? 'primary' : 'secondary'}
+													style={{ borderBottomRightRadius: 0, borderBottomLeftRadius: 0, marginBottom: 1 }}
+													shape="ArrowUp"
+													onPress={upvoteTldr}
+												/>
+												<Button
+													style={{ borderTopRightRadius: 0, borderTopLeftRadius: 0, marginTop: 1 }}
+													color={tldr.data.currentUserVote == -1 ? 'primary' : 'secondary'}
+													shape="ArrowDown"
+													onPress={downvoteTldr}
+												/>
+
+											</FlexItem>
+											<FlexItem justify="center">
+
+												<Text type="big">{abbreviateNumber(tldr.data.voteResult)}</Text>
+												<Text type="big">{tldr.data.voteResult}</Text>
+												
+												{tldr.data.voteResult >= 0 && 
+													<Text type="micro" color="hint">{tldr.data.votePositivity}% upvotes</Text>
+												}
+												{tldr.data.voteResult < 0 && 
+													<Text type="micro" color="hint">{100-tldr.data.votePositivity}% downvotes</Text>
+												}
+												
+											</FlexItem>
+										</Flex>
+										</FlexItem>
+										<FlexItem>
+											<Flex>
+												{canEdit &&
+													<FlexItem>
+														<Button
+															shape="Edit"
+															label="Edit card"
+															width="full"
+															color="secondary"
+															href={getVersionEditPageUrl({ tldrId: tldr.data.id })}
+														/>
+													</FlexItem>
+												}
+												
+												<FlexItem>
+													<Button
+														shape="Share2"
+														color="secondary"
+														width="full"
+														onPress={() => {
+															shareTldr({
+																title: tldr.data.currentTldrVersion.content.title,
+																text: tldr.data.currentTldrVersion.content.blurb,
+																url: `tldr.cards/${tldr.data.urlKey}`,
+															});
+														}}
+													/>
+													<Text type="micro" color="hint" style={{ alignSelf: 'center' }}>Share</Text>
+												</FlexItem>
+												<FlexItem>
+													<Button
+														shape="Bookmark"
+														color={tldr.data.currentUserSaved ? 'primary' : 'secondary'}
+														width="full"
+														onPress={saveTldr}
+													/>
+													<Text type="micro" color="hint" style={{ alignSelf: 'center' }}>{tldr.data.currentUserSaved ? 'Saved' : 'Save'}</Text>
+												</FlexItem>
+												<FlexItem>
+													<Button
+														shape="DownloadCloud"
+														color="secondary"
+														width="full"
+														onPress={()=>{
+															dispatch(addPrompt(<DownloadPrompt />));
+														}}
+													/>
+													<Text type="micro" color="hint" style={{ alignSelf: 'center' }}>Download</Text>
+												</FlexItem>
+											</Flex>
+										</FlexItem>
+									</Flex>
+									
+									</Chunk>
+
+
 									<Chunk>
 										<TldrCard tldr={tldr.data} />
 									</Chunk>
 								</Section>
 							</FlexItem>
-							<FlexItem growFactor={0} style={{ flexBasis: 350, flex: 0 }}>
-								<Section>
+							<FlexItem shrink>
+								<Section style={{minWidth: 300}}>
+
+									{/*
 									<Chunk border style={{ marginTop: METRICS.space * 3 }}>
 										<Flex>
 											<FlexItem shrink>
@@ -446,21 +539,16 @@ function Tldr(props) {
 											</FlexItem>
 											<FlexItem justify="center">
 
-												{/*
-												<Text type="big">18.7k</Text>
-												<Text type="micro" color="hint">95% positive</Text>
-												*/}
 												<Text type="big">{abbreviateNumber(tldr.data.voteResult)}</Text>
 												<Text type="big">{tldr.data.voteResult}</Text>
 												
-													{tldr.data.voteResult >= 0 && 
-														<Text type="micro" color="hint">{tldr.data.votePositivity}% upvotes</Text>
-													}
-													{tldr.data.voteResult < 0 && 
-														<Text type="micro" color="hint">{100-tldr.data.votePositivity}% downvotes</Text>
-													}
+												{tldr.data.voteResult >= 0 && 
+													<Text type="micro" color="hint">{tldr.data.votePositivity}% upvotes</Text>
+												}
+												{tldr.data.voteResult < 0 && 
+													<Text type="micro" color="hint">{100-tldr.data.votePositivity}% downvotes</Text>
+												}
 												
-
 											</FlexItem>
 										</Flex>
 									</Chunk>
@@ -513,6 +601,7 @@ function Tldr(props) {
 											</FlexItem>
 										</Flex>
 									</Chunk>
+									*/}
 
 									<Chunk border>
 										<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
