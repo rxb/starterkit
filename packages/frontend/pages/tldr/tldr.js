@@ -612,10 +612,17 @@ function Tldr(props) {
 			{tldr.data &&
 				<Stripe style={{/*paddingTop: 0,*/ backgroundColor: SWATCHES.notwhite }}>
 					<Bounds>
-						<Flex direction="column" switchDirection="large">
-							<FlexItem growFactor={1}>
-								<Section style={{ paddingBottom: 0 }}>
+						<Section>
+						<Flex direction="column" switchDirection="large" section>
+							<FlexItem growFactor={1} section>
 									<Chunk>
+										<TldrCard tldr={tldr.data} />
+									</Chunk>
+									
+							</FlexItem>
+							<FlexItem shrink section>
+								<View style={{minWidth: 300}}>
+								<Chunk>
 										<Flex>
 											<FlexItem shrink>
 												<VoteButtons	
@@ -643,13 +650,7 @@ function Tldr(props) {
 													/>													
 											</FlexItem>
 										</Flex>
-										<TldrCard tldr={tldr.data} />
 									</Chunk>
-								</Section>
-							</FlexItem>
-							<FlexItem shrink>
-								<Section style={{minWidth: 300}}>
-
 									{/*
 									<Chunk border style={{ marginTop: METRICS.space * 3 }}>
 										<Flex>
@@ -734,7 +735,7 @@ function Tldr(props) {
 									</Chunk>
 									*/}
 
-									<Chunk>
+									<Chunk border>
 										<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
 											<Flex>
 												<FlexItem>
@@ -790,11 +791,10 @@ function Tldr(props) {
 											</Inline>
 										</Chunk>
 									}
-								</Section>
-
+								</View>
 							</FlexItem>
 						</Flex>
-
+						</Section>
 					</Bounds>
 				</Stripe>
 			}
