@@ -52,10 +52,16 @@ import StyleSheet from 'react-native-media-query';
 
 
 const CategoriesStripe = (props) => {
-	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+	const { styles, ids, SWATCHES, METRICS } = useContext(ThemeContext);
 
+	/*
 	const categories = pageHelper(useSWR( getCategoriesUrl({ '$limit': 1000 }), { fallbackData: props.categoriesData }
 	));
+	*/
+
+	const categories = {
+		data: props.categoriesData
+	};
 
 	// DIVERT TO ERROR PAGE
 	// error from getInitialProps or the swr
@@ -73,7 +79,6 @@ const CategoriesStripe = (props) => {
 			</Stripe>
 		)
 	}
-
 
 	return(
 		<>
@@ -312,6 +317,7 @@ const {styles: homeStyles, ids: homeIds} = StyleSheet.create({
 	}
 });
 
+/*
 TldrHome.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
 	const { store, req, pathname, query } = context;
@@ -331,10 +337,30 @@ TldrHome.getInitialProps = async (context) => {
 		}
 	}
 }
+*/
 
+export async function getStaticProps(context) {
+	const { store, req, pathname, query } = context;
+	const isServer = !!req;
 
-
-
+	try {
+		const categoriesData = await request(getCategoriesUrl({ '$limit': 1000 }));
+		return {
+			props: {
+				isServer,
+				categoriesData
+			}
+		}
+	}
+	catch (error) {
+		return {
+			props: {
+				isServer,
+				error: error
+			}
+		}
+	}
+ }
 
 
 export default TldrHome;

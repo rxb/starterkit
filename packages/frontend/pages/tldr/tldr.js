@@ -44,6 +44,7 @@ import {
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
+import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import Router, { useRouter } from 'next/router'
 
 
@@ -278,11 +279,205 @@ const SharePrompt = (props) => {
 	);
 };
 
+const TldrDropdown = (props) => {
+	const { styles, ids, METRICS, SWATCHES } = useContext(ThemeContext);
+	const { 
+		onRequestClose,
+		tldr,
+		onPressShare,
+		onPressDownload,
+		canEdit
+	} = props;
 
+	return (
+		<Sectionless>
+				<Chunk>
+					{canEdit &&
+						<Link href={getVersionEditPageUrl({ tldrId: tldr.data.id })} >
+							<Text color="tint" >Settings</Text>
+						</Link>
+					}
+					<Touch onPress={ () => {
+						onPressShare();
+						onRequestClose();
+					}}>
+						<Text color="tint" >Share</Text>
+					</Touch>
+					<Touch onPress={ () => {
+						onPressDownload();
+						onRequestClose();
+					}}>
+						<Text color="tint" >Download</Text>
+					</Touch>
+				</Chunk>
+		</Sectionless>
+	);
+}
+
+
+const VoteButtons = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+
+	const {
+		tldr,
+		upvoteTldr,
+		downvoteTldr
+	} = props;
+
+	return(
+		<Flex flush>
+			<FlexItem flush>
+				<Button
+					color={tldr.data.currentUserVote == 1 ? 'primary' : 'secondary'}
+					style={{ borderBottomRightRadius: 0, borderTopRightRadius: 0, marginRight: 1 }}
+					shape="ArrowUp"
+					onPress={upvoteTldr}
+					/>
+			</FlexItem>
+			<FlexItem flush>
+				<View style={[
+					styles.button,
+					styles['button--grow'],
+					styles['button--secondary'],
+					{
+						marginRight: 1,
+						borderRadius: 0,
+						paddingHorizontal: 13,
+						minWidth: 2.5 * METRICS.space,
+						textAlign: 'center'
+					}
+				]}>
+					<Text weight="strong">{abbreviateNumber(tldr.data.voteResult)}</Text>
+				</View>
+			</FlexItem>
+			<FlexItem flush>
+				<Button
+					style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+					color={tldr.data.currentUserVote == -1 ? 'primary' : 'secondary'}
+					shape="ArrowDown"
+					onPress={downvoteTldr}
+					/>
+			</FlexItem>
+		</Flex>
+	);
+}
+
+const ActionButtons = (props) => {
+
+	const { styles, ids, METRICS, SWATCHES } = useContext(ThemeContext);
+
+	const {
+		tldr,
+		canEdit,
+		onPressShare,
+		onPressSave,
+		onPressDownload
+	} = props
+
+	return(
+			<Flex nbsp>
+				{canEdit &&
+					<FlexItem nbsp>
+						<Button
+							shape="Edit"
+							label="Edit card"
+							width="full"
+							color="secondary"
+							href={getVersionEditPageUrl({ tldrId: tldr.data.id })}
+						/>
+					</FlexItem>
+				}
+				
+				<FlexItem nbsp>
+					<Button
+						shape="Share2"
+						color="secondary"
+						width="full"
+						onPress={onPressShare}
+					/>
+					<Text 
+						type="micro" 
+						color="hint" 
+						style={[styles.hide, { alignSelf: 'center' }]}
+						dataSet={{ media: ids["showAt__large"] }}
+						>Share</Text>
+				</FlexItem>
+				<FlexItem nbsp>
+					<Button
+						shape="Bookmark"
+						color={tldr.data.currentUserSaved ? 'primary' : 'secondary'}
+						width="full"
+						onPress={onPressSave}
+					/>
+					<Text																	 	
+					 	type="micro" 
+						color="hint" 
+						style={[styles.hide, { alignSelf: 'center' }]}
+						dataSet={{ media: ids["showAt__large"] }}
+						>{tldr.data.currentUserSaved ? 'Saved' : 'Save'}</Text>
+				</FlexItem>
+				<FlexItem nbsp>
+					<Button
+						shape="DownloadCloud"
+						color="secondary"
+						width="full"
+						onPress={onPressDownload}
+					/>
+					<Text 														
+						type="micro" 
+						color="hint" 
+						style={[styles.hide, { alignSelf: 'center' }]}
+						dataSet={{ media: ids["showAt__large"] }}
+						>Download</Text>
+				</FlexItem>
+			</Flex>
+	)
+}
+
+const ActionButtonsShort = (props) => {
+
+	const { styles, ids, METRICS, SWATCHES } = useContext(ThemeContext);
+
+	const {
+		tldr,
+		canEdit,
+		onPressShare,
+		onPressSave,
+		onPressDownload
+	} = props
+
+	return(
+			<Flex nbsp>
+				<FlexItem nbsp>
+					<Button
+						shape="Bookmark"
+						color={tldr.data.currentUserSaved ? 'primary' : 'secondary'}
+						width="full"
+						onPress={onPressSave}
+					/>
+				</FlexItem>
+				<FlexItem nbsp>
+					<ConnectedDropdownTouch dropdown={<TldrDropdown 
+							onPressShare={onPressShare}
+							onPressDownload={onPressDownload}
+							canEdit={canEdit}
+							tldr={tldr}
+						/>} >
+						<Button
+							dummy={true}
+							shape="MoreVertical"
+							color="secondary"
+							width="full"
+						/>
+					</ConnectedDropdownTouch>
+				</FlexItem>
+			</Flex>
+	)
+}
 
 
 function Tldr(props) {
-	const { styles, SWATCHES, METRICS } = useContext(ThemeContext);
+	const { styles, ids, SWATCHES, METRICS } = useContext(ThemeContext);
 	const router = useRouter();
 
 	const dispatch = useDispatch();
@@ -420,98 +615,34 @@ function Tldr(props) {
 						<Flex direction="column" switchDirection="large">
 							<FlexItem growFactor={1}>
 								<Section style={{ paddingBottom: 0 }}>
-
-								<Chunk>
-									<Flex>
-										<FlexItem>
+									<Chunk>
 										<Flex>
 											<FlexItem shrink>
-												<Button
-													color={tldr.data.currentUserVote == 1 ? 'primary' : 'secondary'}
-													style={{ borderBottomRightRadius: 0, borderBottomLeftRadius: 0, marginBottom: 1 }}
-													shape="ArrowUp"
-													onPress={upvoteTldr}
-												/>
-												<Button
-													style={{ borderTopRightRadius: 0, borderTopLeftRadius: 0, marginTop: 1 }}
-													color={tldr.data.currentUserVote == -1 ? 'primary' : 'secondary'}
-													shape="ArrowDown"
-													onPress={downvoteTldr}
-												/>
-
+												<VoteButtons	
+													tldr={tldr}
+													downvoteTldr={downvoteTldr}
+													upvoteTldr={upvoteTldr}
+													/>
 											</FlexItem>
-											<FlexItem justify="center">
-
-												<Text type="big">{abbreviateNumber(tldr.data.voteResult)}</Text>
-												<Text type="big">{tldr.data.voteResult}</Text>
-												
-												{tldr.data.voteResult >= 0 && 
-													<Text type="micro" color="hint">{tldr.data.votePositivity}% upvotes</Text>
-												}
-												{tldr.data.voteResult < 0 && 
-													<Text type="micro" color="hint">{100-tldr.data.votePositivity}% downvotes</Text>
-												}
-												
+											<FlexItem/>
+											<FlexItem shrink>
+												<ActionButtonsShort
+													canEdit={canEdit}
+													tldr={tldr}
+													onPressShare={() => {
+														shareTldr({
+															title: tldr.data.currentTldrVersion.content.title,
+															text: tldr.data.currentTldrVersion.content.blurb,
+															url: `tldr.cards/${tldr.data.urlKey}`,
+														});
+													}}
+													onPressSave={saveTldr}
+													onPressDownload={()=>{
+														dispatch(addPrompt(<DownloadPrompt />));
+													}}
+													/>													
 											</FlexItem>
 										</Flex>
-										</FlexItem>
-										<FlexItem>
-											<Flex>
-												{canEdit &&
-													<FlexItem>
-														<Button
-															shape="Edit"
-															label="Edit card"
-															width="full"
-															color="secondary"
-															href={getVersionEditPageUrl({ tldrId: tldr.data.id })}
-														/>
-													</FlexItem>
-												}
-												
-												<FlexItem>
-													<Button
-														shape="Share2"
-														color="secondary"
-														width="full"
-														onPress={() => {
-															shareTldr({
-																title: tldr.data.currentTldrVersion.content.title,
-																text: tldr.data.currentTldrVersion.content.blurb,
-																url: `tldr.cards/${tldr.data.urlKey}`,
-															});
-														}}
-													/>
-													<Text type="micro" color="hint" style={{ alignSelf: 'center' }}>Share</Text>
-												</FlexItem>
-												<FlexItem>
-													<Button
-														shape="Bookmark"
-														color={tldr.data.currentUserSaved ? 'primary' : 'secondary'}
-														width="full"
-														onPress={saveTldr}
-													/>
-													<Text type="micro" color="hint" style={{ alignSelf: 'center' }}>{tldr.data.currentUserSaved ? 'Saved' : 'Save'}</Text>
-												</FlexItem>
-												<FlexItem>
-													<Button
-														shape="DownloadCloud"
-														color="secondary"
-														width="full"
-														onPress={()=>{
-															dispatch(addPrompt(<DownloadPrompt />));
-														}}
-													/>
-													<Text type="micro" color="hint" style={{ alignSelf: 'center' }}>Download</Text>
-												</FlexItem>
-											</Flex>
-										</FlexItem>
-									</Flex>
-									
-									</Chunk>
-
-
-									<Chunk>
 										<TldrCard tldr={tldr.data} />
 									</Chunk>
 								</Section>
@@ -603,7 +734,7 @@ function Tldr(props) {
 									</Chunk>
 									*/}
 
-									<Chunk border>
+									<Chunk>
 										<Link href={getIssuesPageUrl({ tldrId: tldr.data.id })}>
 											<Flex>
 												<FlexItem>
