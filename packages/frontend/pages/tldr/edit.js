@@ -55,7 +55,7 @@ import Router from 'next/router'
 import { Animated } from 'cinderblock';
 import { Utils } from 'cinderblock';
 const { runValidations, readFileAsDataUrl } = Utils;
-import stopword from 'stopword';
+import {removeStopwords} from 'stopword';
 
 const cleanUrlKey = (dirtyUrlKey) => {
 	return dirtyUrlKey.replace(/[^A-Za-z0-9-\s]+/gi, "")
@@ -66,7 +66,7 @@ const cleanUrlKey = (dirtyUrlKey) => {
 
 const buildUrlKey = (pieces = []) => {
 	const wordArray = pieces.join(' ').split(' ');
-	const stoplessWordArray = stopword.removeStopwords(wordArray);
+	const stoplessWordArray = removeStopwords(wordArray);
 	return cleanUrlKey(stoplessWordArray.join(' ').trim());
 }
 

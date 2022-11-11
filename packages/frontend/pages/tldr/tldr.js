@@ -504,7 +504,6 @@ function Tldr(props) {
 	const canEdit = (user?.id && tldr?.data?.authorId && user.id == tldr.data.authorId);
 		
 	const relatedTldrs = pageHelper(useSWR( tldr.data ? getTldrsUrl({categoryId: tldr.data.categoryId, "id[$nin][]": tldr.data.id, "$limit": 4}) : null ));
-	
 
 	// POST-AUTH ACTION
 	// check if hash action passed back from oauth, reg
@@ -515,7 +514,9 @@ function Tldr(props) {
 		setPostAuthAction(hashAction);
 	}, []);
 	useEffect(() => {
-		if (user.id && tldr.data, postAuthAction) {
+		// ready: user, tldr, tldr WITH user relations, a post auth action 
+		// the reason to wait for user relation is that the old tldr.data without user info is already around, most likely
+		if (user.id && tldr.data && tldr.data.currentUserSaved !== 'undefined' && postAuthAction) {
 			switch (postAuthAction) {
 				case 'upvoteTldr':
 					upvoteTldr();
@@ -861,8 +862,6 @@ function Tldr(props) {
 			}
 		</Page>
 	);
-
-
 }
 
 const {styles: tldrStyles, ids: tldrIds} = StyleSheet.create({

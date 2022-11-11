@@ -100,7 +100,7 @@ function VersionEdit(props) {
 
 	// give existing steps ids (required for drag and drop)
 	// and pad out blank steps so there are min 3
-	const initialSteps = tldr.draftContent?.steps.map((step, i) => ({ ...step, stepid: i })) || [];
+	const initialSteps = tldr.draftContent?.steps?.map((step, i) => ({ ...step, stepid: i })) || [];
 	for (let i = initialSteps.length; i < 3; i++) {
 		initialSteps.push({ stepid: i });
 	}
