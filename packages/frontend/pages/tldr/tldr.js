@@ -40,12 +40,14 @@ import {
 	Touch,
 	useMediaContext,
 	View,
-	ThemeContext
+	ThemeContext,
+	designConstants
 } from 'cinderblock';
 import Page from '@/components/Page';
 import TldrHeader from '@/components/tldr/TldrHeader';
 import ConnectedDropdownTouch from '@/components/ConnectedDropdownTouch';
 import Router, { useRouter } from 'next/router'
+import {MEDIA_QUERIES_SINGLE} from 'cinderblock/styles/designConstants';
 
 
 // SCREEN-SPECIFIC
@@ -55,6 +57,7 @@ import { abbreviateNumber } from '@/components/utils';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
+import StyleSheet from 'react-native-media-query';
 
 
 const DownVotePrompt = (props) => {
@@ -321,10 +324,12 @@ const VoteButtons = (props) => {
 	const {
 		tldr,
 		upvoteTldr,
-		downvoteTldr
+		downvoteTldr,
+		showLabels
 	} = props;
 
 	return(
+		<>
 		<Flex flush>
 			<FlexItem flush>
 				<Button
@@ -359,6 +364,10 @@ const VoteButtons = (props) => {
 					/>
 			</FlexItem>
 		</Flex>
+		{ showLabels && 
+			<Text type="micro" color="hint" style={tldrStyles.actionLabels}>Votes</Text>
+		}
+		</>
 	);
 }
 
@@ -443,7 +452,8 @@ const ActionButtonsShort = (props) => {
 		canEdit,
 		onPressShare,
 		onPressSave,
-		onPressDownload
+		onPressDownload,
+		showLabels
 	} = props
 
 	return(
@@ -455,6 +465,9 @@ const ActionButtonsShort = (props) => {
 						width="full"
 						onPress={onPressSave}
 					/>
+					{ showLabels && 
+						<Text type="micro" color="hint" style={tldrStyles.actionLabels}>{tldr.data.currentUserSaved ? 'Saved' : 'Save'}</Text>
+					}
 				</FlexItem>
 				<FlexItem nbsp>
 					<ConnectedDropdownTouch dropdown={<TldrDropdown 
@@ -470,6 +483,9 @@ const ActionButtonsShort = (props) => {
 							width="full"
 						/>
 					</ConnectedDropdownTouch>
+					{ showLabels && 
+						<Text type="micro" color="hint" style={tldrStyles.actionLabels}>More</Text>
+					}
 				</FlexItem>
 			</Flex>
 	)
@@ -621,7 +637,7 @@ function Tldr(props) {
 									
 							</FlexItem>
 							<FlexItem shrink section>
-								<View style={{minWidth: 300}}>
+								<View style={{minWidth: 320}} dataSet={{ media: tldrIds.actionSection }}>
 								<Chunk>
 										<Flex>
 											<FlexItem shrink>
@@ -629,11 +645,13 @@ function Tldr(props) {
 													tldr={tldr}
 													downvoteTldr={downvoteTldr}
 													upvoteTldr={upvoteTldr}
+													showLabels={true}
 													/>
 											</FlexItem>
 											<FlexItem/>
 											<FlexItem shrink>
 												<ActionButtonsShort
+													showLabels={true}
 													canEdit={canEdit}
 													tldr={tldr}
 													onPressShare={() => {
@@ -846,6 +864,19 @@ function Tldr(props) {
 
 
 }
+
+const {styles: tldrStyles, ids: tldrIds} = StyleSheet.create({
+	actionLabels: { 
+		alignSelf: 'center', 
+		marginBottom: -8
+	},
+	actionSection: {
+		[MEDIA_QUERIES_SINGLE.large]: {
+			marginTop: designConstants.METRICS.space*2
+		}
+	}
+	
+});
 
 Tldr.getInitialProps = async (context) => {
 	// next router query bits only initially available to getInitialProps
