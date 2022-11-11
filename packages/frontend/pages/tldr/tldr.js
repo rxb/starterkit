@@ -871,7 +871,7 @@ const {styles: tldrStyles, ids: tldrIds} = StyleSheet.create({
 	},
 	actionSection: {
 		[MEDIA_QUERIES_SINGLE.large]: {
-			marginTop: designConstants.METRICS.space*2
+			marginTop: designConstants.METRICS.space*2.5
 		}
 	}
 	
