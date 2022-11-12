@@ -251,7 +251,7 @@ export const TldrCardSmall = (props) => {
 				style={{
 					paddingTop: METRICS.space,
 					flex: 1,
-					borderTopWidth: 10,
+					borderTopWidth: 16,
 					borderTopColor: color
 				}}
 			>

@@ -14,6 +14,7 @@ import { saveLoginRedirect, getProfilePageUrl, getVersionEditPageUrl, getTldrEdi
 
 // COMPONENTS
 import {
+	Animated,
 	Avatar,
 	Bounds,
 	Button,
@@ -59,7 +60,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import StyleSheet from 'react-native-media-query';
 
-
+/*
 const DownVotePrompt = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
@@ -96,6 +97,53 @@ const DownVotePrompt = (props) => {
 		</Section>
 	);
 };
+*/
+
+const DownVotePrompt = (props) => {
+	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
+	const {
+		onRequestClose,
+		tldr
+	} = props;
+	return (
+		<Section>
+			<Chunk>
+				<Text type="sectionHead">What could make this card better?</Text>
+			</Chunk>
+			<Chunk>
+				<Picker placeholder="hey">
+					<Picker.Item label="Could be clearer" />
+					<Picker.Item label="Additional information" />
+					<Picker.Item label="It's spam" />
+					<Picker.Item label="It's deceptive" />
+				</Picker>
+				<TextInput 				
+					multiline
+					numberOfLines={4}
+					></TextInput>
+			</Chunk>
+			<Chunk>
+				
+				<Button
+					onPress={() => {
+						onRequestClose();
+					}}
+					label="Submit issue"
+					width="full"
+				/>
+				<Button
+					onPress={() => {
+						onRequestClose();
+					}}
+					color="secondary"
+					label="Skip"
+					width="full"
+				/>
+			</Chunk>
+		</Section>
+	);
+};
+
 
 const DownloadPrompt = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
@@ -581,7 +629,7 @@ function Tldr(props) {
 			if (nextVote) {
 				setTimeout(() => {
 					dispatch(addPrompt(<DownVotePrompt tldr={tldr} />))
-				}, 400);
+				}, 800);
 			}
 		}, "downvoteTldr");
 	}

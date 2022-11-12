@@ -40,7 +40,8 @@ app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ limit: '5mb', extended: true }));
 
 // Host the public folder
-app.use('/', express.static(app.get('public')));
+const maxAge = 1000 * 60 * 60;
+app.use('/', express.static(app.get('public'), { maxAge: maxAge }));
 
 // Set up Plugins and providers
 app.configure(express.rest());
