@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useContext } from 'react';
+import React, { Fragment, useEffect, useRef, useState, useContext } from 'react';
 import ErrorPage from 'next/error'
 
 // SWR
@@ -376,6 +376,26 @@ const VoteButtons = (props) => {
 		showLabels
 	} = props;
 
+
+	const voteAnim = useRef(new Animated.Value(1)).current;
+	const bounceVote = () => {
+		Animated.sequence([
+			Animated.timing(voteAnim, {
+				toValue: 1.4,
+				duration: 75
+			 }),
+			 Animated.timing(voteAnim, {
+				toValue: 1,
+				duration: 75
+			 }),
+		]).start();
+	 };
+	 
+	 useEffect(()=>{
+		bounceVote();
+	 }, [tldr?.data?.voteResult]);
+
+
 	return(
 		<>
 		<Flex flush>
@@ -400,7 +420,15 @@ const VoteButtons = (props) => {
 						textAlign: 'center'
 					}
 				]}>
-					<Text weight="strong">{abbreviateNumber(tldr.data.voteResult)}</Text>
+					<Animated.View
+						style={{
+							transform: [
+								{ scale: voteAnim }
+							]
+						}}
+						>
+						<Text weight="strong">{abbreviateNumber(tldr.data.voteResult)}</Text>
+					</Animated.View>
 				</View>
 			</FlexItem>
 			<FlexItem flush>
@@ -629,7 +657,7 @@ function Tldr(props) {
 			if (nextVote) {
 				setTimeout(() => {
 					dispatch(addPrompt(<DownVotePrompt tldr={tldr} />))
-				}, 800);
+				}, 600);
 			}
 		}, "downvoteTldr");
 	}
