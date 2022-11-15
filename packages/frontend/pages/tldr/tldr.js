@@ -16,6 +16,7 @@ import { saveLoginRedirect, getProfilePageUrl, getVersionEditPageUrl, getTldrEdi
 import {
 	Animated,
 	Avatar,
+	Bounce,
 	Bounds,
 	Button,
 	Card,
@@ -377,25 +378,6 @@ const VoteButtons = (props) => {
 	} = props;
 
 
-	const voteAnim = useRef(new Animated.Value(1)).current;
-	const bounceVote = () => {
-		Animated.sequence([
-			Animated.timing(voteAnim, {
-				toValue: 1.4,
-				duration: 75
-			 }),
-			 Animated.timing(voteAnim, {
-				toValue: 1,
-				duration: 75
-			 }),
-		]).start();
-	 };
-	 
-	 useEffect(()=>{
-		bounceVote();
-	 }, [tldr?.data?.voteResult]);
-
-
 	return(
 		<>
 		<Flex flush>
@@ -420,15 +402,9 @@ const VoteButtons = (props) => {
 						textAlign: 'center'
 					}
 				]}>
-					<Animated.View
-						style={{
-							transform: [
-								{ scale: voteAnim }
-							]
-						}}
-						>
+					<Bounce watchProp={tldr.data.voteResult} scale={1.4}>
 						<Text weight="strong">{abbreviateNumber(tldr.data.voteResult)}</Text>
-					</Animated.View>
+					</Bounce>
 				</View>
 			</FlexItem>
 			<FlexItem flush>
@@ -488,18 +464,22 @@ const ActionButtons = (props) => {
 						>Share</Text>
 				</FlexItem>
 				<FlexItem nbsp>
+					
 					<Button
 						shape="Bookmark"
 						color={tldr.data.currentUserSaved ? 'primary' : 'secondary'}
 						width="full"
 						onPress={onPressSave}
 					/>
+					
+					<Bounce watchProp={tldr.data.currentUserSaved ? 1 : 0}>
 					<Text																	 	
 					 	type="micro" 
 						color="hint" 
 						style={[styles.hide, { alignSelf: 'center' }]}
 						dataSet={{ media: ids["showAt__large"] }}
 						>{tldr.data.currentUserSaved ? 'Saved' : 'Save'}</Text>
+						</Bounce>
 				</FlexItem>
 				<FlexItem nbsp>
 					<Button
@@ -837,12 +817,14 @@ function Tldr(props) {
 													<Text weight="strong">Issues ({tldr.data.issueCount})</Text>
 													<Text type="small" color="secondary">Help improve this card</Text>
 												</FlexItem>
+												{/*
 												<FlexItem shrink justify="center" style={{ paddingHorizontal: 3 }}>
 													<Icon
 														color={SWATCHES.textSecondary}
 														shape="MessageCircle"
 													/>
 												</FlexItem>
+												*/}
 											</Flex>
 										</Link>
 									</Chunk>
@@ -856,7 +838,7 @@ function Tldr(props) {
 												</FlexItem>
 												<FlexItem shrink justify="center" style={{ paddingHorizontal: 3 }}>
 													<Avatar
-														size="small"
+														size="mid"
 														source={{ uri: tldr.data.author.photoUrl }} />
 												</FlexItem>
 											</Flex>

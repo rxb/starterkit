@@ -280,13 +280,14 @@ const Edit = (props) => {
 							</Chunk>
 						</Section>
 						<Section>
-							<form>
+							<form autocomplete="off">
 
 								<RevealBlock visible={formStep >= 0} delay={300}>
 									<Chunk>
 										<Label for="title">What is your card about?</Label>
 										<TextInput
-											id="verb"
+											aria-autocomplete="none"
+											autoComplete="off"
 											placeholder="verb (ex. baking, choosing, visiting)"
 											value={formState.getFieldValue('verb')}
 											onChange={e => {
@@ -300,7 +301,7 @@ const Edit = (props) => {
 										/>
 
 										<TextInput
-											id="verb"
+											id="noun"
 											placeholder="noun (ex. bread, a major, Tokyo)"
 											value={formState.getFieldValue('noun')}
 											onChange={e => {

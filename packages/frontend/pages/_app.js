@@ -58,6 +58,7 @@ function ThisApp(props) {
 		feathersClient.reAuthenticate()
 			.then(storeAuth)
 			.catch((error) => {
+				console.log('catch authentication error');
 				dispatch(logOut());
 				checkForBadOauth(error);
 		});

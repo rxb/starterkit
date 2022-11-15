@@ -85,6 +85,36 @@ const publishToVersion = (options) => {
   }
 }
 
+const updateCategoryCount = (options) => {
+  return async (context) => {
+    // get the category of this card
+    let categoryId;
+    if(context.dispatch.categoryId){
+      categoryId = context.dispatch.categoryId
+    }
+    else{
+      // for patch actions... category isn't available in context.data
+      const tldr = await context.app.service('tldrs').get(context.dispatch.id);
+      categoryId = tldr.categoryId;
+    }
+
+    // query the number of tldrs in category
+    const categoryTldrs = await context.service.find({
+      query: {
+        categoryId: categoryId,
+        currentTldrVersionId: {$ne: null},
+        $limit: 0 // count
+      }
+    });
+
+    // update the count in the category
+    const category = await context.app.service('categories').patch(categoryId, {
+      tldrCount: categoryTldrs.total
+    });
+    return context;
+  }
+}
+
 const noDraftsExceptForSelf = (options) => {
   return async (context) => {
     // if asking for a users authorId tldrs
@@ -174,7 +204,8 @@ module.exports = {
       setField({
         from: 'params.user.id',
         as: 'data.authorId'
-      })
+      }),
+      
     ],
     update: [
       authenticate('jwt'),
@@ -184,7 +215,7 @@ module.exports = {
     patch: [
       authenticate('jwt'),
       mustBeOwnerOrAdmin(),
-      publishToVersion()
+      publishToVersion(),
     ],
     remove: [
       // TODO: should you really be able to completely delete a card?
@@ -200,10 +231,16 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      updateCategoryCount()
+    ],
     update: [],
-    patch: [],
-    remove: []
+    patch: [
+      updateCategoryCount()
+    ],
+    remove: [
+      updateCategoryCount()
+    ]
   },
 
   error: {

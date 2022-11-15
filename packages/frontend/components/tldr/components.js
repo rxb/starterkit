@@ -118,7 +118,9 @@ export const TldrCard = (props) => {
 					<Flex>
 						<FlexItem>
 							<Inline nowrap>
+								{/*
 								<Avatar style={{ height: 12, width: 12, opacity: .75 }} source={{ uri: 'https://randomuser.me/api/portraits/women/18.jpg' }} />
+								*/}
 								<Text type="small" inverted color="secondary">
 									@{tldr.author.urlKey} / {tldr.urlKey}
 								</Text>
@@ -129,11 +131,13 @@ export const TldrCard = (props) => {
 								<Text type="small" inverted color="secondary">
 									v.{thisVersion.version}
 								</Text>
+								{/*
 								<Icon
 									shape="ChevronDown"
 									size="small"
 									color={SWATCHES.textSecondaryInverted}
 								/>
+								*/}
 							</Inline>
 						</FlexItem>
 					</Flex>
