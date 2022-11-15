@@ -1095,8 +1095,10 @@ export const CategoryItem2 = (props) => {
 
 	const {
 		category,
-		color = SWATCHES.tint
+		color = SWATCHES.tint,
 	} = props;
+
+
 	return (
 
 		<Chunk>
@@ -1118,7 +1120,7 @@ export const CategoryItem2 = (props) => {
 					}}>
 						<Chunk >
 							<Text type="big" inverted>{category.name}</Text>
-							<Text type="small" style={{ textAlign: 'left' }} color="secondary" inverted>1,263 cards</Text>
+							<Text type="small" style={{ textAlign: 'left' }} color="secondary" inverted>{/*1,263 cards*/}{category.tldrCount} cards</Text>
 						</Chunk>
 					</Sectionless>
 				</Card>
