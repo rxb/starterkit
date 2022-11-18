@@ -61,7 +61,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import StyleSheet from 'react-native-media-query';
 
-/*
+
 const DownVotePrompt = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
@@ -88,18 +88,18 @@ const DownVotePrompt = (props) => {
 				<Button
 					onPress={() => {
 						onRequestClose();
-						Router.push(getContactPageUrl({ message: encodeURIComponent(`Reporting card:\r\n${location.href}\r\n\r\nOptional details:\r\n`) }));
 					}}
 					color="secondary"
-					label="Report this card"
+					label="Skip"
 					width="full"
 				/>
 			</Chunk>
 		</Section>
 	);
 };
-*/
 
+
+/*
 const DownVotePrompt = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const {
@@ -144,7 +144,7 @@ const DownVotePrompt = (props) => {
 		</Section>
 	);
 };
-
+*/
 
 const DownloadPrompt = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
@@ -403,7 +403,7 @@ const VoteButtons = (props) => {
 					}
 				]}>
 					<Bounce watchProp={tldr.data.voteResult} scale={1.4}>
-						<Text weight="strong">{abbreviateNumber(tldr.data.voteResult)}</Text>
+						<Text weight="strong" style={{fontSize: 18}}>{abbreviateNumber(tldr.data.voteResult)}</Text>
 					</Bounce>
 				</View>
 			</FlexItem>
