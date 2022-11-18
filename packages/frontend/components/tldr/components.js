@@ -19,6 +19,7 @@ import {
 	CheckBox,
 	Chunk,
 	Chip,
+	DropdownItem,
 	Flex,
 	FlexItem,
 	Header,
@@ -333,26 +334,26 @@ const TldrCardContextDropdown = (props) => {
 		onCompleteClose
 	} = props;
 	return (
-		<Sectionless>
-			<Chunk>
+		<>
+
 				{/* can't nest urls, so all links need to push router */}
-				<Touch
+				<DropdownItem
 					onPress={(e) => {
 						e.preventDefault()
 						Router.push({ pathname: getVersionEditPageUrl(), query: { tldrId: tldr.id } })
 					}}
 				>
 					<Text color="tint">Edit</Text>
-				</Touch>
-				<Touch
+				</DropdownItem>
+				<DropdownItem
 					onPress={(e) => {
 						e.preventDefault()
 						Router.push({ pathname: getTldrEditPageUrl(), query: { tldrId: tldr.id } })
 					}}
 				>
 					<Text color="tint">Settings</Text>
-				</Touch>
-				<Touch onPress={(e) => {
+				</DropdownItem>
+				<DropdownItem onPress={(e) => {
 					e.preventDefault();
 					onCompleteClose();
 					dispatch(addPrompt(<DeletePrompt tldr={tldr} onSuccess={() => {
@@ -361,9 +362,8 @@ const TldrCardContextDropdown = (props) => {
 					}} />))
 				}}>
 					<Text color="tint">Delete</Text>
-				</Touch>
-			</Chunk>
-		</Sectionless>
+				</DropdownItem>
+		</>
 	)
 }
 

@@ -20,6 +20,7 @@ import {
 	Card,
 	CheckBox,
 	Chunk,
+	DropdownItem,
 	Flex,
 	FlexItem,
 	Header,
@@ -58,30 +59,25 @@ const UserDropdown = (props) => {
 	const { onRequestClose } = props;
 	const [loading, setLoading] = useState(false);
 	return (
-		<Sectionless>
 			<LoadingBlock isLoading={loading}>
-				<Chunk>
-
-					<Link href={getProfilePageUrl({ userId: user.id })} >
+					<DropdownItem href={getProfilePageUrl({ userId: user.id })} >
 						<Text color="tint" >Profile</Text>
-					</Link>
-					<Link href={getSavedPageUrl()} >
+					</DropdownItem>
+					<DropdownItem href={getSavedPageUrl()} >
 						<Text color="tint" >Saved</Text>
-					</Link>
-					<Link href={getProfileEditPageUrl()} >
+					</DropdownItem>
+					<DropdownItem href={getProfileEditPageUrl()} >
 						<Text color="tint" >Settings</Text>
-					</Link>
-					<Touch onPress={async () => {
+					</DropdownItem>
+					<DropdownItem onPress={async () => {
 						setLoading(true);
 						await feathersClient.logout();
 						onRequestClose();
 						setLoading(false);
 					}}>
 						<Text color="tint" >Log out</Text>
-					</Touch>
-				</Chunk>
+					</DropdownItem>
 			</LoadingBlock>
-		</Sectionless>
 	);
 }
 

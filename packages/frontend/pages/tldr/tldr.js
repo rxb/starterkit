@@ -22,6 +22,7 @@ import {
 	Card,
 	CheckBox,
 	Chunk,
+	DropdownItem,
 	FakeInput,
 	Flex,
 	FlexItem,
@@ -342,27 +343,25 @@ const TldrDropdown = (props) => {
 	} = props;
 
 	return (
-		<Sectionless>
-				<Chunk>
-					{canEdit &&
-						<Link href={getVersionEditPageUrl({ tldrId: tldr.data.id })} >
-							<Text color="tint" >Settings</Text>
-						</Link>
-					}
-					<Touch onPress={ () => {
-						onPressShare();
-						onRequestClose();
-					}}>
-						<Text color="tint" >Share</Text>
-					</Touch>
-					<Touch onPress={ () => {
-						onPressDownload();
-						onRequestClose();
-					}}>
-						<Text color="tint" >Download</Text>
-					</Touch>
-				</Chunk>
-		</Sectionless>
+		<>
+			{canEdit &&
+				<DropdownItem href={getVersionEditPageUrl({ tldrId: tldr.data.id })} >
+					<Text color="tint" >Settings</Text>
+				</DropdownItem>
+			}
+			<DropdownItem onPress={ () => {
+				onPressShare();
+				onRequestClose();
+			}}>
+				<Text color="tint" >Share</Text>
+			</DropdownItem>
+			<DropdownItem onPress={ () => {
+				onPressDownload();
+				onRequestClose();
+			}}>
+				<Text color="tint" >Download</Text>
+			</DropdownItem>
+		</>
 	);
 }
 
