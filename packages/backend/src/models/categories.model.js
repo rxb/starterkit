@@ -27,6 +27,9 @@ module.exports = function (app) {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
+    defaultOrder: {
+      type: DataTypes.INTEGER
+    },
     name: {
       type: DataTypes.TEXT
     },

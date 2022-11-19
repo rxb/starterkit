@@ -162,7 +162,7 @@ const Edit = (props) => {
 	const authentication = useSelector(state => state.authentication);
 	const user = authentication.user || {};
 
-	const categories = useSWR(getCategoriesUrl({ '$limit': 1000 }));
+	const categories = useSWR(getCategoriesUrl({ '$limit': 1000, "$sort[defaultOrder]": 1 }));
 	const categoriesData = categories.data ? categories.data.items : [];
 
 	const [formStep, setFormStep] = useState(0);

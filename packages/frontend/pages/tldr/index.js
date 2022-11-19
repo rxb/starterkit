@@ -344,7 +344,7 @@ export async function getStaticProps(context) {
 	const isServer = !!req;
 
 	try {
-		const categoriesData = await request(getCategoriesUrl({ '$limit': 1000 }));
+		const categoriesData = await request(getCategoriesUrl({ '$limit': 1000, "$sort[defaultOrder]": 1}));
 		return {
 			props: {
 				isServer,
