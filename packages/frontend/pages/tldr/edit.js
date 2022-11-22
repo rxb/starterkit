@@ -96,7 +96,7 @@ const UrlKeyField = (props) => {
 					<View
 						style={[styles.input, { borderTopRightRadius: 0, borderBottomRightRadius: 0, borderRight: 0 }]}
 					>
-						<Text color="hint">{user.urlKey}/</Text>
+						<Text color="secondary">{user.urlKey}/</Text>
 					</View>
 				</FlexItem>
 				<FlexItem flush>
@@ -119,13 +119,14 @@ const CategoryField = (props) => {
 	const { styles, METRICS, SWATCHES } = useContext(ThemeContext);
 	const { formState, categoriesData } = props;
 	return (
-		<>
+		<View style={styles.pseudoLineHeight}>
 			<List
 				variant={{
 					small: 'grid',
 				}}
 				itemsInRow={{
-					medium: 2,
+					small: 2,
+					//medium: 3,
 					large: 3
 				}}
 				items={categoriesData}
@@ -137,18 +138,34 @@ const CategoryField = (props) => {
 						}}>
 							<View style={[
 								styles.input,
-								(selected)
-									? { backgroundColor: SWATCHES.tint }
-									: {}
+								(selected ? styles['input--focus'] : {}),
+								{
+									justifyContent: 'center', 
+									backgroundColor: selected ? SWATCHES.tint : SWATCHES.notWhite,
+									borderRadius: 32
+								},
 							]}>
-								<Text inverted={selected}>{category.name}</Text>
+								<Inline>
+								{ selected &&
+									<Icon	
+										shape="Check"
+										color="white"
+										size="small"
+										/>
+								}
+								<Text 
+									type="small" 
+									weight={selected ? "strong" : ""}
+									inverted={selected}
+									>{category.name}</Text>
+								</Inline>
 							</View>
 						</Touch>
 					)
 				}}
 			/>
 			<FieldError error={formState.error?.fieldErrors?.categoryId} />
-		</>
+		</View>
 	);
 }
 
@@ -171,6 +188,7 @@ const Edit = (props) => {
 		initialFields: {
 			verb: '',
 			noun: '',
+			about: '',
 			urlKey: '',
 			categoryId: categoryId || null,
 			...tldr
@@ -282,108 +300,42 @@ const Edit = (props) => {
 						<Section>
 							<form autocomplete="off">
 
-								<RevealBlock visible={formStep >= 0} delay={300}>
 									<Chunk>
 										<Label for="title">What is your card about?</Label>
+
 										<TextInput
-											aria-autocomplete="none"
-											autoComplete="off"
-											placeholder="verb (ex. baking, choosing, visiting)"
-											value={formState.getFieldValue('verb')}
+											id="about"
+											placeholder=""
+											value={formState.getFieldValue('about')}
 											onChange={e => {
 												const value = e.target.value;
-												const urlKey = buildUrlKey([value, formState.getFieldValue('noun')]);
+												const urlKey = buildUrlKey([ value ]);
 												formState.setFieldValues({
-													'verb': value,
+													'about': value,
 													'urlKey': urlKey
 												});
 											}}
 										/>
-
-										<TextInput
-											id="noun"
-											placeholder="noun (ex. bread, a major, Tokyo)"
-											value={formState.getFieldValue('noun')}
-											onChange={e => {
-												const value = e.target.value;
-												const urlKey = buildUrlKey([formState.getFieldValue('verb'), value]);
-												formState.setFieldValues({
-													'noun': value,
-													'urlKey': urlKey
-												});
-											}}
-										/>
-										<FieldError error={formState.error?.fieldErrors?.verb} />
-										<FieldError error={formState.error?.fieldErrors?.noun} />
+										<FieldError error={formState.error?.fieldErrors?.about} />
 									</Chunk>
 
-									{(formStep == 0) &&
-										<Chunk>
-											<Button
-												onPress={() => {
-													const error = runValidations(formState.fields, {
-														verb: {
-															notEmpty: {
-																msg: "Verb can't be blank"
-															},
-														},
-														noun: {
-															notEmpty: {
-																msg: "Noun can't be blank"
-															},
-														}
-													});
-													formState.setError(error);
-													if (!error) {
-														const urlKey = buildUrlKey([formState.getFieldValue('verb'), formState.getFieldValue('noun')]);
-														formState.setFieldValue('urlKey', urlKey);
-														setFormStep(1);
-													}
-												}}
-												label="Next"
-											/>
-										</Chunk>
-									}
-								</RevealBlock>
-
-								<RevealBlock visible={formStep >= 1} delay={150}>
-									<Chunk>
-										<Label for="title">How's this as a URL for your card?</Label>
-										<UrlKeyField formState={formState} user={user} />
-									</Chunk>
-									{(formStep == 1) &&
-										<Chunk>
-											<Button
-												onPress={() => {
-													const error = runValidations(formState.fields, {
-														urlKey: editValidations.urlKey
-													});
-													formState.setError(error);
-													if (!error) {
-														setFormStep(2);
-													}
-												}}
-												label="Looks good"
-											/>
-										</Chunk>
-									}
-								</RevealBlock>
-
-								<RevealBlock visible={formStep >= 2} delay={150}>
 									<Chunk>
 										<Label for="title">What category fits the best?</Label>
 										<CategoryField formState={formState} categoriesData={categoriesData} />
 									</Chunk>
-									{(formStep == 2) &&
-										<Chunk>
-											<Button
-												label="Create new card"
-												onPress={submitForm}
-												isLoading={formState.loading}
-											/>
-										</Chunk>
-									}
-								</RevealBlock>
+
+									<Chunk>
+										<Label for="title">How's this as a URL for your card?</Label>
+										<UrlKeyField formState={formState} user={user} />
+									</Chunk>
+
+									<Chunk>
+										<Button
+											label="Next"
+											onPress={submitForm}
+											isLoading={formState.loading}
+										/>
+									</Chunk>
 							</form>
 
 						</Section>
